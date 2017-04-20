@@ -1,0 +1,72 @@
+0	1	mikroCPIC1618.exe -MSF -DBG -pP18F6722 -DL -O11111114 -fo20 -N"D:\MyProject\SPC code1\SPC code\SPC code.mcppi" -SP"C:\Program Files\Mikroelektronika\mikroC PRO for PIC\defs\" -SP"C:\Program Files\Mikroelektronika\mikroC PRO for PIC\uses\P18\" -SP"D:\MyProject\SPC code1\SPC code\" -IP"D:\MyProject\SPC code1\SPC code\" "SPC code.c" "Spcinitial.c" "MCP3202.c" "Spi.c" "I2C.c" "RTD.c" "M0220.c" "EEPROM.c" "QT60.c" "Spcsystem.c" "Menuoperation.c" "Mainprocess.c" "function.c" "usart.c" "modbus.c" "SSR.c" "ADC.c" "systemtest.c" "manual.c" "String_op.c" "Calibration.c" "__Lib_Math.mcl" "__Lib_MathDouble.mcl" "__Lib_System.mcl" "__Lib_Delays.mcl" "__Lib_CType.mcl" "__Lib_CString.mcl" "__Lib_CStdlib.mcl" "__Lib_CMath.mcl" "__Lib_EEPROM_1024.mcl" "__Lib_UART_c67g12.mcl" "__Lib_LcdConsts.mcl" "__Lib_Lcd.mcl"	 
+hint: 0	1139	Available RAM: 3915 [bytes], Available ROM: 131072 [bytes]	 
+diagnostics: 0	126	All files Preprocessed in 1094 ms	 
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 554	123	Compiled Successfully	SPC code.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 412	123	Compiled Successfully	Spcinitial.c
+hint: 321	1164	Variable 'temp_ptr' has been eliminated by optimizer	Spcinitial.c
+hint: 322	1164	Variable 'GFITestValue' has been eliminated by optimizer	Spcinitial.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 79	123	Compiled Successfully	MCP3202.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 37	123	Compiled Successfully	Spi.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 404	123	Compiled Successfully	I2C.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+hint: 202	1163	Variable 'i' has been declared, but not used	RTD.c
+hint: 329	1163	Variable 'ret' has been declared, but not used	RTD.c
+diagnostics: 368	123	Compiled Successfully	RTD.c
+hint: 202	1164	Variable 'String' has been eliminated by optimizer	RTD.c
+hint: 220	1164	Variable 'TempAD' has been eliminated by optimizer	RTD.c
+hint: 262	1164	Variable 'ret' has been eliminated by optimizer	RTD.c
+hint: 294	1164	Variable 'ret' has been eliminated by optimizer	RTD.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 107	123	Compiled Successfully	M0220.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 51	123	Compiled Successfully	EEPROM.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 298	123	Compiled Successfully	QT60.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 2200	123	Compiled Successfully	Spcsystem.c
+hint: 339	1164	Variable 'temp_ptr' has been eliminated by optimizer	Spcsystem.c
+hint: 593	1164	Variable 'Ltemp' has been eliminated by optimizer	Spcsystem.c
+hint: 723	1164	Variable 'Htemp' has been eliminated by optimizer	Spcsystem.c
+hint: 1971	1164	Variable 'index' has been eliminated by optimizer	Spcsystem.c
+hint: 1973	1164	Variable 'Address' has been eliminated by optimizer	Spcsystem.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 1103	123	Compiled Successfully	Menuoperation.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 1260	123	Compiled Successfully	Mainprocess.c
+hint: 191	1164	Variable 'temp_ptr' has been eliminated by optimizer	Mainprocess.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+hint: 394	1163	Variable 'i' has been declared, but not used	function.c
+hint: 487	1163	Variable 'Alarmtype' has been declared, but not used	function.c
+diagnostics: 1024	123	Compiled Successfully	function.c
+hint: 486	1164	Variable 'AlarmMax' has been eliminated by optimizer	function.c
+hint: 488	1164	Variable 'temp' has been eliminated by optimizer	function.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 52	123	Compiled Successfully	usart.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+hint: 257	1163	Variable 'AlarmType' has been declared, but not used	modbus.c
+diagnostics: 703	123	Compiled Successfully	modbus.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 566	123	Compiled Successfully	SSR.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 168	123	Compiled Successfully	ADC.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 232	123	Compiled Successfully	systemtest.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 34	123	Compiled Successfully	manual.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 33	123	Compiled Successfully	String_op.c
+diagnostics: 0	122	Compilation Started	systemvalue.h
+diagnostics: 381	123	Compiled Successfully	Calibration.c
+hint: 159	1164	Variable 'ValueTemp' has been eliminated by optimizer	Calibration.c
+diagnostics: 0	127	All files Compiled in 2875 ms	 
+hint: 0	1144	Used RAM (bytes): 2616 (67%)  Free RAM (bytes): 1299 (33%)	Used RAM (bytes): 2616 (67%)  Free RAM (bytes): 1299 (33%)
+hint: 0	1144	Used ROM (bytes): 117189 (89%)  Free ROM (bytes): 13883 (11%)	Used ROM (bytes): 117189 (89%)  Free ROM (bytes): 13883 (11%)
+diagnostics: 0	125	Project Linked Successfully	SPC code.mcppi
+diagnostics: 0	128	Linked in 938 ms	 
+diagnostics: 0	129	Project 'SPC code.mcppi' completed: 4969 ms	 
+diagnostics: 0	103	Finished successfully: 05 ÆßÔÂ 2013, 10:42:54	SPC code.mcppi

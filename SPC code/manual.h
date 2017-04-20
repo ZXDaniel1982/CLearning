@@ -1,0 +1,1 @@
+void manual(char ChannelNum);
