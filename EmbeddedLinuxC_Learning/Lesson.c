@@ -43,6 +43,24 @@ int Fibonacci(int n)
 	return ret;
 }
 
+int FibonacciLoop(int n)
+{
+    int ret = 0;
+    int fn1 = 0, fn2 = 1;
+
+    if (n < 2)
+    	return n;
+    else {
+    	while (n >= 2) {
+    		ret = fn1 + fn2;
+    		fn1 = fn2;
+    		fn2 = ret;
+    		n--;
+    	}
+    	return ret;
+    }
+}
+
 int main(int argc, char *argv[])
 {
     float number = -112;
@@ -62,5 +80,6 @@ int main(int argc, char *argv[])
 	printLen = printf("Area of (1, 2) (4, 6) is %f\n", getArea(getRadius(point1, point2)));
 
 	printLen = printf("Fibonacci of 10 is %d\n", Fibonacci(10));
+	printLen = printf("FibonacciLoop of 10 is %d\n", FibonacciLoop(10));
 	return 0;
 }
