@@ -27,6 +27,22 @@ double getArea(double radiusNum)
     return areaNum;
 }
 
+int Fibonacci(int n)
+{
+    int ret = 0;
+
+	if (n < 0) {
+		ret = -1;
+	} else if (n == 0) {
+		ret = 0;
+	} else if (n == 1) {
+		ret = 1;
+	} else {
+		ret = Fibonacci(n - 1) + Fibonacci(n - 2);
+	}
+	return ret;
+}
+
 int main(int argc, char *argv[])
 {
     float number = -112;
@@ -44,5 +60,7 @@ int main(int argc, char *argv[])
 	printLen = printf("sqrt of number is %f\n", sqrt(sqrtnum));
 
 	printLen = printf("Area of (1, 2) (4, 6) is %f\n", getArea(getRadius(point1, point2)));
+
+	printLen = printf("Fibonacci of 10 is %d\n", Fibonacci(10));
 	return 0;
 }
