@@ -1,5 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
+
+#define N 20
 
 typedef struct Point
 {
@@ -61,11 +64,25 @@ int FibonacciLoop(int n)
     }
 }
 
+int *printRandom(int upperBand)
+{
+    int *a;
+
+    a = malloc(N * sizeof(int));
+
+    for (int i=0;i<N;i++) {
+    	*(a+i) = rand() % upperBand;
+    }
+
+    return a;
+}
+
 int main(int argc, char *argv[])
 {
     float number = -112;
     float sqrtnum = 121;
     int printLen = 0;
+    int *randomNum;
 
     tPoint point1 = {1, 2};
     tPoint point2 = {4, 6};
@@ -81,5 +98,13 @@ int main(int argc, char *argv[])
 
 	printLen = printf("Fibonacci of 10 is %d\n", Fibonacci(10));
 	printLen = printf("FibonacciLoop of 10 is %d\n", FibonacciLoop(10));
+
+	randomNum = printRandom(10);
+	printf("Generateing 20 random number :");
+	for (int i=0;i<N;i++) {
+		printf(" %d", *(randomNum+i));
+	}
+	printf("\n");
+	free(randomNum);
 	return 0;
 }
