@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 #define N 20
 
@@ -77,6 +78,38 @@ int *printRandom(int upperBand)
     return a;
 }
 
+void GestureGame(int man)
+{
+	static const char gesture[3][10] = {
+		"scissor", "stone", "cloth"
+	};
+	int computer = 0, ran = 0, diff = 0;
+
+    printf("\n");
+    if ((man < 0) || (man >2)) {
+    	printf("Invalid input gesture\n");
+    	return;
+    } else {
+    	printf("Input gesture is %s\n", gesture[man]);
+    }
+    // Generate new random values every time
+	srand((unsigned) time(NULL));
+	for (int i=0;i<5;i++) {
+	    printf("Random number is %d\n", ran = rand());
+        computer = ran % 3;
+        if (man == computer) {
+        	printf("Equal man=%s computer=%s\n", gesture[man], gesture[computer]);
+        } else {
+        	diff = (man - computer + 2) % 3;
+        	if (diff == 0)
+        		printf("Win man=%s computer=%s\n", gesture[man], gesture[computer]);
+        	else
+        		printf("Loss man=%s computer=%s\n", gesture[man], gesture[computer]);
+        }
+    }
+    return;
+}
+
 int main(int argc, char *argv[])
 {
     float number = -112;
@@ -106,5 +139,7 @@ int main(int argc, char *argv[])
 	}
 	printf("\n");
 	free(randomNum);
+
+	GestureGame(1);
 	return 0;
 }
