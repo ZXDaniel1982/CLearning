@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <string.h>
 
 #define N 20
 
@@ -114,6 +115,67 @@ void GestureGame(int man)
     return;
 }
 
+void LowToHigh()
+{
+    int a[10];
+    int b[10];
+    int cost = 0, key;
+
+    memset(b, 11, sizeof(int) * 10);
+
+    printf("Generateing random array ...\n");
+    for (int i = 0; i < 10; i++) {
+        a[i] = rand() % 10 + 1;
+        printf("%d ", a[i]);
+    }
+    printf("\n");
+
+    for (int i = 0; i < 10; i++) {
+        for (int j = i; j >= 0; j--) {
+            if (a[i] < b[j]) {
+                cost++;
+                if (i < 9)
+                    b[j + 1] = b[j];
+                b[j] = a[i];
+            } else {
+                break;
+            }
+        }
+    }
+
+    printf("The result array ...\n");
+    for (int i = 0; i < 10; i++) {
+        printf("%d ", b[i]);
+    }
+    printf("\n");
+    printf("The total cost is %d\n\n", cost);
+
+    cost = 0;
+    for (int i = 1; i < 10; i++) {
+        int j;
+        key = a[i];
+        j = i - 1;
+        while (j >= 0 && a[j] > key) {
+            a[j + 1] = a[j];
+            j--;
+            cost++;
+        }
+        a[j + 1] = key;
+    }
+
+    printf("The result array ...\n");
+    for (int i = 0; i < 10; i++) {
+        printf("%d ", a[i]);
+    }
+    printf("\n");
+    printf("The total cost is %d\n", cost);
+}
+
+void Algorithm(void)
+{
+    LowToHigh();
+}
+
 int main(int argc, char *argv[])
 {
     float number = -112;
@@ -152,5 +214,7 @@ int main(int argc, char *argv[])
     free(randomNum);
 
     GestureGame(1);
+
+    Algorithm();
     return 0;
 }
