@@ -3,6 +3,9 @@
 #include <math.h>
 #include <time.h>
 #include <string.h>
+#include <stdbool.h>
+
+#include "Lesson.h"
 
 #define N 20
 
@@ -115,7 +118,7 @@ void GestureGame(int man)
     return;
 }
 
-void LowToHigh()
+void LowToHighInsert()
 {
     int a[10];
     int b[10];
@@ -171,9 +174,54 @@ void LowToHigh()
     printf("The total cost is %d\n", cost);
 }
 
+#define LOWERTOHIGH_MERGE_LEN 8
+
+/*
+void LowToHighMerge(void)
+{
+    int a[10];
+    int mid, end;
+
+    end = 10;
+    mid = end/10;
+
+    printf("Generateing random array ...\n");
+    printf("sort (0 ~ %d, %d ~ %d)\n", mid, mid + 1, end);
+    for (int i = 0; i < 10; i++) {
+        a[i] = rand() % 10 + 1;
+        print("%d ", a[i]);
+    }
+    printf("\n");
+
+} */
+
 void Algorithm(void)
 {
-    LowToHigh();
+    LowToHighInsert();
+    // LowToHighMerge();
+}
+
+bool isEmpty(int count)
+{
+    if(count == 0) {
+        return true;
+    } else {
+        return false;
+    }            
+}
+
+void StackSim(void)
+{
+    char stack[128];
+    int count = 0;
+
+    PushSim('a', count, stack);
+    PushSim('b', count, stack);
+    PushSim('c', count, stack);
+
+    while (!isEmpty(count)) {
+        PopSim(count, stack);
+    }
 }
 
 int main(int argc, char *argv[])
@@ -216,5 +264,7 @@ int main(int argc, char *argv[])
     GestureGame(1);
 
     Algorithm();
+
+    StackSim();
     return 0;
 }
