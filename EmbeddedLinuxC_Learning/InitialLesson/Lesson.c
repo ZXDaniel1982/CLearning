@@ -242,6 +242,34 @@ void TypeConversion()
     printf("int convert is %d\n", i1 + i2);
 }
 
+void BitOper()
+{
+    unsigned int uInput;
+    int iInput;
+
+    uInput = 5;
+    iInput = -5;
+    printf("unsigned bit oper right %x, signed bit oper right %x\n", (uInput >> 2), (iInput >> 2));
+    printf("unsigned bit oper left %x, signed bit oper left %x\n", (uInput << 2), (iInput << 2));
+
+    iInput = -1610612737;
+    // result 2147483644 7ffffffc
+    printf("signed bit %d %x oper right %d %x\n", iInput, iInput, (iInput << 2), (iInput << 2));
+
+    iInput = 0xcffffff3;
+    printf("%x\n", (0xcffffff3 >> 2));
+    printf("%x\n", iInput >> 2);
+
+    iInput = 15;
+    uInput = 25;
+
+    iInput ^= uInput;
+    uInput ^= iInput;
+    iInput ^= uInput;
+
+    printf("iInput is %d, uInput is %d\n", iInput, uInput);
+}
+
 int main(int argc, char *argv[])
 {
     float number = -112;
@@ -286,5 +314,7 @@ int main(int argc, char *argv[])
     StackSim();
 
     TypeConversion();
+
+    BitOper();
     return 0;
 }
