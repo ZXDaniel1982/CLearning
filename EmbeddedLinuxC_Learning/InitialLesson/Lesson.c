@@ -224,6 +224,24 @@ void StackSim(void)
     }
 }
 
+void TypeConversion()
+{
+    unsigned char c1 = 255, c2 = 2;
+    unsigned char cOverflow;
+    int cConvert;
+
+    unsigned int i1 = 5;
+    int i2 = -3;
+
+    cOverflow = c1 + c2;
+    cConvert = c1 + c2;
+
+    printf("char overflow is %d convert is %d\n", cOverflow, cConvert);
+
+    
+    printf("int convert is %d\n", i1 + i2);
+}
+
 int main(int argc, char *argv[])
 {
     float number = -112;
@@ -266,5 +284,7 @@ int main(int argc, char *argv[])
     Algorithm();
 
     StackSim();
+
+    TypeConversion();
     return 0;
 }
