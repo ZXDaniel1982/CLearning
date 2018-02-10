@@ -270,6 +270,16 @@ void BitOper()
     printf("iInput is %d, uInput is %d\n", iInput, uInput);
 }
 
+void SizeAndType()
+{
+    typedef char array_t[10];
+    int a[12];
+    array_t b;
+
+    printf("The number of a list is %d\n", sizeof a/sizeof a[0]);
+    printf("The number of b list is %d\n", sizeof b/sizeof b[0]);
+}
+
 int main(int argc, char *argv[])
 {
     float number = -112;
@@ -316,5 +326,7 @@ int main(int argc, char *argv[])
     TypeConversion();
 
     BitOper();
+
+    SizeAndType();
     return 0;
 }
