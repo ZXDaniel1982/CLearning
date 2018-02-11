@@ -16,6 +16,9 @@ typedef struct Point {
 
 const double pi = 3.1416;
 
+static int valA = 15;
+static int valB = 90;
+
 double getRadius(tPoint point1, tPoint point2)
 {
     double radiusNum = 0;
@@ -280,6 +283,14 @@ void SizeAndType()
     printf("The number of b list is %d\n", sizeof b/sizeof b[0]);
 }
 
+void Variates()
+{
+    static int valA = 23;
+    int valB = 89;
+
+    printf("valA is %d, valB is %d\n", valA++, valB++);
+}
+
 int main(int argc, char *argv[])
 {
     float number = -112;
@@ -328,5 +339,10 @@ int main(int argc, char *argv[])
     BitOper();
 
     SizeAndType();
+
+    Variates();
+    printf("valA 2 is %d, valB 2 is %d\n", valA, valB);
+    Variates();
+    printf("valA 2 is %d, valB 2 is %d\n", valA, valB);
     return 0;
 }
