@@ -1,0 +1,9 @@
+To create and implement static lib.
+
+1. cd /stack/tmp/
+2. gcc -c stack.c
+3. ar rs libstack.a stack.o
+4. cd ..
+5. cp tmp/libstack.a ./
+6. cd ..
+7. gcc main.c -L./stack/ -lstack -o main

@@ -1,6 +1,6 @@
 /* stack.c */
-char stack[512];
-int top = -1;
+static char stack[512];
+static int top = -1;
 
 void push(char c)
 {
