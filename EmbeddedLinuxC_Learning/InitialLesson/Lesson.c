@@ -9,6 +9,12 @@
 
 #define N 20
 
+#define STR_CONCAT(a, b) a##b
+
+#define showlist(...) printf(#__VA_ARGS__)
+#define report(test, ...) ((test)?printf(#test):\
+            printf(__VA_ARGS__))
+
 typedef struct Point {
     double x;
     double y;
@@ -315,6 +321,52 @@ void Variates()
     printf("valA is %d, valB is %d\n", valA++, valB++);
 }
 
+#define DISPALY(a) Display##a
+#define INITVAL 20
+#define f(a) (INITVAL + a)
+#undef INITVAL
+#define INITVAL 40
+
+#define DEVICE_TYPE 1
+#if DEVICE_TYPE == 1
+    #define TYPENAME "It is PC"
+#elif DEVICE_TYPE == 2
+    #define TYPENAME "It is embedded"
+#else
+    #error UNKNOWN TARGET MACHINE
+#endif
+
+void Displaybook()
+{
+    printf("This is a book\n");
+}
+
+void Displayname()
+{
+    printf("This is a name\n");
+}
+
+void ComplexDefine()
+{
+    char book1[] = "Lord of rings";
+    char book2[] = "Harry Porter";
+    int x = 102, y = 89;
+
+    printf("book1 is %s, book2 is %s\n", STR_CONCAT(book, 1), STR_CONCAT(book, 2));
+
+    showlist(The first, second, and third items.);
+    printf("\n");
+    report(x>y, "x is %d but y is %d", x, y);
+    printf("\n");
+
+    DISPALY(book)();
+    DISPALY(name)();
+
+    printf("val is %d\n", f(x));   // INITVAL = 40
+
+    printf("DEVICE_TYPE is %s\n", TYPENAME);
+}
+
 int main(int argc, char *argv[])
 {
     float number = -112;
@@ -369,5 +421,7 @@ int main(int argc, char *argv[])
     printf("valA 2 is %d, valB 2 is %d\n", valA, valB);
     Variates();
     printf("valA 2 is %d, valB 2 is %d\n", valA, valB);
+
+    ComplexDefine();
     return 0;
 }
