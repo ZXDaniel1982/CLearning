@@ -11,3 +11,14 @@ To create and implement shared lib.
 8.1.2 sudo ldconfig -v
 8.2 Add libstack.so to /usr/lib or /lib
 8.3 gcc main.c -L./stack/ -lstack -o main -Wl,-rpath,<path>
+
+1. cd /stack/tmp/
+2. gcc -c -fPIC stack.c
+3. gcc -shared -Wl,-soname,libstack.so.1 -o libstack.so.1.0 stack.o
+4. cd ..
+5. cp tmp/libstack.so ./
+6. Add path of libstack.so to /etc/ld.so.conf
+7. sudo ldconfig -v
+8. ln -s libstack.so.1.0 libstack.so
+9. cd ..
+10. gcc main.c -L./stack/ -lstack -o main
