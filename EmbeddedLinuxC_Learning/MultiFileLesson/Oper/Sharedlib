@@ -1,0 +1,13 @@
+To create and implement shared lib.
+
+1. cd /stack/tmp/
+2. gcc -c -fPIC stack.c
+3. gcc -shared -o libstack.so stack.o
+4. cd ..
+5. cp tmp/libstack.so ./
+6. cd ..
+7. gcc main.c -L./stack/ -lstack -o main
+8.1.1 Add path of libstack.so to /etc/ld.so.conf
+8.1.2 sudo ldconfig -v
+8.2 Add libstack.so to /usr/lib or /lib
+8.3 gcc main.c -L./stack/ -lstack -o main -Wl,-rpath,<path>
