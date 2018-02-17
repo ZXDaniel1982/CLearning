@@ -8,6 +8,7 @@ $(TARGET): $(TARGET).o
 	-rm $<
 
 $(TARGET).o: $(TARGET).c
+	indent -kr -i4 -nut $<
 	$(CC) -c $<
 
 .PHONY: clean

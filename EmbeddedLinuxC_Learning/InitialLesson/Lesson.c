@@ -4,6 +4,7 @@
 #include <time.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdarg.h>
 
 #include "Lesson.h"
 
@@ -453,6 +454,41 @@ void errorPrint()
 }
 
 /*  ===========================================================================
+ *  Format input
+ */
+void myprintf(const char *format, ...)
+{
+    va_list ap;
+    char c;
+    char ch;
+    char *p;
+
+    va_start(ap, format);
+    while (c = *format++) {
+        switch (c) {
+        case 'c':
+            ch = va_arg(ap, int);
+            putchar(ch);
+            break;
+        case 's':
+            p = va_arg(ap, char *);
+            fputs(p, stdout);
+            break;
+        default:
+            putchar(c);
+            break;
+        }
+    }
+
+    va_end(ap);
+}
+
+void FormatInput()
+{
+    myprintf("c\ts\n", '1', "Hello");
+}
+
+/*  ===========================================================================
  *  Main
  */
 int main(int argc, char *argv[])
@@ -515,5 +551,7 @@ int main(int argc, char *argv[])
     DynamicApp();
 
     errorPrint();
+
+    FormatInput();
     return 0;
 }
