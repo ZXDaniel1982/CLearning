@@ -367,6 +367,32 @@ void ComplexDefine()
     printf("DEVICE_TYPE is %s\n", TYPENAME);
 }
 
+void DynamicApp()
+{
+    typedef struct {
+        int number;
+        char *msg;
+    } unit_t;
+
+    unit_t *p = malloc(sizeof(unit_t));
+
+    if (p == NULL) {
+        printf("Out of memory\n");
+        return;
+    }
+
+    p->number = 3;
+    p->msg = malloc(sizeof(char) * 20);
+    strncpy(p->msg, "Hello malloc", 20);
+    printf("p.number is %d, p.msg is %s\n", p->number, p->msg);
+
+    free(p->msg);
+    p->msg = NULL;
+
+    free(p);
+    p = NULL;
+}
+
 int main(int argc, char *argv[])
 {
     float number = -112;
@@ -423,5 +449,7 @@ int main(int argc, char *argv[])
     printf("valA 2 is %d, valB 2 is %d\n", valA, valB);
 
     ComplexDefine();
+
+    DynamicApp();
     return 0;
 }
