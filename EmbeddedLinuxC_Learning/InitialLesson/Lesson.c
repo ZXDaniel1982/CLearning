@@ -321,6 +321,10 @@ void Variates()
     printf("valA is %d, valB is %d\n", valA++, valB++);
 }
 
+/*  ===========================================================================
+ *  Complex macro defines
+ */
+
 #define DISPALY(a) Display##a
 #define INITVAL 20
 #define f(a) (INITVAL + a)
@@ -367,14 +371,40 @@ void ComplexDefine()
     printf("DEVICE_TYPE is %s\n", TYPENAME);
 }
 
+/*  ===========================================================================
+ *  Melloc free and doule pointers
+ */
+
+typedef struct {
+    int number;
+    char *msg;
+} unit_t;
+
+void alloc_unit(unit_t **pp)
+{
+    unit_t *p = malloc(sizeof(unit_t));
+
+    if (p == NULL) {
+        printf("Out of memory\n");
+        return;
+    }
+
+    p->number = 3;
+    p->msg = malloc(sizeof(char) * 20);
+    strncpy(p->msg, "Another malloc", 20);
+    *pp = p;
+}
+
+void free_unit(unit_t *p)
+{
+    free(p->msg);
+    free(p);
+}
+
 void DynamicApp()
 {
-    typedef struct {
-        int number;
-        char *msg;
-    } unit_t;
-
     unit_t *p = malloc(sizeof(unit_t));
+    unit_t *ptr = NULL;
 
     if (p == NULL) {
         printf("Out of memory\n");
@@ -387,12 +417,18 @@ void DynamicApp()
     printf("p.number is %d, p.msg is %s\n", p->number, p->msg);
 
     free(p->msg);
-    p->msg = NULL;
-
     free(p);
     p = NULL;
+
+    alloc_unit(&ptr);
+    printf("p.number is %d, p.msg is %s\n", ptr->number, ptr->msg);
+    free_unit(ptr);
+    ptr = NULL;
 }
 
+/*  ===========================================================================
+ *  Main
+ */
 int main(int argc, char *argv[])
 {
     float number = -112;
