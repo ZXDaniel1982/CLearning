@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdarg.h>
+#include <errno.h>
 
 #include "Lesson.h"
 
@@ -547,6 +548,29 @@ void StringFunctions()
 }
 
 /*  ===========================================================================
+ *  File operations
+ */
+void FileOperFunctions()
+{
+    FILE *fp = NULL;
+#if 0
+    File functions *fopen * fclose
+#endif
+     fp = fopen("/tmp/notexist", "r");
+
+#if 0
+    I / O functions * stdin * stdout * stderr
+#endif
+#if 0
+        Error functions * errno * perror * strerror
+#endif
+        if (fp == NULL) {
+        printf("errno : %d, description : %s\n", errno, strerror(errno));
+        perror("Open file notexist");
+    }
+}
+
+/*  ===========================================================================
  *  Main
  */
 int main(int argc, char *argv[])
@@ -613,5 +637,7 @@ int main(int argc, char *argv[])
     FormatInput();
 
     StringFunctions();
+
+    FileOperFunctions();
     return 0;
 }
