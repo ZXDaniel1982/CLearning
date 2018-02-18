@@ -489,6 +489,64 @@ void FormatInput()
 }
 
 /*  ===========================================================================
+ *  Test memmove
+ */
+void StringFunctions()
+{
+    char str[255];
+    char tokstr[255];
+    char *token;
+#if 0
+    String initialization functions * memset
+#endif
+     memset(str, 0, sizeof(str));
+
+#if 0
+    String copy functions * strcpy * strncpy * memcpy * memmove
+#endif
+     strncpy(str, "Hello worldd", sizeof(str));
+
+    printf("memmove start with %s\n", str);
+    memmove(str + 1, str, 11);
+    printf("memmove end with %s\n", str);
+
+#if 0
+    String length functions * strlen
+#endif
+     printf("str %s len is %d\n", str, strlen(str));
+
+#if 0
+    String joint functions * strcat * strncat
+#endif
+     printf("strcat start with %s\n", str);
+    strcat(str, ". I dont like it");
+    printf("strcat end with %s\n", str);
+
+#if 0
+    String compare functions * memcmp * strcmp * strncmp
+#endif
+     printf("str cmp with 5 of HHella is %d\n", strncmp(str, "HHella", 5));
+    printf("str cmp with 6 of HHella is %d\n", strncmp(str, "HHella", 6));
+
+#if 0
+    String search functions * strchr * srttchr * strstr
+#endif
+    printf("strchr of o is %s\n", strchr(str, 'o'));
+    printf("strrchr of o is %s\n", strrchr(str, 'o'));
+    printf("strstr of orl is %s\n", strstr(str, "orl"));
+
+#if 0
+    String seperate functions * strtok * strtok_r * strstr
+#endif
+     strncpy(tokstr, str, sizeof(tokstr));
+    token = strtok(tokstr, "o");
+    printf("first token is %s\n", token);
+    while ((token = strtok(NULL, "o")) != NULL) {
+        printf("%s\n", token);
+    }
+}
+
+/*  ===========================================================================
  *  Main
  */
 int main(int argc, char *argv[])
@@ -553,5 +611,7 @@ int main(int argc, char *argv[])
     errorPrint();
 
     FormatInput();
+
+    StringFunctions();
     return 0;
 }
