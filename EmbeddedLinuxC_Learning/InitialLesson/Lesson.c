@@ -678,6 +678,18 @@ void FileOperFunctions(char *pathname)
 }
 
 /*  ===========================================================================
+ *  Data type convert method
+ */
+void DataConvert()
+{
+#if 0
+    Data convert methods *atoi * atof * strtol * strtod
+#endif
+     printf("atoi of 123ad is %d\n", atoi("123ad"));
+    printf("atof of 0.14 is %f\n", atof("0x14eafe"));
+}
+
+/*  ===========================================================================
  *  Main
  */
 int main(int argc, char *argv[])
@@ -755,5 +767,7 @@ int main(int argc, char *argv[])
     StringFunctions();
 
     FileOperFunctions(pathname);
+
+    DataConvert();
     return 0;
 }
