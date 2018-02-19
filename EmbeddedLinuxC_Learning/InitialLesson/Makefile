@@ -9,7 +9,7 @@ $(TARGET): $(TARGET).o
 
 $(TARGET).o: $(TARGET).c
 	indent -kr -i4 -nut $<
-	$(CC) -c $<
+	$(CC) -c $< -g
 
 .PHONY: clean
 clean:

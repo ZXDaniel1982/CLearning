@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <stdarg.h>
 #include <errno.h>
+#include <unistd.h>
 
 #include "Lesson.h"
 
@@ -552,9 +553,29 @@ void StringFunctions()
 /*  ===========================================================================
  *  File operations
  */
-void FileOperFunctions()
+#define MAXLINE 80
+void err_sys(const char *fmt, ...)
+{
+    int err = errno;
+    char buf[MAXLINE + 1];
+    va_list ap;
+
+    va_start(ap, fmt);
+
+    vsnprintf(buf, MAXLINE, fmt, ap);
+    snprintf(buf + strlen(buf), MAXLINE - strlen(buf), ": %s",
+             strerror(err));
+    strcat(buf, "\n");
+    fputs(buf, stderr);
+
+    va_end(ap);
+}
+
+void FileOperFunctions(char *pathname)
 {
     FILE *fp = NULL;
+    char ch;
+    char str[255];
 #if 0
     File functions *fopen * fclose
 #endif
@@ -569,7 +590,91 @@ void FileOperFunctions()
         if (fp == NULL) {
         printf("errno : %d, description : %s\n", errno, strerror(errno));
         perror("Open file notexist");
+    } else {
+        fclose(fp);
     }
+
+#if 0
+    Character functions *getchar * putchar * fputc
+#endif
+    if ((fp = fopen("/tmp/notexist", "w+")) == NULL) {
+        printf("errno : %d, description : %s\n", errno, strerror(errno));
+        perror("Open file notexist");
+    }
+#if 0
+    while ((ch = getchar()) != EOF) {
+        if (ch == '!') {
+            break;
+        }
+        fputc(ch, fp);
+    }
+    fputc('\n', fp);
+#endif
+    fputs("I am here to test character operation functions!\n", fp);
+    rewind(fp);
+
+    while ((ch = fgetc(fp)) != EOF) {
+        putchar(ch);
+    }
+
+#if 0
+    File location functions *rewind * fseek * ftell
+#endif
+     fseek(fp, 5, SEEK_SET);
+    fgets(str, 8, fp);
+    printf("%s\n", str);
+    printf("Current file pointer is %ld\n", ftell(fp));
+
+    fclose(fp);
+
+#if 0
+    File operation functions *fread * fwrite
+#endif
+        typedef struct record {
+        char name[10];
+        int age;
+    } record_t;
+
+    if ((fp = fopen("/tmp/notexist", "w+")) == NULL) {
+        printf("errno : %d, description : %s\n", errno, strerror(errno));
+        perror("Open file notexist");
+    }
+
+    record_t array[2] = { {"Ken", 24}
+    , {"Knuth", 28}
+    };
+    fwrite(array, sizeof(record_t), 2, fp);
+
+    rewind(fp);
+    record_t array_r[2];
+    fread(array_r, sizeof(record_t), 2, fp);
+
+    printf("Name1: %s\tAge1: %d\n", array_r[0].name, array_r[0].age);
+    printf("Name2: %s\tAge2: %d\n", array_r[1].name, array_r[1].age);
+
+    fclose(fp);
+
+#if 0
+    Formatted file record operation functions
+        * printf
+        * fprintf
+        * sprintf * snprintf * vprintf * vfprintf * vsprintf * vsnprintf
+#endif
+#if 0
+     Formatted file read operation functions * scanf * fscanf * sscanf
+#endif
+    if ((fp = fopen(pathname, "r")) == NULL) {
+        err_sys("Line %d - Open file %s", __LINE__, pathname);
+    } else {
+        fclose(fp);
+    }
+
+#if 0
+    flush the buffer
+#endif
+     printf("fflush test");
+    fflush(stdout);
+    putchar('\n');
 }
 
 /*  ===========================================================================
@@ -582,9 +687,17 @@ int main(int argc, char *argv[])
     int printLen = 0;
     int *randomNum;
     int i;
+    char pathname[255];
 
     tPoint point1 = { 1, 2 };
     tPoint point2 = { 4, 6 };
+
+    if (argc != 2) {
+        fputs("Usage: ./Lesson <pathname>\n", stderr);
+        _exit(0);
+    } else {
+        strncpy(pathname, argv[1], sizeof(pathname));
+    }
 
     printLen = printf("Hello world!\n");
     printLen =
@@ -641,6 +754,6 @@ int main(int argc, char *argv[])
 
     StringFunctions();
 
-    FileOperFunctions();
+    FileOperFunctions(pathname);
     return 0;
 }
