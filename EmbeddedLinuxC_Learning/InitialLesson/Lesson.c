@@ -84,10 +84,11 @@ int FibonacciLoop(int n)
 int *printRandom(int upperBand)
 {
     int *a;
+    int i;
 
     a = malloc(N * sizeof(int));
 
-    for (int i = 0; i < N; i++) {
+    for (i = 0; i < N; i++) {
         *(a + i) = rand() % upperBand;
     }
 
@@ -100,6 +101,7 @@ void GestureGame(int man)
         "scissor", "stone", "cloth"
     };
     int computer = 0, ran = 0, diff = 0;
+    int i;
 
     printf("\n");
     if ((man < 0) || (man > 2)) {
@@ -110,7 +112,7 @@ void GestureGame(int man)
     }
     // Generate new random values every time
     srand((unsigned) time(NULL));
-    for (int i = 0; i < 5; i++) {
+    for (i = 0; i < 5; i++) {
         printf("Random number is %d\n", ran = rand());
         computer = ran % 3;
         if (man == computer) {
@@ -134,18 +136,19 @@ void LowToHighInsert()
     int a[10];
     int b[10];
     int cost = 0, key;
+    int i, j;
 
     memset(b, 11, sizeof(int) * 10);
 
     printf("Generateing random array ...\n");
-    for (int i = 0; i < 10; i++) {
+    for (i = 0; i < 10; i++) {
         a[i] = rand() % 10 + 1;
         printf("%d ", a[i]);
     }
     printf("\n");
 
-    for (int i = 0; i < 10; i++) {
-        for (int j = i; j >= 0; j--) {
+    for (i = 0; i < 10; i++) {
+        for (j = i; j >= 0; j--) {
             if (a[i] < b[j]) {
                 cost++;
                 if (i < 9)
@@ -158,14 +161,14 @@ void LowToHighInsert()
     }
 
     printf("The result array ...\n");
-    for (int i = 0; i < 10; i++) {
+    for (i = 0; i < 10; i++) {
         printf("%d ", b[i]);
     }
     printf("\n");
     printf("The total cost is %d\n\n", cost);
 
     cost = 0;
-    for (int i = 1; i < 10; i++) {
+    for (i = 1; i < 10; i++) {
         int j;
         key = a[i];
         j = i - 1;
@@ -178,7 +181,7 @@ void LowToHighInsert()
     }
 
     printf("The result array ...\n");
-    for (int i = 0; i < 10; i++) {
+    for (i = 0; i < 10; i++) {
         printf("%d ", a[i]);
     }
     printf("\n");
@@ -301,7 +304,7 @@ void BitField()
 
     demo_type u = { {1, 5, 513, 17, 129, 0x81} };
 
-    printf("sizeof demo_type = %u\n", sizeof(demo_type));
+    printf("sizeof demo_type = %lu\n", sizeof(demo_type));
     printf("values : u=%u,%u,%u,%u,%u,%u\n", u.bitfield.one,
            u.bitfield.two, u.bitfield.three, u.bitfield.four,
            u.bitfield.five, u.bitfield.six);
@@ -316,8 +319,8 @@ void SizeAndType()
     int a[12];
     array_t b;
 
-    printf("The number of a list is %d\n", sizeof a / sizeof a[0]);
-    printf("The number of b list is %d\n", sizeof b / sizeof b[0]);
+    printf("The number of a list is %lu\n", sizeof a / sizeof a[0]);
+    printf("The number of b list is %lu\n", sizeof b / sizeof b[0]);
 }
 
 void Variates()
@@ -506,7 +509,6 @@ void StringFunctions()
     String copy functions *strcpy * strncpy * memcpy * memmove
 #endif
      strncpy(str, "Hello worldd", sizeof(str));
-
     printf("memmove start with %s\n", str);
     memmove(str + 1, str, 11);
     printf("memmove end with %s\n", str);
@@ -514,7 +516,7 @@ void StringFunctions()
 #if 0
     String length functions *strlen
 #endif
-     printf("str %s len is %d\n", str, strlen(str));
+     printf("str %s len is %u\n", str, (unsigned int) strlen(str));
 
 #if 0
     String joint functions *strcat * strncat
@@ -579,6 +581,7 @@ int main(int argc, char *argv[])
     float sqrtnum = 121;
     int printLen = 0;
     int *randomNum;
+    int i;
 
     tPoint point1 = { 1, 2 };
     tPoint point2 = { 4, 6 };
@@ -604,7 +607,7 @@ int main(int argc, char *argv[])
 
     randomNum = printRandom(10);
     printf("Generateing 20 random number :");
-    for (int i = 0; i < N; i++) {
+    for (i = 0; i < N; i++) {
         printf(" %d", *(randomNum + i));
     }
     printf("\n");
