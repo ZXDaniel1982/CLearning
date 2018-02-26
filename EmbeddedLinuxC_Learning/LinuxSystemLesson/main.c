@@ -1,0 +1,123 @@
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <string.h>
+#include <sys/ioctl.h>
+
+#define MSG_TRY "Try again\n"
+#define MSG_TOUT "Timeout\n"
+
+int main(int argc, char *argv[])
+{
+    char buf[10];
+    int fd, save_fd;
+    int n, i;
+    int flags = 0, val;
+
+#if 0
+    // block read
+
+    n = read(STDIN_FILENO, buf, 10);
+    if (n < 0) {
+        perror("read STDIN_FILENO");
+        exit(1);
+    }
+    write(STDOUT_FILENO, buf, n);
+    return 0;
+#endif
+
+#if 0
+    // non block read
+
+    fd = open("/dev/tty", O_RDONLY | O_NONBLOCK);
+    if (fd < 0) {
+        perror("open /dev/tty");
+        exit(1);
+    }
+
+    for (i = 0; i < 5; i++) {
+        n = read(fd, buf, 10);
+        if (n < 0) {
+            if (errno == EAGAIN) {
+                sleep(1);
+                write(STDOUT_FILENO, MSG_TRY, strlen(MSG_TRY));
+            }
+        } else {
+            perror("read /dev/tty");
+            exit(1);
+        }
+    }
+    if (5 == i) {
+        write(STDOUT_FILENO, MSG_TOUT, strlen(MSG_TOUT));
+    } else {
+        write(STDOUT_FILENO, buf, n);
+    }
+    close(fd);
+    return 0;
+#endif
+
+#if 0
+    if (argc != 2) {
+        fputs("usage: main <descriptor#>\n", stderr);
+    }
+    if ((val = fcntl(atoi(argv[1]), F_GETFL)) < 0) {
+        printf("fcntl error for fd %d\n", atoi(argv[1]));
+        exit(1);
+    } else {
+        switch (val & O_ACCMODE) {
+        case O_RDONLY:
+            printf("read only");
+            break;
+        case O_WRONLY:
+            printf("write only");
+            break;
+        case O_RDWR:
+            printf("read write");
+            break;
+        default:
+            fputs("invalid access mode\n", stderr);
+            exit(1);
+        }
+    }
+
+    if (val & O_APPEND)
+        printf(", append");
+
+    if (val & O_NONBLOCK)
+        printf(", nonblocking");
+
+    putchar('\n');
+    return 0;
+#endif
+
+#if 0
+    struct winsize size;
+    if (isatty(STDOUT_FILENO) == 0) {
+        exit(1);
+    }
+    if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &size) < 0) {
+        perror("ioctl TIOCGWINSZ error");
+        exit(1);
+    }
+    printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
+    return 0;
+#endif
+
+    char msg[] = "This is a test\n";
+
+    fd = open("/tmp/somefile", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+    if (fd < 0) {
+        perror("open");
+        exit(1);
+    }
+    save_fd = dup(STDOUT_FILENO);
+    dup2(fd, STDOUT_FILENO);
+    close(fd);
+    write(STDOUT_FILENO, msg, strlen(msg));
+    dup2(save_fd, STDOUT_FILENO);
+    write(STDOUT_FILENO, msg, strlen(msg));
+    close(save_fd);
+    return 0;
+}
