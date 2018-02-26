@@ -105,6 +105,7 @@ int main(int argc, char *argv[])
     return 0;
 #endif
 
+#if 0
     char msg[] = "This is a test\n";
 
     fd = open("/tmp/somefile", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
@@ -120,4 +121,7 @@ int main(int argc, char *argv[])
     write(STDOUT_FILENO, msg, strlen(msg));
     close(save_fd);
     return 0;
+#endif
+
+    printf("HOME=%s\n", getenv("HOME"));
 }
