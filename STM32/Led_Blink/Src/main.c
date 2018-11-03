@@ -52,11 +52,11 @@
 /* Private variables ---------------------------------------------------------*/
 #define START_TSK_STACK 100
 #define START_TSK_PRIO 3
-static TaskHandle_t StartTskHandle;
+//static TaskHandle_t StartTskHandle;
 
 #define LED_TSK_STACK 100
 #define LED_TSK_PRIO 4
-static TaskHandle_t LedTskHandle;
+//static TaskHandle_t LedTskHandle;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -68,29 +68,16 @@ void SystemClock_Config(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-void TskLed1( void * pvParameters )
+void TskLed( void * pvParameters )
 {
-	while (1) {
-   HAL_GPIO_TogglePin(Led1_GPIO_Port, Led1_Pin);
-		
-	 HAL_Delay(1000);
-		
-	 //HAL_GPIO_TogglePin(Led1_GPIO_Port, Led1_Pin);
-		
-	 HAL_Delay(1000);
-	}
-}
-
-void TskStart( void * pvParameters )
-{
-	//HAL_GPIO_WritePin(Led1_GPIO_Port, Led1_Pin, GPIO_PIN_SET);
-  xTaskCreate(TskLed1,
-							"TskLed1",		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-							LED_TSK_STACK,
-							NULL,
-							LED_TSK_PRIO,
-							NULL );
-	//vTaskDelete(StartTskHandle);
+  /* USER CODE BEGIN StartTaskLed */
+  /* Infinite loop */
+  for(;;)
+  {
+		HAL_GPIO_TogglePin(Led1_GPIO_Port, Led1_Pin);
+    HAL_Delay(1000);
+  }
+  /* USER CODE END StartTaskLed */
 }
 /* USER CODE END 0 */
 
@@ -102,7 +89,7 @@ void TskStart( void * pvParameters )
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  BaseType_t ret;
+  //BaseType_t ret;
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -126,19 +113,18 @@ int main(void)
   /* USER CODE BEGIN 2 */
 	HAL_GPIO_WritePin(Led1_GPIO_Port, Led1_Pin, GPIO_PIN_RESET);
 	
-#if 0
-	ret = xTaskCreate(TskStart,
-							"TskStart",		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+
+	xTaskCreate(TskLed,
+							"TskLed",		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 							START_TSK_STACK,
 							NULL,
 							START_TSK_PRIO,
 							NULL );
-#endif
 
   //if (ret == pdPASS)
 		//HAL_GPIO_WritePin(Led1_GPIO_Port, Led1_Pin, GPIO_PIN_SET);
 
-  //vTaskStartScheduler();
+  vTaskStartScheduler();
 
   /* USER CODE END 2 */
 
@@ -148,9 +134,9 @@ int main(void)
   {
 
   /* USER CODE END WHILE */
-    HAL_Delay(1000);
+
   /* USER CODE BEGIN 3 */
-    HAL_GPIO_TogglePin(Led1_GPIO_Port, Led1_Pin);
+    //HAL_GPIO_TogglePin(Led1_GPIO_Port, Led1_Pin);
   }
   /* USER CODE END 3 */
 
@@ -209,6 +195,27 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM1 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM1) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.

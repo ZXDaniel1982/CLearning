@@ -4,6 +4,7 @@
 "led_blink\gpio.o"
 "led_blink\stm32f1xx_it.o"
 "led_blink\stm32f1xx_hal_msp.o"
+"led_blink\stm32f1xx_hal_timebase_tim.o"
 "led_blink\stm32f1xx_hal_gpio_ex.o"
 "led_blink\stm32f1xx_hal_tim.o"
 "led_blink\stm32f1xx_hal_tim_ex.o"

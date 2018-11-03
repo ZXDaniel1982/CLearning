@@ -23,6 +23,8 @@ led_blink\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h
 led_blink\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 led_blink\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 led_blink\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
+led_blink\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
+led_blink\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 led_blink\main.o: ../Inc/gpio.h
 led_blink\main.o: ..\FreeRTOS\include\FreeRTOS.h
 led_blink\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
