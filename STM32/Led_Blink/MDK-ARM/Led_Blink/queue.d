@@ -5,6 +5,7 @@ led_blink\queue.o: ..\FreeRTOS\include\FreeRTOS.h
 led_blink\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 led_blink\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 led_blink\queue.o: ..\FreeRTOS\include\FreeRTOSConfig.h
+led_blink\queue.o: ../Inc/main.h
 led_blink\queue.o: ..\FreeRTOS\include\projdefs.h
 led_blink\queue.o: ..\FreeRTOS\include\portable.h
 led_blink\queue.o: ..\FreeRTOS\include\deprecated_definitions.h

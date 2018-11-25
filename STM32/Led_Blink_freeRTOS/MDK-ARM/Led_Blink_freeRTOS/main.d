@@ -25,6 +25,7 @@ led_blink_freertos\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_fla
 led_blink_freertos\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 led_blink_freertos\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 led_blink_freertos\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
+led_blink_freertos\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 led_blink_freertos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 led_blink_freertos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 led_blink_freertos\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
@@ -40,4 +41,5 @@ led_blink_freertos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/ti
 led_blink_freertos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 led_blink_freertos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 led_blink_freertos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+led_blink_freertos\main.o: ../Inc/usart.h
 led_blink_freertos\main.o: ../Inc/gpio.h

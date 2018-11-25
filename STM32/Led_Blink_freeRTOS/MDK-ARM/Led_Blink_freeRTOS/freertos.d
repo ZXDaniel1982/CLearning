@@ -41,3 +41,4 @@ led_blink_freertos\freertos.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal
 led_blink_freertos\freertos.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 led_blink_freertos\freertos.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 led_blink_freertos\freertos.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
+led_blink_freertos\freertos.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h

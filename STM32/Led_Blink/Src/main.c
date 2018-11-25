@@ -39,7 +39,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f1xx_hal.h"
+#include "usart.h"
 #include "gpio.h"
+#include <string.h>
 
 /* USER CODE BEGIN Includes */
 #include "FreeRTOS.h"
@@ -47,16 +49,13 @@
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
-
+static char defInfoStr[] = "****(C) COPYRIGHT 2010                      *******\r\n";
+static char cnt = '0';
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-#define START_TSK_STACK 100
-#define START_TSK_PRIO 3
-//static TaskHandle_t StartTskHandle;
-
-#define LED_TSK_STACK 100
-#define LED_TSK_PRIO 4
-//static TaskHandle_t LedTskHandle;
+#define LED_TSK_STACK 128
+#define LED_TSK_PRIO 3
+static TaskHandle_t LedTskHandle;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -71,6 +70,14 @@ void SystemClock_Config(void);
 void TskLed( void * pvParameters )
 {
   /* USER CODE BEGIN StartTaskLed */
+   char buf[80] = {0};
+   int length = strlen(defInfoStr);
+
+	 strncpy(buf, defInfoStr, length);
+	 buf[length] = cnt;
+	 buf[length+1] = '\0';
+	 cnt++;
+   MX_USART1_UART_Transmit((uint8_t *)buf, length);
   /* Infinite loop */
   for(;;)
   {
@@ -89,7 +96,7 @@ void TskLed( void * pvParameters )
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  //BaseType_t ret;
+
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -110,19 +117,19 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-	HAL_GPIO_WritePin(Led1_GPIO_Port, Led1_Pin, GPIO_PIN_RESET);
-	
 
-	xTaskCreate(TskLed,
+  BaseType_t ret;
+	ret = xTaskCreate(TskLed,
 							"TskLed",		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-							START_TSK_STACK,
+							LED_TSK_STACK,
 							NULL,
-							START_TSK_PRIO,
-							NULL );
+							LED_TSK_PRIO,
+							&LedTskHandle );
 
-  //if (ret == pdPASS)
-		//HAL_GPIO_WritePin(Led1_GPIO_Port, Led1_Pin, GPIO_PIN_SET);
+  if (ret != pdPASS)
+    return -1;
 
   vTaskStartScheduler();
 
@@ -136,7 +143,6 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-    //HAL_GPIO_TogglePin(Led1_GPIO_Port, Led1_Pin);
   }
   /* USER CODE END 3 */
 
