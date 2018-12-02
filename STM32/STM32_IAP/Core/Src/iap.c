@@ -20,7 +20,6 @@ static uint8_t command[IAP_MAX_COMMAND_NUM][2] = {
     {0x22, 0x32},
     {0x23, 0x33},
 };
-
 /**
   * @brief  The application entry point.
   *
@@ -76,7 +75,7 @@ void IAP_Process()
     uint32_t preProgFlag = 0;
 
     MX_Led_On();
-    HAL_FLASH_Unlock();
+    //HAL_FLASH_Unlock();
     if (MX_Key_Read() != GPIO_PIN_SET) {
         // Key is not pushed down
         preProgFlag = *(__IO uint32_t *) IAP_FLASH_FLG_ADDR;
@@ -91,51 +90,45 @@ void IAP_Process()
     MX_Uart_Transmit(command[commandSeq], 2, IAP_TIMEOUT);  // send 0x21, 0x31
     commandSeq++;
 
-    HAL_Delay(500);
     uint8_t recBuf[2] = { 0 };
-    MX_Uart_Receive(recBuf, 2, IAP_TIMEOUT);
+    MX_Uart_Receive(recBuf, 2, 100000);
     if ((recBuf[0] != 0x22) || (recBuf[1] != 0x32)) {   // rev 0x22, 0x32
         return;
     }
 
-    HAL_Delay(500);
+    HAL_Delay(50);
     MX_Uart_Transmit(command[commandSeq], 2, IAP_TIMEOUT);  // send 0x22, 0x32
     commandSeq++;
 
-    HAL_Delay(500);
-    MX_Uart_Receive(recBuf, 2, IAP_TIMEOUT);    // rev 0x23, 0x33
+    MX_Uart_Receive(recBuf, 2, 100000);    // rev 0x23, 0x33
     if ((recBuf[0] != 0x23) || (recBuf[1] != 0x33)) {
         return;
     }
 
-    HAL_Delay(500);
-    MX_Uart_Receive(recBuf, 2, IAP_TIMEOUT);    // rev  block number
-    uint16_t blockTotal = (recBuf[1] << 16) | recBuf[0];
+    MX_Uart_Receive(recBuf, 2, 100000);    // rev  block number
+    uint16_t blockTotal = recBuf[0] * 256 + recBuf[1];
 
-    HAL_Delay(500);
+    HAL_Delay(50);
     MX_Uart_Transmit(recBuf, 2, IAP_TIMEOUT);   // send 0x22, 0x32
 
-    HAL_Delay(500);
-    MX_Uart_Receive(recBuf, 2, IAP_TIMEOUT);    // rev  exceed number
-    uint16_t exceed = (recBuf[1] << 16) | recBuf[0];
+    MX_Uart_Receive(recBuf, 2, 100000);    // rev  exceed number
+    uint16_t exceed = recBuf[0] * 256 + recBuf[1];
 
-    HAL_Delay(500);
+    HAL_Delay(50);
     MX_Uart_Transmit(recBuf, 2, IAP_TIMEOUT);   // send 0x22, 0x32
 
-    HAL_Delay(500);
-    uint8_t recData[2048];
+    uint8_t recData[64];
     uint8_t recSingleData = 0;
     uint16_t block = 0;
     uint16_t i;
     if (blockTotal > 0) {
         while (block < blockTotal) {
-            for (i = 0; i < 2048; i++) {
-                MX_Uart_Receive(&recSingleData, 1, IAP_TIMEOUT);
-                HAL_Delay(500);
+            for (i = 0; i < 64; i++) {
+                MX_Uart_Receive(&recSingleData, 1, 100000);
+                HAL_Delay(50);
                 MX_Uart_Transmit(&recSingleData, 1, IAP_TIMEOUT);
                 recData[i] = recSingleData;
                 recSingleData = 0;
-                HAL_Delay(500);
             }
             // write 2048 flash
             block++;
@@ -144,21 +137,19 @@ void IAP_Process()
 
     if (exceed > 0) {
         for (i = 0; i < exceed; i++) {
-            MX_Uart_Receive(&recSingleData, 1, IAP_TIMEOUT);
-            HAL_Delay(500);
+            MX_Uart_Receive(&recSingleData, 1, 100000);
+            HAL_Delay(50);
             MX_Uart_Transmit(&recSingleData, 1, IAP_TIMEOUT);
             recData[i] = recSingleData;
             recSingleData = 0;
-            HAL_Delay(500);
         }
     // write 2048 flash
     }
 
-    HAL_Delay(500);
+    HAL_Delay(50);
     MX_Uart_Transmit(command[commandSeq], 2, IAP_TIMEOUT);  // send 0x23, 0x33
 
-    HAL_Delay(500);
-    MX_Uart_Receive(recBuf, 2, IAP_TIMEOUT);    // rev 0x24, 0x34
+    MX_Uart_Receive(recBuf, 2, 100000);    // rev 0x24, 0x34
     if ((recBuf[0] != 0x24) || (recBuf[1] != 0x34)) {
         return;
     }

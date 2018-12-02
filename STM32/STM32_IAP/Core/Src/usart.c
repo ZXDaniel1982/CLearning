@@ -131,7 +131,14 @@ void MX_Uart_Transmit(uint8_t *pData, uint16_t Size, uint32_t Timeout)
 
 void MX_Uart_Receive(uint8_t *pData, uint16_t Size, uint32_t Timeout)
 {
-  HAL_UART_Receive(&huart1, pData, Size, Timeout);
+	volatile HAL_StatusTypeDef ab;
+  ab = HAL_UART_Receive(&huart1, pData, Size, Timeout);
+}
+
+void MX_Uart_Hello(void)
+{
+  uint8_t data[] = {0x33, 0x44, 0x55};
+	MX_Uart_Transmit(data, 3, 100);
 }
 /* USER CODE END 1 */
 

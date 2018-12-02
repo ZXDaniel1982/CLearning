@@ -11,7 +11,7 @@
 #define IAP_INIT_MSG "Start testing flash function\r\n"
 #define IAP_TIMEOUT 100
 
-#define IAP_MAX_COMMAND_NUM 2
+#define IAP_MAX_COMMAND_NUM 3
 
 #define IAP_FLASH_PRG_ADDR 0x08004000
 
