@@ -14,11 +14,10 @@
 #define IAP_MAX_COMMAND_NUM 3
 
 #define IAP_FLASH_PRG_ADDR 0x08004000
+#define IAP_FLASH_PRG_SIZE 2048
 
-#define IAP_FLASH_FLG_ADDR 0x0807f800
-#define IAP_FLASH_FLG_DATA 0xaaaa5555
+#define IAP_FLASH_WRITE_BYTES 8
 
-void IAP_Init(void);
 void IAP_Flash(void);
 void IAP_Process(void);
 

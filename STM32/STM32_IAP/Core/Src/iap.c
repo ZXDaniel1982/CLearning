@@ -25,13 +25,7 @@ static uint8_t command[IAP_MAX_COMMAND_NUM][2] = {
   *
   * @retval None
   */
-void IAP_Init()
-{
-    MX_Led_Init();
-    MX_Uart_Transmit((uint8_t *) IAP_INIT_MSG, strlen(IAP_INIT_MSG) + 1,
-             IAP_TIMEOUT);
-}
-
+#if 0
 void IAP_Flash()
 {
     uint32_t writeFlashData = 0x55555555;
@@ -69,6 +63,7 @@ void IAP_Flash()
     snprintf((char *) msg, 100, "addr:0x%x, data:0x%x\r\n", addr, temp);
     MX_Uart_Transmit(msg, strlen((char *) msg) + 1, IAP_TIMEOUT);
 }
+#endif
 
 void IAP_Process()
 {
@@ -78,14 +73,21 @@ void IAP_Process()
     //HAL_FLASH_Unlock();
     if (MX_Key_Read() != GPIO_PIN_SET) {
         // Key is not pushed down
-        preProgFlag = *(__IO uint32_t *) IAP_FLASH_FLG_ADDR;
-        if (preProgFlag == IAP_FLASH_FLG_DATA) {
+        if (((*(__IO uint32_t*)IAP_FLASH_PRG_ADDR) & 0x2FFE0000 ) == 0x20000000) {
             // Existing previous programming, Do jumping
-        } else {
-            // No previous programming, Do programming
         }
     }
-    // Key is pushed down, Do programming
+
+//======================================================================================
+//   Start Programming
+//======================================================================================
+    /***********************************************************
+     * Negotiate sequence
+     * send       0x21 0x31
+     * receive    0x22 0x32
+     * send       0x22 0x32
+     * receive    0x23 0x33
+     ***********************************************************/
     uint16_t commandSeq = 0;
     MX_Uart_Transmit(command[commandSeq], 2, IAP_TIMEOUT);  // send 0x21, 0x31
     commandSeq++;
@@ -105,53 +107,55 @@ void IAP_Process()
         return;
     }
 
-    MX_Uart_Receive(recBuf, 2, 100000);    // rev  block number
-    uint16_t blockTotal = recBuf[0] * 256 + recBuf[1];
+    /***********************************************************
+     * recevie total bytes of data
+     * send data back
+     ***********************************************************/
+    uint8_t totalBytesBuf[4] = { 0 };
+    MX_Uart_Receive(recBuf, 4, 100000);    // rev  total number
+    uint32_t totalBytes = recBuf[0] * 0x1000000 + recBuf[1] * 0x10000 +
+                            recBuf[2] * 0x100 + recBuf[3];
 
     HAL_Delay(50);
     MX_Uart_Transmit(recBuf, 2, IAP_TIMEOUT);   // send 0x22, 0x32
 
-    MX_Uart_Receive(recBuf, 2, 100000);    // rev  exceed number
-    uint16_t exceed = recBuf[0] * 256 + recBuf[1];
+    /***********************************************************
+     * Unlock flash  --- calculate total blocks  ---  erase flash
+     ***********************************************************/
+    HAL_FLASH_Unlock();
 
-    HAL_Delay(50);
-    MX_Uart_Transmit(recBuf, 2, IAP_TIMEOUT);   // send 0x22, 0x32
+    uint32_t block = 0;
+    block = totalBytes / IAP_FLASH_PRG_SIZE;
+    if ((totalBytes % IAP_FLASH_PRG_SIZE) > 0)
+        block++;
 
-    uint8_t recData[64];
-    uint8_t recSingleData = 0;
-    uint16_t block = 0;
-    uint16_t i;
-    if (blockTotal > 0) {
-        while (block < blockTotal) {
-            for (i = 0; i < 64; i++) {
-                MX_Uart_Receive(&recSingleData, 1, 100000);
-                HAL_Delay(50);
-                MX_Uart_Transmit(&recSingleData, 1, IAP_TIMEOUT);
-                recData[i] = recSingleData;
-                recSingleData = 0;
-            }
-            // write 2048 flash
-            block++;
-        }
+    FLASH_EraseInitTypeDef f;
+    f.TypeErase = FLASH_TYPEERASE_PAGES;
+    f.PageAddress = IAP_FLASH_PRG_ADDR;
+    f.NbPages = block;
+    HAL_FLASHEx_Erase(&f, &PageError);
+
+    /***********************************************************
+     * Recieve data ---  program flash
+     * Note : totalBytes should be 8 multiplied
+     ***********************************************************/
+    uint32_t dataIndex = totalBytes / IAP_FLASH_WRITE_BYTES;
+    uint32_t addr = IAP_FLASH_PRG_ADDR;
+    uint32_t i;
+    uint8_t dataBuf[8] = { 0xff };
+    for (i=0; i<dataIndex; i++) {
+        MX_Uart_Receive(dataBuf, 8, 100000);
+        HAL_Delay(50);
+        MX_Uart_Transmit(dataBuf, 8, IAP_TIMEOUT);
+        HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, addr, dataBuf);
+        addr += IAP_FLASH_WRITE_BYTES;
     }
 
-    if (exceed > 0) {
-        for (i = 0; i < exceed; i++) {
-            MX_Uart_Receive(&recSingleData, 1, 100000);
-            HAL_Delay(50);
-            MX_Uart_Transmit(&recSingleData, 1, IAP_TIMEOUT);
-            recData[i] = recSingleData;
-            recSingleData = 0;
-        }
-    // write 2048 flash
-    }
-
+    /***********************************************************
+     * Finish sequence
+     * send     0x23  0x33
+     * receive  0x24 0x34
+     ***********************************************************/
     HAL_Delay(50);
     MX_Uart_Transmit(command[commandSeq], 2, IAP_TIMEOUT);  // send 0x23, 0x33
-
-    MX_Uart_Receive(recBuf, 2, 100000);    // rev 0x24, 0x34
-    if ((recBuf[0] != 0x24) || (recBuf[1] != 0x34)) {
-        return;
-    }
-    // finish programming
 }
