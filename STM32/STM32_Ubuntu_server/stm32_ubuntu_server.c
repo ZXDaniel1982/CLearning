@@ -6,6 +6,7 @@
 #include <unistd.h>
 
 char *portname = "/dev/ttyS0";
+char *filename = "/tmp/tmp.txt";
 
 int set_interface_attribs (int fd, int speed, int parity)
 {
@@ -123,82 +124,99 @@ int main(int argc, char **argv)
     write (fd, txBuf, 2);
 
 //============================================================================================
-//    block 0x00 0x01    exceed  0x00  0x04
+//    send total bytes number,   receive  it back
 //============================================================================================
+    FILE *file = fopen(filename, "rb");
+    if (file == NULL) {
+        printf("Unable to open file %s\n", filename);
+        return -1;
+    }
+
+    fseek(file, 0L, SEEK_END);
+    long sz = ftell(file) + 1;
+    unsigned char totalBytesTxBuf[4] = { 0xff };
+    unsigned char totalBytesRxBuf[4] = { 0xff };
+    totalBytesTxBuf[0] = (unsigned char)(sz / 0x1000000);
+    totalBytesTxBuf[1] = (unsigned char)((sz % 0x1000000) / 0x10000);
+    totalBytesTxBuf[2] = (unsigned char)((sz % 0x10000) / 0x100);
+    totalBytesTxBuf[3] = (unsigned char)(sz % 0x100);
+    printf("Bin file size %ld\n", sz);
+    rewind(file);
+    
     usleep(50000);
-    txBuf[0] = 0x00;  txBuf[1] = 0x01;
-    write (fd, txBuf, 2);
+    write (fd, totalBytesTxBuf, 4);
 
-    n = read (fd, revBuf, sizeof revBuf);
-    if (n != 2) {
-        printf("Invalid STM IAP block number\n");
+    n = read (fd, totalBytesRxBuf, sizeof totalBytesRxBuf);
+    if (n != 4) {
+        printf("Invalid STM IAP total bytes number\n");
         return -1;
     }
-    printf("Received data %x %x  : ", revBuf[0], revBuf[1]);
-    if ((revBuf[0] == 0x00) & (revBuf[1] == 0x01)) {
-        printf("init STM IAP block number\n");
+    printf("Received data %x %x %x %x  : ", totalBytesRxBuf[0], totalBytesRxBuf[1],
+            totalBytesRxBuf[2], totalBytesRxBuf[3]);
+    if ((totalBytesRxBuf[0] == totalBytesTxBuf[0]) &&
+        (totalBytesRxBuf[1] == totalBytesTxBuf[1]) &&
+        (totalBytesRxBuf[2] == totalBytesTxBuf[2]) &&
+        (totalBytesRxBuf[3] == totalBytesTxBuf[3])) {
+        printf("Stm32 get the correct total bytes number\n");
     } else {
-        printf("Invalid STM IAP init block number\n");
-        return -1;
-    }
-
-    usleep(50000);
-    txBuf[0] = 0x00;  txBuf[1] = 0x04;
-    write (fd, txBuf, 2);
-
-    n = read (fd, revBuf, sizeof revBuf);
-    if (n != 2) {
-        printf("Invalid STM IAP exceed number\n");
-        return -1;
-    }
-    printf("Received data %x %x  : ", revBuf[0], revBuf[1]);
-    if ((revBuf[0] == 0x00) & (revBuf[1] == 0x04)) {
-        printf("init STM IAP exceed number\n");
-    } else {
-        printf("Invalid STM IAP init exceed number\n");
+        printf("Stm32 did not get the correct total bytes number\n");
         return -1;
     }
 
 //============================================================================================
-//    send 2048 data
+//    send all data
 //============================================================================================
 
-    char dataTxBuf = 0;
-    char dataRxBuf = 0;
-    for (i=0; i<64; i++) {
-        usleep(50000);
-        write (fd, &dataTxBuf, 1);
-        n = read (fd, &dataRxBuf, sizeof revBuf);
-        if (n != 1) {
-            printf("Invalid STM IAP respond data length\n");
-            return -1;
+    char dataTxBuf[8] = { 0xff };
+    char dataRxBuf[8] = { 0xff };
+    int num = 0;
+    long totalNum = 0;
+    sleep(5);
+    while (1) {
+        num = fread(dataTxBuf, 1, 8, file);
+        totalNum += num;
+        if ((totalNum % 256) == 0) {
+            printf("256 block number %ld send\n", (totalNum / 256));
         }
-        if (dataTxBuf != dataRxBuf) {
-            printf("Invalid STM IAP respond data number\n");
+        if (num > 8) {
+            printf("Error happened when reading file\n");
             return -1;
+        } else if (num == 8) {
+            usleep(100000);
+            write (fd, dataTxBuf, 8);
+            n = read (fd, dataRxBuf, sizeof dataRxBuf);
+            if (n != 8) {
+                printf("Invalid STM IAP respond data length\n");
+                return -1;
+            }
+            for (i=0; i<8; i++) {
+                if (dataTxBuf[i] != dataRxBuf[i]) {
+                    printf("Invalid STM IAP respond data number\n");
+                    return -1;
+                }
+            }
+            memset(dataTxBuf, 0xff, sizeof dataTxBuf);
+            memset(dataRxBuf, 0xff, sizeof dataRxBuf);
+        } else if (num > 0) {
+            usleep(100000);
+            write (fd, dataTxBuf, 8);
+            n = read (fd, dataRxBuf, sizeof dataRxBuf);
+            if (n != 8) {
+                printf("Invalid STM IAP respond data length\n");
+                return -1;
+            }
+            for (i=0; i<8; i++) {
+                if (dataTxBuf[i] != dataRxBuf[i]) {
+                    printf("Invalid STM IAP respond data number\n");
+                    return -1;
+                }
+            }
+            break;
+        } else {
+            break;
         }
-        printf("dataTxBuf %x dataRxBuf %x\n", dataTxBuf, dataRxBuf);
-        dataTxBuf++;
     }
-
-//============================================================================================
-//    send 4 data
-//============================================================================================
-    for (i=0; i<4; i++) {
-        usleep(50000);
-        write (fd, &dataTxBuf, 1);
-        n = read (fd, &dataRxBuf, sizeof revBuf);
-        if (n != 1) {
-            printf("Invalid STM IAP respond  exceed length\n");
-            return -1;
-        }
-        if (dataTxBuf != dataRxBuf) {
-            printf("Invalid STM IAP respond exceed number\n");
-            return -1;
-        }
-        printf("dataTxBuf %x dataRxBuf %x\n", dataTxBuf, dataRxBuf);
-        dataTxBuf++;
-    }
+    fclose(file);
 
 //============================================================================================
 //    receive 0x23 0x33   to finish
@@ -210,9 +228,9 @@ int main(int argc, char **argv)
     }
     printf("Received data %x %x  : ", revBuf[0], revBuf[1]);
     if ((revBuf[0] == 0x23) & (revBuf[1] == 0x33)) {
-        printf("init STM IAP finish number\n");
+        printf("STM IAP finished\n");
     } else {
-        printf("Invalid STM IAP init finish number\n");
+        printf("Invalid STM IAP finish number\n");
         return -1;
     }
 }

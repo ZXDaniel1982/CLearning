@@ -99,7 +99,7 @@ void IAP_Process()
     commandSeq++;
 
     uint8_t recBuf[2] = { 0 };
-    MX_Uart_Receive(recBuf, 2, 100000);
+    MX_Uart_Receive(recBuf, 2);
     if ((recBuf[0] != 0x22) || (recBuf[1] != 0x32)) {   // rev 0x22, 0x32
         return;
     }
@@ -108,7 +108,7 @@ void IAP_Process()
     MX_Uart_Transmit(command[commandSeq], 2, IAP_TIMEOUT);  // send 0x22, 0x32
     commandSeq++;
 
-    MX_Uart_Receive(recBuf, 2, 100000);    // rev 0x23, 0x33
+    MX_Uart_Receive(recBuf, 2);    // rev 0x23, 0x33
     if ((recBuf[0] != 0x23) || (recBuf[1] != 0x33)) {
         return;
     }
@@ -118,12 +118,12 @@ void IAP_Process()
      * send data back
      ***********************************************************/
     uint8_t totalBytesBuf[4] = { 0 };
-    MX_Uart_Receive(recBuf, 4, 100000);    // rev  total number
-    uint32_t totalBytes = recBuf[0] * 0x1000000 + recBuf[1] * 0x10000 +
-                            recBuf[2] * 0x100 + recBuf[3];
+    MX_Uart_Receive(totalBytesBuf, 4);    // rev  total number
+    uint32_t totalBytes = totalBytesBuf[0] * 0x1000000 + totalBytesBuf[1] * 0x10000 +
+                            totalBytesBuf[2] * 0x100 + totalBytesBuf[3];
 
     HAL_Delay(50);
-    MX_Uart_Transmit(recBuf, 2, IAP_TIMEOUT);   // send 0x22, 0x32
+    MX_Uart_Transmit(totalBytesBuf, 4, IAP_TIMEOUT);   // send total number
 
     /***********************************************************
      * Unlock flash  --- calculate total blocks  ---  erase flash
@@ -150,7 +150,7 @@ void IAP_Process()
     uint32_t i;
     uint8_t dataBuf[8] = { 0xff };
     for (i=0; i<dataIndex; i++) {
-        MX_Uart_Receive(dataBuf, 8, 100000);
+        MX_Uart_Receive(dataBuf, 8);
         HAL_Delay(50);
         MX_Uart_Transmit(dataBuf, 8, IAP_TIMEOUT);
         HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, addr, dataBuf);

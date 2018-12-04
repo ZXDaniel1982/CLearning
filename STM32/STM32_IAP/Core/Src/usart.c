@@ -129,10 +129,10 @@ void MX_Uart_Transmit(uint8_t *pData, uint16_t Size, uint32_t Timeout)
   HAL_UART_Transmit(&huart1, pData, Size, Timeout);
 }
 
-void MX_Uart_Receive(uint8_t *pData, uint16_t Size, uint32_t Timeout)
+void MX_Uart_Receive(uint8_t *pData, uint16_t Size)
 {
 	volatile HAL_StatusTypeDef ab;
-  ab = HAL_UART_Receive(&huart1, pData, Size, Timeout);
+  ab = HAL_UART_Receive(&huart1, pData, Size, IAP_USART_TIMEOUT);
 }
 
 void MX_Uart_Hello(void)

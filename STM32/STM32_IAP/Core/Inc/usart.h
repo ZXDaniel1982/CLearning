@@ -54,7 +54,7 @@
 extern UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN Private defines */
-
+#define IAP_USART_TIMEOUT 0XFFFF
 /* USER CODE END Private defines */
 
 extern void _Error_Handler(char *, int);
@@ -63,7 +63,7 @@ void MX_USART1_UART_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 void MX_Uart_Transmit(uint8_t *pData, uint16_t Size, uint32_t Timeout);
-void MX_Uart_Receive(uint8_t *pData, uint16_t Size, uint32_t Timeout);
+void MX_Uart_Receive(uint8_t *pData, uint16_t Size);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
