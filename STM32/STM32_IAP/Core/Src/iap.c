@@ -156,6 +156,7 @@ void IAP_Process()
         HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, addr, dataBuf);
         addr += IAP_FLASH_WRITE_BYTES;
     }
+    HAL_FLASH_Lock();
 
     /***********************************************************
      * Finish sequence
