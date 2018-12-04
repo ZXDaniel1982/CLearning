@@ -13,7 +13,8 @@
 
 #include "stm32f1xx_hal.h"
 
-FLASH_EraseInitTypeDef f;
+pFunction JumpToApplication;
+uint32_t JumpAddress;
 
 static uint8_t command[IAP_MAX_COMMAND_NUM][2] = {
     {0x21, 0x31},
@@ -70,11 +71,16 @@ void IAP_Process()
     uint32_t preProgFlag = 0;
 
     MX_Led_On();
-    //HAL_FLASH_Unlock();
     if (MX_Key_Read() != GPIO_PIN_SET) {
         // Key is not pushed down
         if (((*(__IO uint32_t*)IAP_FLASH_PRG_ADDR) & 0x2FFE0000 ) == 0x20000000) {
             // Existing previous programming, Do jumping
+            JumpAddress = *(__IO uint32_t*) (IAP_FLASH_PRG_ADDR + 4);
+            JumpToApplication = (pFunction) JumpAddress;
+            /* Initialize user application's Stack Pointer */
+            __set_MSP(*(__IO uint32_t*) IAP_FLASH_PRG_ADDR);
+            JumpToApplication();
+            return;
         }
     }
 
@@ -158,4 +164,6 @@ void IAP_Process()
      ***********************************************************/
     HAL_Delay(50);
     MX_Uart_Transmit(command[commandSeq], 2, IAP_TIMEOUT);  // send 0x23, 0x33
+
+    MX_Led_Off();
 }

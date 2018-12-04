@@ -18,6 +18,8 @@
 
 #define IAP_FLASH_WRITE_BYTES 8
 
+typedef  void (*pFunction)(void);
+
 void IAP_Flash(void);
 void IAP_Process(void);
 
