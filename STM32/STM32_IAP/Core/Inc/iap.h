@@ -18,9 +18,17 @@
 
 #define IAP_FLASH_WRITE_BYTES 8
 
+typedef enum
+{
+    IAP_ERR_NONE = 0,
+    IAP_ERR_INIT,
+    IAP_ERR_PRG,
+    IAP_ERR_VALID
+};
+
 typedef  void (*pFunction)(void);
 
-void IAP_Flash(void);
-void IAP_Process(void);
+//void IAP_Flash(void);
+uint16_t IAP_Process(void);
 
 #endif /* __IAP_H__ */

@@ -66,7 +66,7 @@ void IAP_Flash()
 }
 #endif
 
-void IAP_Process()
+uint16_t IAP_Process()
 {
     uint32_t preProgFlag = 0;
 
@@ -80,7 +80,7 @@ void IAP_Process()
             /* Initialize user application's Stack Pointer */
             __set_MSP(*(__IO uint32_t*) IAP_FLASH_PRG_ADDR);
             JumpToApplication();
-            return;
+            return IAP_ERR_NONE;
         }
     }
 
@@ -101,7 +101,7 @@ void IAP_Process()
     uint8_t recBuf[2] = { 0 };
     MX_Uart_Receive(recBuf, 2);
     if ((recBuf[0] != 0x22) || (recBuf[1] != 0x32)) {   // rev 0x22, 0x32
-        return;
+        return IAP_ERR_INIT;
     }
 
     HAL_Delay(50);
@@ -110,7 +110,7 @@ void IAP_Process()
 
     MX_Uart_Receive(recBuf, 2);    // rev 0x23, 0x33
     if ((recBuf[0] != 0x23) || (recBuf[1] != 0x33)) {
-        return;
+        return IAP_ERR_INIT;
     }
 
     /***********************************************************
@@ -147,13 +147,27 @@ void IAP_Process()
      ***********************************************************/
     uint32_t dataIndex = totalBytes / IAP_FLASH_WRITE_BYTES;
     uint32_t addr = IAP_FLASH_PRG_ADDR;
+    uint32_t value;
     uint32_t i;
     uint8_t dataBuf[8] = { 0xff };
     for (i=0; i<dataIndex; i++) {
         MX_Uart_Receive(dataBuf, 8);
         HAL_Delay(50);
         MX_Uart_Transmit(dataBuf, 8, IAP_TIMEOUT);
-        HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, addr, dataBuf);
+        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, addr, dataBuf) != HAL_OK) {
+            return IAP_ERR_PRG;
+        }
+        value = dataBuf[0] * 0x1000000 + dataBuf[1] * 0x10000 +
+                            dataBuf[2] * 0x100 + dataBuf[3];
+        if (*(uint32_t*)addr != (value)) {
+            return IAP_ERR_VALID;
+        }
+        value = dataBuf[4] * 0x1000000 + dataBuf[5] * 0x10000 +
+                            dataBuf[6] * 0x100 + dataBuf[7];
+        if (*(uint32_t*)(addr+4) != (value)) {
+            return IAP_ERR_VALID;
+        }
+
         addr += IAP_FLASH_WRITE_BYTES;
     }
     HAL_FLASH_Lock();
@@ -167,4 +181,5 @@ void IAP_Process()
     MX_Uart_Transmit(command[commandSeq], 2, IAP_TIMEOUT);  // send 0x23, 0x33
 
     MX_Led_Off();
+    return IAP_ERR_NONE;
 }

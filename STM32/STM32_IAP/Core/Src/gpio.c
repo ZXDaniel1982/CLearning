@@ -151,6 +151,11 @@ void MX_Led_Off()
   HAL_GPIO_WritePin(Led_GPIO_Port, Led_Pin, GPIO_PIN_RESET);
 }
 
+void MX_Led_Toggle()
+{
+  HAL_GPIO_TogglePin(Led_GPIO_Port, Led_Pin);
+}
+
 void MX_Led_Init()
 {
   MX_Led_On();

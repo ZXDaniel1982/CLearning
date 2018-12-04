@@ -62,6 +62,7 @@ void MX_GPIO_Init(void);
 void MX_Led_Init(void);
 void MX_Led_Off(void);
 void MX_Led_On(void);
+void MX_Led_Toggle(void);
 	 
 GPIO_PinState MX_Key_Read(void);
 /* USER CODE END Prototypes */

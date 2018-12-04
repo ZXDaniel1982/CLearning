@@ -97,7 +97,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-	IAP_Process();
+  uint16_t ret = IAP_Process();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -106,7 +106,8 @@ int main(void)
   {
 
   /* USER CODE END WHILE */
-
+    HAL_Delay(1000*ret);
+    MX_Led_Toggle();
   /* USER CODE BEGIN 3 */
 
   }
