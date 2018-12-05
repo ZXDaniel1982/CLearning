@@ -159,12 +159,12 @@ uint16_t IAP_Process()
         }
         value = dataBuf[0] * 0x1000000 + dataBuf[1] * 0x10000 +
                             dataBuf[2] * 0x100 + dataBuf[3];
-        if (*(uint32_t*)addr != (value)) {
+        if (*(__IO uint32_t *)addr != (value)) {
             return IAP_ERR_VALID;
         }
         value = dataBuf[4] * 0x1000000 + dataBuf[5] * 0x10000 +
                             dataBuf[6] * 0x100 + dataBuf[7];
-        if (*(uint32_t*)(addr+4) != (value)) {
+        if (*(__IO uint32_t *)(addr+4) != (value)) {
             return IAP_ERR_VALID;
         }
 
