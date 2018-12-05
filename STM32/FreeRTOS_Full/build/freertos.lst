@@ -1,0 +1,297 @@
+ARM GAS  /tmp/ccm8GD9z.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"freertos.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.StartDefaultTask,"ax",%progbits
+  19              		.align	2
+  20              		.global	StartDefaultTask
+  21              		.thumb
+  22              		.thumb_func
+  24              	StartDefaultTask:
+  25              	.LFB69:
+  26              		.file 1 "Src/freertos.c"
+   1:Src/freertos.c **** /* USER CODE BEGIN Header */
+   2:Src/freertos.c **** /**
+   3:Src/freertos.c ****   ******************************************************************************
+   4:Src/freertos.c ****   * File Name          : freertos.c
+   5:Src/freertos.c ****   * Description        : Code for freertos applications
+   6:Src/freertos.c ****   ******************************************************************************
+   7:Src/freertos.c ****   * This notice applies to any and all portions of this file
+   8:Src/freertos.c ****   * that are not between comment pairs USER CODE BEGIN and
+   9:Src/freertos.c ****   * USER CODE END. Other portions of this file, whether 
+  10:Src/freertos.c ****   * inserted by the user or by software development tools
+  11:Src/freertos.c ****   * are owned by their respective copyright owners.
+  12:Src/freertos.c ****   *
+  13:Src/freertos.c ****   * Copyright (c) 2018 STMicroelectronics International N.V. 
+  14:Src/freertos.c ****   * All rights reserved.
+  15:Src/freertos.c ****   *
+  16:Src/freertos.c ****   * Redistribution and use in source and binary forms, with or without 
+  17:Src/freertos.c ****   * modification, are permitted, provided that the following conditions are met:
+  18:Src/freertos.c ****   *
+  19:Src/freertos.c ****   * 1. Redistribution of source code must retain the above copyright notice, 
+  20:Src/freertos.c ****   *    this list of conditions and the following disclaimer.
+  21:Src/freertos.c ****   * 2. Redistributions in binary form must reproduce the above copyright notice,
+  22:Src/freertos.c ****   *    this list of conditions and the following disclaimer in the documentation
+  23:Src/freertos.c ****   *    and/or other materials provided with the distribution.
+  24:Src/freertos.c ****   * 3. Neither the name of STMicroelectronics nor the names of other 
+  25:Src/freertos.c ****   *    contributors to this software may be used to endorse or promote products 
+  26:Src/freertos.c ****   *    derived from this software without specific written permission.
+  27:Src/freertos.c ****   * 4. This software, including modifications and/or derivative works of this 
+  28:Src/freertos.c ****   *    software, must execute solely and exclusively on microcontroller or
+  29:Src/freertos.c ****   *    microprocessor devices manufactured by or for STMicroelectronics.
+  30:Src/freertos.c ****   * 5. Redistribution and use of this software other than as permitted under 
+  31:Src/freertos.c ****   *    this license is void and will automatically terminate your rights under 
+  32:Src/freertos.c ****   *    this license. 
+ARM GAS  /tmp/ccm8GD9z.s 			page 2
+
+
+  33:Src/freertos.c ****   *
+  34:Src/freertos.c ****   * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS" 
+  35:Src/freertos.c ****   * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT 
+  36:Src/freertos.c ****   * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+  37:Src/freertos.c ****   * PARTICULAR PURPOSE AND NON-INFRINGEMENT OF THIRD PARTY INTELLECTUAL PROPERTY
+  38:Src/freertos.c ****   * RIGHTS ARE DISCLAIMED TO THE FULLEST EXTENT PERMITTED BY LAW. IN NO EVENT 
+  39:Src/freertos.c ****   * SHALL STMICROELECTRONICS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  40:Src/freertos.c ****   * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  41:Src/freertos.c ****   * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
+  42:Src/freertos.c ****   * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+  43:Src/freertos.c ****   * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+  44:Src/freertos.c ****   * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+  45:Src/freertos.c ****   * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  46:Src/freertos.c ****   *
+  47:Src/freertos.c ****   ******************************************************************************
+  48:Src/freertos.c ****   */
+  49:Src/freertos.c **** /* USER CODE END Header */
+  50:Src/freertos.c **** 
+  51:Src/freertos.c **** /* Includes ------------------------------------------------------------------*/
+  52:Src/freertos.c **** #include "FreeRTOS.h"
+  53:Src/freertos.c **** #include "task.h"
+  54:Src/freertos.c **** #include "main.h"
+  55:Src/freertos.c **** #include "cmsis_os.h"
+  56:Src/freertos.c **** 
+  57:Src/freertos.c **** /* Private includes ----------------------------------------------------------*/
+  58:Src/freertos.c **** /* USER CODE BEGIN Includes */     
+  59:Src/freertos.c **** 
+  60:Src/freertos.c **** /* USER CODE END Includes */
+  61:Src/freertos.c **** 
+  62:Src/freertos.c **** /* Private typedef -----------------------------------------------------------*/
+  63:Src/freertos.c **** /* USER CODE BEGIN PTD */
+  64:Src/freertos.c **** 
+  65:Src/freertos.c **** /* USER CODE END PTD */
+  66:Src/freertos.c **** 
+  67:Src/freertos.c **** /* Private define ------------------------------------------------------------*/
+  68:Src/freertos.c **** /* USER CODE BEGIN PD */
+  69:Src/freertos.c **** 
+  70:Src/freertos.c **** /* USER CODE END PD */
+  71:Src/freertos.c **** 
+  72:Src/freertos.c **** /* Private macro -------------------------------------------------------------*/
+  73:Src/freertos.c **** /* USER CODE BEGIN PM */
+  74:Src/freertos.c **** 
+  75:Src/freertos.c **** /* USER CODE END PM */
+  76:Src/freertos.c **** 
+  77:Src/freertos.c **** /* Private variables ---------------------------------------------------------*/
+  78:Src/freertos.c **** /* USER CODE BEGIN Variables */
+  79:Src/freertos.c **** 
+  80:Src/freertos.c **** /* USER CODE END Variables */
+  81:Src/freertos.c **** osThreadId defaultTaskHandle;
+  82:Src/freertos.c **** 
+  83:Src/freertos.c **** /* Private function prototypes -----------------------------------------------*/
+  84:Src/freertos.c **** /* USER CODE BEGIN FunctionPrototypes */
+  85:Src/freertos.c ****    
+  86:Src/freertos.c **** /* USER CODE END FunctionPrototypes */
+  87:Src/freertos.c **** 
+  88:Src/freertos.c **** void StartDefaultTask(void const * argument);
+  89:Src/freertos.c **** 
+ARM GAS  /tmp/ccm8GD9z.s 			page 3
+
+
+  90:Src/freertos.c **** void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+  91:Src/freertos.c **** 
+  92:Src/freertos.c **** /**
+  93:Src/freertos.c ****   * @brief  FreeRTOS initialization
+  94:Src/freertos.c ****   * @param  None
+  95:Src/freertos.c ****   * @retval None
+  96:Src/freertos.c ****   */
+  97:Src/freertos.c **** void MX_FREERTOS_Init(void) {
+  98:Src/freertos.c ****   /* USER CODE BEGIN Init */
+  99:Src/freertos.c ****        
+ 100:Src/freertos.c ****   /* USER CODE END Init */
+ 101:Src/freertos.c **** 
+ 102:Src/freertos.c ****   /* USER CODE BEGIN RTOS_MUTEX */
+ 103:Src/freertos.c ****   /* add mutexes, ... */
+ 104:Src/freertos.c ****   /* USER CODE END RTOS_MUTEX */
+ 105:Src/freertos.c **** 
+ 106:Src/freertos.c ****   /* USER CODE BEGIN RTOS_SEMAPHORES */
+ 107:Src/freertos.c ****   /* add semaphores, ... */
+ 108:Src/freertos.c ****   /* USER CODE END RTOS_SEMAPHORES */
+ 109:Src/freertos.c **** 
+ 110:Src/freertos.c ****   /* USER CODE BEGIN RTOS_TIMERS */
+ 111:Src/freertos.c ****   /* start timers, add new ones, ... */
+ 112:Src/freertos.c ****   /* USER CODE END RTOS_TIMERS */
+ 113:Src/freertos.c **** 
+ 114:Src/freertos.c ****   /* Create the thread(s) */
+ 115:Src/freertos.c ****   /* definition and creation of defaultTask */
+ 116:Src/freertos.c ****   osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+ 117:Src/freertos.c ****   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+ 118:Src/freertos.c **** 
+ 119:Src/freertos.c ****   /* USER CODE BEGIN RTOS_THREADS */
+ 120:Src/freertos.c ****   /* add threads, ... */
+ 121:Src/freertos.c ****   /* USER CODE END RTOS_THREADS */
+ 122:Src/freertos.c **** 
+ 123:Src/freertos.c ****   /* USER CODE BEGIN RTOS_QUEUES */
+ 124:Src/freertos.c ****   /* add queues, ... */
+ 125:Src/freertos.c ****   /* USER CODE END RTOS_QUEUES */
+ 126:Src/freertos.c **** }
+ 127:Src/freertos.c **** 
+ 128:Src/freertos.c **** /* USER CODE BEGIN Header_StartDefaultTask */
+ 129:Src/freertos.c **** /**
+ 130:Src/freertos.c ****   * @brief  Function implementing the defaultTask thread.
+ 131:Src/freertos.c ****   * @param  argument: Not used 
+ 132:Src/freertos.c ****   * @retval None
+ 133:Src/freertos.c ****   */
+ 134:Src/freertos.c **** /* USER CODE END Header_StartDefaultTask */
+ 135:Src/freertos.c **** void StartDefaultTask(void const * argument)
+ 136:Src/freertos.c **** {
+  27              		.loc 1 136 0
+  28              		.cfi_startproc
+  29              		@ Volatile: function does not return.
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+ARM GAS  /tmp/ccm8GD9z.s 			page 4
+
+
+  37              		.cfi_offset 14, -4
+  38              	.LVL1:
+  39              	.L2:
+ 137:Src/freertos.c **** 
+ 138:Src/freertos.c ****   /* USER CODE BEGIN StartDefaultTask */
+ 139:Src/freertos.c ****   /* Infinite loop */
+ 140:Src/freertos.c ****   for(;;)
+ 141:Src/freertos.c ****   {
+ 142:Src/freertos.c ****     osDelay(1);
+  40              		.loc 1 142 0 discriminator 1
+  41 0002 0120     		movs	r0, #1
+  42 0004 FFF7FEFF 		bl	osDelay
+  43              	.LVL2:
+ 143:Src/freertos.c ****   }
+  44              		.loc 1 143 0 discriminator 1
+  45 0008 FBE7     		b	.L2
+  46              		.cfi_endproc
+  47              	.LFE69:
+  49 000a 00BF     		.section	.text.MX_FREERTOS_Init,"ax",%progbits
+  50              		.align	2
+  51              		.global	MX_FREERTOS_Init
+  52              		.thumb
+  53              		.thumb_func
+  55              	MX_FREERTOS_Init:
+  56              	.LFB68:
+  97:Src/freertos.c ****   /* USER CODE BEGIN Init */
+  57              		.loc 1 97 0
+  58              		.cfi_startproc
+  59              		@ args = 0, pretend = 0, frame = 24
+  60              		@ frame_needed = 0, uses_anonymous_args = 0
+  61 0000 30B5     		push	{r4, r5, lr}
+  62              	.LCFI1:
+  63              		.cfi_def_cfa_offset 12
+  64              		.cfi_offset 4, -12
+  65              		.cfi_offset 5, -8
+  66              		.cfi_offset 14, -4
+  67 0002 87B0     		sub	sp, sp, #28
+  68              	.LCFI2:
+  69              		.cfi_def_cfa_offset 40
+ 116:Src/freertos.c ****   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  70              		.loc 1 116 0
+  71 0004 01AC     		add	r4, sp, #4
+  72 0006 064D     		ldr	r5, .L6
+  73 0008 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+  74 000a 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+  75 000c 2B68     		ldr	r3, [r5]
+  76 000e 2360     		str	r3, [r4]
+ 117:Src/freertos.c **** 
+  77              		.loc 1 117 0
+  78 0010 01A8     		add	r0, sp, #4
+  79 0012 0021     		movs	r1, #0
+  80 0014 FFF7FEFF 		bl	osThreadCreate
+  81              	.LVL3:
+  82 0018 024B     		ldr	r3, .L6+4
+  83 001a 1860     		str	r0, [r3]
+ 126:Src/freertos.c **** 
+  84              		.loc 1 126 0
+ARM GAS  /tmp/ccm8GD9z.s 			page 5
+
+
+  85 001c 07B0     		add	sp, sp, #28
+  86              	.LCFI3:
+  87              		.cfi_def_cfa_offset 12
+  88              		@ sp needed
+  89 001e 30BD     		pop	{r4, r5, pc}
+  90              	.L7:
+  91              		.align	2
+  92              	.L6:
+  93 0020 00000000 		.word	.LANCHOR0
+  94 0024 00000000 		.word	defaultTaskHandle
+  95              		.cfi_endproc
+  96              	.LFE68:
+  98              		.comm	defaultTaskHandle,4,4
+  99              		.section	.rodata
+ 100              		.align	2
+ 101              		.set	.LANCHOR0,. + 0
+ 102              	.LC2:
+ 103 0000 00000000 		.word	.LC0
+ 104 0004 00000000 		.word	StartDefaultTask
+ 105 0008 0000     		.short	0
+ 106 000a 0000     		.space	2
+ 107 000c 00000000 		.word	0
+ 108 0010 80000000 		.word	128
+ 109              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 110              		.align	2
+ 111              	.LC0:
+ 112 0000 64656661 		.ascii	"defaultTask\000"
+ 112      756C7454 
+ 112      61736B00 
+ 113              		.text
+ 114              	.Letext0:
+ 115              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 116              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 117              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 118              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
+ 119              		.file 6 "Drivers/CMSIS/Include/core_cm3.h"
+ARM GAS  /tmp/ccm8GD9z.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 freertos.c
+     /tmp/ccm8GD9z.s:19     .text.StartDefaultTask:0000000000000000 $t
+     /tmp/ccm8GD9z.s:24     .text.StartDefaultTask:0000000000000000 StartDefaultTask
+     /tmp/ccm8GD9z.s:50     .text.MX_FREERTOS_Init:0000000000000000 $t
+     /tmp/ccm8GD9z.s:55     .text.MX_FREERTOS_Init:0000000000000000 MX_FREERTOS_Init
+     /tmp/ccm8GD9z.s:93     .text.MX_FREERTOS_Init:0000000000000020 $d
+                            *COM*:0000000000000004 defaultTaskHandle
+     /tmp/ccm8GD9z.s:100    .rodata:0000000000000000 $d
+     /tmp/ccm8GD9z.s:110    .rodata.str1.4:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+osDelay
+osThreadCreate
