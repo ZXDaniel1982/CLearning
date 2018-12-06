@@ -1,31 +1,30 @@
-ARM GAS  /tmp/ccksSoQq.s 			page 1
+ARM GAS  /tmp/ccf4jX7S.s 			page 1
 
 
-   1              		.syntax unified
-   2              		.cpu cortex-m3
-   3              		.fpu softvfp
-   4              		.eabi_attribute 20, 1
-   5              		.eabi_attribute 21, 1
-   6              		.eabi_attribute 23, 3
-   7              		.eabi_attribute 24, 1
-   8              		.eabi_attribute 25, 1
-   9              		.eabi_attribute 26, 1
-  10              		.eabi_attribute 30, 1
-  11              		.eabi_attribute 34, 1
-  12              		.eabi_attribute 18, 4
-  13              		.thumb
-  14              		.file	"freertos.c"
-  15              		.text
-  16              	.Ltext0:
-  17              		.cfi_sections	.debug_frame
-  18              		.section	.text.StartDefaultTask,"ax",%progbits
-  19              		.align	2
-  20              		.global	StartDefaultTask
-  21              		.thumb
-  22              		.thumb_func
-  24              	StartDefaultTask:
-  25              	.LFB69:
-  26              		.file 1 "Core/Src/freertos.c"
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"freertos.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.StartDefaultTask,"ax",%progbits
+  16              		.align	1
+  17              		.global	StartDefaultTask
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	StartDefaultTask:
+  24              	.LFB70:
+  25              		.file 1 "Core/Src/freertos.c"
    1:Core/Src/freertos.c **** /* USER CODE BEGIN Header */
    2:Core/Src/freertos.c **** /**
    3:Core/Src/freertos.c ****   ******************************************************************************
@@ -58,10 +57,10 @@ ARM GAS  /tmp/ccksSoQq.s 			page 1
   30:Core/Src/freertos.c ****   * 5. Redistribution and use of this software other than as permitted under 
   31:Core/Src/freertos.c ****   *    this license is void and will automatically terminate your rights under 
   32:Core/Src/freertos.c ****   *    this license. 
-ARM GAS  /tmp/ccksSoQq.s 			page 2
-
-
   33:Core/Src/freertos.c ****   *
+ARM GAS  /tmp/ccf4jX7S.s 			page 2
+
+
   34:Core/Src/freertos.c ****   * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS" 
   35:Core/Src/freertos.c ****   * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT 
   36:Core/Src/freertos.c ****   * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
@@ -118,10 +117,10 @@ ARM GAS  /tmp/ccksSoQq.s 			page 1
   87:Core/Src/freertos.c **** 
   88:Core/Src/freertos.c **** void StartDefaultTask(void const * argument);
   89:Core/Src/freertos.c **** 
-ARM GAS  /tmp/ccksSoQq.s 			page 3
-
-
   90:Core/Src/freertos.c **** void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+ARM GAS  /tmp/ccf4jX7S.s 			page 3
+
+
   91:Core/Src/freertos.c **** 
   92:Core/Src/freertos.c **** /**
   93:Core/Src/freertos.c ****   * @brief  FreeRTOS initialization
@@ -168,48 +167,48 @@ ARM GAS  /tmp/ccksSoQq.s 			page 1
  134:Core/Src/freertos.c **** /* USER CODE END Header_StartDefaultTask */
  135:Core/Src/freertos.c **** void StartDefaultTask(void const * argument)
  136:Core/Src/freertos.c **** {
-  27              		.loc 1 136 0
-  28              		.cfi_startproc
-  29              		@ Volatile: function does not return.
-  30              		@ args = 0, pretend = 0, frame = 0
-  31              		@ frame_needed = 0, uses_anonymous_args = 0
-  32              	.LVL0:
-  33 0000 08B5     		push	{r3, lr}
-  34              	.LCFI0:
-  35              		.cfi_def_cfa_offset 8
-  36              		.cfi_offset 3, -8
-ARM GAS  /tmp/ccksSoQq.s 			page 4
+  26              		.loc 1 136 0
+  27              		.cfi_startproc
+  28              		@ Volatile: function does not return.
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              	.LVL0:
+  32 0000 08B5     		push	{r3, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccf4jX7S.s 			page 4
 
 
-  37              		.cfi_offset 14, -4
-  38              	.LVL1:
-  39              	.L2:
+  37              	.LVL1:
+  38              	.L2:
  137:Core/Src/freertos.c **** 
  138:Core/Src/freertos.c ****   /* USER CODE BEGIN StartDefaultTask */
  139:Core/Src/freertos.c ****   /* Infinite loop */
  140:Core/Src/freertos.c ****   for(;;)
  141:Core/Src/freertos.c ****   {
  142:Core/Src/freertos.c ****     osDelay(500);
-  40              		.loc 1 142 0 discriminator 1
-  41 0002 4FF4FA70 		mov	r0, #500
-  42 0006 FFF7FEFF 		bl	osDelay
-  43              	.LVL2:
+  39              		.loc 1 142 0 discriminator 1
+  40 0002 4FF4FA70 		mov	r0, #500
+  41 0006 FFF7FEFF 		bl	osDelay
+  42              	.LVL2:
  143:Core/Src/freertos.c ****     MX_GPIO_Toggle();
-  44              		.loc 1 143 0 discriminator 1
-  45 000a FFF7FEFF 		bl	MX_GPIO_Toggle
-  46              	.LVL3:
- 144:Core/Src/freertos.c ****   }
-  47              		.loc 1 144 0 discriminator 1
-  48 000e F8E7     		b	.L2
-  49              		.cfi_endproc
-  50              	.LFE69:
-  52              		.section	.text.MX_FREERTOS_Init,"ax",%progbits
-  53              		.align	2
-  54              		.global	MX_FREERTOS_Init
-  55              		.thumb
-  56              		.thumb_func
+  43              		.loc 1 143 0 discriminator 1
+  44 000a FFF7FEFF 		bl	MX_GPIO_Toggle
+  45              	.LVL3:
+  46 000e F8E7     		b	.L2
+  47              		.cfi_endproc
+  48              	.LFE70:
+  50              		.section	.text.MX_FREERTOS_Init,"ax",%progbits
+  51              		.align	1
+  52              		.global	MX_FREERTOS_Init
+  53              		.syntax unified
+  54              		.thumb
+  55              		.thumb_func
+  56              		.fpu softvfp
   58              	MX_FREERTOS_Init:
-  59              	.LFB68:
+  59              	.LFB69:
   97:Core/Src/freertos.c ****   /* USER CODE BEGIN Init */
   60              		.loc 1 97 0
   61              		.cfi_startproc
@@ -234,14 +233,14 @@ ARM GAS  /tmp/ccksSoQq.s 			page 1
   79 000e 2360     		str	r3, [r4]
  117:Core/Src/freertos.c **** 
   80              		.loc 1 117 0
-  81 0010 01A8     		add	r0, sp, #4
-  82 0012 0021     		movs	r1, #0
+  81 0010 0021     		movs	r1, #0
+  82 0012 01A8     		add	r0, sp, #4
   83 0014 FFF7FEFF 		bl	osThreadCreate
   84              	.LVL4:
-ARM GAS  /tmp/ccksSoQq.s 			page 5
-
-
   85 0018 024B     		ldr	r3, .L6+4
+ARM GAS  /tmp/ccf4jX7S.s 			page 5
+
+
   86 001a 1860     		str	r0, [r3]
  126:Core/Src/freertos.c **** 
   87              		.loc 1 126 0
@@ -256,7 +255,7 @@ ARM GAS  /tmp/ccksSoQq.s 			page 1
   96 0020 00000000 		.word	.LANCHOR0
   97 0024 00000000 		.word	defaultTaskHandle
   98              		.cfi_endproc
-  99              	.LFE68:
+  99              	.LFE69:
  101              		.comm	defaultTaskHandle,4,4
  102              		.section	.rodata
  103              		.align	2
@@ -279,22 +278,28 @@ ARM GAS  /tmp/ccksSoQq.s 			page 1
  118              		.file 2 "/usr/include/newlib/machine/_default_types.h"
  119              		.file 3 "/usr/include/newlib/sys/_stdint.h"
  120              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
- 121              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
+ 121              		.file 5 "Core/Inc/FreeRTOSConfig.h"
  122              		.file 6 "Drivers/CMSIS/Include/core_cm3.h"
- 123              		.file 7 "Core/Inc/gpio.h"
-ARM GAS  /tmp/ccksSoQq.s 			page 6
+ 123              		.file 7 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h"
+ 124              		.file 8 "/usr/include/newlib/sys/lock.h"
+ 125              		.file 9 "/usr/include/newlib/sys/_types.h"
+ 126              		.file 10 "/usr/lib/gcc/arm-none-eabi/6.3.1/include/stddef.h"
+ 127              		.file 11 "/usr/include/newlib/sys/reent.h"
+ 128              		.file 12 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
+ 129              		.file 13 "Core/Inc/gpio.h"
+ARM GAS  /tmp/ccf4jX7S.s 			page 6
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 freertos.c
-     /tmp/ccksSoQq.s:19     .text.StartDefaultTask:0000000000000000 $t
-     /tmp/ccksSoQq.s:24     .text.StartDefaultTask:0000000000000000 StartDefaultTask
-     /tmp/ccksSoQq.s:53     .text.MX_FREERTOS_Init:0000000000000000 $t
-     /tmp/ccksSoQq.s:58     .text.MX_FREERTOS_Init:0000000000000000 MX_FREERTOS_Init
-     /tmp/ccksSoQq.s:96     .text.MX_FREERTOS_Init:0000000000000020 $d
+     /tmp/ccf4jX7S.s:16     .text.StartDefaultTask:0000000000000000 $t
+     /tmp/ccf4jX7S.s:23     .text.StartDefaultTask:0000000000000000 StartDefaultTask
+     /tmp/ccf4jX7S.s:51     .text.MX_FREERTOS_Init:0000000000000000 $t
+     /tmp/ccf4jX7S.s:58     .text.MX_FREERTOS_Init:0000000000000000 MX_FREERTOS_Init
+     /tmp/ccf4jX7S.s:96     .text.MX_FREERTOS_Init:0000000000000020 $d
                             *COM*:0000000000000004 defaultTaskHandle
-     /tmp/ccksSoQq.s:103    .rodata:0000000000000000 $d
-     /tmp/ccksSoQq.s:113    .rodata.str1.4:0000000000000000 $d
+     /tmp/ccf4jX7S.s:103    .rodata:0000000000000000 $d
+     /tmp/ccf4jX7S.s:113    .rodata.str1.4:0000000000000000 $d
                      .debug_frame:0000000000000010 $d
 
 UNDEFINED SYMBOLS

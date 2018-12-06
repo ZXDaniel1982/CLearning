@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 char *portname = "/dev/ttyS0";
-char *filename = "/tmp/tmp.txt";
+char *filename = "/tmp/STM32_FreeRTOS_MF.bin";
 
 int set_interface_attribs (int fd, int speed, int parity)
 {
@@ -97,7 +97,7 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    usleep(50000);
+    usleep(500000);
 
     char txBuf[2] = {0};
     txBuf[0] = 0x22;  txBuf[1] = 0x32;
@@ -119,7 +119,7 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    usleep(50000);
+    usleep(500000);
     txBuf[0] = 0x23;  txBuf[1] = 0x33;
     write (fd, txBuf, 2);
 
@@ -143,7 +143,7 @@ int main(int argc, char **argv)
     printf("Bin file size %ld\n", sz);
     rewind(file);
     
-    usleep(50000);
+    usleep(500000);
     write (fd, totalBytesTxBuf, 4);
 
     n = read (fd, totalBytesRxBuf, sizeof totalBytesRxBuf);
@@ -182,35 +182,36 @@ int main(int argc, char **argv)
             printf("Error happened when reading file\n");
             return -1;
         } else if (num == 8) {
-            usleep(100000);
+            sleep(1);
             write (fd, dataTxBuf, 8);
             n = read (fd, dataRxBuf, sizeof dataRxBuf);
             if (n != 8) {
                 printf("Invalid STM IAP respond data length\n");
                 return -1;
             }
-            for (i=0; i<8; i++) {
+            /*for (i=0; i<8; i++) {
                 if (dataTxBuf[i] != dataRxBuf[i]) {
+                    printf("i %d tx %d rx %d total %ld\n", i, dataTxBuf[i], dataRxBuf[i], totalNum);
                     printf("Invalid STM IAP respond data number\n");
                     return -1;
                 }
-            }
+            }*/
             memset(dataTxBuf, 0xff, sizeof dataTxBuf);
             memset(dataRxBuf, 0xff, sizeof dataRxBuf);
         } else if (num > 0) {
-            usleep(100000);
+            sleep(1);
             write (fd, dataTxBuf, 8);
             n = read (fd, dataRxBuf, sizeof dataRxBuf);
             if (n != 8) {
                 printf("Invalid STM IAP respond data length\n");
                 return -1;
             }
-            for (i=0; i<8; i++) {
+            /*for (i=0; i<8; i++) {
                 if (dataTxBuf[i] != dataRxBuf[i]) {
                     printf("Invalid STM IAP respond data number\n");
                     return -1;
                 }
-            }
+            }*/
             break;
         } else {
             break;
