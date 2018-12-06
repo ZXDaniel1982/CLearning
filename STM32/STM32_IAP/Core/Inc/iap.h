@@ -24,7 +24,7 @@ typedef enum
     IAP_ERR_INIT,
     IAP_ERR_PRG,
     IAP_ERR_VALID
-};
+} IAP_ERR_t;
 
 typedef  void (*pFunction)(void);
 
