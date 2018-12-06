@@ -68,8 +68,6 @@ void IAP_Flash()
 
 uint16_t IAP_Process()
 {
-    uint32_t preProgFlag = 0;
-
     MX_Led_On();
     if (MX_Key_Read() != GPIO_PIN_SET) {
         // Key is not pushed down
@@ -104,7 +102,7 @@ uint16_t IAP_Process()
         return IAP_ERR_INIT;
     }
 
-    HAL_Delay(50);
+    HAL_Delay(500);
     MX_Uart_Transmit(command[commandSeq], 2, IAP_TIMEOUT);  // send 0x22, 0x32
     commandSeq++;
 
@@ -122,7 +120,7 @@ uint16_t IAP_Process()
     uint32_t totalBytes = totalBytesBuf[0] * 0x1000000 + totalBytesBuf[1] * 0x10000 +
                             totalBytesBuf[2] * 0x100 + totalBytesBuf[3];
 
-    HAL_Delay(50);
+    HAL_Delay(500);
     MX_Uart_Transmit(totalBytesBuf, 4, IAP_TIMEOUT);   // send total number
 
     /***********************************************************
@@ -139,6 +137,7 @@ uint16_t IAP_Process()
     f.TypeErase = FLASH_TYPEERASE_PAGES;
     f.PageAddress = IAP_FLASH_PRG_ADDR;
     f.NbPages = block;
+		uint32_t PageError = 0;
     HAL_FLASHEx_Erase(&f, &PageError);
 
     /***********************************************************
@@ -147,27 +146,36 @@ uint16_t IAP_Process()
      ***********************************************************/
     uint32_t dataIndex = totalBytes / IAP_FLASH_WRITE_BYTES;
     uint32_t addr = IAP_FLASH_PRG_ADDR;
-    uint32_t value;
+    volatile uint32_t value, temp1, temp2;
+		volatile uint64_t dataVal;
     uint32_t i;
     uint8_t dataBuf[8] = { 0xff };
     for (i=0; i<dataIndex; i++) {
         MX_Uart_Receive(dataBuf, 8);
-        HAL_Delay(50);
+        HAL_Delay(1000);
         MX_Uart_Transmit(dataBuf, 8, IAP_TIMEOUT);
-        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, addr, dataBuf) != HAL_OK) {
+			  dataVal =   (uint64_t)dataBuf[0] * 0x100000000000000 + (uint64_t)dataBuf[1] * 0x1000000000000 +
+			              (uint64_t)dataBuf[2] * 0x10000000000 + (uint64_t)dataBuf[3] * 0x100000000 +
+			              (uint64_t)dataBuf[4] * 0x1000000 + (uint64_t)dataBuf[5] * 0x10000 +
+                    (uint64_t)dataBuf[6] * 0x100 + (uint64_t)dataBuf[7];
+        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, addr, dataVal) != HAL_OK) {
             return IAP_ERR_PRG;
         }
+#if 0
         value = dataBuf[0] * 0x1000000 + dataBuf[1] * 0x10000 +
                             dataBuf[2] * 0x100 + dataBuf[3];
-        if (*(__IO uint32_t *)addr != (value)) {
+				temp1 = *(__IO uint32_t *)addr;
+        if (temp1 != (value)) {
             return IAP_ERR_VALID;
         }
+				HAL_Delay(50);
         value = dataBuf[4] * 0x1000000 + dataBuf[5] * 0x10000 +
                             dataBuf[6] * 0x100 + dataBuf[7];
-        if (*(__IO uint32_t *)(addr+4) != (value)) {
+				temp2 = *(__IO uint32_t *)(addr+4);
+        if (temp2 != (value)) {
             return IAP_ERR_VALID;
         }
-
+#endif
         addr += IAP_FLASH_WRITE_BYTES;
     }
     HAL_FLASH_Lock();
@@ -177,7 +185,7 @@ uint16_t IAP_Process()
      * send     0x23  0x33
      * receive  0x24 0x34
      ***********************************************************/
-    HAL_Delay(50);
+    HAL_Delay(500);
     MX_Uart_Transmit(command[commandSeq], 2, IAP_TIMEOUT);  // send 0x23, 0x33
 
     MX_Led_Off();
