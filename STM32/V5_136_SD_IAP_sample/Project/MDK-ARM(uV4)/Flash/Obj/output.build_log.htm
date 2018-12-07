@@ -1,0 +1,58 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\Administrator\Desktop\V5_136_SD卡IAP\Project\MDK-ARM(uV4)\project.uvproj
+Project File Date:  01/04/2016
+
+<h2>Output:</h2>
+Build target 'Flash'
+compiling main.c...
+..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h(88): warning:  #47-D: incompatible redefinition of macro "STM32F40_41xxx"
+    #define STM32F40_41xxx
+..\..\User\stm32f4flash.h(8): warning:  #47-D: incompatible redefinition of macro "ADDR_FLASH_SECTOR_0" (declared at line 22 of "..\..\User\flash_if.h")
+  #define ADDR_FLASH_SECTOR_0  ((u32)0x08000000)//16KB
+..\..\User\stm32f4flash.h(9): warning:  #47-D: incompatible redefinition of macro "ADDR_FLASH_SECTOR_1" (declared at line 23 of "..\..\User\flash_if.h")
+  #define ADDR_FLASH_SECTOR_1  ((u32)0x08004000)//16KB
+..\..\User\stm32f4flash.h(10): warning:  #47-D: incompatible redefinition of macro "ADDR_FLASH_SECTOR_2" (declared at line 24 of "..\..\User\flash_if.h")
+  #define ADDR_FLASH_SECTOR_2  ((u32)0x08008000)//16KB
+..\..\User\stm32f4flash.h(11): warning:  #47-D: incompatible redefinition of macro "ADDR_FLASH_SECTOR_3" (declared at line 25 of "..\..\User\flash_if.h")
+  #define ADDR_FLASH_SECTOR_3  ((u32)0x0800C000)//16KB
+..\..\User\stm32f4flash.h(12): warning:  #47-D: incompatible redefinition of macro "ADDR_FLASH_SECTOR_4" (declared at line 26 of "..\..\User\flash_if.h")
+  #define ADDR_FLASH_SECTOR_4  ((u32)0x08010000)//64KB
+..\..\User\stm32f4flash.h(13): warning:  #47-D: incompatible redefinition of macro "ADDR_FLASH_SECTOR_5" (declared at line 27 of "..\..\User\flash_if.h")
+  #define ADDR_FLASH_SECTOR_5  ((u32)0x08020000)//128KB
+..\..\User\stm32f4flash.h(14): warning:  #47-D: incompatible redefinition of macro "ADDR_FLASH_SECTOR_6" (declared at line 28 of "..\..\User\flash_if.h")
+  #define ADDR_FLASH_SECTOR_6  ((u32)0x08040000)//128KB
+..\..\User\stm32f4flash.h(15): warning:  #47-D: incompatible redefinition of macro "ADDR_FLASH_SECTOR_7" (declared at line 29 of "..\..\User\flash_if.h")
+  #define ADDR_FLASH_SECTOR_7  ((u32)0x08060000)//128KB
+..\..\User\stm32f4flash.h(16): warning:  #47-D: incompatible redefinition of macro "ADDR_FLASH_SECTOR_8" (declared at line 30 of "..\..\User\flash_if.h")
+  #define ADDR_FLASH_SECTOR_8  ((u32)0x08080000)//128KB
+..\..\User\stm32f4flash.h(17): warning:  #47-D: incompatible redefinition of macro "ADDR_FLASH_SECTOR_9" (declared at line 31 of "..\..\User\flash_if.h")
+  #define ADDR_FLASH_SECTOR_9  ((u32)0x080A0000)//128KB
+..\..\User\stm32f4flash.h(18): warning:  #47-D: incompatible redefinition of macro "ADDR_FLASH_SECTOR_10" (declared at line 32 of "..\..\User\flash_if.h")
+  #define ADDR_FLASH_SECTOR_10 ((u32)0x080C0000)//128KB
+..\..\User\stm32f4flash.h(19): warning:  #47-D: incompatible redefinition of macro "ADDR_FLASH_SECTOR_11" (declared at line 33 of "..\..\User\flash_if.h")
+  #define ADDR_FLASH_SECTOR_11 ((u32)0x080E0000)//128KB
+..\..\User\main.c(144): warning:  #550-D: variable "key" was set but never used
+        uint8_t key = 0;
+..\..\User\main.c(205): warning:  #177-D: function "SerialDownload" was declared but never referenced
+  static void SerialDownload(void)
+..\..\User\main.c: 15 warnings, 0 errors
+linking...
+.\Flash\Obj\output.axf: Warning: L6304W: Duplicate input file .\flash\obj\bsp_sdio_sd.o ignored.
+Program Size: Code=17288 RO-data=424 RW-data=68 ZI-data=21036  
+Finished: 0 information, 1 warning and 0 error messages.
+FromELF: creating hex file...
+After Build - User command #1: CopyHex_Flash.bat
+C:\Users\Administrator\Desktop\V5_136_SD卡IAP\Project\MDK-ARM(uV4)>copy Flash\Obj\output.hex ..\output(mdk).hex 
+已复制         1 个文件。
+".\Flash\Obj\output.axf" - 0 Error(s), 16 Warning(s).
+Load "C:\\Users\\Administrator\\Desktop\\V5_136_SD卡IAP\\Project\\MDK-ARM(uV4)\\Flash\\Obj\\output.axf" 
+Erase Done.
+Programming Done.
+Verify OK.
+</pre>
+</body>
+</html>
