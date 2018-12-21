@@ -6,7 +6,6 @@
 #include <unistd.h>
 
 char *portname = "/dev/ttyS0";
-char *filename = "/tmp/STM32_FreeRTOS_MF.bin";
 
 int set_interface_attribs (int fd, int speed, int parity)
 {
@@ -69,6 +68,22 @@ set_blocking (int fd, int should_block)
 int main(int argc, char **argv)
 {
     int i;
+    int cmd = 0;
+    if (argc != 2) {
+        printf("usage : ./server [run | upd]\n");
+        return -1;
+    }
+
+    if (strcmp("run", argv[1]) == 0) {
+        cmd = 1;
+    } else if (strcmp("upd", argv[1]) == 0) {
+        cmd = 2;
+    } else {
+        printf("error command\n");
+        printf("usage : ./server [run | upd]\n");
+        return -1;
+    }
+
     int fd = open (portname, O_RDWR | O_NOCTTY);
     if (fd < 0) {
         printf("%s:%d error opening %s %d\n", __func__, __LINE__, portname, fd);
@@ -80,6 +95,28 @@ int main(int argc, char **argv)
 
     printf("Start programming mini STM32\n");
 
+    unsigned char rxBuf[2] = {0};
+    unsigned char txBuf[2] = {0};
+    while (1) {
+        int n = read (fd, rxBuf, sizeof rxBuf);
+        if (n != 2) {
+            printf("Invalid bytes %d\n", n);
+            return -1;
+        }
+        printf("Received data 0x%02x 0x%02x\n", rxBuf[0], rxBuf[1]);
+
+        if ((rxBuf[0] == 0x24) && (rxBuf[1] == 0x34)) {
+            if (cmd == 1) {
+                // run app
+                txBuf[0] = 0x15;  txBuf[1] = 0x17;
+            } else if (cmd == 2) {
+                // update app
+                txBuf[0] = 0x25;  txBuf[1] = 0x27;
+            }
+            write (fd, txBuf, 2);
+        }
+    }
+#if 0 
 //============================================================================================
 //    receive 0x21 0x31    transmit  0x22  0x23
 //============================================================================================
@@ -234,4 +271,5 @@ int main(int argc, char **argv)
         printf("Invalid STM IAP finish number\n");
         return -1;
     }
+#endif
 }
