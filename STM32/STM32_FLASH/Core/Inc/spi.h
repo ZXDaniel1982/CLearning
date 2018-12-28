@@ -63,13 +63,16 @@
 extern SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN Private defines */
-
+/* Select SPI FLASH: ChipSelect pin low  */
+#define Select_Flash()     HAL_GPIO_WritePin(SST_CS_GPIO_Port, SST_CS_Pin, GPIO_PIN_RESET)
+/* Deselect SPI FLASH: ChipSelect pin high */
+#define NotSelect_Flash()    HAL_GPIO_WritePin(SST_CS_GPIO_Port, SST_CS_Pin, GPIO_PIN_SET)
 /* USER CODE END Private defines */
 
 void MX_SPI1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+void EEPROM_Test(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

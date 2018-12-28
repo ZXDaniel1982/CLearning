@@ -1,1 +1,8 @@
 *.sisc
+*.d
+*.o
+*.lst
+*.hex
+*.bin
+*.elf
+*.map

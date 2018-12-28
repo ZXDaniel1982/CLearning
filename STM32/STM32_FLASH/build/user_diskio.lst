@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cclEipnc.s 			page 1
+ARM GAS  /tmp/cc7uerfl.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  /tmp/cclEipnc.s 			page 1
   30:FATFS/Target/user_diskio.c ****   * 5. Redistribution and use of this software other than as permitted under 
   31:FATFS/Target/user_diskio.c ****   *    this license is void and will automatically terminate your rights under 
   32:FATFS/Target/user_diskio.c ****   *    this license. 
-ARM GAS  /tmp/cclEipnc.s 			page 2
+ARM GAS  /tmp/cc7uerfl.s 			page 2
 
 
   33:FATFS/Target/user_diskio.c ****   *
@@ -118,7 +118,7 @@ ARM GAS  /tmp/cclEipnc.s 			page 1
   87:FATFS/Target/user_diskio.c ****   DRESULT USER_ioctl (BYTE pdrv, BYTE cmd, void *buff);
   88:FATFS/Target/user_diskio.c **** #endif /* _USE_IOCTL == 1 */
   89:FATFS/Target/user_diskio.c **** 
-ARM GAS  /tmp/cclEipnc.s 			page 3
+ARM GAS  /tmp/cc7uerfl.s 			page 3
 
 
   90:FATFS/Target/user_diskio.c **** Diskio_drvTypeDef  USER_Driver =
@@ -178,7 +178,7 @@ ARM GAS  /tmp/cclEipnc.s 			page 1
   53              		.thumb_func
   55              	USER_status:
   56              	.LFB64:
-ARM GAS  /tmp/cclEipnc.s 			page 4
+ARM GAS  /tmp/cc7uerfl.s 			page 4
 
 
  119:FATFS/Target/user_diskio.c ****  
@@ -238,7 +238,7 @@ ARM GAS  /tmp/cclEipnc.s 			page 1
  145:FATFS/Target/user_diskio.c **** 	BYTE *buff,     /* Data buffer to store read data */
  146:FATFS/Target/user_diskio.c **** 	DWORD sector,   /* Sector address in LBA */
  147:FATFS/Target/user_diskio.c **** 	UINT count      /* Number of sectors to read */
-ARM GAS  /tmp/cclEipnc.s 			page 5
+ARM GAS  /tmp/cc7uerfl.s 			page 5
 
 
  148:FATFS/Target/user_diskio.c **** )
@@ -298,7 +298,7 @@ ARM GAS  /tmp/cclEipnc.s 			page 1
  115 0000 0020     		movs	r0, #0
  116              	.LVL7:
  117 0002 7047     		bx	lr
-ARM GAS  /tmp/cclEipnc.s 			page 6
+ARM GAS  /tmp/cc7uerfl.s 			page 6
 
 
  118              		.cfi_endproc
@@ -358,7 +358,7 @@ ARM GAS  /tmp/cclEipnc.s 			page 1
  158 0000 01       		.byte	1
  159              		.text
  160              	.Letext0:
-ARM GAS  /tmp/cclEipnc.s 			page 7
+ARM GAS  /tmp/cc7uerfl.s 			page 7
 
 
  161              		.file 2 "/opt/gcc-arm-none-eabi-4_9-2015q3/arm-none-eabi/include/machine/_default_types.h"
@@ -367,26 +367,26 @@ ARM GAS  /tmp/cclEipnc.s 			page 1
  164              		.file 5 "/opt/gcc-arm-none-eabi-4_9-2015q3/arm-none-eabi/include/sys/_stdint.h"
  165              		.file 6 "Middlewares/Third_Party/FatFs/src/ff_gen_drv.h"
  166              		.file 7 "Drivers/CMSIS/Include/core_cm3.h"
-ARM GAS  /tmp/cclEipnc.s 			page 8
+ARM GAS  /tmp/cc7uerfl.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 user_diskio.c
-     /tmp/cclEipnc.s:19     .text.USER_initialize:00000000 $t
-     /tmp/cclEipnc.s:24     .text.USER_initialize:00000000 USER_initialize
-     /tmp/cclEipnc.s:45     .text.USER_initialize:0000000c $d
-     /tmp/cclEipnc.s:50     .text.USER_status:00000000 $t
-     /tmp/cclEipnc.s:55     .text.USER_status:00000000 USER_status
-     /tmp/cclEipnc.s:75     .text.USER_status:0000000c $d
-     /tmp/cclEipnc.s:80     .text.USER_read:00000000 $t
-     /tmp/cclEipnc.s:85     .text.USER_read:00000000 USER_read
-     /tmp/cclEipnc.s:101    .text.USER_write:00000000 $t
-     /tmp/cclEipnc.s:106    .text.USER_write:00000000 USER_write
-     /tmp/cclEipnc.s:122    .text.USER_ioctl:00000000 $t
-     /tmp/cclEipnc.s:127    .text.USER_ioctl:00000000 USER_ioctl
-     /tmp/cclEipnc.s:147    .data.USER_Driver:00000000 USER_Driver
-     /tmp/cclEipnc.s:144    .data.USER_Driver:00000000 $d
-     /tmp/cclEipnc.s:157    .data.Stat:00000000 Stat
+     /tmp/cc7uerfl.s:19     .text.USER_initialize:00000000 $t
+     /tmp/cc7uerfl.s:24     .text.USER_initialize:00000000 USER_initialize
+     /tmp/cc7uerfl.s:45     .text.USER_initialize:0000000c $d
+     /tmp/cc7uerfl.s:50     .text.USER_status:00000000 $t
+     /tmp/cc7uerfl.s:55     .text.USER_status:00000000 USER_status
+     /tmp/cc7uerfl.s:75     .text.USER_status:0000000c $d
+     /tmp/cc7uerfl.s:80     .text.USER_read:00000000 $t
+     /tmp/cc7uerfl.s:85     .text.USER_read:00000000 USER_read
+     /tmp/cc7uerfl.s:101    .text.USER_write:00000000 $t
+     /tmp/cc7uerfl.s:106    .text.USER_write:00000000 USER_write
+     /tmp/cc7uerfl.s:122    .text.USER_ioctl:00000000 $t
+     /tmp/cc7uerfl.s:127    .text.USER_ioctl:00000000 USER_ioctl
+     /tmp/cc7uerfl.s:147    .data.USER_Driver:00000000 USER_Driver
+     /tmp/cc7uerfl.s:144    .data.USER_Driver:00000000 $d
+     /tmp/cc7uerfl.s:157    .data.Stat:00000000 Stat
                      .debug_frame:00000010 $d
 
 NO UNDEFINED SYMBOLS

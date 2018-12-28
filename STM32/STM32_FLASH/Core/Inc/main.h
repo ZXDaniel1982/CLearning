@@ -95,6 +95,8 @@ void Error_Handler(void);
 #define Led_GPIO_Port GPIOB
 #define Lcd_RST_Pin GPIO_PIN_1
 #define Lcd_RST_GPIO_Port GPIOE
+#define SST_CS_Pin GPIO_PIN_4
+#define SST_CS_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

@@ -126,7 +126,8 @@ int main(void)
   MX_FATFS_Init();
   MX_FSMC_Init();
   /* USER CODE BEGIN 2 */
-
+  LCD_Init();
+  EEPROM_Test();
   /* USER CODE END 2 */
 
   /* Infinite loop */
