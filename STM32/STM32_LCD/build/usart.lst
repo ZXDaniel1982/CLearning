@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccgWwPQM.s 			page 1
+ARM GAS  /tmp/cc3h9lai.s 			page 1
 
 
    1              		.syntax unified
@@ -18,13 +18,14 @@ ARM GAS  /tmp/ccgWwPQM.s 			page 1
   15              		.text
   16              	.Ltext0:
   17              		.cfi_sections	.debug_frame
-  18              		.section	.text.LCD_WR_CMD,"ax",%progbits
+  18              		.section	.text.MX_USART1_UART_Init,"ax",%progbits
   19              		.align	2
-  20              		.thumb
-  21              		.thumb_func
-  23              	LCD_WR_CMD:
-  24              	.LFB72:
-  25              		.file 1 "Core/Src/usart.c"
+  20              		.global	MX_USART1_UART_Init
+  21              		.thumb
+  22              		.thumb_func
+  24              	MX_USART1_UART_Init:
+  25              	.LFB63:
+  26              		.file 1 "Core/Src/usart.c"
    1:Core/Src/usart.c **** /**
    2:Core/Src/usart.c ****   ******************************************************************************
    3:Core/Src/usart.c ****   * File Name          : USART.c
@@ -57,10 +58,10 @@ ARM GAS  /tmp/ccgWwPQM.s 			page 1
   30:Core/Src/usart.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
   31:Core/Src/usart.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
   32:Core/Src/usart.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ARM GAS  /tmp/cc3h9lai.s 			page 2
+
+
   33:Core/Src/usart.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-ARM GAS  /tmp/ccgWwPQM.s 			page 2
-
-
   34:Core/Src/usart.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   35:Core/Src/usart.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   36:Core/Src/usart.c ****   *
@@ -71,2860 +72,306 @@ ARM GAS  /tmp/ccgWwPQM.s 			page 1
   41:Core/Src/usart.c **** #include "usart.h"
   42:Core/Src/usart.c **** 
   43:Core/Src/usart.c **** /* USER CODE BEGIN 0 */
-  44:Core/Src/usart.c **** static void lcd_rst(void);
-  45:Core/Src/usart.c **** static void LCD_Clear(void);
-  46:Core/Src/usart.c **** static void LCD_WR_REG(unsigned int index);
-  47:Core/Src/usart.c **** static void LCD_WR_Data(unsigned int val);
-  48:Core/Src/usart.c **** static void TFT_ShowChar(uint8_t x,uint16_t y,uint8_t num);
-  49:Core/Src/usart.c **** static void LCD_WR_CMD(unsigned int index,unsigned int val);
-  50:Core/Src/usart.c **** static void TFT_ShowString(uint8_t x,uint16_t y,const uint8_t *p);
-  51:Core/Src/usart.c **** 
-  52:Core/Src/usart.c **** static unsigned long color1=0;
-  53:Core/Src/usart.c **** static uint16_t POINT_COLOR;
-  54:Core/Src/usart.c **** static uint8_t blank[] = "                                                    ";
-  55:Core/Src/usart.c **** static uint16_t strIndex = 0;
-  56:Core/Src/usart.c **** 
-  57:Core/Src/usart.c **** const unsigned char asc2_1206[95][12]={
-  58:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00},/*" ",0*/
-  59:Core/Src/usart.c **** {0x00,0x00,0x04,0x04,0x04,0x04,0x04,0x04,0x00,0x04,0x00,0x00},/*"!",1*/
-  60:Core/Src/usart.c **** {0x00,0x14,0x0A,0x0A,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00},/*""",2*/
-  61:Core/Src/usart.c **** {0x00,0x00,0x14,0x14,0x3F,0x14,0x0A,0x3F,0x0A,0x0A,0x00,0x00},/*"#",3*/
-  62:Core/Src/usart.c **** {0x00,0x04,0x1E,0x15,0x05,0x06,0x0C,0x14,0x15,0x0F,0x04,0x00},/*"$",4*/
-  63:Core/Src/usart.c **** {0x00,0x00,0x12,0x15,0x0D,0x0A,0x14,0x2C,0x2A,0x12,0x00,0x00},/*"%",5*/
-  64:Core/Src/usart.c **** {0x00,0x00,0x04,0x0A,0x0A,0x1E,0x15,0x15,0x09,0x36,0x00,0x00},/*"&",6*/
-  65:Core/Src/usart.c **** {0x00,0x02,0x02,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00},/*"'",7*/
-  66:Core/Src/usart.c **** {0x00,0x20,0x10,0x08,0x08,0x08,0x08,0x08,0x08,0x10,0x20,0x00},/*"(",8*/
-  67:Core/Src/usart.c **** {0x00,0x02,0x04,0x08,0x08,0x08,0x08,0x08,0x08,0x04,0x02,0x00},/*")",9*/
-  68:Core/Src/usart.c **** {0x00,0x00,0x00,0x04,0x15,0x0E,0x0E,0x15,0x04,0x00,0x00,0x00},/*"*",10*/
-  69:Core/Src/usart.c **** {0x00,0x00,0x04,0x04,0x04,0x1F,0x04,0x04,0x04,0x00,0x00,0x00},/*"+",11*/
-  70:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x02,0x02,0x01},/*",",12*/
-  71:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x1F,0x00,0x00,0x00,0x00,0x00,0x00},/*"-",13*/
-  72:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x02,0x00,0x00},/*".",14*/
-  73:Core/Src/usart.c **** {0x00,0x10,0x08,0x08,0x08,0x04,0x04,0x02,0x02,0x02,0x01,0x00},/*"/",15*/
-  74:Core/Src/usart.c **** {0x00,0x00,0x0E,0x11,0x11,0x11,0x11,0x11,0x11,0x0E,0x00,0x00},/*"0",16*/
-  75:Core/Src/usart.c **** {0x00,0x00,0x04,0x06,0x04,0x04,0x04,0x04,0x04,0x0E,0x00,0x00},/*"1",17*/
-  76:Core/Src/usart.c **** {0x00,0x00,0x0E,0x11,0x11,0x08,0x04,0x02,0x01,0x1F,0x00,0x00},/*"2",18*/
-  77:Core/Src/usart.c **** {0x00,0x00,0x0E,0x11,0x10,0x0C,0x10,0x10,0x11,0x0E,0x00,0x00},/*"3",19*/
-  78:Core/Src/usart.c **** {0x00,0x00,0x08,0x0C,0x0A,0x0A,0x09,0x1E,0x08,0x18,0x00,0x00},/*"4",20*/
-  79:Core/Src/usart.c **** {0x00,0x00,0x1F,0x01,0x01,0x0F,0x10,0x10,0x11,0x0E,0x00,0x00},/*"5",21*/
-  80:Core/Src/usart.c **** {0x00,0x00,0x0E,0x09,0x01,0x0F,0x11,0x11,0x11,0x0E,0x00,0x00},/*"6",22*/
-  81:Core/Src/usart.c **** {0x00,0x00,0x1F,0x09,0x08,0x04,0x04,0x04,0x04,0x04,0x00,0x00},/*"7",23*/
-  82:Core/Src/usart.c **** {0x00,0x00,0x0E,0x11,0x11,0x0E,0x11,0x11,0x11,0x0E,0x00,0x00},/*"8",24*/
-  83:Core/Src/usart.c **** {0x00,0x00,0x0E,0x11,0x11,0x11,0x1E,0x10,0x12,0x0E,0x00,0x00},/*"9",25*/
-  84:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x04,0x00,0x00,0x00,0x00,0x04,0x00,0x00},/*":",26*/
-  85:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x04,0x00,0x00,0x00,0x04,0x04,0x00},/*";",27*/
-  86:Core/Src/usart.c **** {0x00,0x20,0x10,0x08,0x04,0x02,0x04,0x08,0x10,0x20,0x00,0x00},/*"<",28*/
-  87:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x1F,0x00,0x00,0x1F,0x00,0x00,0x00,0x00},/*"=",29*/
-  88:Core/Src/usart.c **** {0x00,0x02,0x04,0x08,0x10,0x20,0x10,0x08,0x04,0x02,0x00,0x00},/*">",30*/
-  89:Core/Src/usart.c **** {0x00,0x00,0x0E,0x11,0x11,0x08,0x04,0x04,0x00,0x04,0x00,0x00},/*"?",31*/
-  90:Core/Src/usart.c **** {0x00,0x00,0x0E,0x11,0x19,0x15,0x15,0x1D,0x01,0x1E,0x00,0x00},/*"@",32*/
-ARM GAS  /tmp/ccgWwPQM.s 			page 3
-
-
-  91:Core/Src/usart.c **** {0x00,0x00,0x04,0x04,0x0C,0x0A,0x0A,0x1E,0x12,0x33,0x00,0x00},/*"A",33*/
-  92:Core/Src/usart.c **** {0x00,0x00,0x0F,0x12,0x12,0x0E,0x12,0x12,0x12,0x0F,0x00,0x00},/*"B",34*/
-  93:Core/Src/usart.c **** {0x00,0x00,0x1E,0x11,0x01,0x01,0x01,0x01,0x11,0x0E,0x00,0x00},/*"C",35*/
-  94:Core/Src/usart.c **** {0x00,0x00,0x0F,0x12,0x12,0x12,0x12,0x12,0x12,0x0F,0x00,0x00},/*"D",36*/
-  95:Core/Src/usart.c **** {0x00,0x00,0x1F,0x12,0x0A,0x0E,0x0A,0x02,0x12,0x1F,0x00,0x00},/*"E",37*/
-  96:Core/Src/usart.c **** {0x00,0x00,0x1F,0x12,0x0A,0x0E,0x0A,0x02,0x02,0x07,0x00,0x00},/*"F",38*/
-  97:Core/Src/usart.c **** {0x00,0x00,0x1C,0x12,0x01,0x01,0x39,0x11,0x12,0x0C,0x00,0x00},/*"G",39*/
-  98:Core/Src/usart.c **** {0x00,0x00,0x33,0x12,0x12,0x1E,0x12,0x12,0x12,0x33,0x00,0x00},/*"H",40*/
-  99:Core/Src/usart.c **** {0x00,0x00,0x1F,0x04,0x04,0x04,0x04,0x04,0x04,0x1F,0x00,0x00},/*"I",41*/
- 100:Core/Src/usart.c **** {0x00,0x00,0x3E,0x08,0x08,0x08,0x08,0x08,0x08,0x09,0x07,0x00},/*"J",42*/
- 101:Core/Src/usart.c **** {0x00,0x00,0x37,0x12,0x0A,0x06,0x0A,0x0A,0x12,0x37,0x00,0x00},/*"K",43*/
- 102:Core/Src/usart.c **** {0x00,0x00,0x07,0x02,0x02,0x02,0x02,0x02,0x22,0x3F,0x00,0x00},/*"L",44*/
- 103:Core/Src/usart.c **** {0x00,0x00,0x1B,0x1B,0x1B,0x1B,0x15,0x15,0x15,0x15,0x00,0x00},/*"M",45*/
- 104:Core/Src/usart.c **** {0x00,0x00,0x3B,0x12,0x16,0x16,0x1A,0x1A,0x12,0x17,0x00,0x00},/*"N",46*/
- 105:Core/Src/usart.c **** {0x00,0x00,0x0E,0x11,0x11,0x11,0x11,0x11,0x11,0x0E,0x00,0x00},/*"O",47*/
- 106:Core/Src/usart.c **** {0x00,0x00,0x0F,0x12,0x12,0x0E,0x02,0x02,0x02,0x07,0x00,0x00},/*"P",48*/
- 107:Core/Src/usart.c **** {0x00,0x00,0x0E,0x11,0x11,0x11,0x11,0x17,0x19,0x0E,0x18,0x00},/*"Q",49*/
- 108:Core/Src/usart.c **** {0x00,0x00,0x0F,0x12,0x12,0x0E,0x0A,0x12,0x12,0x37,0x00,0x00},/*"R",50*/
- 109:Core/Src/usart.c **** {0x00,0x00,0x1E,0x11,0x01,0x06,0x08,0x10,0x11,0x0F,0x00,0x00},/*"S",51*/
- 110:Core/Src/usart.c **** {0x00,0x00,0x1F,0x15,0x04,0x04,0x04,0x04,0x04,0x0E,0x00,0x00},/*"T",52*/
- 111:Core/Src/usart.c **** {0x00,0x00,0x33,0x12,0x12,0x12,0x12,0x12,0x12,0x0C,0x00,0x00},/*"U",53*/
- 112:Core/Src/usart.c **** {0x00,0x00,0x33,0x12,0x12,0x0A,0x0A,0x0C,0x04,0x04,0x00,0x00},/*"V",54*/
- 113:Core/Src/usart.c **** {0x00,0x00,0x15,0x15,0x15,0x0E,0x0A,0x0A,0x0A,0x0A,0x00,0x00},/*"W",55*/
- 114:Core/Src/usart.c **** {0x00,0x00,0x1B,0x0A,0x0A,0x04,0x04,0x0A,0x0A,0x1B,0x00,0x00},/*"X",56*/
- 115:Core/Src/usart.c **** {0x00,0x00,0x1B,0x0A,0x0A,0x04,0x04,0x04,0x04,0x0E,0x00,0x00},/*"Y",57*/
- 116:Core/Src/usart.c **** {0x00,0x00,0x1F,0x09,0x08,0x04,0x04,0x02,0x12,0x1F,0x00,0x00},/*"Z",58*/
- 117:Core/Src/usart.c **** {0x00,0x1C,0x04,0x04,0x04,0x04,0x04,0x04,0x04,0x04,0x1C,0x00},/*"[",59*/
- 118:Core/Src/usart.c **** {0x00,0x02,0x02,0x02,0x04,0x04,0x08,0x08,0x08,0x10,0x00,0x00},/*"\",60*/
- 119:Core/Src/usart.c **** {0x00,0x0E,0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x0E,0x00},/*"]",61*/
- 120:Core/Src/usart.c **** {0x00,0x04,0x0A,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00},/*"^",62*/
- 121:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x3F},/*"_",63*/
- 122:Core/Src/usart.c **** {0x00,0x04,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00},/*"`",64*/
- 123:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x0C,0x12,0x1C,0x12,0x3C,0x00,0x00},/*"a",65*/
- 124:Core/Src/usart.c **** {0x00,0x00,0x03,0x02,0x02,0x0E,0x12,0x12,0x12,0x0E,0x00,0x00},/*"b",66*/
- 125:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x1C,0x12,0x02,0x02,0x1C,0x00,0x00},/*"c",67*/
- 126:Core/Src/usart.c **** {0x00,0x00,0x18,0x10,0x10,0x1C,0x12,0x12,0x12,0x3C,0x00,0x00},/*"d",68*/
- 127:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x0C,0x12,0x1E,0x02,0x1C,0x00,0x00},/*"e",69*/
- 128:Core/Src/usart.c **** {0x00,0x00,0x38,0x04,0x04,0x1E,0x04,0x04,0x04,0x1E,0x00,0x00},/*"f",70*/
- 129:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x3C,0x12,0x0C,0x02,0x1E,0x22,0x1C},/*"g",71*/
- 130:Core/Src/usart.c **** {0x00,0x00,0x03,0x02,0x02,0x0E,0x12,0x12,0x12,0x37,0x00,0x00},/*"h",72*/
- 131:Core/Src/usart.c **** {0x00,0x00,0x04,0x00,0x00,0x06,0x04,0x04,0x04,0x0E,0x00,0x00},/*"i",73*/
- 132:Core/Src/usart.c **** {0x00,0x00,0x08,0x00,0x00,0x0C,0x08,0x08,0x08,0x08,0x08,0x07},/*"j",74*/
- 133:Core/Src/usart.c **** {0x00,0x00,0x03,0x02,0x02,0x3A,0x0A,0x0E,0x12,0x37,0x00,0x00},/*"k",75*/
- 134:Core/Src/usart.c **** {0x00,0x00,0x07,0x04,0x04,0x04,0x04,0x04,0x04,0x1F,0x00,0x00},/*"l",76*/
- 135:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x0F,0x15,0x15,0x15,0x15,0x00,0x00},/*"m",77*/
- 136:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x0F,0x12,0x12,0x12,0x37,0x00,0x00},/*"n",78*/
- 137:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x0C,0x12,0x12,0x12,0x0C,0x00,0x00},/*"o",79*/
- 138:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x0F,0x12,0x12,0x12,0x0E,0x02,0x07},/*"p",80*/
- 139:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x1C,0x12,0x12,0x12,0x1C,0x10,0x38},/*"q",81*/
- 140:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x1B,0x06,0x02,0x02,0x07,0x00,0x00},/*"r",82*/
- 141:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x1E,0x02,0x0C,0x10,0x1E,0x00,0x00},/*"s",83*/
- 142:Core/Src/usart.c **** {0x00,0x00,0x00,0x04,0x04,0x0E,0x04,0x04,0x04,0x18,0x00,0x00},/*"t",84*/
- 143:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x1B,0x12,0x12,0x12,0x3C,0x00,0x00},/*"u",85*/
- 144:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x37,0x12,0x0A,0x0C,0x04,0x00,0x00},/*"v",86*/
- 145:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x15,0x15,0x0E,0x0A,0x0A,0x00,0x00},/*"w",87*/
- 146:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x1B,0x0A,0x04,0x0A,0x1B,0x00,0x00},/*"x",88*/
- 147:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x37,0x12,0x0A,0x0C,0x04,0x04,0x03},/*"y",89*/
-ARM GAS  /tmp/ccgWwPQM.s 			page 4
-
-
- 148:Core/Src/usart.c **** {0x00,0x00,0x00,0x00,0x00,0x1E,0x08,0x04,0x04,0x1E,0x00,0x00},/*"z",90*/
- 149:Core/Src/usart.c **** {0x00,0x18,0x08,0x08,0x08,0x04,0x08,0x08,0x08,0x08,0x18,0x00},/*"{",91*/
- 150:Core/Src/usart.c **** {0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x08},/*"|",92*/
- 151:Core/Src/usart.c **** {0x00,0x06,0x04,0x04,0x04,0x08,0x04,0x04,0x04,0x04,0x06,0x00},/*"}",93*/
- 152:Core/Src/usart.c **** {0x02,0x25,0x18,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00} /*"~",94*/
- 153:Core/Src/usart.c **** };
- 154:Core/Src/usart.c **** /* USER CODE END 0 */
- 155:Core/Src/usart.c **** 
- 156:Core/Src/usart.c **** UART_HandleTypeDef huart1;
- 157:Core/Src/usart.c **** 
- 158:Core/Src/usart.c **** /* USART1 init function */
- 159:Core/Src/usart.c **** 
- 160:Core/Src/usart.c **** void MX_USART1_UART_Init(void)
- 161:Core/Src/usart.c **** {
- 162:Core/Src/usart.c **** 
- 163:Core/Src/usart.c ****   huart1.Instance = USART1;
- 164:Core/Src/usart.c ****   huart1.Init.BaudRate = 115200;
- 165:Core/Src/usart.c ****   huart1.Init.WordLength = UART_WORDLENGTH_8B;
- 166:Core/Src/usart.c ****   huart1.Init.StopBits = UART_STOPBITS_1;
- 167:Core/Src/usart.c ****   huart1.Init.Parity = UART_PARITY_NONE;
- 168:Core/Src/usart.c ****   huart1.Init.Mode = UART_MODE_TX_RX;
- 169:Core/Src/usart.c ****   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
- 170:Core/Src/usart.c ****   huart1.Init.OverSampling = UART_OVERSAMPLING_16;
- 171:Core/Src/usart.c ****   if (HAL_UART_Init(&huart1) != HAL_OK)
- 172:Core/Src/usart.c ****   {
- 173:Core/Src/usart.c ****     Error_Handler();
- 174:Core/Src/usart.c ****   }
- 175:Core/Src/usart.c **** 
- 176:Core/Src/usart.c **** }
- 177:Core/Src/usart.c **** 
- 178:Core/Src/usart.c **** void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
- 179:Core/Src/usart.c **** {
- 180:Core/Src/usart.c **** 
- 181:Core/Src/usart.c ****   GPIO_InitTypeDef GPIO_InitStruct = {0};
- 182:Core/Src/usart.c ****   if(uartHandle->Instance==USART1)
- 183:Core/Src/usart.c ****   {
- 184:Core/Src/usart.c ****   /* USER CODE BEGIN USART1_MspInit 0 */
- 185:Core/Src/usart.c **** 
- 186:Core/Src/usart.c ****   /* USER CODE END USART1_MspInit 0 */
- 187:Core/Src/usart.c ****     /* USART1 clock enable */
- 188:Core/Src/usart.c ****     __HAL_RCC_USART1_CLK_ENABLE();
- 189:Core/Src/usart.c ****   
- 190:Core/Src/usart.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
- 191:Core/Src/usart.c ****     /**USART1 GPIO Configuration    
- 192:Core/Src/usart.c ****     PA9     ------> USART1_TX
- 193:Core/Src/usart.c ****     PA10     ------> USART1_RX 
- 194:Core/Src/usart.c ****     */
- 195:Core/Src/usart.c ****     GPIO_InitStruct.Pin = GPIO_PIN_9;
- 196:Core/Src/usart.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
- 197:Core/Src/usart.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
- 198:Core/Src/usart.c ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
- 199:Core/Src/usart.c **** 
- 200:Core/Src/usart.c ****     GPIO_InitStruct.Pin = GPIO_PIN_10;
- 201:Core/Src/usart.c ****     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
- 202:Core/Src/usart.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
- 203:Core/Src/usart.c ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
- 204:Core/Src/usart.c **** 
-ARM GAS  /tmp/ccgWwPQM.s 			page 5
-
-
- 205:Core/Src/usart.c ****   /* USER CODE BEGIN USART1_MspInit 1 */
- 206:Core/Src/usart.c **** 
- 207:Core/Src/usart.c ****   /* USER CODE END USART1_MspInit 1 */
- 208:Core/Src/usart.c ****   }
- 209:Core/Src/usart.c **** }
- 210:Core/Src/usart.c **** 
- 211:Core/Src/usart.c **** void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
- 212:Core/Src/usart.c **** {
- 213:Core/Src/usart.c **** 
- 214:Core/Src/usart.c ****   if(uartHandle->Instance==USART1)
- 215:Core/Src/usart.c ****   {
- 216:Core/Src/usart.c ****   /* USER CODE BEGIN USART1_MspDeInit 0 */
- 217:Core/Src/usart.c **** 
- 218:Core/Src/usart.c ****   /* USER CODE END USART1_MspDeInit 0 */
- 219:Core/Src/usart.c ****     /* Peripheral clock disable */
- 220:Core/Src/usart.c ****     __HAL_RCC_USART1_CLK_DISABLE();
- 221:Core/Src/usart.c ****   
- 222:Core/Src/usart.c ****     /**USART1 GPIO Configuration    
- 223:Core/Src/usart.c ****     PA9     ------> USART1_TX
- 224:Core/Src/usart.c ****     PA10     ------> USART1_RX 
- 225:Core/Src/usart.c ****     */
- 226:Core/Src/usart.c ****     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9|GPIO_PIN_10);
- 227:Core/Src/usart.c **** 
- 228:Core/Src/usart.c ****   /* USER CODE BEGIN USART1_MspDeInit 1 */
- 229:Core/Src/usart.c **** 
- 230:Core/Src/usart.c ****   /* USER CODE END USART1_MspDeInit 1 */
- 231:Core/Src/usart.c ****   }
- 232:Core/Src/usart.c **** } 
- 233:Core/Src/usart.c **** 
- 234:Core/Src/usart.c **** /* USER CODE BEGIN 1 */
- 235:Core/Src/usart.c **** static void lcd_rst(void){
- 236:Core/Src/usart.c ****     HAL_GPIO_WritePin(Lcd_RST_GPIO_Port, Lcd_RST_Pin, GPIO_PIN_RESET);
- 237:Core/Src/usart.c ****     HAL_Delay(10);
- 238:Core/Src/usart.c ****     HAL_GPIO_WritePin(Lcd_RST_GPIO_Port, Lcd_RST_Pin, GPIO_PIN_SET);
- 239:Core/Src/usart.c ****     HAL_Delay(10);
- 240:Core/Src/usart.c **** 
- 241:Core/Src/usart.c ****     HAL_GPIO_WritePin(Light_PWM_GPIO_Port, Light_PWM_Pin, GPIO_PIN_SET);
- 242:Core/Src/usart.c **** }
- 243:Core/Src/usart.c **** 
- 244:Core/Src/usart.c **** static void LCD_Clear(void)
- 245:Core/Src/usart.c **** {
- 246:Core/Src/usart.c ****     uint16_t i;
- 247:Core/Src/usart.c ****     for (i=0;i<=LCD_CLR_ROW;i++)
- 248:Core/Src/usart.c ****         TFT_ShowString(0,i*12,(uint8_t *)blank);
- 249:Core/Src/usart.c **** }
- 250:Core/Src/usart.c **** 
- 251:Core/Src/usart.c **** void LCD_Init(void)
- 252:Core/Src/usart.c **** {
- 253:Core/Src/usart.c ****     lcd_rst();                  //硬件复位
- 254:Core/Src/usart.c **** 
- 255:Core/Src/usart.c ****         //Driving ability Setting
- 256:Core/Src/usart.c ****     LCD_WR_CMD(0xEA,0x00); //PTBA[15:8]
- 257:Core/Src/usart.c ****     LCD_WR_CMD(0xEB,0x20); //PTBA[7:0]
- 258:Core/Src/usart.c ****     LCD_WR_CMD(0xEC,0x3C); //STBA[15:8]
- 259:Core/Src/usart.c ****     LCD_WR_CMD(0xED,0xC4); //STBA[7:0]
- 260:Core/Src/usart.c ****     LCD_WR_CMD(0xE8,0x48); //OPON[7:0]
- 261:Core/Src/usart.c ****     LCD_WR_CMD(0xE9,0x38); //OPON1[7:0]
-ARM GAS  /tmp/ccgWwPQM.s 			page 6
-
-
- 262:Core/Src/usart.c ****     LCD_WR_CMD(0xF1,0x01); //OTPS1B
- 263:Core/Src/usart.c ****     LCD_WR_CMD(0xF2,0x08); //GEN
- 264:Core/Src/usart.c ****     //Gamma 2.2 Setting
- 265:Core/Src/usart.c ****     LCD_WR_CMD(0x40,0x01); //
- 266:Core/Src/usart.c ****     LCD_WR_CMD(0x41,0x07); //
- 267:Core/Src/usart.c ****     LCD_WR_CMD(0x42,0x09); //
- 268:Core/Src/usart.c ****     LCD_WR_CMD(0x43,0x19); //
- 269:Core/Src/usart.c ****     LCD_WR_CMD(0x44,0x17); //
- 270:Core/Src/usart.c ****     LCD_WR_CMD(0x45,0x20); //
- 271:Core/Src/usart.c ****     LCD_WR_CMD(0x46,0x18); //
- 272:Core/Src/usart.c ****     LCD_WR_CMD(0x47,0x61); //
- 273:Core/Src/usart.c ****     LCD_WR_CMD(0x48,0x00); //
- 274:Core/Src/usart.c ****     LCD_WR_CMD(0x49,0x10); //
- 275:Core/Src/usart.c ****     LCD_WR_CMD(0x4A,0x17); //
- 276:Core/Src/usart.c ****     LCD_WR_CMD(0x4B,0x19); //
- 277:Core/Src/usart.c ****     LCD_WR_CMD(0x4C,0x14); //
- 278:Core/Src/usart.c ****     LCD_WR_CMD(0x50,0x1F); //
- 279:Core/Src/usart.c ****     LCD_WR_CMD(0x51,0x28); //
- 280:Core/Src/usart.c ****     LCD_WR_CMD(0x52,0x26); //
- 281:Core/Src/usart.c ****     LCD_WR_CMD(0x53,0x36); //
- 282:Core/Src/usart.c ****     LCD_WR_CMD(0x54,0x38); //
- 283:Core/Src/usart.c ****     LCD_WR_CMD(0x55,0x3E); //
- 284:Core/Src/usart.c ****     LCD_WR_CMD(0x56,0x1E); //
- 285:Core/Src/usart.c ****     LCD_WR_CMD(0x57,0x67); //
- 286:Core/Src/usart.c ****     LCD_WR_CMD(0x58,0x0B); //
- 287:Core/Src/usart.c ****     LCD_WR_CMD(0x59,0x06); //
- 288:Core/Src/usart.c ****     LCD_WR_CMD(0x5A,0x08); //
- 289:Core/Src/usart.c ****     LCD_WR_CMD(0x5B,0x0F); //
- 290:Core/Src/usart.c ****     LCD_WR_CMD(0x5C,0x1F); //
- 291:Core/Src/usart.c ****     LCD_WR_CMD(0x5D,0xCC); //
- 292:Core/Src/usart.c **** 
- 293:Core/Src/usart.c ****     //Power Voltage Setting
- 294:Core/Src/usart.c ****     LCD_WR_CMD(0x1B,0x1B); //VRH=4.65V
- 295:Core/Src/usart.c ****     LCD_WR_CMD(0x1A,0x01); //BT (VGH~15V,VGL~-10V,DDVDH~5V)
- 296:Core/Src/usart.c ****     LCD_WR_CMD(0x24,0x70); //VMH(VCOM High voltage ~4.2V)
- 297:Core/Src/usart.c ****     LCD_WR_CMD(0x25,0x58); //VML(VCOM Low voltage -1.2V)
- 298:Core/Src/usart.c **** 
- 299:Core/Src/usart.c ****     //****VCOM offset**///
- 300:Core/Src/usart.c ****     LCD_WR_CMD(0x23,0x6E); //for Flicker adjust //can reload from OTP
- 301:Core/Src/usart.c ****     //Power on Setting
- 302:Core/Src/usart.c ****     LCD_WR_CMD(0x18,0x36); //I/P_RADJ,N/P_RADJ, Normal mode 70Hz
- 303:Core/Src/usart.c ****     LCD_WR_CMD(0x19,0x01); //OSC_EN='1', start Osc
- 304:Core/Src/usart.c ****     LCD_WR_CMD(0x01,0x00); //DP_STB='0', out deep sleep
- 305:Core/Src/usart.c ****     LCD_WR_CMD(0x1F,0xD0);// GAS=1, VOMG=10, PON=1, DK=0, XDK=0, DDVDH_TRI=0, STB=0
- 306:Core/Src/usart.c ****     LCD_WR_CMD(0x17,0x05); //default 0x06 262k color // 0x05 65k color
- 307:Core/Src/usart.c ****     //SET PANEL
- 308:Core/Src/usart.c ****     LCD_WR_CMD(0x36,0x09); //SS_P, GS_P,REV_P,BGR_P
- 309:Core/Src/usart.c ****     LCD_WR_CMD(0x28,0x3F); //GON=1, DTE=1, D=1100
- 310:Core/Src/usart.c ****     LCD_WR_CMD(0x16,0x50); //左上到右下   竖屏
- 311:Core/Src/usart.c **** 
- 312:Core/Src/usart.c ****     /*
- 313:Core/Src/usart.c ****      * Memory access control register (PAGE0 -16h)
- 314:Core/Src/usart.c ****      * MY: 0从上到下, 1从下到上
- 315:Core/Src/usart.c ****      * MX: 0从左到右, 1从右到左
- 316:Core/Src/usart.c ****      * MV选择横竖屏0竖屏1横屏
- 317:Core/Src/usart.c ****      * ML用于Partial Display Area Setting
- 318:Core/Src/usart.c ****      * BGR = 0, RGB color filter panel
-ARM GAS  /tmp/ccgWwPQM.s 			page 7
-
-
- 319:Core/Src/usart.c ****      */
- 320:Core/Src/usart.c ****     LCD_WR_CMD(0x16,0XE0); //
- 321:Core/Src/usart.c ****     LCD_WR_CMD(0x02,0x00);
- 322:Core/Src/usart.c ****     LCD_WR_CMD(0x03,0x00); //Column Start
- 323:Core/Src/usart.c ****     LCD_WR_CMD(0x04,0x00);
- 324:Core/Src/usart.c ****     LCD_WR_CMD(0x05,0xEF); //Column End
- 325:Core/Src/usart.c **** 
- 326:Core/Src/usart.c ****     LCD_WR_CMD(0x06,0x00);
- 327:Core/Src/usart.c ****     LCD_WR_CMD(0x07,0x00); //Row Start
- 328:Core/Src/usart.c ****     LCD_WR_CMD(0x08,0x01);
- 329:Core/Src/usart.c ****     LCD_WR_CMD(0x09,0x3F); //Row End
- 330:Core/Src/usart.c **** 
- 331:Core/Src/usart.c ****     for(color1=0;color1<76800;color1++)     //用黑色清屏
- 332:Core/Src/usart.c ****     {
- 333:Core/Src/usart.c ****       LCD_WR_Data(0xffff);
- 334:Core/Src/usart.c ****     }
- 335:Core/Src/usart.c ****     color1=0;
- 336:Core/Src/usart.c **** 
- 337:Core/Src/usart.c ****     LCD_Clear();
- 338:Core/Src/usart.c ****     POINT_COLOR = RED;
- 339:Core/Src/usart.c **** }
- 340:Core/Src/usart.c **** 
- 341:Core/Src/usart.c **** static void TFT_ShowChar(uint8_t x,uint16_t y,uint8_t num)
- 342:Core/Src/usart.c **** {
- 343:Core/Src/usart.c ****     uint8_t temp;
- 344:Core/Src/usart.c ****     uint8_t pos,t;
- 345:Core/Src/usart.c ****     if(x>MAX_CHAR_POSX||y>MAX_CHAR_POSY)return;
- 346:Core/Src/usart.c ****     //设定一个字符所占的窗口大小
- 347:Core/Src/usart.c **** 
- 348:Core/Src/usart.c **** 
- 349:Core/Src/usart.c ****     LCD_WR_CMD(0x02,0);
- 350:Core/Src/usart.c ****     LCD_WR_CMD(0x03,x); //Column Start
- 351:Core/Src/usart.c ****     LCD_WR_CMD(0x04,0);
- 352:Core/Src/usart.c ****     LCD_WR_CMD(0x05,x+5); //Column End
- 353:Core/Src/usart.c **** 
- 354:Core/Src/usart.c ****     LCD_WR_CMD(0x06,y>>8);
- 355:Core/Src/usart.c ****     LCD_WR_CMD(0x07,(uint8_t)y); //Row Start
- 356:Core/Src/usart.c ****     LCD_WR_CMD(0x08,(y+11)>>8);
- 357:Core/Src/usart.c ****     LCD_WR_CMD(0x09,(uint8_t)(y+11)); //Row End
- 358:Core/Src/usart.c **** 
- 359:Core/Src/usart.c ****     LCD_WR_CMD(0x02, 0);            //水平显示区起始地址 0-239
- 360:Core/Src/usart.c ****     LCD_WR_CMD(0x03, x);           //水平显示区结束地址 0-239
- 361:Core/Src/usart.c ****     LCD_WR_CMD(0x06, y>>8);     //垂直显示区起始地址 0-319
- 362:Core/Src/usart.c ****     LCD_WR_CMD(0x07, (uint8_t)y);         //垂直显示区结束地址 0-319
- 363:Core/Src/usart.c **** 
- 364:Core/Src/usart.c **** 
- 365:Core/Src/usart.c **** 
- 366:Core/Src/usart.c ****     LCD_WR_REG(34);
- 367:Core/Src/usart.c ****     num=num-' ';                        //得到偏移后的值
- 368:Core/Src/usart.c ****     for(pos=0;pos<12;pos++) {
- 369:Core/Src/usart.c ****         temp=asc2_1206[num][pos];       //获得字模数组的值
- 370:Core/Src/usart.c ****         for(t=0;t<6;t++)
- 371:Core/Src/usart.c ****         {
- 372:Core/Src/usart.c ****             if(temp&0x01)LCD_WR_Data(POINT_COLOR);    //位为1 用指定颜色写入到像素
- 373:Core/Src/usart.c ****             else LCD_WR_Data(0xffff);                 //位为0 用白色写入到像素
- 374:Core/Src/usart.c ****             temp>>=1;
- 375:Core/Src/usart.c ****         }
-ARM GAS  /tmp/ccgWwPQM.s 			page 8
-
-
- 376:Core/Src/usart.c ****     }
- 377:Core/Src/usart.c **** }
- 378:Core/Src/usart.c **** 
- 379:Core/Src/usart.c **** static void TFT_ShowString(uint8_t x,uint16_t y,const uint8_t *p)
- 380:Core/Src/usart.c **** {
- 381:Core/Src/usart.c ****     while(*p!='\0')
- 382:Core/Src/usart.c ****     {
- 383:Core/Src/usart.c ****         TFT_ShowChar(x,y,*p);
- 384:Core/Src/usart.c ****         x+=6;
- 385:Core/Src/usart.c ****         p++;
- 386:Core/Src/usart.c ****     }
- 387:Core/Src/usart.c **** }
- 388:Core/Src/usart.c **** 
- 389:Core/Src/usart.c **** void tftprintf(uint8_t *p)
- 390:Core/Src/usart.c **** {
- 391:Core/Src/usart.c ****     if (strIndex > LCD_STR_NUM_MAX) {
- 392:Core/Src/usart.c ****         strIndex = 0;
- 393:Core/Src/usart.c ****         LCD_Clear();
- 394:Core/Src/usart.c ****     }
- 395:Core/Src/usart.c ****     TFT_ShowString(2,(strIndex*14+2),(uint8_t *)p);
- 396:Core/Src/usart.c ****     strIndex++;
- 397:Core/Src/usart.c **** }
- 398:Core/Src/usart.c **** 
- 399:Core/Src/usart.c **** //写寄存器数据函数
- 400:Core/Src/usart.c **** //输入：dbw 数据位数，1为16位，0为8位。
- 401:Core/Src/usart.c **** static void LCD_WR_CMD(unsigned int index,unsigned int val)
- 402:Core/Src/usart.c **** {
-  26              		.loc 1 402 0
-  27              		.cfi_startproc
-  28              		@ args = 0, pretend = 0, frame = 0
-  29              		@ frame_needed = 0, uses_anonymous_args = 0
-  30              		@ link register save eliminated.
-  31              	.LVL0:
- 403:Core/Src/usart.c ****     *(__IO uint16_t *) (Bank1_LCD_C)= index;
-  32              		.loc 1 403 0
-  33 0000 80B2     		uxth	r0, r0
-  34              	.LVL1:
-  35 0002 4FF0C043 		mov	r3, #1610612736
-  36 0006 1880     		strh	r0, [r3]	@ movhi
- 404:Core/Src/usart.c ****     *(__IO uint16_t *) (Bank1_LCD_D)= val;
-  37              		.loc 1 404 0
-  38 0008 89B2     		uxth	r1, r1
-  39              	.LVL2:
-  40 000a 03F50033 		add	r3, r3, #131072
-  41 000e 1980     		strh	r1, [r3]	@ movhi
-  42 0010 7047     		bx	lr
-  43              		.cfi_endproc
-  44              	.LFE72:
-  46 0012 00BF     		.section	.text.LCD_WR_Data,"ax",%progbits
-  47              		.align	2
-  48              		.thumb
-  49              		.thumb_func
-  51              	LCD_WR_Data:
-  52              	.LFB73:
- 405:Core/Src/usart.c **** }
- 406:Core/Src/usart.c **** //写16位像素数据函数
- 407:Core/Src/usart.c **** static void LCD_WR_Data(unsigned int val)
-ARM GAS  /tmp/ccgWwPQM.s 			page 9
-
-
- 408:Core/Src/usart.c **** {
-  53              		.loc 1 408 0
-  54              		.cfi_startproc
-  55              		@ args = 0, pretend = 0, frame = 0
-  56              		@ frame_needed = 0, uses_anonymous_args = 0
-  57              		@ link register save eliminated.
-  58              	.LVL3:
- 409:Core/Src/usart.c ****     *(__IO uint16_t *) (Bank1_LCD_D)= val;
-  59              		.loc 1 409 0
-  60 0000 80B2     		uxth	r0, r0
-  61              	.LVL4:
-  62 0002 014B     		ldr	r3, .L3
-  63 0004 1880     		strh	r0, [r3]	@ movhi
-  64 0006 7047     		bx	lr
-  65              	.L4:
-  66              		.align	2
-  67              	.L3:
-  68 0008 00000260 		.word	1610743808
-  69              		.cfi_endproc
-  70              	.LFE73:
-  72              		.section	.text.LCD_WR_REG,"ax",%progbits
-  73              		.align	2
-  74              		.thumb
-  75              		.thumb_func
-  77              	LCD_WR_REG:
-  78              	.LFB74:
- 410:Core/Src/usart.c **** }
- 411:Core/Src/usart.c **** //写寄存器地址函数
- 412:Core/Src/usart.c **** static void LCD_WR_REG(unsigned int index)
- 413:Core/Src/usart.c **** {
-  79              		.loc 1 413 0
-  80              		.cfi_startproc
-  81              		@ args = 0, pretend = 0, frame = 0
-  82              		@ frame_needed = 0, uses_anonymous_args = 0
-  83              		@ link register save eliminated.
-  84              	.LVL5:
- 414:Core/Src/usart.c ****     *(__IO uint16_t *) (Bank1_LCD_C)= index;
-  85              		.loc 1 414 0
-  86 0000 80B2     		uxth	r0, r0
-  87              	.LVL6:
-  88 0002 4FF0C043 		mov	r3, #1610612736
-  89 0006 1880     		strh	r0, [r3]	@ movhi
-  90 0008 7047     		bx	lr
-  91              		.cfi_endproc
-  92              	.LFE74:
-  94 000a 00BF     		.section	.text.TFT_ShowChar,"ax",%progbits
-  95              		.align	2
-  96              		.thumb
-  97              		.thumb_func
-  99              	TFT_ShowChar:
- 100              	.LFB69:
- 342:Core/Src/usart.c ****     uint8_t temp;
- 101              		.loc 1 342 0
- 102              		.cfi_startproc
- 103              		@ args = 0, pretend = 0, frame = 0
- 104              		@ frame_needed = 0, uses_anonymous_args = 0
- 105              	.LVL7:
-ARM GAS  /tmp/ccgWwPQM.s 			page 10
-
-
- 106 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
- 107              	.LCFI0:
- 108              		.cfi_def_cfa_offset 24
- 109              		.cfi_offset 4, -24
- 110              		.cfi_offset 5, -20
- 111              		.cfi_offset 6, -16
- 112              		.cfi_offset 7, -12
- 113              		.cfi_offset 8, -8
- 114              		.cfi_offset 14, -4
- 115 0004 0C46     		mov	r4, r1
- 345:Core/Src/usart.c ****     //设定一个字符所占的窗口大小
- 116              		.loc 1 345 0
- 117 0006 E229     		cmp	r1, #226
- 118 0008 5CD8     		bhi	.L6
- 119 000a 0646     		mov	r6, r0
- 120 000c 1546     		mov	r5, r2
- 349:Core/Src/usart.c ****     LCD_WR_CMD(0x03,x); //Column Start
- 121              		.loc 1 349 0
- 122 000e 0220     		movs	r0, #2
- 123              	.LVL8:
- 124 0010 0021     		movs	r1, #0
- 125              	.LVL9:
- 126 0012 FFF7FEFF 		bl	LCD_WR_CMD
- 127              	.LVL10:
- 350:Core/Src/usart.c ****     LCD_WR_CMD(0x04,0);
- 128              		.loc 1 350 0
- 129 0016 0320     		movs	r0, #3
- 130 0018 3146     		mov	r1, r6
- 131 001a FFF7FEFF 		bl	LCD_WR_CMD
- 132              	.LVL11:
- 351:Core/Src/usart.c ****     LCD_WR_CMD(0x05,x+5); //Column End
- 133              		.loc 1 351 0
- 134 001e 0420     		movs	r0, #4
- 135 0020 0021     		movs	r1, #0
- 136 0022 FFF7FEFF 		bl	LCD_WR_CMD
- 137              	.LVL12:
- 352:Core/Src/usart.c **** 
- 138              		.loc 1 352 0
- 139 0026 0520     		movs	r0, #5
- 140 0028 3118     		adds	r1, r6, r0
- 141 002a FFF7FEFF 		bl	LCD_WR_CMD
- 142              	.LVL13:
- 354:Core/Src/usart.c ****     LCD_WR_CMD(0x07,(uint8_t)y); //Row Start
- 143              		.loc 1 354 0
- 144 002e 4FEA1428 		lsr	r8, r4, #8
- 145 0032 0620     		movs	r0, #6
- 146 0034 4146     		mov	r1, r8
- 147 0036 FFF7FEFF 		bl	LCD_WR_CMD
- 148              	.LVL14:
- 355:Core/Src/usart.c ****     LCD_WR_CMD(0x08,(y+11)>>8);
- 149              		.loc 1 355 0
- 150 003a E7B2     		uxtb	r7, r4
- 151 003c 0720     		movs	r0, #7
- 152 003e 3946     		mov	r1, r7
- 153 0040 FFF7FEFF 		bl	LCD_WR_CMD
- 154              	.LVL15:
- 356:Core/Src/usart.c ****     LCD_WR_CMD(0x09,(uint8_t)(y+11)); //Row End
-ARM GAS  /tmp/ccgWwPQM.s 			page 11
-
-
- 155              		.loc 1 356 0
- 156 0044 04F10B01 		add	r1, r4, #11
- 157 0048 0820     		movs	r0, #8
- 158 004a 0141     		asrs	r1, r1, r0
- 159 004c FFF7FEFF 		bl	LCD_WR_CMD
- 160              	.LVL16:
- 357:Core/Src/usart.c **** 
- 161              		.loc 1 357 0
- 162 0050 07F10B01 		add	r1, r7, #11
- 163 0054 0920     		movs	r0, #9
- 164 0056 C9B2     		uxtb	r1, r1
- 165 0058 FFF7FEFF 		bl	LCD_WR_CMD
- 166              	.LVL17:
- 359:Core/Src/usart.c ****     LCD_WR_CMD(0x03, x);           //水平显示区结束地址 0-239
- 167              		.loc 1 359 0
- 168 005c 0220     		movs	r0, #2
- 169 005e 0021     		movs	r1, #0
- 170 0060 FFF7FEFF 		bl	LCD_WR_CMD
- 171              	.LVL18:
- 360:Core/Src/usart.c ****     LCD_WR_CMD(0x06, y>>8);     //垂直显示区起始地址 0-319
- 172              		.loc 1 360 0
- 173 0064 0320     		movs	r0, #3
- 174 0066 3146     		mov	r1, r6
- 175 0068 FFF7FEFF 		bl	LCD_WR_CMD
- 176              	.LVL19:
- 361:Core/Src/usart.c ****     LCD_WR_CMD(0x07, (uint8_t)y);         //垂直显示区结束地址 0-319
- 177              		.loc 1 361 0
- 178 006c 0620     		movs	r0, #6
- 179 006e 4146     		mov	r1, r8
- 180 0070 FFF7FEFF 		bl	LCD_WR_CMD
- 181              	.LVL20:
- 362:Core/Src/usart.c **** 
- 182              		.loc 1 362 0
- 183 0074 0720     		movs	r0, #7
- 184 0076 3946     		mov	r1, r7
- 185 0078 FFF7FEFF 		bl	LCD_WR_CMD
- 186              	.LVL21:
- 366:Core/Src/usart.c ****     num=num-' ';                        //得到偏移后的值
- 187              		.loc 1 366 0
- 188 007c 2220     		movs	r0, #34
- 189 007e FFF7FEFF 		bl	LCD_WR_REG
- 190              	.LVL22:
- 367:Core/Src/usart.c ****     for(pos=0;pos<12;pos++) {
- 191              		.loc 1 367 0
- 192 0082 203D     		subs	r5, r5, #32
- 193 0084 EFB2     		uxtb	r7, r5
- 194              	.LVL23:
- 368:Core/Src/usart.c ****         temp=asc2_1206[num][pos];       //获得字模数组的值
- 195              		.loc 1 368 0
- 196 0086 0026     		movs	r6, #0
- 197 0088 1AE0     		b	.L8
- 198              	.LVL24:
- 199              	.L13:
- 369:Core/Src/usart.c ****         for(t=0;t<6;t++)
- 200              		.loc 1 369 0
- 201 008a 07EB4703 		add	r3, r7, r7, lsl #1
- 202 008e 9B00     		lsls	r3, r3, #2
-ARM GAS  /tmp/ccgWwPQM.s 			page 12
-
-
- 203 0090 3344     		add	r3, r3, r6
- 204 0092 0D4A     		ldr	r2, .L15
- 205 0094 D55C     		ldrb	r5, [r2, r3]	@ zero_extendqisi2
- 206              	.LVL25:
- 370:Core/Src/usart.c ****         {
- 207              		.loc 1 370 0
- 208 0096 0024     		movs	r4, #0
- 209 0098 0EE0     		b	.L9
- 210              	.LVL26:
- 211              	.L12:
- 372:Core/Src/usart.c ****             else LCD_WR_Data(0xffff);                 //位为0 用白色写入到像素
- 212              		.loc 1 372 0
- 213 009a 15F0010F 		tst	r5, #1
- 214 009e 04D0     		beq	.L10
- 372:Core/Src/usart.c ****             else LCD_WR_Data(0xffff);                 //位为0 用白色写入到像素
- 215              		.loc 1 372 0 is_stmt 0 discriminator 1
- 216 00a0 0A4B     		ldr	r3, .L15+4
- 217 00a2 1888     		ldrh	r0, [r3]
- 218 00a4 FFF7FEFF 		bl	LCD_WR_Data
- 219              	.LVL27:
- 220 00a8 03E0     		b	.L11
- 221              	.L10:
- 373:Core/Src/usart.c ****             temp>>=1;
- 222              		.loc 1 373 0 is_stmt 1
- 223 00aa 4FF6FF70 		movw	r0, #65535
- 224 00ae FFF7FEFF 		bl	LCD_WR_Data
- 225              	.LVL28:
- 226              	.L11:
- 374:Core/Src/usart.c ****         }
- 227              		.loc 1 374 0 discriminator 2
- 228 00b2 6D08     		lsrs	r5, r5, #1
- 229              	.LVL29:
- 370:Core/Src/usart.c ****         {
- 230              		.loc 1 370 0 discriminator 2
- 231 00b4 0134     		adds	r4, r4, #1
- 232              	.LVL30:
- 233 00b6 E4B2     		uxtb	r4, r4
- 234              	.LVL31:
- 235              	.L9:
- 370:Core/Src/usart.c ****         {
- 236              		.loc 1 370 0 is_stmt 0 discriminator 1
- 237 00b8 052C     		cmp	r4, #5
- 238 00ba EED9     		bls	.L12
- 368:Core/Src/usart.c ****         temp=asc2_1206[num][pos];       //获得字模数组的值
- 239              		.loc 1 368 0 is_stmt 1 discriminator 2
- 240 00bc 0136     		adds	r6, r6, #1
- 241              	.LVL32:
- 242 00be F6B2     		uxtb	r6, r6
- 243              	.LVL33:
- 244              	.L8:
- 368:Core/Src/usart.c ****         temp=asc2_1206[num][pos];       //获得字模数组的值
- 245              		.loc 1 368 0 is_stmt 0 discriminator 1
- 246 00c0 0B2E     		cmp	r6, #11
- 247 00c2 E2D9     		bls	.L13
- 248              	.LVL34:
- 249              	.L6:
- 250 00c4 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
-ARM GAS  /tmp/ccgWwPQM.s 			page 13
-
-
- 251              	.L16:
- 252              		.align	2
- 253              	.L15:
- 254 00c8 00000000 		.word	.LANCHOR0
- 255 00cc 00000000 		.word	.LANCHOR1
- 256              		.cfi_endproc
- 257              	.LFE69:
- 259              		.section	.text.TFT_ShowString,"ax",%progbits
- 260              		.align	2
- 261              		.thumb
- 262              		.thumb_func
- 264              	TFT_ShowString:
- 265              	.LFB70:
- 380:Core/Src/usart.c ****     while(*p!='\0')
- 266              		.loc 1 380 0 is_stmt 1
- 267              		.cfi_startproc
- 268              		@ args = 0, pretend = 0, frame = 0
- 269              		@ frame_needed = 0, uses_anonymous_args = 0
- 270              	.LVL35:
- 271 0000 70B5     		push	{r4, r5, r6, lr}
- 272              	.LCFI1:
- 273              		.cfi_def_cfa_offset 16
- 274              		.cfi_offset 4, -16
- 275              		.cfi_offset 5, -12
- 276              		.cfi_offset 6, -8
- 277              		.cfi_offset 14, -4
- 278 0002 0446     		mov	r4, r0
- 279 0004 0E46     		mov	r6, r1
- 280 0006 1546     		mov	r5, r2
- 381:Core/Src/usart.c ****     {
- 281              		.loc 1 381 0
- 282 0008 06E0     		b	.L18
- 283              	.LVL36:
- 284              	.L19:
- 383:Core/Src/usart.c ****         x+=6;
- 285              		.loc 1 383 0
- 286 000a 2046     		mov	r0, r4
- 287 000c 3146     		mov	r1, r6
- 288 000e FFF7FEFF 		bl	TFT_ShowChar
- 289              	.LVL37:
- 384:Core/Src/usart.c ****         p++;
- 290              		.loc 1 384 0
- 291 0012 0634     		adds	r4, r4, #6
- 292              	.LVL38:
- 293 0014 E4B2     		uxtb	r4, r4
- 294              	.LVL39:
- 385:Core/Src/usart.c ****     }
- 295              		.loc 1 385 0
- 296 0016 0135     		adds	r5, r5, #1
- 297              	.LVL40:
- 298              	.L18:
- 381:Core/Src/usart.c ****     {
- 299              		.loc 1 381 0
- 300 0018 2A78     		ldrb	r2, [r5]	@ zero_extendqisi2
- 301 001a 002A     		cmp	r2, #0
- 302 001c F5D1     		bne	.L19
- 387:Core/Src/usart.c **** 
-ARM GAS  /tmp/ccgWwPQM.s 			page 14
-
-
- 303              		.loc 1 387 0
- 304 001e 70BD     		pop	{r4, r5, r6, pc}
- 305              		.cfi_endproc
- 306              	.LFE70:
- 308              		.section	.text.LCD_Clear,"ax",%progbits
- 309              		.align	2
- 310              		.thumb
- 311              		.thumb_func
- 313              	LCD_Clear:
- 314              	.LFB67:
- 245:Core/Src/usart.c ****     uint16_t i;
- 315              		.loc 1 245 0
- 316              		.cfi_startproc
- 317              		@ args = 0, pretend = 0, frame = 0
- 318              		@ frame_needed = 0, uses_anonymous_args = 0
- 319 0000 10B5     		push	{r4, lr}
- 320              	.LCFI2:
- 321              		.cfi_def_cfa_offset 8
- 322              		.cfi_offset 4, -8
- 323              		.cfi_offset 14, -4
- 324              	.LVL41:
- 247:Core/Src/usart.c ****         TFT_ShowString(0,i*12,(uint8_t *)blank);
- 325              		.loc 1 247 0
- 326 0002 0024     		movs	r4, #0
- 327 0004 09E0     		b	.L22
- 328              	.LVL42:
- 329              	.L23:
- 248:Core/Src/usart.c **** }
- 330              		.loc 1 248 0 discriminator 3
- 331 0006 04EB4403 		add	r3, r4, r4, lsl #1
- 332 000a 9900     		lsls	r1, r3, #2
- 333 000c 89B2     		uxth	r1, r1
- 334 000e 0020     		movs	r0, #0
- 335 0010 034A     		ldr	r2, .L25
- 336 0012 FFF7FEFF 		bl	TFT_ShowString
- 337              	.LVL43:
- 247:Core/Src/usart.c ****         TFT_ShowString(0,i*12,(uint8_t *)blank);
- 338              		.loc 1 247 0 discriminator 3
- 339 0016 0134     		adds	r4, r4, #1
- 340              	.LVL44:
- 341 0018 A4B2     		uxth	r4, r4
- 342              	.LVL45:
- 343              	.L22:
- 247:Core/Src/usart.c ****         TFT_ShowString(0,i*12,(uint8_t *)blank);
- 344              		.loc 1 247 0 is_stmt 0 discriminator 1
- 345 001a 142C     		cmp	r4, #20
- 346 001c F3D9     		bls	.L23
- 249:Core/Src/usart.c **** 
- 347              		.loc 1 249 0 is_stmt 1
- 348 001e 10BD     		pop	{r4, pc}
- 349              	.LVL46:
- 350              	.L26:
- 351              		.align	2
- 352              	.L25:
- 353 0020 00000000 		.word	.LANCHOR2
- 354              		.cfi_endproc
- 355              	.LFE67:
-ARM GAS  /tmp/ccgWwPQM.s 			page 15
-
-
- 357              		.section	.text.lcd_rst,"ax",%progbits
- 358              		.align	2
- 359              		.thumb
- 360              		.thumb_func
- 362              	lcd_rst:
- 363              	.LFB66:
- 235:Core/Src/usart.c ****     HAL_GPIO_WritePin(Lcd_RST_GPIO_Port, Lcd_RST_Pin, GPIO_PIN_RESET);
- 364              		.loc 1 235 0
- 365              		.cfi_startproc
- 366              		@ args = 0, pretend = 0, frame = 0
- 367              		@ frame_needed = 0, uses_anonymous_args = 0
- 368 0000 10B5     		push	{r4, lr}
- 369              	.LCFI3:
- 370              		.cfi_def_cfa_offset 8
- 371              		.cfi_offset 4, -8
- 372              		.cfi_offset 14, -4
- 236:Core/Src/usart.c ****     HAL_Delay(10);
- 373              		.loc 1 236 0
- 374 0002 0C4C     		ldr	r4, .L29
- 375 0004 2046     		mov	r0, r4
- 376 0006 0221     		movs	r1, #2
- 377 0008 0022     		movs	r2, #0
- 378 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
- 379              	.LVL47:
- 237:Core/Src/usart.c ****     HAL_GPIO_WritePin(Lcd_RST_GPIO_Port, Lcd_RST_Pin, GPIO_PIN_SET);
- 380              		.loc 1 237 0
- 381 000e 0A20     		movs	r0, #10
- 382 0010 FFF7FEFF 		bl	HAL_Delay
- 383              	.LVL48:
- 238:Core/Src/usart.c ****     HAL_Delay(10);
- 384              		.loc 1 238 0
- 385 0014 2046     		mov	r0, r4
- 386 0016 0221     		movs	r1, #2
- 387 0018 0122     		movs	r2, #1
- 388 001a FFF7FEFF 		bl	HAL_GPIO_WritePin
- 389              	.LVL49:
- 239:Core/Src/usart.c **** 
- 390              		.loc 1 239 0
- 391 001e 0A20     		movs	r0, #10
- 392 0020 FFF7FEFF 		bl	HAL_Delay
- 393              	.LVL50:
- 241:Core/Src/usart.c **** }
- 394              		.loc 1 241 0
- 395 0024 0448     		ldr	r0, .L29+4
- 396 0026 4FF40051 		mov	r1, #8192
- 397 002a 0122     		movs	r2, #1
- 398 002c FFF7FEFF 		bl	HAL_GPIO_WritePin
- 399              	.LVL51:
- 400 0030 10BD     		pop	{r4, pc}
- 401              	.L30:
- 402 0032 00BF     		.align	2
- 403              	.L29:
- 404 0034 00180140 		.word	1073813504
- 405 0038 00140140 		.word	1073812480
- 406              		.cfi_endproc
- 407              	.LFE66:
- 409              		.section	.text.MX_USART1_UART_Init,"ax",%progbits
-ARM GAS  /tmp/ccgWwPQM.s 			page 16
-
-
- 410              		.align	2
- 411              		.global	MX_USART1_UART_Init
- 412              		.thumb
- 413              		.thumb_func
- 415              	MX_USART1_UART_Init:
- 416              	.LFB63:
- 161:Core/Src/usart.c **** 
- 417              		.loc 1 161 0
- 418              		.cfi_startproc
- 419              		@ args = 0, pretend = 0, frame = 0
- 420              		@ frame_needed = 0, uses_anonymous_args = 0
- 421 0000 08B5     		push	{r3, lr}
- 422              	.LCFI4:
- 423              		.cfi_def_cfa_offset 8
- 424              		.cfi_offset 3, -8
- 425              		.cfi_offset 14, -4
- 163:Core/Src/usart.c ****   huart1.Init.BaudRate = 115200;
- 426              		.loc 1 163 0
- 427 0002 0A48     		ldr	r0, .L34
- 428 0004 0A4B     		ldr	r3, .L34+4
- 429 0006 0360     		str	r3, [r0]
- 164:Core/Src/usart.c ****   huart1.Init.WordLength = UART_WORDLENGTH_8B;
- 430              		.loc 1 164 0
- 431 0008 4FF4E133 		mov	r3, #115200
- 432 000c 4360     		str	r3, [r0, #4]
- 165:Core/Src/usart.c ****   huart1.Init.StopBits = UART_STOPBITS_1;
- 433              		.loc 1 165 0
- 434 000e 0023     		movs	r3, #0
- 435 0010 8360     		str	r3, [r0, #8]
- 166:Core/Src/usart.c ****   huart1.Init.Parity = UART_PARITY_NONE;
- 436              		.loc 1 166 0
- 437 0012 C360     		str	r3, [r0, #12]
- 167:Core/Src/usart.c ****   huart1.Init.Mode = UART_MODE_TX_RX;
- 438              		.loc 1 167 0
- 439 0014 0361     		str	r3, [r0, #16]
- 168:Core/Src/usart.c ****   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
- 440              		.loc 1 168 0
- 441 0016 0C22     		movs	r2, #12
- 442 0018 4261     		str	r2, [r0, #20]
- 169:Core/Src/usart.c ****   huart1.Init.OverSampling = UART_OVERSAMPLING_16;
- 443              		.loc 1 169 0
- 444 001a 8361     		str	r3, [r0, #24]
- 170:Core/Src/usart.c ****   if (HAL_UART_Init(&huart1) != HAL_OK)
- 445              		.loc 1 170 0
- 446 001c C361     		str	r3, [r0, #28]
- 171:Core/Src/usart.c ****   {
- 447              		.loc 1 171 0
- 448 001e FFF7FEFF 		bl	HAL_UART_Init
- 449              	.LVL52:
- 450 0022 08B1     		cbz	r0, .L31
- 173:Core/Src/usart.c ****   }
- 451              		.loc 1 173 0
- 452 0024 FFF7FEFF 		bl	Error_Handler
- 453              	.LVL53:
- 454              	.L31:
- 455 0028 08BD     		pop	{r3, pc}
- 456              	.L35:
-ARM GAS  /tmp/ccgWwPQM.s 			page 17
-
-
- 457 002a 00BF     		.align	2
- 458              	.L34:
- 459 002c 00000000 		.word	huart1
- 460 0030 00380140 		.word	1073821696
- 461              		.cfi_endproc
- 462              	.LFE63:
- 464              		.section	.text.HAL_UART_MspInit,"ax",%progbits
- 465              		.align	2
- 466              		.global	HAL_UART_MspInit
- 467              		.thumb
- 468              		.thumb_func
- 470              	HAL_UART_MspInit:
- 471              	.LFB64:
- 179:Core/Src/usart.c **** 
- 472              		.loc 1 179 0
- 473              		.cfi_startproc
- 474              		@ args = 0, pretend = 0, frame = 24
- 475              		@ frame_needed = 0, uses_anonymous_args = 0
- 476              	.LVL54:
- 477 0000 10B5     		push	{r4, lr}
- 478              	.LCFI5:
- 479              		.cfi_def_cfa_offset 8
- 480              		.cfi_offset 4, -8
- 481              		.cfi_offset 14, -4
- 482 0002 86B0     		sub	sp, sp, #24
- 483              	.LCFI6:
- 484              		.cfi_def_cfa_offset 32
- 181:Core/Src/usart.c ****   if(uartHandle->Instance==USART1)
- 485              		.loc 1 181 0
- 486 0004 0023     		movs	r3, #0
- 487 0006 0293     		str	r3, [sp, #8]
- 488 0008 0393     		str	r3, [sp, #12]
- 489 000a 0493     		str	r3, [sp, #16]
- 490 000c 0593     		str	r3, [sp, #20]
- 182:Core/Src/usart.c ****   {
- 491              		.loc 1 182 0
- 492 000e 0268     		ldr	r2, [r0]
- 493 0010 174B     		ldr	r3, .L39
- 494 0012 9A42     		cmp	r2, r3
- 495 0014 29D1     		bne	.L36
- 496              	.LBB2:
- 188:Core/Src/usart.c ****   
- 497              		.loc 1 188 0
- 498 0016 03F55843 		add	r3, r3, #55296
- 499 001a 9A69     		ldr	r2, [r3, #24]
- 500 001c 42F48042 		orr	r2, r2, #16384
- 501 0020 9A61     		str	r2, [r3, #24]
- 502 0022 9A69     		ldr	r2, [r3, #24]
- 503 0024 02F48042 		and	r2, r2, #16384
- 504 0028 0092     		str	r2, [sp]
- 505 002a 009A     		ldr	r2, [sp]
- 506              	.LBE2:
- 507              	.LBB3:
- 190:Core/Src/usart.c ****     /**USART1 GPIO Configuration    
- 508              		.loc 1 190 0
- 509 002c 9A69     		ldr	r2, [r3, #24]
- 510 002e 42F00402 		orr	r2, r2, #4
-ARM GAS  /tmp/ccgWwPQM.s 			page 18
-
-
- 511 0032 9A61     		str	r2, [r3, #24]
- 512 0034 9B69     		ldr	r3, [r3, #24]
- 513 0036 03F00403 		and	r3, r3, #4
- 514 003a 0193     		str	r3, [sp, #4]
- 515 003c 019B     		ldr	r3, [sp, #4]
- 516              	.LBE3:
- 195:Core/Src/usart.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
- 517              		.loc 1 195 0
- 518 003e 4FF40073 		mov	r3, #512
- 519 0042 0293     		str	r3, [sp, #8]
- 196:Core/Src/usart.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
- 520              		.loc 1 196 0
- 521 0044 0223     		movs	r3, #2
- 522 0046 0393     		str	r3, [sp, #12]
- 197:Core/Src/usart.c ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
- 523              		.loc 1 197 0
- 524 0048 0323     		movs	r3, #3
- 525 004a 0593     		str	r3, [sp, #20]
- 198:Core/Src/usart.c **** 
- 526              		.loc 1 198 0
- 527 004c 094C     		ldr	r4, .L39+4
- 528 004e 2046     		mov	r0, r4
- 529              	.LVL55:
- 530 0050 02A9     		add	r1, sp, #8
- 531 0052 FFF7FEFF 		bl	HAL_GPIO_Init
- 532              	.LVL56:
- 200:Core/Src/usart.c ****     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
- 533              		.loc 1 200 0
- 534 0056 4FF48063 		mov	r3, #1024
- 535 005a 0293     		str	r3, [sp, #8]
- 201:Core/Src/usart.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
- 536              		.loc 1 201 0
- 537 005c 0023     		movs	r3, #0
- 538 005e 0393     		str	r3, [sp, #12]
- 202:Core/Src/usart.c ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
- 539              		.loc 1 202 0
- 540 0060 0493     		str	r3, [sp, #16]
- 203:Core/Src/usart.c **** 
- 541              		.loc 1 203 0
- 542 0062 2046     		mov	r0, r4
- 543 0064 02A9     		add	r1, sp, #8
- 544 0066 FFF7FEFF 		bl	HAL_GPIO_Init
- 545              	.LVL57:
- 546              	.L36:
- 209:Core/Src/usart.c **** 
- 547              		.loc 1 209 0
- 548 006a 06B0     		add	sp, sp, #24
- 549              	.LCFI7:
- 550              		.cfi_def_cfa_offset 8
- 551              		@ sp needed
- 552 006c 10BD     		pop	{r4, pc}
- 553              	.L40:
- 554 006e 00BF     		.align	2
- 555              	.L39:
- 556 0070 00380140 		.word	1073821696
- 557 0074 00080140 		.word	1073809408
- 558              		.cfi_endproc
-ARM GAS  /tmp/ccgWwPQM.s 			page 19
-
-
- 559              	.LFE64:
- 561              		.section	.text.HAL_UART_MspDeInit,"ax",%progbits
- 562              		.align	2
- 563              		.global	HAL_UART_MspDeInit
- 564              		.thumb
- 565              		.thumb_func
- 567              	HAL_UART_MspDeInit:
- 568              	.LFB65:
- 212:Core/Src/usart.c **** 
- 569              		.loc 1 212 0
- 570              		.cfi_startproc
- 571              		@ args = 0, pretend = 0, frame = 0
- 572              		@ frame_needed = 0, uses_anonymous_args = 0
- 573              	.LVL58:
- 574 0000 08B5     		push	{r3, lr}
- 575              	.LCFI8:
- 576              		.cfi_def_cfa_offset 8
- 577              		.cfi_offset 3, -8
- 578              		.cfi_offset 14, -4
- 214:Core/Src/usart.c ****   {
- 579              		.loc 1 214 0
- 580 0002 0268     		ldr	r2, [r0]
- 581 0004 064B     		ldr	r3, .L44
- 582 0006 9A42     		cmp	r2, r3
- 583 0008 09D1     		bne	.L41
- 220:Core/Src/usart.c ****   
- 584              		.loc 1 220 0
- 585 000a 064A     		ldr	r2, .L44+4
- 586 000c 9369     		ldr	r3, [r2, #24]
- 587 000e 23F48043 		bic	r3, r3, #16384
- 588 0012 9361     		str	r3, [r2, #24]
- 226:Core/Src/usart.c **** 
- 589              		.loc 1 226 0
- 590 0014 0448     		ldr	r0, .L44+8
- 591              	.LVL59:
- 592 0016 4FF4C061 		mov	r1, #1536
- 593 001a FFF7FEFF 		bl	HAL_GPIO_DeInit
- 594              	.LVL60:
- 595              	.L41:
- 596 001e 08BD     		pop	{r3, pc}
- 597              	.L45:
- 598              		.align	2
- 599              	.L44:
- 600 0020 00380140 		.word	1073821696
- 601 0024 00100240 		.word	1073876992
- 602 0028 00080140 		.word	1073809408
- 603              		.cfi_endproc
- 604              	.LFE65:
- 606              		.section	.text.LCD_Init,"ax",%progbits
- 607              		.align	2
- 608              		.global	LCD_Init
- 609              		.thumb
- 610              		.thumb_func
- 612              	LCD_Init:
- 613              	.LFB68:
- 252:Core/Src/usart.c ****     lcd_rst();                  //硬件复位
- 614              		.loc 1 252 0
-ARM GAS  /tmp/ccgWwPQM.s 			page 20
-
-
- 615              		.cfi_startproc
- 616              		@ args = 0, pretend = 0, frame = 0
- 617              		@ frame_needed = 0, uses_anonymous_args = 0
- 618 0000 08B5     		push	{r3, lr}
- 619              	.LCFI9:
- 620              		.cfi_def_cfa_offset 8
- 621              		.cfi_offset 3, -8
- 622              		.cfi_offset 14, -4
- 253:Core/Src/usart.c **** 
- 623              		.loc 1 253 0
- 624 0002 FFF7FEFF 		bl	lcd_rst
- 625              	.LVL61:
- 256:Core/Src/usart.c ****     LCD_WR_CMD(0xEB,0x20); //PTBA[7:0]
- 626              		.loc 1 256 0
- 627 0006 EA20     		movs	r0, #234
- 628 0008 0021     		movs	r1, #0
- 629 000a FFF7FEFF 		bl	LCD_WR_CMD
- 630              	.LVL62:
- 257:Core/Src/usart.c ****     LCD_WR_CMD(0xEC,0x3C); //STBA[15:8]
- 631              		.loc 1 257 0
- 632 000e EB20     		movs	r0, #235
- 633 0010 2021     		movs	r1, #32
- 634 0012 FFF7FEFF 		bl	LCD_WR_CMD
- 635              	.LVL63:
- 258:Core/Src/usart.c ****     LCD_WR_CMD(0xED,0xC4); //STBA[7:0]
- 636              		.loc 1 258 0
- 637 0016 EC20     		movs	r0, #236
- 638 0018 3C21     		movs	r1, #60
- 639 001a FFF7FEFF 		bl	LCD_WR_CMD
- 640              	.LVL64:
- 259:Core/Src/usart.c ****     LCD_WR_CMD(0xE8,0x48); //OPON[7:0]
- 641              		.loc 1 259 0
- 642 001e ED20     		movs	r0, #237
- 643 0020 C421     		movs	r1, #196
- 644 0022 FFF7FEFF 		bl	LCD_WR_CMD
- 645              	.LVL65:
- 260:Core/Src/usart.c ****     LCD_WR_CMD(0xE9,0x38); //OPON1[7:0]
- 646              		.loc 1 260 0
- 647 0026 E820     		movs	r0, #232
- 648 0028 4821     		movs	r1, #72
- 649 002a FFF7FEFF 		bl	LCD_WR_CMD
- 650              	.LVL66:
- 261:Core/Src/usart.c ****     LCD_WR_CMD(0xF1,0x01); //OTPS1B
- 651              		.loc 1 261 0
- 652 002e E920     		movs	r0, #233
- 653 0030 3821     		movs	r1, #56
- 654 0032 FFF7FEFF 		bl	LCD_WR_CMD
- 655              	.LVL67:
- 262:Core/Src/usart.c ****     LCD_WR_CMD(0xF2,0x08); //GEN
- 656              		.loc 1 262 0
- 657 0036 F120     		movs	r0, #241
- 658 0038 0121     		movs	r1, #1
- 659 003a FFF7FEFF 		bl	LCD_WR_CMD
- 660              	.LVL68:
- 263:Core/Src/usart.c ****     //Gamma 2.2 Setting
- 661              		.loc 1 263 0
- 662 003e F220     		movs	r0, #242
-ARM GAS  /tmp/ccgWwPQM.s 			page 21
-
-
- 663 0040 0821     		movs	r1, #8
- 664 0042 FFF7FEFF 		bl	LCD_WR_CMD
- 665              	.LVL69:
- 265:Core/Src/usart.c ****     LCD_WR_CMD(0x41,0x07); //
- 666              		.loc 1 265 0
- 667 0046 4020     		movs	r0, #64
- 668 0048 0121     		movs	r1, #1
- 669 004a FFF7FEFF 		bl	LCD_WR_CMD
- 670              	.LVL70:
- 266:Core/Src/usart.c ****     LCD_WR_CMD(0x42,0x09); //
- 671              		.loc 1 266 0
- 672 004e 4120     		movs	r0, #65
- 673 0050 0721     		movs	r1, #7
- 674 0052 FFF7FEFF 		bl	LCD_WR_CMD
- 675              	.LVL71:
- 267:Core/Src/usart.c ****     LCD_WR_CMD(0x43,0x19); //
- 676              		.loc 1 267 0
- 677 0056 4220     		movs	r0, #66
- 678 0058 0921     		movs	r1, #9
- 679 005a FFF7FEFF 		bl	LCD_WR_CMD
- 680              	.LVL72:
- 268:Core/Src/usart.c ****     LCD_WR_CMD(0x44,0x17); //
- 681              		.loc 1 268 0
- 682 005e 4320     		movs	r0, #67
- 683 0060 1921     		movs	r1, #25
- 684 0062 FFF7FEFF 		bl	LCD_WR_CMD
- 685              	.LVL73:
- 269:Core/Src/usart.c ****     LCD_WR_CMD(0x45,0x20); //
- 686              		.loc 1 269 0
- 687 0066 4420     		movs	r0, #68
- 688 0068 1721     		movs	r1, #23
- 689 006a FFF7FEFF 		bl	LCD_WR_CMD
- 690              	.LVL74:
- 270:Core/Src/usart.c ****     LCD_WR_CMD(0x46,0x18); //
- 691              		.loc 1 270 0
- 692 006e 4520     		movs	r0, #69
- 693 0070 2021     		movs	r1, #32
- 694 0072 FFF7FEFF 		bl	LCD_WR_CMD
- 695              	.LVL75:
- 271:Core/Src/usart.c ****     LCD_WR_CMD(0x47,0x61); //
- 696              		.loc 1 271 0
- 697 0076 4620     		movs	r0, #70
- 698 0078 1821     		movs	r1, #24
- 699 007a FFF7FEFF 		bl	LCD_WR_CMD
- 700              	.LVL76:
- 272:Core/Src/usart.c ****     LCD_WR_CMD(0x48,0x00); //
- 701              		.loc 1 272 0
- 702 007e 4720     		movs	r0, #71
- 703 0080 6121     		movs	r1, #97
- 704 0082 FFF7FEFF 		bl	LCD_WR_CMD
- 705              	.LVL77:
- 273:Core/Src/usart.c ****     LCD_WR_CMD(0x49,0x10); //
- 706              		.loc 1 273 0
- 707 0086 4820     		movs	r0, #72
- 708 0088 0021     		movs	r1, #0
- 709 008a FFF7FEFF 		bl	LCD_WR_CMD
- 710              	.LVL78:
-ARM GAS  /tmp/ccgWwPQM.s 			page 22
-
-
- 274:Core/Src/usart.c ****     LCD_WR_CMD(0x4A,0x17); //
- 711              		.loc 1 274 0
- 712 008e 4920     		movs	r0, #73
- 713 0090 1021     		movs	r1, #16
- 714 0092 FFF7FEFF 		bl	LCD_WR_CMD
- 715              	.LVL79:
- 275:Core/Src/usart.c ****     LCD_WR_CMD(0x4B,0x19); //
- 716              		.loc 1 275 0
- 717 0096 4A20     		movs	r0, #74
- 718 0098 1721     		movs	r1, #23
- 719 009a FFF7FEFF 		bl	LCD_WR_CMD
- 720              	.LVL80:
- 276:Core/Src/usart.c ****     LCD_WR_CMD(0x4C,0x14); //
- 721              		.loc 1 276 0
- 722 009e 4B20     		movs	r0, #75
- 723 00a0 1921     		movs	r1, #25
- 724 00a2 FFF7FEFF 		bl	LCD_WR_CMD
- 725              	.LVL81:
- 277:Core/Src/usart.c ****     LCD_WR_CMD(0x50,0x1F); //
- 726              		.loc 1 277 0
- 727 00a6 4C20     		movs	r0, #76
- 728 00a8 1421     		movs	r1, #20
- 729 00aa FFF7FEFF 		bl	LCD_WR_CMD
- 730              	.LVL82:
- 278:Core/Src/usart.c ****     LCD_WR_CMD(0x51,0x28); //
- 731              		.loc 1 278 0
- 732 00ae 5020     		movs	r0, #80
- 733 00b0 1F21     		movs	r1, #31
- 734 00b2 FFF7FEFF 		bl	LCD_WR_CMD
- 735              	.LVL83:
- 279:Core/Src/usart.c ****     LCD_WR_CMD(0x52,0x26); //
- 736              		.loc 1 279 0
- 737 00b6 5120     		movs	r0, #81
- 738 00b8 2821     		movs	r1, #40
- 739 00ba FFF7FEFF 		bl	LCD_WR_CMD
- 740              	.LVL84:
- 280:Core/Src/usart.c ****     LCD_WR_CMD(0x53,0x36); //
- 741              		.loc 1 280 0
- 742 00be 5220     		movs	r0, #82
- 743 00c0 2621     		movs	r1, #38
- 744 00c2 FFF7FEFF 		bl	LCD_WR_CMD
- 745              	.LVL85:
- 281:Core/Src/usart.c ****     LCD_WR_CMD(0x54,0x38); //
- 746              		.loc 1 281 0
- 747 00c6 5320     		movs	r0, #83
- 748 00c8 3621     		movs	r1, #54
- 749 00ca FFF7FEFF 		bl	LCD_WR_CMD
- 750              	.LVL86:
- 282:Core/Src/usart.c ****     LCD_WR_CMD(0x55,0x3E); //
- 751              		.loc 1 282 0
- 752 00ce 5420     		movs	r0, #84
- 753 00d0 3821     		movs	r1, #56
- 754 00d2 FFF7FEFF 		bl	LCD_WR_CMD
- 755              	.LVL87:
- 283:Core/Src/usart.c ****     LCD_WR_CMD(0x56,0x1E); //
- 756              		.loc 1 283 0
- 757 00d6 5520     		movs	r0, #85
-ARM GAS  /tmp/ccgWwPQM.s 			page 23
-
-
- 758 00d8 3E21     		movs	r1, #62
- 759 00da FFF7FEFF 		bl	LCD_WR_CMD
- 760              	.LVL88:
- 284:Core/Src/usart.c ****     LCD_WR_CMD(0x57,0x67); //
- 761              		.loc 1 284 0
- 762 00de 5620     		movs	r0, #86
- 763 00e0 1E21     		movs	r1, #30
- 764 00e2 FFF7FEFF 		bl	LCD_WR_CMD
- 765              	.LVL89:
- 285:Core/Src/usart.c ****     LCD_WR_CMD(0x58,0x0B); //
- 766              		.loc 1 285 0
- 767 00e6 5720     		movs	r0, #87
- 768 00e8 6721     		movs	r1, #103
- 769 00ea FFF7FEFF 		bl	LCD_WR_CMD
- 770              	.LVL90:
- 286:Core/Src/usart.c ****     LCD_WR_CMD(0x59,0x06); //
- 771              		.loc 1 286 0
- 772 00ee 5820     		movs	r0, #88
- 773 00f0 0B21     		movs	r1, #11
- 774 00f2 FFF7FEFF 		bl	LCD_WR_CMD
- 775              	.LVL91:
- 287:Core/Src/usart.c ****     LCD_WR_CMD(0x5A,0x08); //
- 776              		.loc 1 287 0
- 777 00f6 5920     		movs	r0, #89
- 778 00f8 0621     		movs	r1, #6
- 779 00fa FFF7FEFF 		bl	LCD_WR_CMD
- 780              	.LVL92:
- 288:Core/Src/usart.c ****     LCD_WR_CMD(0x5B,0x0F); //
- 781              		.loc 1 288 0
- 782 00fe 5A20     		movs	r0, #90
- 783 0100 0821     		movs	r1, #8
- 784 0102 FFF7FEFF 		bl	LCD_WR_CMD
- 785              	.LVL93:
- 289:Core/Src/usart.c ****     LCD_WR_CMD(0x5C,0x1F); //
- 786              		.loc 1 289 0
- 787 0106 5B20     		movs	r0, #91
- 788 0108 0F21     		movs	r1, #15
- 789 010a FFF7FEFF 		bl	LCD_WR_CMD
- 790              	.LVL94:
- 290:Core/Src/usart.c ****     LCD_WR_CMD(0x5D,0xCC); //
- 791              		.loc 1 290 0
- 792 010e 5C20     		movs	r0, #92
- 793 0110 1F21     		movs	r1, #31
- 794 0112 FFF7FEFF 		bl	LCD_WR_CMD
- 795              	.LVL95:
- 291:Core/Src/usart.c **** 
- 796              		.loc 1 291 0
- 797 0116 5D20     		movs	r0, #93
- 798 0118 CC21     		movs	r1, #204
- 799 011a FFF7FEFF 		bl	LCD_WR_CMD
- 800              	.LVL96:
- 294:Core/Src/usart.c ****     LCD_WR_CMD(0x1A,0x01); //BT (VGH~15V,VGL~-10V,DDVDH~5V)
- 801              		.loc 1 294 0
- 802 011e 1B20     		movs	r0, #27
- 803 0120 0146     		mov	r1, r0
- 804 0122 FFF7FEFF 		bl	LCD_WR_CMD
- 805              	.LVL97:
-ARM GAS  /tmp/ccgWwPQM.s 			page 24
-
-
- 295:Core/Src/usart.c ****     LCD_WR_CMD(0x24,0x70); //VMH(VCOM High voltage ~4.2V)
- 806              		.loc 1 295 0
- 807 0126 1A20     		movs	r0, #26
- 808 0128 0121     		movs	r1, #1
- 809 012a FFF7FEFF 		bl	LCD_WR_CMD
- 810              	.LVL98:
- 296:Core/Src/usart.c ****     LCD_WR_CMD(0x25,0x58); //VML(VCOM Low voltage -1.2V)
- 811              		.loc 1 296 0
- 812 012e 2420     		movs	r0, #36
- 813 0130 7021     		movs	r1, #112
- 814 0132 FFF7FEFF 		bl	LCD_WR_CMD
- 815              	.LVL99:
- 297:Core/Src/usart.c **** 
- 816              		.loc 1 297 0
- 817 0136 2520     		movs	r0, #37
- 818 0138 5821     		movs	r1, #88
- 819 013a FFF7FEFF 		bl	LCD_WR_CMD
- 820              	.LVL100:
- 300:Core/Src/usart.c ****     //Power on Setting
- 821              		.loc 1 300 0
- 822 013e 2320     		movs	r0, #35
- 823 0140 6E21     		movs	r1, #110
- 824 0142 FFF7FEFF 		bl	LCD_WR_CMD
- 825              	.LVL101:
- 302:Core/Src/usart.c ****     LCD_WR_CMD(0x19,0x01); //OSC_EN='1', start Osc
- 826              		.loc 1 302 0
- 827 0146 1820     		movs	r0, #24
- 828 0148 3621     		movs	r1, #54
- 829 014a FFF7FEFF 		bl	LCD_WR_CMD
- 830              	.LVL102:
- 303:Core/Src/usart.c ****     LCD_WR_CMD(0x01,0x00); //DP_STB='0', out deep sleep
- 831              		.loc 1 303 0
- 832 014e 1920     		movs	r0, #25
- 833 0150 0121     		movs	r1, #1
- 834 0152 FFF7FEFF 		bl	LCD_WR_CMD
- 835              	.LVL103:
- 304:Core/Src/usart.c ****     LCD_WR_CMD(0x1F,0xD0);// GAS=1, VOMG=10, PON=1, DK=0, XDK=0, DDVDH_TRI=0, STB=0
- 836              		.loc 1 304 0
- 837 0156 0120     		movs	r0, #1
- 838 0158 0021     		movs	r1, #0
- 839 015a FFF7FEFF 		bl	LCD_WR_CMD
- 840              	.LVL104:
- 305:Core/Src/usart.c ****     LCD_WR_CMD(0x17,0x05); //default 0x06 262k color // 0x05 65k color
- 841              		.loc 1 305 0
- 842 015e 1F20     		movs	r0, #31
- 843 0160 D021     		movs	r1, #208
- 844 0162 FFF7FEFF 		bl	LCD_WR_CMD
- 845              	.LVL105:
- 306:Core/Src/usart.c ****     //SET PANEL
- 846              		.loc 1 306 0
- 847 0166 1720     		movs	r0, #23
- 848 0168 0521     		movs	r1, #5
- 849 016a FFF7FEFF 		bl	LCD_WR_CMD
- 850              	.LVL106:
- 308:Core/Src/usart.c ****     LCD_WR_CMD(0x28,0x3F); //GON=1, DTE=1, D=1100
- 851              		.loc 1 308 0
- 852 016e 3620     		movs	r0, #54
-ARM GAS  /tmp/ccgWwPQM.s 			page 25
-
-
- 853 0170 0921     		movs	r1, #9
- 854 0172 FFF7FEFF 		bl	LCD_WR_CMD
- 855              	.LVL107:
- 309:Core/Src/usart.c ****     LCD_WR_CMD(0x16,0x50); //左上到右下   竖屏
- 856              		.loc 1 309 0
- 857 0176 2820     		movs	r0, #40
- 858 0178 3F21     		movs	r1, #63
- 859 017a FFF7FEFF 		bl	LCD_WR_CMD
- 860              	.LVL108:
- 310:Core/Src/usart.c **** 
- 861              		.loc 1 310 0
- 862 017e 1620     		movs	r0, #22
- 863 0180 5021     		movs	r1, #80
- 864 0182 FFF7FEFF 		bl	LCD_WR_CMD
- 865              	.LVL109:
- 320:Core/Src/usart.c ****     LCD_WR_CMD(0x02,0x00);
- 866              		.loc 1 320 0
- 867 0186 1620     		movs	r0, #22
- 868 0188 E021     		movs	r1, #224
- 869 018a FFF7FEFF 		bl	LCD_WR_CMD
- 870              	.LVL110:
- 321:Core/Src/usart.c ****     LCD_WR_CMD(0x03,0x00); //Column Start
- 871              		.loc 1 321 0
- 872 018e 0220     		movs	r0, #2
- 873 0190 0021     		movs	r1, #0
- 874 0192 FFF7FEFF 		bl	LCD_WR_CMD
- 875              	.LVL111:
- 322:Core/Src/usart.c ****     LCD_WR_CMD(0x04,0x00);
- 876              		.loc 1 322 0
- 877 0196 0320     		movs	r0, #3
- 878 0198 0021     		movs	r1, #0
- 879 019a FFF7FEFF 		bl	LCD_WR_CMD
- 880              	.LVL112:
- 323:Core/Src/usart.c ****     LCD_WR_CMD(0x05,0xEF); //Column End
- 881              		.loc 1 323 0
- 882 019e 0420     		movs	r0, #4
- 883 01a0 0021     		movs	r1, #0
- 884 01a2 FFF7FEFF 		bl	LCD_WR_CMD
- 885              	.LVL113:
- 324:Core/Src/usart.c **** 
- 886              		.loc 1 324 0
- 887 01a6 0520     		movs	r0, #5
- 888 01a8 EF21     		movs	r1, #239
- 889 01aa FFF7FEFF 		bl	LCD_WR_CMD
- 890              	.LVL114:
- 326:Core/Src/usart.c ****     LCD_WR_CMD(0x07,0x00); //Row Start
- 891              		.loc 1 326 0
- 892 01ae 0620     		movs	r0, #6
- 893 01b0 0021     		movs	r1, #0
- 894 01b2 FFF7FEFF 		bl	LCD_WR_CMD
- 895              	.LVL115:
- 327:Core/Src/usart.c ****     LCD_WR_CMD(0x08,0x01);
- 896              		.loc 1 327 0
- 897 01b6 0720     		movs	r0, #7
- 898 01b8 0021     		movs	r1, #0
- 899 01ba FFF7FEFF 		bl	LCD_WR_CMD
- 900              	.LVL116:
-ARM GAS  /tmp/ccgWwPQM.s 			page 26
-
-
- 328:Core/Src/usart.c ****     LCD_WR_CMD(0x09,0x3F); //Row End
- 901              		.loc 1 328 0
- 902 01be 0820     		movs	r0, #8
- 903 01c0 0121     		movs	r1, #1
- 904 01c2 FFF7FEFF 		bl	LCD_WR_CMD
- 905              	.LVL117:
- 329:Core/Src/usart.c **** 
- 906              		.loc 1 329 0
- 907 01c6 0920     		movs	r0, #9
- 908 01c8 3F21     		movs	r1, #63
- 909 01ca FFF7FEFF 		bl	LCD_WR_CMD
- 910              	.LVL118:
- 331:Core/Src/usart.c ****     {
- 911              		.loc 1 331 0
- 912 01ce 0022     		movs	r2, #0
- 913 01d0 0C4B     		ldr	r3, .L50
- 914 01d2 1A60     		str	r2, [r3]
- 915 01d4 07E0     		b	.L47
- 916              	.L48:
- 333:Core/Src/usart.c ****     }
- 917              		.loc 1 333 0 discriminator 3
- 918 01d6 4FF6FF70 		movw	r0, #65535
- 919 01da FFF7FEFF 		bl	LCD_WR_Data
- 920              	.LVL119:
- 331:Core/Src/usart.c ****     {
- 921              		.loc 1 331 0 discriminator 3
- 922 01de 094A     		ldr	r2, .L50
- 923 01e0 1368     		ldr	r3, [r2]
- 924 01e2 0133     		adds	r3, r3, #1
- 925 01e4 1360     		str	r3, [r2]
- 926              	.L47:
- 331:Core/Src/usart.c ****     {
- 927              		.loc 1 331 0 is_stmt 0 discriminator 1
- 928 01e6 074B     		ldr	r3, .L50
- 929 01e8 1B68     		ldr	r3, [r3]
- 930 01ea B3F5963F 		cmp	r3, #76800
- 931 01ee F2D3     		bcc	.L48
- 335:Core/Src/usart.c **** 
- 932              		.loc 1 335 0 is_stmt 1
- 933 01f0 0022     		movs	r2, #0
- 934 01f2 044B     		ldr	r3, .L50
- 935 01f4 1A60     		str	r2, [r3]
- 337:Core/Src/usart.c ****     POINT_COLOR = RED;
- 936              		.loc 1 337 0
- 937 01f6 FFF7FEFF 		bl	LCD_Clear
- 938              	.LVL120:
- 338:Core/Src/usart.c **** }
- 939              		.loc 1 338 0
- 940 01fa 4FF47842 		mov	r2, #63488
- 941 01fe 024B     		ldr	r3, .L50+4
- 942 0200 1A80     		strh	r2, [r3]	@ movhi
- 943 0202 08BD     		pop	{r3, pc}
- 944              	.L51:
- 945              		.align	2
- 946              	.L50:
- 947 0204 00000000 		.word	.LANCHOR3
- 948 0208 00000000 		.word	.LANCHOR1
-ARM GAS  /tmp/ccgWwPQM.s 			page 27
-
-
- 949              		.cfi_endproc
- 950              	.LFE68:
- 952              		.section	.text.tftprintf,"ax",%progbits
- 953              		.align	2
- 954              		.global	tftprintf
- 955              		.thumb
- 956              		.thumb_func
- 958              	tftprintf:
- 959              	.LFB71:
- 390:Core/Src/usart.c ****     if (strIndex > LCD_STR_NUM_MAX) {
- 960              		.loc 1 390 0
- 961              		.cfi_startproc
- 962              		@ args = 0, pretend = 0, frame = 0
- 963              		@ frame_needed = 0, uses_anonymous_args = 0
- 964              	.LVL121:
- 965 0000 38B5     		push	{r3, r4, r5, lr}
- 966              	.LCFI10:
- 967              		.cfi_def_cfa_offset 16
- 968              		.cfi_offset 3, -16
- 969              		.cfi_offset 4, -12
- 970              		.cfi_offset 5, -8
- 971              		.cfi_offset 14, -4
- 972 0002 0546     		mov	r5, r0
- 391:Core/Src/usart.c ****         strIndex = 0;
- 973              		.loc 1 391 0
- 974 0004 0B4B     		ldr	r3, .L55
- 975 0006 1B88     		ldrh	r3, [r3]
- 976 0008 102B     		cmp	r3, #16
- 977 000a 04D9     		bls	.L53
- 392:Core/Src/usart.c ****         LCD_Clear();
- 978              		.loc 1 392 0
- 979 000c 0022     		movs	r2, #0
- 980 000e 094B     		ldr	r3, .L55
- 981 0010 1A80     		strh	r2, [r3]	@ movhi
- 393:Core/Src/usart.c ****     }
- 982              		.loc 1 393 0
- 983 0012 FFF7FEFF 		bl	LCD_Clear
- 984              	.LVL122:
- 985              	.L53:
- 395:Core/Src/usart.c ****     strIndex++;
- 986              		.loc 1 395 0
- 987 0016 074C     		ldr	r4, .L55
- 988 0018 2388     		ldrh	r3, [r4]
- 989 001a C3EBC303 		rsb	r3, r3, r3, lsl #3
- 990 001e 5900     		lsls	r1, r3, #1
- 991 0020 0231     		adds	r1, r1, #2
- 992 0022 89B2     		uxth	r1, r1
- 993 0024 0220     		movs	r0, #2
- 994 0026 2A46     		mov	r2, r5
- 995 0028 FFF7FEFF 		bl	TFT_ShowString
- 996              	.LVL123:
- 396:Core/Src/usart.c **** }
- 997              		.loc 1 396 0
- 998 002c 2388     		ldrh	r3, [r4]
- 999 002e 0133     		adds	r3, r3, #1
- 1000 0030 2380     		strh	r3, [r4]	@ movhi
- 1001 0032 38BD     		pop	{r3, r4, r5, pc}
-ARM GAS  /tmp/ccgWwPQM.s 			page 28
-
-
- 1002              	.LVL124:
- 1003              	.L56:
- 1004              		.align	2
- 1005              	.L55:
- 1006 0034 00000000 		.word	.LANCHOR4
- 1007              		.cfi_endproc
- 1008              	.LFE71:
- 1010              		.comm	huart1,64,4
- 1011              		.global	asc2_1206
- 1012              		.section	.bss.POINT_COLOR,"aw",%nobits
- 1013              		.align	1
- 1014              		.set	.LANCHOR1,. + 0
- 1017              	POINT_COLOR:
- 1018 0000 0000     		.space	2
- 1019              		.section	.rodata.asc2_1206,"a",%progbits
- 1020              		.align	2
- 1021              		.set	.LANCHOR0,. + 0
- 1024              	asc2_1206:
- 1025 0000 00       		.byte	0
- 1026 0001 00       		.byte	0
- 1027 0002 00       		.byte	0
- 1028 0003 00       		.byte	0
- 1029 0004 00       		.byte	0
- 1030 0005 00       		.byte	0
- 1031 0006 00       		.byte	0
- 1032 0007 00       		.byte	0
- 1033 0008 00       		.byte	0
- 1034 0009 00       		.byte	0
- 1035 000a 00       		.byte	0
- 1036 000b 00       		.byte	0
- 1037 000c 00       		.byte	0
- 1038 000d 00       		.byte	0
- 1039 000e 04       		.byte	4
- 1040 000f 04       		.byte	4
- 1041 0010 04       		.byte	4
- 1042 0011 04       		.byte	4
- 1043 0012 04       		.byte	4
- 1044 0013 04       		.byte	4
- 1045 0014 00       		.byte	0
- 1046 0015 04       		.byte	4
- 1047 0016 00       		.byte	0
- 1048 0017 00       		.byte	0
- 1049 0018 00       		.byte	0
- 1050 0019 14       		.byte	20
- 1051 001a 0A       		.byte	10
- 1052 001b 0A       		.byte	10
- 1053 001c 00       		.byte	0
- 1054 001d 00       		.byte	0
- 1055 001e 00       		.byte	0
- 1056 001f 00       		.byte	0
- 1057 0020 00       		.byte	0
- 1058 0021 00       		.byte	0
- 1059 0022 00       		.byte	0
- 1060 0023 00       		.byte	0
- 1061 0024 00       		.byte	0
- 1062 0025 00       		.byte	0
- 1063 0026 14       		.byte	20
-ARM GAS  /tmp/ccgWwPQM.s 			page 29
-
-
- 1064 0027 14       		.byte	20
- 1065 0028 3F       		.byte	63
- 1066 0029 14       		.byte	20
- 1067 002a 0A       		.byte	10
- 1068 002b 3F       		.byte	63
- 1069 002c 0A       		.byte	10
- 1070 002d 0A       		.byte	10
- 1071 002e 00       		.byte	0
- 1072 002f 00       		.byte	0
- 1073 0030 00       		.byte	0
- 1074 0031 04       		.byte	4
- 1075 0032 1E       		.byte	30
- 1076 0033 15       		.byte	21
- 1077 0034 05       		.byte	5
- 1078 0035 06       		.byte	6
- 1079 0036 0C       		.byte	12
- 1080 0037 14       		.byte	20
- 1081 0038 15       		.byte	21
- 1082 0039 0F       		.byte	15
- 1083 003a 04       		.byte	4
- 1084 003b 00       		.byte	0
- 1085 003c 00       		.byte	0
- 1086 003d 00       		.byte	0
- 1087 003e 12       		.byte	18
- 1088 003f 15       		.byte	21
- 1089 0040 0D       		.byte	13
- 1090 0041 0A       		.byte	10
- 1091 0042 14       		.byte	20
- 1092 0043 2C       		.byte	44
- 1093 0044 2A       		.byte	42
- 1094 0045 12       		.byte	18
- 1095 0046 00       		.byte	0
- 1096 0047 00       		.byte	0
- 1097 0048 00       		.byte	0
- 1098 0049 00       		.byte	0
- 1099 004a 04       		.byte	4
- 1100 004b 0A       		.byte	10
- 1101 004c 0A       		.byte	10
- 1102 004d 1E       		.byte	30
- 1103 004e 15       		.byte	21
- 1104 004f 15       		.byte	21
- 1105 0050 09       		.byte	9
- 1106 0051 36       		.byte	54
- 1107 0052 00       		.byte	0
- 1108 0053 00       		.byte	0
- 1109 0054 00       		.byte	0
- 1110 0055 02       		.byte	2
- 1111 0056 02       		.byte	2
- 1112 0057 01       		.byte	1
- 1113 0058 00       		.byte	0
- 1114 0059 00       		.byte	0
- 1115 005a 00       		.byte	0
- 1116 005b 00       		.byte	0
- 1117 005c 00       		.byte	0
- 1118 005d 00       		.byte	0
- 1119 005e 00       		.byte	0
- 1120 005f 00       		.byte	0
-ARM GAS  /tmp/ccgWwPQM.s 			page 30
-
-
- 1121 0060 00       		.byte	0
- 1122 0061 20       		.byte	32
- 1123 0062 10       		.byte	16
- 1124 0063 08       		.byte	8
- 1125 0064 08       		.byte	8
- 1126 0065 08       		.byte	8
- 1127 0066 08       		.byte	8
- 1128 0067 08       		.byte	8
- 1129 0068 08       		.byte	8
- 1130 0069 10       		.byte	16
- 1131 006a 20       		.byte	32
- 1132 006b 00       		.byte	0
- 1133 006c 00       		.byte	0
- 1134 006d 02       		.byte	2
- 1135 006e 04       		.byte	4
- 1136 006f 08       		.byte	8
- 1137 0070 08       		.byte	8
- 1138 0071 08       		.byte	8
- 1139 0072 08       		.byte	8
- 1140 0073 08       		.byte	8
- 1141 0074 08       		.byte	8
- 1142 0075 04       		.byte	4
- 1143 0076 02       		.byte	2
- 1144 0077 00       		.byte	0
- 1145 0078 00       		.byte	0
- 1146 0079 00       		.byte	0
- 1147 007a 00       		.byte	0
- 1148 007b 04       		.byte	4
- 1149 007c 15       		.byte	21
- 1150 007d 0E       		.byte	14
- 1151 007e 0E       		.byte	14
- 1152 007f 15       		.byte	21
- 1153 0080 04       		.byte	4
- 1154 0081 00       		.byte	0
- 1155 0082 00       		.byte	0
- 1156 0083 00       		.byte	0
- 1157 0084 00       		.byte	0
- 1158 0085 00       		.byte	0
- 1159 0086 04       		.byte	4
- 1160 0087 04       		.byte	4
- 1161 0088 04       		.byte	4
- 1162 0089 1F       		.byte	31
- 1163 008a 04       		.byte	4
- 1164 008b 04       		.byte	4
- 1165 008c 04       		.byte	4
- 1166 008d 00       		.byte	0
- 1167 008e 00       		.byte	0
- 1168 008f 00       		.byte	0
- 1169 0090 00       		.byte	0
- 1170 0091 00       		.byte	0
- 1171 0092 00       		.byte	0
- 1172 0093 00       		.byte	0
- 1173 0094 00       		.byte	0
- 1174 0095 00       		.byte	0
- 1175 0096 00       		.byte	0
- 1176 0097 00       		.byte	0
- 1177 0098 00       		.byte	0
-ARM GAS  /tmp/ccgWwPQM.s 			page 31
-
-
- 1178 0099 02       		.byte	2
- 1179 009a 02       		.byte	2
- 1180 009b 01       		.byte	1
- 1181 009c 00       		.byte	0
- 1182 009d 00       		.byte	0
- 1183 009e 00       		.byte	0
- 1184 009f 00       		.byte	0
- 1185 00a0 00       		.byte	0
- 1186 00a1 1F       		.byte	31
- 1187 00a2 00       		.byte	0
- 1188 00a3 00       		.byte	0
- 1189 00a4 00       		.byte	0
- 1190 00a5 00       		.byte	0
- 1191 00a6 00       		.byte	0
- 1192 00a7 00       		.byte	0
- 1193 00a8 00       		.byte	0
- 1194 00a9 00       		.byte	0
- 1195 00aa 00       		.byte	0
- 1196 00ab 00       		.byte	0
- 1197 00ac 00       		.byte	0
- 1198 00ad 00       		.byte	0
- 1199 00ae 00       		.byte	0
- 1200 00af 00       		.byte	0
- 1201 00b0 00       		.byte	0
- 1202 00b1 02       		.byte	2
- 1203 00b2 00       		.byte	0
- 1204 00b3 00       		.byte	0
- 1205 00b4 00       		.byte	0
- 1206 00b5 10       		.byte	16
- 1207 00b6 08       		.byte	8
- 1208 00b7 08       		.byte	8
- 1209 00b8 08       		.byte	8
- 1210 00b9 04       		.byte	4
- 1211 00ba 04       		.byte	4
- 1212 00bb 02       		.byte	2
- 1213 00bc 02       		.byte	2
- 1214 00bd 02       		.byte	2
- 1215 00be 01       		.byte	1
- 1216 00bf 00       		.byte	0
- 1217 00c0 00       		.byte	0
- 1218 00c1 00       		.byte	0
- 1219 00c2 0E       		.byte	14
- 1220 00c3 11       		.byte	17
- 1221 00c4 11       		.byte	17
- 1222 00c5 11       		.byte	17
- 1223 00c6 11       		.byte	17
- 1224 00c7 11       		.byte	17
- 1225 00c8 11       		.byte	17
- 1226 00c9 0E       		.byte	14
- 1227 00ca 00       		.byte	0
- 1228 00cb 00       		.byte	0
- 1229 00cc 00       		.byte	0
- 1230 00cd 00       		.byte	0
- 1231 00ce 04       		.byte	4
- 1232 00cf 06       		.byte	6
- 1233 00d0 04       		.byte	4
- 1234 00d1 04       		.byte	4
-ARM GAS  /tmp/ccgWwPQM.s 			page 32
-
-
- 1235 00d2 04       		.byte	4
- 1236 00d3 04       		.byte	4
- 1237 00d4 04       		.byte	4
- 1238 00d5 0E       		.byte	14
- 1239 00d6 00       		.byte	0
- 1240 00d7 00       		.byte	0
- 1241 00d8 00       		.byte	0
- 1242 00d9 00       		.byte	0
- 1243 00da 0E       		.byte	14
- 1244 00db 11       		.byte	17
- 1245 00dc 11       		.byte	17
- 1246 00dd 08       		.byte	8
- 1247 00de 04       		.byte	4
- 1248 00df 02       		.byte	2
- 1249 00e0 01       		.byte	1
- 1250 00e1 1F       		.byte	31
- 1251 00e2 00       		.byte	0
- 1252 00e3 00       		.byte	0
- 1253 00e4 00       		.byte	0
- 1254 00e5 00       		.byte	0
- 1255 00e6 0E       		.byte	14
- 1256 00e7 11       		.byte	17
- 1257 00e8 10       		.byte	16
- 1258 00e9 0C       		.byte	12
- 1259 00ea 10       		.byte	16
- 1260 00eb 10       		.byte	16
- 1261 00ec 11       		.byte	17
- 1262 00ed 0E       		.byte	14
- 1263 00ee 00       		.byte	0
- 1264 00ef 00       		.byte	0
- 1265 00f0 00       		.byte	0
- 1266 00f1 00       		.byte	0
- 1267 00f2 08       		.byte	8
- 1268 00f3 0C       		.byte	12
- 1269 00f4 0A       		.byte	10
- 1270 00f5 0A       		.byte	10
- 1271 00f6 09       		.byte	9
- 1272 00f7 1E       		.byte	30
- 1273 00f8 08       		.byte	8
- 1274 00f9 18       		.byte	24
- 1275 00fa 00       		.byte	0
- 1276 00fb 00       		.byte	0
- 1277 00fc 00       		.byte	0
- 1278 00fd 00       		.byte	0
- 1279 00fe 1F       		.byte	31
- 1280 00ff 01       		.byte	1
- 1281 0100 01       		.byte	1
- 1282 0101 0F       		.byte	15
- 1283 0102 10       		.byte	16
- 1284 0103 10       		.byte	16
- 1285 0104 11       		.byte	17
- 1286 0105 0E       		.byte	14
- 1287 0106 00       		.byte	0
- 1288 0107 00       		.byte	0
- 1289 0108 00       		.byte	0
- 1290 0109 00       		.byte	0
- 1291 010a 0E       		.byte	14
-ARM GAS  /tmp/ccgWwPQM.s 			page 33
-
-
- 1292 010b 09       		.byte	9
- 1293 010c 01       		.byte	1
- 1294 010d 0F       		.byte	15
- 1295 010e 11       		.byte	17
- 1296 010f 11       		.byte	17
- 1297 0110 11       		.byte	17
- 1298 0111 0E       		.byte	14
- 1299 0112 00       		.byte	0
- 1300 0113 00       		.byte	0
- 1301 0114 00       		.byte	0
- 1302 0115 00       		.byte	0
- 1303 0116 1F       		.byte	31
- 1304 0117 09       		.byte	9
- 1305 0118 08       		.byte	8
- 1306 0119 04       		.byte	4
- 1307 011a 04       		.byte	4
- 1308 011b 04       		.byte	4
- 1309 011c 04       		.byte	4
- 1310 011d 04       		.byte	4
- 1311 011e 00       		.byte	0
- 1312 011f 00       		.byte	0
- 1313 0120 00       		.byte	0
- 1314 0121 00       		.byte	0
- 1315 0122 0E       		.byte	14
- 1316 0123 11       		.byte	17
- 1317 0124 11       		.byte	17
- 1318 0125 0E       		.byte	14
- 1319 0126 11       		.byte	17
- 1320 0127 11       		.byte	17
- 1321 0128 11       		.byte	17
- 1322 0129 0E       		.byte	14
- 1323 012a 00       		.byte	0
- 1324 012b 00       		.byte	0
- 1325 012c 00       		.byte	0
- 1326 012d 00       		.byte	0
- 1327 012e 0E       		.byte	14
- 1328 012f 11       		.byte	17
- 1329 0130 11       		.byte	17
- 1330 0131 11       		.byte	17
- 1331 0132 1E       		.byte	30
- 1332 0133 10       		.byte	16
- 1333 0134 12       		.byte	18
- 1334 0135 0E       		.byte	14
- 1335 0136 00       		.byte	0
- 1336 0137 00       		.byte	0
- 1337 0138 00       		.byte	0
- 1338 0139 00       		.byte	0
- 1339 013a 00       		.byte	0
- 1340 013b 00       		.byte	0
- 1341 013c 04       		.byte	4
- 1342 013d 00       		.byte	0
- 1343 013e 00       		.byte	0
- 1344 013f 00       		.byte	0
- 1345 0140 00       		.byte	0
- 1346 0141 04       		.byte	4
- 1347 0142 00       		.byte	0
- 1348 0143 00       		.byte	0
-ARM GAS  /tmp/ccgWwPQM.s 			page 34
-
-
- 1349 0144 00       		.byte	0
- 1350 0145 00       		.byte	0
- 1351 0146 00       		.byte	0
- 1352 0147 00       		.byte	0
- 1353 0148 00       		.byte	0
- 1354 0149 04       		.byte	4
- 1355 014a 00       		.byte	0
- 1356 014b 00       		.byte	0
- 1357 014c 00       		.byte	0
- 1358 014d 04       		.byte	4
- 1359 014e 04       		.byte	4
- 1360 014f 00       		.byte	0
- 1361 0150 00       		.byte	0
- 1362 0151 20       		.byte	32
- 1363 0152 10       		.byte	16
- 1364 0153 08       		.byte	8
- 1365 0154 04       		.byte	4
- 1366 0155 02       		.byte	2
- 1367 0156 04       		.byte	4
- 1368 0157 08       		.byte	8
- 1369 0158 10       		.byte	16
- 1370 0159 20       		.byte	32
- 1371 015a 00       		.byte	0
- 1372 015b 00       		.byte	0
- 1373 015c 00       		.byte	0
- 1374 015d 00       		.byte	0
- 1375 015e 00       		.byte	0
- 1376 015f 00       		.byte	0
- 1377 0160 1F       		.byte	31
- 1378 0161 00       		.byte	0
- 1379 0162 00       		.byte	0
- 1380 0163 1F       		.byte	31
- 1381 0164 00       		.byte	0
- 1382 0165 00       		.byte	0
- 1383 0166 00       		.byte	0
- 1384 0167 00       		.byte	0
- 1385 0168 00       		.byte	0
- 1386 0169 02       		.byte	2
- 1387 016a 04       		.byte	4
- 1388 016b 08       		.byte	8
- 1389 016c 10       		.byte	16
- 1390 016d 20       		.byte	32
- 1391 016e 10       		.byte	16
- 1392 016f 08       		.byte	8
- 1393 0170 04       		.byte	4
- 1394 0171 02       		.byte	2
- 1395 0172 00       		.byte	0
- 1396 0173 00       		.byte	0
- 1397 0174 00       		.byte	0
- 1398 0175 00       		.byte	0
- 1399 0176 0E       		.byte	14
- 1400 0177 11       		.byte	17
- 1401 0178 11       		.byte	17
- 1402 0179 08       		.byte	8
- 1403 017a 04       		.byte	4
- 1404 017b 04       		.byte	4
- 1405 017c 00       		.byte	0
-ARM GAS  /tmp/ccgWwPQM.s 			page 35
-
-
- 1406 017d 04       		.byte	4
- 1407 017e 00       		.byte	0
- 1408 017f 00       		.byte	0
- 1409 0180 00       		.byte	0
- 1410 0181 00       		.byte	0
- 1411 0182 0E       		.byte	14
- 1412 0183 11       		.byte	17
- 1413 0184 19       		.byte	25
- 1414 0185 15       		.byte	21
- 1415 0186 15       		.byte	21
- 1416 0187 1D       		.byte	29
- 1417 0188 01       		.byte	1
- 1418 0189 1E       		.byte	30
- 1419 018a 00       		.byte	0
- 1420 018b 00       		.byte	0
- 1421 018c 00       		.byte	0
- 1422 018d 00       		.byte	0
- 1423 018e 04       		.byte	4
- 1424 018f 04       		.byte	4
- 1425 0190 0C       		.byte	12
- 1426 0191 0A       		.byte	10
- 1427 0192 0A       		.byte	10
- 1428 0193 1E       		.byte	30
- 1429 0194 12       		.byte	18
- 1430 0195 33       		.byte	51
- 1431 0196 00       		.byte	0
- 1432 0197 00       		.byte	0
- 1433 0198 00       		.byte	0
- 1434 0199 00       		.byte	0
- 1435 019a 0F       		.byte	15
- 1436 019b 12       		.byte	18
- 1437 019c 12       		.byte	18
- 1438 019d 0E       		.byte	14
- 1439 019e 12       		.byte	18
- 1440 019f 12       		.byte	18
- 1441 01a0 12       		.byte	18
- 1442 01a1 0F       		.byte	15
- 1443 01a2 00       		.byte	0
- 1444 01a3 00       		.byte	0
- 1445 01a4 00       		.byte	0
- 1446 01a5 00       		.byte	0
- 1447 01a6 1E       		.byte	30
- 1448 01a7 11       		.byte	17
- 1449 01a8 01       		.byte	1
- 1450 01a9 01       		.byte	1
- 1451 01aa 01       		.byte	1
- 1452 01ab 01       		.byte	1
- 1453 01ac 11       		.byte	17
- 1454 01ad 0E       		.byte	14
- 1455 01ae 00       		.byte	0
- 1456 01af 00       		.byte	0
- 1457 01b0 00       		.byte	0
- 1458 01b1 00       		.byte	0
- 1459 01b2 0F       		.byte	15
- 1460 01b3 12       		.byte	18
- 1461 01b4 12       		.byte	18
- 1462 01b5 12       		.byte	18
-ARM GAS  /tmp/ccgWwPQM.s 			page 36
-
-
- 1463 01b6 12       		.byte	18
- 1464 01b7 12       		.byte	18
- 1465 01b8 12       		.byte	18
- 1466 01b9 0F       		.byte	15
- 1467 01ba 00       		.byte	0
- 1468 01bb 00       		.byte	0
- 1469 01bc 00       		.byte	0
- 1470 01bd 00       		.byte	0
- 1471 01be 1F       		.byte	31
- 1472 01bf 12       		.byte	18
- 1473 01c0 0A       		.byte	10
- 1474 01c1 0E       		.byte	14
- 1475 01c2 0A       		.byte	10
- 1476 01c3 02       		.byte	2
- 1477 01c4 12       		.byte	18
- 1478 01c5 1F       		.byte	31
- 1479 01c6 00       		.byte	0
- 1480 01c7 00       		.byte	0
- 1481 01c8 00       		.byte	0
- 1482 01c9 00       		.byte	0
- 1483 01ca 1F       		.byte	31
- 1484 01cb 12       		.byte	18
- 1485 01cc 0A       		.byte	10
- 1486 01cd 0E       		.byte	14
- 1487 01ce 0A       		.byte	10
- 1488 01cf 02       		.byte	2
- 1489 01d0 02       		.byte	2
- 1490 01d1 07       		.byte	7
- 1491 01d2 00       		.byte	0
- 1492 01d3 00       		.byte	0
- 1493 01d4 00       		.byte	0
- 1494 01d5 00       		.byte	0
- 1495 01d6 1C       		.byte	28
- 1496 01d7 12       		.byte	18
- 1497 01d8 01       		.byte	1
- 1498 01d9 01       		.byte	1
- 1499 01da 39       		.byte	57
- 1500 01db 11       		.byte	17
- 1501 01dc 12       		.byte	18
- 1502 01dd 0C       		.byte	12
- 1503 01de 00       		.byte	0
- 1504 01df 00       		.byte	0
- 1505 01e0 00       		.byte	0
- 1506 01e1 00       		.byte	0
- 1507 01e2 33       		.byte	51
- 1508 01e3 12       		.byte	18
- 1509 01e4 12       		.byte	18
- 1510 01e5 1E       		.byte	30
- 1511 01e6 12       		.byte	18
- 1512 01e7 12       		.byte	18
- 1513 01e8 12       		.byte	18
- 1514 01e9 33       		.byte	51
- 1515 01ea 00       		.byte	0
- 1516 01eb 00       		.byte	0
- 1517 01ec 00       		.byte	0
- 1518 01ed 00       		.byte	0
- 1519 01ee 1F       		.byte	31
-ARM GAS  /tmp/ccgWwPQM.s 			page 37
-
-
- 1520 01ef 04       		.byte	4
- 1521 01f0 04       		.byte	4
- 1522 01f1 04       		.byte	4
- 1523 01f2 04       		.byte	4
- 1524 01f3 04       		.byte	4
- 1525 01f4 04       		.byte	4
- 1526 01f5 1F       		.byte	31
- 1527 01f6 00       		.byte	0
- 1528 01f7 00       		.byte	0
- 1529 01f8 00       		.byte	0
- 1530 01f9 00       		.byte	0
- 1531 01fa 3E       		.byte	62
- 1532 01fb 08       		.byte	8
- 1533 01fc 08       		.byte	8
- 1534 01fd 08       		.byte	8
- 1535 01fe 08       		.byte	8
- 1536 01ff 08       		.byte	8
- 1537 0200 08       		.byte	8
- 1538 0201 09       		.byte	9
- 1539 0202 07       		.byte	7
- 1540 0203 00       		.byte	0
- 1541 0204 00       		.byte	0
- 1542 0205 00       		.byte	0
- 1543 0206 37       		.byte	55
- 1544 0207 12       		.byte	18
- 1545 0208 0A       		.byte	10
- 1546 0209 06       		.byte	6
- 1547 020a 0A       		.byte	10
- 1548 020b 0A       		.byte	10
- 1549 020c 12       		.byte	18
- 1550 020d 37       		.byte	55
- 1551 020e 00       		.byte	0
- 1552 020f 00       		.byte	0
- 1553 0210 00       		.byte	0
- 1554 0211 00       		.byte	0
- 1555 0212 07       		.byte	7
- 1556 0213 02       		.byte	2
- 1557 0214 02       		.byte	2
- 1558 0215 02       		.byte	2
- 1559 0216 02       		.byte	2
- 1560 0217 02       		.byte	2
- 1561 0218 22       		.byte	34
- 1562 0219 3F       		.byte	63
- 1563 021a 00       		.byte	0
- 1564 021b 00       		.byte	0
- 1565 021c 00       		.byte	0
- 1566 021d 00       		.byte	0
- 1567 021e 1B       		.byte	27
- 1568 021f 1B       		.byte	27
- 1569 0220 1B       		.byte	27
- 1570 0221 1B       		.byte	27
- 1571 0222 15       		.byte	21
- 1572 0223 15       		.byte	21
- 1573 0224 15       		.byte	21
- 1574 0225 15       		.byte	21
- 1575 0226 00       		.byte	0
- 1576 0227 00       		.byte	0
-ARM GAS  /tmp/ccgWwPQM.s 			page 38
-
-
- 1577 0228 00       		.byte	0
- 1578 0229 00       		.byte	0
- 1579 022a 3B       		.byte	59
- 1580 022b 12       		.byte	18
- 1581 022c 16       		.byte	22
- 1582 022d 16       		.byte	22
- 1583 022e 1A       		.byte	26
- 1584 022f 1A       		.byte	26
- 1585 0230 12       		.byte	18
- 1586 0231 17       		.byte	23
- 1587 0232 00       		.byte	0
- 1588 0233 00       		.byte	0
- 1589 0234 00       		.byte	0
- 1590 0235 00       		.byte	0
- 1591 0236 0E       		.byte	14
- 1592 0237 11       		.byte	17
- 1593 0238 11       		.byte	17
- 1594 0239 11       		.byte	17
- 1595 023a 11       		.byte	17
- 1596 023b 11       		.byte	17
- 1597 023c 11       		.byte	17
- 1598 023d 0E       		.byte	14
- 1599 023e 00       		.byte	0
- 1600 023f 00       		.byte	0
- 1601 0240 00       		.byte	0
- 1602 0241 00       		.byte	0
- 1603 0242 0F       		.byte	15
- 1604 0243 12       		.byte	18
- 1605 0244 12       		.byte	18
- 1606 0245 0E       		.byte	14
- 1607 0246 02       		.byte	2
- 1608 0247 02       		.byte	2
- 1609 0248 02       		.byte	2
- 1610 0249 07       		.byte	7
- 1611 024a 00       		.byte	0
- 1612 024b 00       		.byte	0
- 1613 024c 00       		.byte	0
- 1614 024d 00       		.byte	0
- 1615 024e 0E       		.byte	14
- 1616 024f 11       		.byte	17
- 1617 0250 11       		.byte	17
- 1618 0251 11       		.byte	17
- 1619 0252 11       		.byte	17
- 1620 0253 17       		.byte	23
- 1621 0254 19       		.byte	25
- 1622 0255 0E       		.byte	14
- 1623 0256 18       		.byte	24
- 1624 0257 00       		.byte	0
- 1625 0258 00       		.byte	0
- 1626 0259 00       		.byte	0
- 1627 025a 0F       		.byte	15
- 1628 025b 12       		.byte	18
- 1629 025c 12       		.byte	18
- 1630 025d 0E       		.byte	14
- 1631 025e 0A       		.byte	10
- 1632 025f 12       		.byte	18
- 1633 0260 12       		.byte	18
-ARM GAS  /tmp/ccgWwPQM.s 			page 39
-
-
- 1634 0261 37       		.byte	55
- 1635 0262 00       		.byte	0
- 1636 0263 00       		.byte	0
- 1637 0264 00       		.byte	0
- 1638 0265 00       		.byte	0
- 1639 0266 1E       		.byte	30
- 1640 0267 11       		.byte	17
- 1641 0268 01       		.byte	1
- 1642 0269 06       		.byte	6
- 1643 026a 08       		.byte	8
- 1644 026b 10       		.byte	16
- 1645 026c 11       		.byte	17
- 1646 026d 0F       		.byte	15
- 1647 026e 00       		.byte	0
- 1648 026f 00       		.byte	0
- 1649 0270 00       		.byte	0
- 1650 0271 00       		.byte	0
- 1651 0272 1F       		.byte	31
- 1652 0273 15       		.byte	21
- 1653 0274 04       		.byte	4
- 1654 0275 04       		.byte	4
- 1655 0276 04       		.byte	4
- 1656 0277 04       		.byte	4
- 1657 0278 04       		.byte	4
- 1658 0279 0E       		.byte	14
- 1659 027a 00       		.byte	0
- 1660 027b 00       		.byte	0
- 1661 027c 00       		.byte	0
- 1662 027d 00       		.byte	0
- 1663 027e 33       		.byte	51
- 1664 027f 12       		.byte	18
- 1665 0280 12       		.byte	18
- 1666 0281 12       		.byte	18
- 1667 0282 12       		.byte	18
- 1668 0283 12       		.byte	18
- 1669 0284 12       		.byte	18
- 1670 0285 0C       		.byte	12
- 1671 0286 00       		.byte	0
- 1672 0287 00       		.byte	0
- 1673 0288 00       		.byte	0
- 1674 0289 00       		.byte	0
- 1675 028a 33       		.byte	51
- 1676 028b 12       		.byte	18
- 1677 028c 12       		.byte	18
- 1678 028d 0A       		.byte	10
- 1679 028e 0A       		.byte	10
- 1680 028f 0C       		.byte	12
- 1681 0290 04       		.byte	4
- 1682 0291 04       		.byte	4
- 1683 0292 00       		.byte	0
- 1684 0293 00       		.byte	0
- 1685 0294 00       		.byte	0
- 1686 0295 00       		.byte	0
- 1687 0296 15       		.byte	21
- 1688 0297 15       		.byte	21
- 1689 0298 15       		.byte	21
- 1690 0299 0E       		.byte	14
-ARM GAS  /tmp/ccgWwPQM.s 			page 40
-
-
- 1691 029a 0A       		.byte	10
- 1692 029b 0A       		.byte	10
- 1693 029c 0A       		.byte	10
- 1694 029d 0A       		.byte	10
- 1695 029e 00       		.byte	0
- 1696 029f 00       		.byte	0
- 1697 02a0 00       		.byte	0
- 1698 02a1 00       		.byte	0
- 1699 02a2 1B       		.byte	27
- 1700 02a3 0A       		.byte	10
- 1701 02a4 0A       		.byte	10
- 1702 02a5 04       		.byte	4
- 1703 02a6 04       		.byte	4
- 1704 02a7 0A       		.byte	10
- 1705 02a8 0A       		.byte	10
- 1706 02a9 1B       		.byte	27
- 1707 02aa 00       		.byte	0
- 1708 02ab 00       		.byte	0
- 1709 02ac 00       		.byte	0
- 1710 02ad 00       		.byte	0
- 1711 02ae 1B       		.byte	27
- 1712 02af 0A       		.byte	10
- 1713 02b0 0A       		.byte	10
- 1714 02b1 04       		.byte	4
- 1715 02b2 04       		.byte	4
- 1716 02b3 04       		.byte	4
- 1717 02b4 04       		.byte	4
- 1718 02b5 0E       		.byte	14
- 1719 02b6 00       		.byte	0
- 1720 02b7 00       		.byte	0
- 1721 02b8 00       		.byte	0
- 1722 02b9 00       		.byte	0
- 1723 02ba 1F       		.byte	31
- 1724 02bb 09       		.byte	9
- 1725 02bc 08       		.byte	8
- 1726 02bd 04       		.byte	4
- 1727 02be 04       		.byte	4
- 1728 02bf 02       		.byte	2
- 1729 02c0 12       		.byte	18
- 1730 02c1 1F       		.byte	31
- 1731 02c2 00       		.byte	0
- 1732 02c3 00       		.byte	0
- 1733 02c4 00       		.byte	0
- 1734 02c5 1C       		.byte	28
- 1735 02c6 04       		.byte	4
- 1736 02c7 04       		.byte	4
- 1737 02c8 04       		.byte	4
- 1738 02c9 04       		.byte	4
- 1739 02ca 04       		.byte	4
- 1740 02cb 04       		.byte	4
- 1741 02cc 04       		.byte	4
- 1742 02cd 04       		.byte	4
- 1743 02ce 1C       		.byte	28
- 1744 02cf 00       		.byte	0
- 1745 02d0 00       		.byte	0
- 1746 02d1 02       		.byte	2
- 1747 02d2 02       		.byte	2
-ARM GAS  /tmp/ccgWwPQM.s 			page 41
-
-
- 1748 02d3 02       		.byte	2
- 1749 02d4 04       		.byte	4
- 1750 02d5 04       		.byte	4
- 1751 02d6 08       		.byte	8
- 1752 02d7 08       		.byte	8
- 1753 02d8 08       		.byte	8
- 1754 02d9 10       		.byte	16
- 1755 02da 00       		.byte	0
- 1756 02db 00       		.byte	0
- 1757 02dc 00       		.byte	0
- 1758 02dd 0E       		.byte	14
- 1759 02de 08       		.byte	8
- 1760 02df 08       		.byte	8
- 1761 02e0 08       		.byte	8
- 1762 02e1 08       		.byte	8
- 1763 02e2 08       		.byte	8
- 1764 02e3 08       		.byte	8
- 1765 02e4 08       		.byte	8
- 1766 02e5 08       		.byte	8
- 1767 02e6 0E       		.byte	14
- 1768 02e7 00       		.byte	0
- 1769 02e8 00       		.byte	0
- 1770 02e9 04       		.byte	4
- 1771 02ea 0A       		.byte	10
- 1772 02eb 00       		.byte	0
- 1773 02ec 00       		.byte	0
- 1774 02ed 00       		.byte	0
- 1775 02ee 00       		.byte	0
- 1776 02ef 00       		.byte	0
- 1777 02f0 00       		.byte	0
- 1778 02f1 00       		.byte	0
- 1779 02f2 00       		.byte	0
- 1780 02f3 00       		.byte	0
- 1781 02f4 00       		.byte	0
- 1782 02f5 00       		.byte	0
- 1783 02f6 00       		.byte	0
- 1784 02f7 00       		.byte	0
- 1785 02f8 00       		.byte	0
- 1786 02f9 00       		.byte	0
- 1787 02fa 00       		.byte	0
- 1788 02fb 00       		.byte	0
- 1789 02fc 00       		.byte	0
- 1790 02fd 00       		.byte	0
- 1791 02fe 00       		.byte	0
- 1792 02ff 3F       		.byte	63
- 1793 0300 00       		.byte	0
- 1794 0301 04       		.byte	4
- 1795 0302 00       		.byte	0
- 1796 0303 00       		.byte	0
- 1797 0304 00       		.byte	0
- 1798 0305 00       		.byte	0
- 1799 0306 00       		.byte	0
- 1800 0307 00       		.byte	0
- 1801 0308 00       		.byte	0
- 1802 0309 00       		.byte	0
- 1803 030a 00       		.byte	0
- 1804 030b 00       		.byte	0
-ARM GAS  /tmp/ccgWwPQM.s 			page 42
-
-
- 1805 030c 00       		.byte	0
- 1806 030d 00       		.byte	0
- 1807 030e 00       		.byte	0
- 1808 030f 00       		.byte	0
- 1809 0310 00       		.byte	0
- 1810 0311 0C       		.byte	12
- 1811 0312 12       		.byte	18
- 1812 0313 1C       		.byte	28
- 1813 0314 12       		.byte	18
- 1814 0315 3C       		.byte	60
- 1815 0316 00       		.byte	0
- 1816 0317 00       		.byte	0
- 1817 0318 00       		.byte	0
- 1818 0319 00       		.byte	0
- 1819 031a 03       		.byte	3
- 1820 031b 02       		.byte	2
- 1821 031c 02       		.byte	2
- 1822 031d 0E       		.byte	14
- 1823 031e 12       		.byte	18
- 1824 031f 12       		.byte	18
- 1825 0320 12       		.byte	18
- 1826 0321 0E       		.byte	14
- 1827 0322 00       		.byte	0
- 1828 0323 00       		.byte	0
- 1829 0324 00       		.byte	0
- 1830 0325 00       		.byte	0
- 1831 0326 00       		.byte	0
- 1832 0327 00       		.byte	0
- 1833 0328 00       		.byte	0
- 1834 0329 1C       		.byte	28
- 1835 032a 12       		.byte	18
- 1836 032b 02       		.byte	2
- 1837 032c 02       		.byte	2
- 1838 032d 1C       		.byte	28
- 1839 032e 00       		.byte	0
- 1840 032f 00       		.byte	0
- 1841 0330 00       		.byte	0
- 1842 0331 00       		.byte	0
- 1843 0332 18       		.byte	24
- 1844 0333 10       		.byte	16
- 1845 0334 10       		.byte	16
- 1846 0335 1C       		.byte	28
- 1847 0336 12       		.byte	18
- 1848 0337 12       		.byte	18
- 1849 0338 12       		.byte	18
- 1850 0339 3C       		.byte	60
- 1851 033a 00       		.byte	0
- 1852 033b 00       		.byte	0
- 1853 033c 00       		.byte	0
- 1854 033d 00       		.byte	0
- 1855 033e 00       		.byte	0
- 1856 033f 00       		.byte	0
- 1857 0340 00       		.byte	0
- 1858 0341 0C       		.byte	12
- 1859 0342 12       		.byte	18
- 1860 0343 1E       		.byte	30
- 1861 0344 02       		.byte	2
-ARM GAS  /tmp/ccgWwPQM.s 			page 43
-
-
- 1862 0345 1C       		.byte	28
- 1863 0346 00       		.byte	0
- 1864 0347 00       		.byte	0
- 1865 0348 00       		.byte	0
- 1866 0349 00       		.byte	0
- 1867 034a 38       		.byte	56
- 1868 034b 04       		.byte	4
- 1869 034c 04       		.byte	4
- 1870 034d 1E       		.byte	30
- 1871 034e 04       		.byte	4
- 1872 034f 04       		.byte	4
- 1873 0350 04       		.byte	4
- 1874 0351 1E       		.byte	30
- 1875 0352 00       		.byte	0
- 1876 0353 00       		.byte	0
- 1877 0354 00       		.byte	0
- 1878 0355 00       		.byte	0
- 1879 0356 00       		.byte	0
- 1880 0357 00       		.byte	0
- 1881 0358 00       		.byte	0
- 1882 0359 3C       		.byte	60
- 1883 035a 12       		.byte	18
- 1884 035b 0C       		.byte	12
- 1885 035c 02       		.byte	2
- 1886 035d 1E       		.byte	30
- 1887 035e 22       		.byte	34
- 1888 035f 1C       		.byte	28
- 1889 0360 00       		.byte	0
- 1890 0361 00       		.byte	0
- 1891 0362 03       		.byte	3
- 1892 0363 02       		.byte	2
- 1893 0364 02       		.byte	2
- 1894 0365 0E       		.byte	14
- 1895 0366 12       		.byte	18
- 1896 0367 12       		.byte	18
- 1897 0368 12       		.byte	18
- 1898 0369 37       		.byte	55
- 1899 036a 00       		.byte	0
- 1900 036b 00       		.byte	0
- 1901 036c 00       		.byte	0
- 1902 036d 00       		.byte	0
- 1903 036e 04       		.byte	4
- 1904 036f 00       		.byte	0
- 1905 0370 00       		.byte	0
- 1906 0371 06       		.byte	6
- 1907 0372 04       		.byte	4
- 1908 0373 04       		.byte	4
- 1909 0374 04       		.byte	4
- 1910 0375 0E       		.byte	14
- 1911 0376 00       		.byte	0
- 1912 0377 00       		.byte	0
- 1913 0378 00       		.byte	0
- 1914 0379 00       		.byte	0
- 1915 037a 08       		.byte	8
- 1916 037b 00       		.byte	0
- 1917 037c 00       		.byte	0
- 1918 037d 0C       		.byte	12
-ARM GAS  /tmp/ccgWwPQM.s 			page 44
-
-
- 1919 037e 08       		.byte	8
- 1920 037f 08       		.byte	8
- 1921 0380 08       		.byte	8
- 1922 0381 08       		.byte	8
- 1923 0382 08       		.byte	8
- 1924 0383 07       		.byte	7
- 1925 0384 00       		.byte	0
- 1926 0385 00       		.byte	0
- 1927 0386 03       		.byte	3
- 1928 0387 02       		.byte	2
- 1929 0388 02       		.byte	2
- 1930 0389 3A       		.byte	58
- 1931 038a 0A       		.byte	10
- 1932 038b 0E       		.byte	14
- 1933 038c 12       		.byte	18
- 1934 038d 37       		.byte	55
- 1935 038e 00       		.byte	0
- 1936 038f 00       		.byte	0
- 1937 0390 00       		.byte	0
- 1938 0391 00       		.byte	0
- 1939 0392 07       		.byte	7
- 1940 0393 04       		.byte	4
- 1941 0394 04       		.byte	4
- 1942 0395 04       		.byte	4
- 1943 0396 04       		.byte	4
- 1944 0397 04       		.byte	4
- 1945 0398 04       		.byte	4
- 1946 0399 1F       		.byte	31
- 1947 039a 00       		.byte	0
- 1948 039b 00       		.byte	0
- 1949 039c 00       		.byte	0
- 1950 039d 00       		.byte	0
- 1951 039e 00       		.byte	0
- 1952 039f 00       		.byte	0
- 1953 03a0 00       		.byte	0
- 1954 03a1 0F       		.byte	15
- 1955 03a2 15       		.byte	21
- 1956 03a3 15       		.byte	21
- 1957 03a4 15       		.byte	21
- 1958 03a5 15       		.byte	21
- 1959 03a6 00       		.byte	0
- 1960 03a7 00       		.byte	0
- 1961 03a8 00       		.byte	0
- 1962 03a9 00       		.byte	0
- 1963 03aa 00       		.byte	0
- 1964 03ab 00       		.byte	0
- 1965 03ac 00       		.byte	0
- 1966 03ad 0F       		.byte	15
- 1967 03ae 12       		.byte	18
- 1968 03af 12       		.byte	18
- 1969 03b0 12       		.byte	18
- 1970 03b1 37       		.byte	55
- 1971 03b2 00       		.byte	0
- 1972 03b3 00       		.byte	0
- 1973 03b4 00       		.byte	0
- 1974 03b5 00       		.byte	0
- 1975 03b6 00       		.byte	0
-ARM GAS  /tmp/ccgWwPQM.s 			page 45
-
-
- 1976 03b7 00       		.byte	0
- 1977 03b8 00       		.byte	0
- 1978 03b9 0C       		.byte	12
- 1979 03ba 12       		.byte	18
- 1980 03bb 12       		.byte	18
- 1981 03bc 12       		.byte	18
- 1982 03bd 0C       		.byte	12
- 1983 03be 00       		.byte	0
- 1984 03bf 00       		.byte	0
- 1985 03c0 00       		.byte	0
- 1986 03c1 00       		.byte	0
- 1987 03c2 00       		.byte	0
- 1988 03c3 00       		.byte	0
- 1989 03c4 00       		.byte	0
- 1990 03c5 0F       		.byte	15
- 1991 03c6 12       		.byte	18
- 1992 03c7 12       		.byte	18
- 1993 03c8 12       		.byte	18
- 1994 03c9 0E       		.byte	14
- 1995 03ca 02       		.byte	2
- 1996 03cb 07       		.byte	7
- 1997 03cc 00       		.byte	0
- 1998 03cd 00       		.byte	0
- 1999 03ce 00       		.byte	0
- 2000 03cf 00       		.byte	0
- 2001 03d0 00       		.byte	0
- 2002 03d1 1C       		.byte	28
- 2003 03d2 12       		.byte	18
- 2004 03d3 12       		.byte	18
- 2005 03d4 12       		.byte	18
- 2006 03d5 1C       		.byte	28
- 2007 03d6 10       		.byte	16
- 2008 03d7 38       		.byte	56
- 2009 03d8 00       		.byte	0
- 2010 03d9 00       		.byte	0
- 2011 03da 00       		.byte	0
- 2012 03db 00       		.byte	0
- 2013 03dc 00       		.byte	0
- 2014 03dd 1B       		.byte	27
- 2015 03de 06       		.byte	6
- 2016 03df 02       		.byte	2
- 2017 03e0 02       		.byte	2
- 2018 03e1 07       		.byte	7
- 2019 03e2 00       		.byte	0
- 2020 03e3 00       		.byte	0
- 2021 03e4 00       		.byte	0
- 2022 03e5 00       		.byte	0
- 2023 03e6 00       		.byte	0
- 2024 03e7 00       		.byte	0
- 2025 03e8 00       		.byte	0
- 2026 03e9 1E       		.byte	30
- 2027 03ea 02       		.byte	2
- 2028 03eb 0C       		.byte	12
- 2029 03ec 10       		.byte	16
- 2030 03ed 1E       		.byte	30
- 2031 03ee 00       		.byte	0
- 2032 03ef 00       		.byte	0
-ARM GAS  /tmp/ccgWwPQM.s 			page 46
-
-
- 2033 03f0 00       		.byte	0
- 2034 03f1 00       		.byte	0
- 2035 03f2 00       		.byte	0
- 2036 03f3 04       		.byte	4
- 2037 03f4 04       		.byte	4
- 2038 03f5 0E       		.byte	14
- 2039 03f6 04       		.byte	4
- 2040 03f7 04       		.byte	4
- 2041 03f8 04       		.byte	4
- 2042 03f9 18       		.byte	24
- 2043 03fa 00       		.byte	0
- 2044 03fb 00       		.byte	0
- 2045 03fc 00       		.byte	0
- 2046 03fd 00       		.byte	0
- 2047 03fe 00       		.byte	0
- 2048 03ff 00       		.byte	0
- 2049 0400 00       		.byte	0
- 2050 0401 1B       		.byte	27
- 2051 0402 12       		.byte	18
- 2052 0403 12       		.byte	18
- 2053 0404 12       		.byte	18
- 2054 0405 3C       		.byte	60
- 2055 0406 00       		.byte	0
- 2056 0407 00       		.byte	0
- 2057 0408 00       		.byte	0
- 2058 0409 00       		.byte	0
- 2059 040a 00       		.byte	0
- 2060 040b 00       		.byte	0
- 2061 040c 00       		.byte	0
- 2062 040d 37       		.byte	55
- 2063 040e 12       		.byte	18
- 2064 040f 0A       		.byte	10
- 2065 0410 0C       		.byte	12
- 2066 0411 04       		.byte	4
- 2067 0412 00       		.byte	0
- 2068 0413 00       		.byte	0
- 2069 0414 00       		.byte	0
- 2070 0415 00       		.byte	0
- 2071 0416 00       		.byte	0
- 2072 0417 00       		.byte	0
- 2073 0418 00       		.byte	0
- 2074 0419 15       		.byte	21
- 2075 041a 15       		.byte	21
- 2076 041b 0E       		.byte	14
- 2077 041c 0A       		.byte	10
- 2078 041d 0A       		.byte	10
- 2079 041e 00       		.byte	0
- 2080 041f 00       		.byte	0
- 2081 0420 00       		.byte	0
- 2082 0421 00       		.byte	0
- 2083 0422 00       		.byte	0
- 2084 0423 00       		.byte	0
- 2085 0424 00       		.byte	0
- 2086 0425 1B       		.byte	27
- 2087 0426 0A       		.byte	10
- 2088 0427 04       		.byte	4
- 2089 0428 0A       		.byte	10
-ARM GAS  /tmp/ccgWwPQM.s 			page 47
-
-
- 2090 0429 1B       		.byte	27
- 2091 042a 00       		.byte	0
- 2092 042b 00       		.byte	0
- 2093 042c 00       		.byte	0
- 2094 042d 00       		.byte	0
- 2095 042e 00       		.byte	0
- 2096 042f 00       		.byte	0
- 2097 0430 00       		.byte	0
- 2098 0431 37       		.byte	55
- 2099 0432 12       		.byte	18
- 2100 0433 0A       		.byte	10
- 2101 0434 0C       		.byte	12
- 2102 0435 04       		.byte	4
- 2103 0436 04       		.byte	4
- 2104 0437 03       		.byte	3
- 2105 0438 00       		.byte	0
- 2106 0439 00       		.byte	0
- 2107 043a 00       		.byte	0
- 2108 043b 00       		.byte	0
- 2109 043c 00       		.byte	0
- 2110 043d 1E       		.byte	30
- 2111 043e 08       		.byte	8
- 2112 043f 04       		.byte	4
- 2113 0440 04       		.byte	4
- 2114 0441 1E       		.byte	30
- 2115 0442 00       		.byte	0
- 2116 0443 00       		.byte	0
- 2117 0444 00       		.byte	0
- 2118 0445 18       		.byte	24
- 2119 0446 08       		.byte	8
- 2120 0447 08       		.byte	8
- 2121 0448 08       		.byte	8
- 2122 0449 04       		.byte	4
- 2123 044a 08       		.byte	8
- 2124 044b 08       		.byte	8
- 2125 044c 08       		.byte	8
- 2126 044d 08       		.byte	8
- 2127 044e 18       		.byte	24
- 2128 044f 00       		.byte	0
- 2129 0450 08       		.byte	8
- 2130 0451 08       		.byte	8
- 2131 0452 08       		.byte	8
- 2132 0453 08       		.byte	8
- 2133 0454 08       		.byte	8
- 2134 0455 08       		.byte	8
- 2135 0456 08       		.byte	8
- 2136 0457 08       		.byte	8
- 2137 0458 08       		.byte	8
- 2138 0459 08       		.byte	8
- 2139 045a 08       		.byte	8
- 2140 045b 08       		.byte	8
- 2141 045c 00       		.byte	0
- 2142 045d 06       		.byte	6
- 2143 045e 04       		.byte	4
- 2144 045f 04       		.byte	4
- 2145 0460 04       		.byte	4
- 2146 0461 08       		.byte	8
-ARM GAS  /tmp/ccgWwPQM.s 			page 48
-
-
- 2147 0462 04       		.byte	4
- 2148 0463 04       		.byte	4
- 2149 0464 04       		.byte	4
- 2150 0465 04       		.byte	4
- 2151 0466 06       		.byte	6
- 2152 0467 00       		.byte	0
- 2153 0468 02       		.byte	2
- 2154 0469 25       		.byte	37
- 2155 046a 18       		.byte	24
- 2156 046b 00       		.byte	0
- 2157 046c 00       		.byte	0
- 2158 046d 00       		.byte	0
- 2159 046e 00       		.byte	0
- 2160 046f 00       		.byte	0
- 2161 0470 00       		.byte	0
- 2162 0471 00       		.byte	0
- 2163 0472 00       		.byte	0
- 2164 0473 00       		.byte	0
- 2165              		.section	.data.blank,"aw",%progbits
- 2166              		.align	2
- 2167              		.set	.LANCHOR2,. + 0
- 2170              	blank:
- 2171 0000 20202020 		.ascii	"                                                   "
- 2171      20202020 
- 2171      20202020 
- 2171      20202020 
- 2171      20202020 
- 2172 0033 2000     		.ascii	" \000"
- 2173              		.section	.bss.color1,"aw",%nobits
- 2174              		.align	2
- 2175              		.set	.LANCHOR3,. + 0
- 2178              	color1:
- 2179 0000 00000000 		.space	4
- 2180              		.section	.bss.strIndex,"aw",%nobits
- 2181              		.align	1
- 2182              		.set	.LANCHOR4,. + 0
- 2185              	strIndex:
- 2186 0000 0000     		.space	2
- 2187              		.text
- 2188              	.Letext0:
- 2189              		.file 2 "/opt/gcc-arm-none-eabi-4_9-2015q3/arm-none-eabi/include/machine/_default_types.h"
- 2190              		.file 3 "/opt/gcc-arm-none-eabi-4_9-2015q3/arm-none-eabi/include/sys/_stdint.h"
- 2191              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h"
- 2192              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
- 2193              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
- 2194              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
- 2195              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h"
- 2196              		.file 9 "Drivers/CMSIS/Include/core_cm3.h"
- 2197              		.file 10 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
- 2198              		.file 11 "Core/Inc/main.h"
-ARM GAS  /tmp/ccgWwPQM.s 			page 49
+  44:Core/Src/usart.c **** 
+  45:Core/Src/usart.c **** /* USER CODE END 0 */
+  46:Core/Src/usart.c **** 
+  47:Core/Src/usart.c **** UART_HandleTypeDef huart1;
+  48:Core/Src/usart.c **** 
+  49:Core/Src/usart.c **** /* USART1 init function */
+  50:Core/Src/usart.c **** 
+  51:Core/Src/usart.c **** void MX_USART1_UART_Init(void)
+  52:Core/Src/usart.c **** {
+  27              		.loc 1 52 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 08B5     		push	{r3, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+  53:Core/Src/usart.c **** 
+  54:Core/Src/usart.c ****   huart1.Instance = USART1;
+  36              		.loc 1 54 0
+  37 0002 0A48     		ldr	r0, .L4
+  38 0004 0A4B     		ldr	r3, .L4+4
+  39 0006 0360     		str	r3, [r0]
+  55:Core/Src/usart.c ****   huart1.Init.BaudRate = 115200;
+  40              		.loc 1 55 0
+  41 0008 4FF4E133 		mov	r3, #115200
+  42 000c 4360     		str	r3, [r0, #4]
+  56:Core/Src/usart.c ****   huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  43              		.loc 1 56 0
+  44 000e 0023     		movs	r3, #0
+  45 0010 8360     		str	r3, [r0, #8]
+  57:Core/Src/usart.c ****   huart1.Init.StopBits = UART_STOPBITS_1;
+  46              		.loc 1 57 0
+  47 0012 C360     		str	r3, [r0, #12]
+  58:Core/Src/usart.c ****   huart1.Init.Parity = UART_PARITY_NONE;
+  48              		.loc 1 58 0
+  49 0014 0361     		str	r3, [r0, #16]
+  59:Core/Src/usart.c ****   huart1.Init.Mode = UART_MODE_TX_RX;
+  50              		.loc 1 59 0
+  51 0016 0C22     		movs	r2, #12
+  52 0018 4261     		str	r2, [r0, #20]
+  60:Core/Src/usart.c ****   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  53              		.loc 1 60 0
+  54 001a 8361     		str	r3, [r0, #24]
+  61:Core/Src/usart.c ****   huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+ARM GAS  /tmp/cc3h9lai.s 			page 3
+
+
+  55              		.loc 1 61 0
+  56 001c C361     		str	r3, [r0, #28]
+  62:Core/Src/usart.c ****   if (HAL_UART_Init(&huart1) != HAL_OK)
+  57              		.loc 1 62 0
+  58 001e FFF7FEFF 		bl	HAL_UART_Init
+  59              	.LVL0:
+  60 0022 08B1     		cbz	r0, .L1
+  63:Core/Src/usart.c ****   {
+  64:Core/Src/usart.c ****     Error_Handler();
+  61              		.loc 1 64 0
+  62 0024 FFF7FEFF 		bl	Error_Handler
+  63              	.LVL1:
+  64              	.L1:
+  65 0028 08BD     		pop	{r3, pc}
+  66              	.L5:
+  67 002a 00BF     		.align	2
+  68              	.L4:
+  69 002c 00000000 		.word	huart1
+  70 0030 00380140 		.word	1073821696
+  71              		.cfi_endproc
+  72              	.LFE63:
+  74              		.section	.text.HAL_UART_MspInit,"ax",%progbits
+  75              		.align	2
+  76              		.global	HAL_UART_MspInit
+  77              		.thumb
+  78              		.thumb_func
+  80              	HAL_UART_MspInit:
+  81              	.LFB64:
+  65:Core/Src/usart.c ****   }
+  66:Core/Src/usart.c **** 
+  67:Core/Src/usart.c **** }
+  68:Core/Src/usart.c **** 
+  69:Core/Src/usart.c **** void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
+  70:Core/Src/usart.c **** {
+  82              		.loc 1 70 0
+  83              		.cfi_startproc
+  84              		@ args = 0, pretend = 0, frame = 24
+  85              		@ frame_needed = 0, uses_anonymous_args = 0
+  86              	.LVL2:
+  87 0000 10B5     		push	{r4, lr}
+  88              	.LCFI1:
+  89              		.cfi_def_cfa_offset 8
+  90              		.cfi_offset 4, -8
+  91              		.cfi_offset 14, -4
+  92 0002 86B0     		sub	sp, sp, #24
+  93              	.LCFI2:
+  94              		.cfi_def_cfa_offset 32
+  71:Core/Src/usart.c **** 
+  72:Core/Src/usart.c ****   GPIO_InitTypeDef GPIO_InitStruct = {0};
+  95              		.loc 1 72 0
+  96 0004 0023     		movs	r3, #0
+  97 0006 0293     		str	r3, [sp, #8]
+  98 0008 0393     		str	r3, [sp, #12]
+  99 000a 0493     		str	r3, [sp, #16]
+ 100 000c 0593     		str	r3, [sp, #20]
+  73:Core/Src/usart.c ****   if(uartHandle->Instance==USART1)
+ 101              		.loc 1 73 0
+ARM GAS  /tmp/cc3h9lai.s 			page 4
+
+
+ 102 000e 0268     		ldr	r2, [r0]
+ 103 0010 174B     		ldr	r3, .L9
+ 104 0012 9A42     		cmp	r2, r3
+ 105 0014 29D1     		bne	.L6
+ 106              	.LBB2:
+  74:Core/Src/usart.c ****   {
+  75:Core/Src/usart.c ****   /* USER CODE BEGIN USART1_MspInit 0 */
+  76:Core/Src/usart.c **** 
+  77:Core/Src/usart.c ****   /* USER CODE END USART1_MspInit 0 */
+  78:Core/Src/usart.c ****     /* USART1 clock enable */
+  79:Core/Src/usart.c ****     __HAL_RCC_USART1_CLK_ENABLE();
+ 107              		.loc 1 79 0
+ 108 0016 03F55843 		add	r3, r3, #55296
+ 109 001a 9A69     		ldr	r2, [r3, #24]
+ 110 001c 42F48042 		orr	r2, r2, #16384
+ 111 0020 9A61     		str	r2, [r3, #24]
+ 112 0022 9A69     		ldr	r2, [r3, #24]
+ 113 0024 02F48042 		and	r2, r2, #16384
+ 114 0028 0092     		str	r2, [sp]
+ 115 002a 009A     		ldr	r2, [sp]
+ 116              	.LBE2:
+ 117              	.LBB3:
+  80:Core/Src/usart.c ****   
+  81:Core/Src/usart.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+ 118              		.loc 1 81 0
+ 119 002c 9A69     		ldr	r2, [r3, #24]
+ 120 002e 42F00402 		orr	r2, r2, #4
+ 121 0032 9A61     		str	r2, [r3, #24]
+ 122 0034 9B69     		ldr	r3, [r3, #24]
+ 123 0036 03F00403 		and	r3, r3, #4
+ 124 003a 0193     		str	r3, [sp, #4]
+ 125 003c 019B     		ldr	r3, [sp, #4]
+ 126              	.LBE3:
+  82:Core/Src/usart.c ****     /**USART1 GPIO Configuration    
+  83:Core/Src/usart.c ****     PA9     ------> USART1_TX
+  84:Core/Src/usart.c ****     PA10     ------> USART1_RX 
+  85:Core/Src/usart.c ****     */
+  86:Core/Src/usart.c ****     GPIO_InitStruct.Pin = GPIO_PIN_9;
+ 127              		.loc 1 86 0
+ 128 003e 4FF40073 		mov	r3, #512
+ 129 0042 0293     		str	r3, [sp, #8]
+  87:Core/Src/usart.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 130              		.loc 1 87 0
+ 131 0044 0223     		movs	r3, #2
+ 132 0046 0393     		str	r3, [sp, #12]
+  88:Core/Src/usart.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+ 133              		.loc 1 88 0
+ 134 0048 0323     		movs	r3, #3
+ 135 004a 0593     		str	r3, [sp, #20]
+  89:Core/Src/usart.c ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+ 136              		.loc 1 89 0
+ 137 004c 094C     		ldr	r4, .L9+4
+ 138 004e 2046     		mov	r0, r4
+ 139              	.LVL3:
+ 140 0050 02A9     		add	r1, sp, #8
+ 141 0052 FFF7FEFF 		bl	HAL_GPIO_Init
+ 142              	.LVL4:
+ARM GAS  /tmp/cc3h9lai.s 			page 5
+
+
+  90:Core/Src/usart.c **** 
+  91:Core/Src/usart.c ****     GPIO_InitStruct.Pin = GPIO_PIN_10;
+ 143              		.loc 1 91 0
+ 144 0056 4FF48063 		mov	r3, #1024
+ 145 005a 0293     		str	r3, [sp, #8]
+  92:Core/Src/usart.c ****     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+ 146              		.loc 1 92 0
+ 147 005c 0023     		movs	r3, #0
+ 148 005e 0393     		str	r3, [sp, #12]
+  93:Core/Src/usart.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 149              		.loc 1 93 0
+ 150 0060 0493     		str	r3, [sp, #16]
+  94:Core/Src/usart.c ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+ 151              		.loc 1 94 0
+ 152 0062 2046     		mov	r0, r4
+ 153 0064 02A9     		add	r1, sp, #8
+ 154 0066 FFF7FEFF 		bl	HAL_GPIO_Init
+ 155              	.LVL5:
+ 156              	.L6:
+  95:Core/Src/usart.c **** 
+  96:Core/Src/usart.c ****   /* USER CODE BEGIN USART1_MspInit 1 */
+  97:Core/Src/usart.c **** 
+  98:Core/Src/usart.c ****   /* USER CODE END USART1_MspInit 1 */
+  99:Core/Src/usart.c ****   }
+ 100:Core/Src/usart.c **** }
+ 157              		.loc 1 100 0
+ 158 006a 06B0     		add	sp, sp, #24
+ 159              	.LCFI3:
+ 160              		.cfi_def_cfa_offset 8
+ 161              		@ sp needed
+ 162 006c 10BD     		pop	{r4, pc}
+ 163              	.L10:
+ 164 006e 00BF     		.align	2
+ 165              	.L9:
+ 166 0070 00380140 		.word	1073821696
+ 167 0074 00080140 		.word	1073809408
+ 168              		.cfi_endproc
+ 169              	.LFE64:
+ 171              		.section	.text.HAL_UART_MspDeInit,"ax",%progbits
+ 172              		.align	2
+ 173              		.global	HAL_UART_MspDeInit
+ 174              		.thumb
+ 175              		.thumb_func
+ 177              	HAL_UART_MspDeInit:
+ 178              	.LFB65:
+ 101:Core/Src/usart.c **** 
+ 102:Core/Src/usart.c **** void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
+ 103:Core/Src/usart.c **** {
+ 179              		.loc 1 103 0
+ 180              		.cfi_startproc
+ 181              		@ args = 0, pretend = 0, frame = 0
+ 182              		@ frame_needed = 0, uses_anonymous_args = 0
+ 183              	.LVL6:
+ 184 0000 08B5     		push	{r3, lr}
+ 185              	.LCFI4:
+ 186              		.cfi_def_cfa_offset 8
+ 187              		.cfi_offset 3, -8
+ARM GAS  /tmp/cc3h9lai.s 			page 6
+
+
+ 188              		.cfi_offset 14, -4
+ 104:Core/Src/usart.c **** 
+ 105:Core/Src/usart.c ****   if(uartHandle->Instance==USART1)
+ 189              		.loc 1 105 0
+ 190 0002 0268     		ldr	r2, [r0]
+ 191 0004 064B     		ldr	r3, .L14
+ 192 0006 9A42     		cmp	r2, r3
+ 193 0008 09D1     		bne	.L11
+ 106:Core/Src/usart.c ****   {
+ 107:Core/Src/usart.c ****   /* USER CODE BEGIN USART1_MspDeInit 0 */
+ 108:Core/Src/usart.c **** 
+ 109:Core/Src/usart.c ****   /* USER CODE END USART1_MspDeInit 0 */
+ 110:Core/Src/usart.c ****     /* Peripheral clock disable */
+ 111:Core/Src/usart.c ****     __HAL_RCC_USART1_CLK_DISABLE();
+ 194              		.loc 1 111 0
+ 195 000a 064A     		ldr	r2, .L14+4
+ 196 000c 9369     		ldr	r3, [r2, #24]
+ 197 000e 23F48043 		bic	r3, r3, #16384
+ 198 0012 9361     		str	r3, [r2, #24]
+ 112:Core/Src/usart.c ****   
+ 113:Core/Src/usart.c ****     /**USART1 GPIO Configuration    
+ 114:Core/Src/usart.c ****     PA9     ------> USART1_TX
+ 115:Core/Src/usart.c ****     PA10     ------> USART1_RX 
+ 116:Core/Src/usart.c ****     */
+ 117:Core/Src/usart.c ****     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9|GPIO_PIN_10);
+ 199              		.loc 1 117 0
+ 200 0014 0448     		ldr	r0, .L14+8
+ 201              	.LVL7:
+ 202 0016 4FF4C061 		mov	r1, #1536
+ 203 001a FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 204              	.LVL8:
+ 205              	.L11:
+ 206 001e 08BD     		pop	{r3, pc}
+ 207              	.L15:
+ 208              		.align	2
+ 209              	.L14:
+ 210 0020 00380140 		.word	1073821696
+ 211 0024 00100240 		.word	1073876992
+ 212 0028 00080140 		.word	1073809408
+ 213              		.cfi_endproc
+ 214              	.LFE65:
+ 216              		.comm	huart1,64,4
+ 217              		.text
+ 218              	.Letext0:
+ 219              		.file 2 "/opt/gcc-arm-none-eabi-4_9-2015q3/arm-none-eabi/include/machine/_default_types.h"
+ 220              		.file 3 "/opt/gcc-arm-none-eabi-4_9-2015q3/arm-none-eabi/include/sys/_stdint.h"
+ 221              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h"
+ 222              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 223              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 224              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 225              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h"
+ 226              		.file 9 "Drivers/CMSIS/Include/core_cm3.h"
+ 227              		.file 10 "Core/Inc/main.h"
+ARM GAS  /tmp/cc3h9lai.s 			page 7
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 usart.c
-     /tmp/ccgWwPQM.s:19     .text.LCD_WR_CMD:00000000 $t
-     /tmp/ccgWwPQM.s:23     .text.LCD_WR_CMD:00000000 LCD_WR_CMD
-     /tmp/ccgWwPQM.s:47     .text.LCD_WR_Data:00000000 $t
-     /tmp/ccgWwPQM.s:51     .text.LCD_WR_Data:00000000 LCD_WR_Data
-     /tmp/ccgWwPQM.s:68     .text.LCD_WR_Data:00000008 $d
-     /tmp/ccgWwPQM.s:73     .text.LCD_WR_REG:00000000 $t
-     /tmp/ccgWwPQM.s:77     .text.LCD_WR_REG:00000000 LCD_WR_REG
-     /tmp/ccgWwPQM.s:95     .text.TFT_ShowChar:00000000 $t
-     /tmp/ccgWwPQM.s:99     .text.TFT_ShowChar:00000000 TFT_ShowChar
-     /tmp/ccgWwPQM.s:254    .text.TFT_ShowChar:000000c8 $d
-     /tmp/ccgWwPQM.s:260    .text.TFT_ShowString:00000000 $t
-     /tmp/ccgWwPQM.s:264    .text.TFT_ShowString:00000000 TFT_ShowString
-     /tmp/ccgWwPQM.s:309    .text.LCD_Clear:00000000 $t
-     /tmp/ccgWwPQM.s:313    .text.LCD_Clear:00000000 LCD_Clear
-     /tmp/ccgWwPQM.s:353    .text.LCD_Clear:00000020 $d
-     /tmp/ccgWwPQM.s:358    .text.lcd_rst:00000000 $t
-     /tmp/ccgWwPQM.s:362    .text.lcd_rst:00000000 lcd_rst
-     /tmp/ccgWwPQM.s:404    .text.lcd_rst:00000034 $d
-     /tmp/ccgWwPQM.s:410    .text.MX_USART1_UART_Init:00000000 $t
-     /tmp/ccgWwPQM.s:415    .text.MX_USART1_UART_Init:00000000 MX_USART1_UART_Init
-     /tmp/ccgWwPQM.s:459    .text.MX_USART1_UART_Init:0000002c $d
+     /tmp/cc3h9lai.s:19     .text.MX_USART1_UART_Init:00000000 $t
+     /tmp/cc3h9lai.s:24     .text.MX_USART1_UART_Init:00000000 MX_USART1_UART_Init
+     /tmp/cc3h9lai.s:69     .text.MX_USART1_UART_Init:0000002c $d
                             *COM*:00000040 huart1
-     /tmp/ccgWwPQM.s:465    .text.HAL_UART_MspInit:00000000 $t
-     /tmp/ccgWwPQM.s:470    .text.HAL_UART_MspInit:00000000 HAL_UART_MspInit
-     /tmp/ccgWwPQM.s:556    .text.HAL_UART_MspInit:00000070 $d
-     /tmp/ccgWwPQM.s:562    .text.HAL_UART_MspDeInit:00000000 $t
-     /tmp/ccgWwPQM.s:567    .text.HAL_UART_MspDeInit:00000000 HAL_UART_MspDeInit
-     /tmp/ccgWwPQM.s:600    .text.HAL_UART_MspDeInit:00000020 $d
-     /tmp/ccgWwPQM.s:607    .text.LCD_Init:00000000 $t
-     /tmp/ccgWwPQM.s:612    .text.LCD_Init:00000000 LCD_Init
-     /tmp/ccgWwPQM.s:947    .text.LCD_Init:00000204 $d
-     /tmp/ccgWwPQM.s:953    .text.tftprintf:00000000 $t
-     /tmp/ccgWwPQM.s:958    .text.tftprintf:00000000 tftprintf
-     /tmp/ccgWwPQM.s:1006   .text.tftprintf:00000034 $d
-     /tmp/ccgWwPQM.s:1024   .rodata.asc2_1206:00000000 asc2_1206
-     /tmp/ccgWwPQM.s:1013   .bss.POINT_COLOR:00000000 $d
-     /tmp/ccgWwPQM.s:1017   .bss.POINT_COLOR:00000000 POINT_COLOR
-     /tmp/ccgWwPQM.s:1020   .rodata.asc2_1206:00000000 $d
-     /tmp/ccgWwPQM.s:2166   .data.blank:00000000 $d
-     /tmp/ccgWwPQM.s:2170   .data.blank:00000000 blank
-     /tmp/ccgWwPQM.s:2174   .bss.color1:00000000 $d
-     /tmp/ccgWwPQM.s:2178   .bss.color1:00000000 color1
-     /tmp/ccgWwPQM.s:2181   .bss.strIndex:00000000 $d
-     /tmp/ccgWwPQM.s:2185   .bss.strIndex:00000000 strIndex
+     /tmp/cc3h9lai.s:75     .text.HAL_UART_MspInit:00000000 $t
+     /tmp/cc3h9lai.s:80     .text.HAL_UART_MspInit:00000000 HAL_UART_MspInit
+     /tmp/cc3h9lai.s:166    .text.HAL_UART_MspInit:00000070 $d
+     /tmp/cc3h9lai.s:172    .text.HAL_UART_MspDeInit:00000000 $t
+     /tmp/cc3h9lai.s:177    .text.HAL_UART_MspDeInit:00000000 HAL_UART_MspDeInit
+     /tmp/cc3h9lai.s:210    .text.HAL_UART_MspDeInit:00000020 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS
-HAL_GPIO_WritePin
-HAL_Delay
 HAL_UART_Init
 Error_Handler
 HAL_GPIO_Init
