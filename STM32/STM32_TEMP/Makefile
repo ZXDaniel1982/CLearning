@@ -39,6 +39,7 @@ C_SOURCES =  \
 Core/Src/main.c \
 Core/Src/gpio.c \
 Core/Src/adc.c \
+Core/Src/lcd.c \
 Core/Src/fsmc.c \
 Core/Src/usart.c \
 Core/Src/stm32f1xx_it.c \
