@@ -1,9 +1,8 @@
-/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file           : main.h
-  * @brief          : Header for main.c file.
-  *                   This file contains the common defines of the application.
+  * File Name          : USART.h
+  * Description        : This file provides code for the configuration
+  *                      of the USART instances.
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
@@ -11,7 +10,7 @@
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
-  * COPYRIGHT(c) 2019 STMicroelectronics
+  * COPYRIGHT(c) 2018 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -37,62 +36,68 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
-
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __MAIN_H
-#define __MAIN_H
-
+#ifndef __usart_H
+#define __usart_H
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f1xx_hal.h"
-#include "stm32f1xx_hal.h"
+#include "main.h"
 
-/* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
 
-/* Exported types ------------------------------------------------------------*/
-/* USER CODE BEGIN ET */
+extern UART_HandleTypeDef huart1;
 
-/* USER CODE END ET */
-
-/* Exported constants --------------------------------------------------------*/
-/* USER CODE BEGIN EC */
-
-/* USER CODE END EC */
-
-/* Exported macro ------------------------------------------------------------*/
-/* USER CODE BEGIN EM */
-
-/* USER CODE END EM */
-
-/* Exported functions prototypes ---------------------------------------------*/
-void Error_Handler(void);
-
-/* USER CODE BEGIN EFP */
-
-/* USER CODE END EFP */
-
-/* Private defines -----------------------------------------------------------*/
-#define LCD_Light_Pin GPIO_PIN_13
-#define LCD_Light_GPIO_Port GPIOD
-#define Led_Pin GPIO_PIN_5
-#define Led_GPIO_Port GPIOB
-#define LCD_Rst_Pin GPIO_PIN_1
-#define LCD_Rst_GPIO_Port GPIOE
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
 
+void MX_USART1_UART_Init(void);
+
+/* USER CODE BEGIN Prototypes */
+#define Bank1_LCD_D    ((uint32_t)0x60020000)    //显示区数据地址
+#define Bank1_LCD_C    ((uint32_t)0x60000000)    //显示区指令地址
+
+#define LCD_LEN 320
+#define LCD_WID 240
+#define LCD_CHAR_LEN 6
+#define LCD_CHAR_WID 12
+#define LCD_STR_LEN_MAX ((LCD_LEN-4) / (LCD_CHAR_LEN))
+#define LCD_STR_NUM_MAX ((LCD_WID-4) / (LCD_CHAR_WID+2))
+
+#define LCD_CLR_COL ((LCD_LEN) / (LCD_CHAR_LEN))
+#define LCD_CLR_ROW ((LCD_WID) / (LCD_CHAR_WID))
+
+#define MAX_CHAR_POSX (LCD_LEN - 6)
+#define MAX_CHAR_POSY (LCD_WID - 14)
+
+#define RED   0XF800
+#define GREEN 0X07E0
+#define BLUE  0X001F
+#define BRED  0XF81F
+#define GRED  0XFFE0
+#define GBLUE 0X07FF;
+#define BLACK 0;
+
+void LCD_Init(void);
+void tftprintf(uint8_t *p);
+/* USER CODE END Prototypes */
+
 #ifdef __cplusplus
 }
 #endif
+#endif /*__ usart_H */
 
-#endif /* __MAIN_H */
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

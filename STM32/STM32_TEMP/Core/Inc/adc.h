@@ -53,7 +53,15 @@
 extern ADC_HandleTypeDef hadc1;
 
 /* USER CODE BEGIN Private defines */
-
+#define INTERNAL_TEMPSENSOR_V25        ((int32_t)1430)
+#define INTERNAL_TEMPSENSOR_AVGSLOPE   ((int32_t)4300)
+#define VDD_APPLI                      ((uint32_t) 3300)
+#define RANGE_12BITS                   ((uint32_t) 4095)
+#define COMPUTATION_TEMPERATURE_STD_PARAMS(TS_ADC_DATA)                        \
+  (((int32_t)(INTERNAL_TEMPSENSOR_V25 - (((TS_ADC_DATA) * VDD_APPLI) / RANGE_12BITS)   \
+     ) * 1000                                                                  \
+    ) / INTERNAL_TEMPSENSOR_AVGSLOPE                                           \
+  )
 /* USER CODE END Private defines */
 
 void MX_ADC1_Init(void);

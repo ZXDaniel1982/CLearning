@@ -5,7 +5,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-char *portname = "/dev/ttyUSB0";
+char *portname = "/dev/ttyS0";
 
 int set_interface_attribs (int fd, int speed, int parity)
 {

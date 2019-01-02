@@ -41,12 +41,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "usart.h"
 #include "gpio.h"
 #include "fsmc.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "lcd.h"
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -67,7 +68,9 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+static uint8_t buf[40] = {0};
+static uint32_t adcVal = 0;
+static int32_t tempVal = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -111,8 +114,13 @@ int main(void)
   MX_GPIO_Init();
   MX_ADC1_Init();
   MX_FSMC_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   LCD_Init();
+  memset((char *)buf, 0 , 40);
+  snprintf((char *)buf, 40 , "Start Temp sensor");
+  tftprintf(buf);
+
   HAL_ADCEx_Calibration_Start(&hadc1);
   /* USER CODE END 2 */
 
@@ -123,6 +131,14 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    HAL_Delay(1000);
+    HAL_ADC_Start(&hadc1);
+    adcVal = HAL_ADC_GetValue(&hadc1);
+    tempVal = COMPUTATION_TEMPERATURE_STD_PARAMS(adcVal);
+
+    memset((char *)buf, 0 , 40);
+    snprintf((char *)buf, 40 , "ADC %lu temp %ldC", adcVal, tempVal);
+    tftprintf(buf);
   }
   /* USER CODE END 3 */
 }
@@ -174,6 +190,27 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM1 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM1) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.
