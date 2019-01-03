@@ -162,7 +162,6 @@ void StartDefaultTask(void const * argument)
 void StartTask02(void const * argument)
 {
   /* USER CODE BEGIN StartTask02 */
-  uint8_t buf[40] = {0};
   uint16_t cnt = 0;
   /* Infinite loop */
   for(;;)

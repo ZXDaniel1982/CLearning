@@ -273,13 +273,13 @@ void tftprintf(const char* fmt, ...)
 
     va_list ap;
     va_start(ap, fmt);
-    vsnprintf(cmd, sizeof(cmd), fmt, ap);
+    vsnprintf((char *)cmd, sizeof(cmd), fmt, ap);
 
     if (strIndex > LCD_STR_NUM_MAX) {
         strIndex = 0;
         LCD_Clear();
     }
-    TFT_ShowString(2,(strIndex*14+2),(uint8_t *)cmd);
+    TFT_ShowString(2,(strIndex*14+2),cmd);
     strIndex++;
     va_end(ap);
 }
