@@ -163,11 +163,18 @@ void StartTask02(void const * argument)
 {
   /* USER CODE BEGIN StartTask02 */
   uint16_t cnt = 0;
+  size_t totalBytes;
+  size_t used;
   /* Infinite loop */
   for(;;)
   {
     osDelay(1000);
-    tftprintf("I am counting %d", cnt++);
+
+    totalBytes = configTOTAL_HEAP_SIZE;
+    used = xPortGetFreeHeapSize();
+
+    tftprintf("I am cnt %d total %d used %d", cnt++, totalBytes, used);
+
   }
   /* USER CODE END StartTask02 */
 }
