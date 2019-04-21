@@ -81,6 +81,7 @@
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 osThreadId myTask02Handle;
+osMessageQId myQueue01Handle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -127,6 +128,11 @@ void MX_FREERTOS_Init(void) {
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
+  /* Create the queue(s) */
+  /* definition and creation of myQueue01 */
+  osMessageQDef(myQueue01, 4, uint16_t);
+  myQueue01Handle = osMessageCreate(osMessageQ(myQueue01), NULL);
+
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
@@ -143,11 +149,16 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN StartDefaultTask */
+  osEvent event;
+  size_t used;
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1000);
-    HAL_GPIO_TogglePin(Led_GPIO_Port, Led_Pin);
+    event = osMessageGet (myQueue01Handle, 0xffffffff);
+    if (event.status == osEventMessage) {
+      used = event.value.v;
+      tftprintf("I am recing used %d", used);
+    }
   }
   /* USER CODE END StartDefaultTask */
 }
@@ -173,8 +184,8 @@ void StartTask02(void const * argument)
     totalBytes = configTOTAL_HEAP_SIZE;
     used = xPortGetFreeHeapSize();
 
-    tftprintf("I am cnt %d total %d used %d", cnt++, totalBytes, used);
-
+    tftprintf("I am sending cnt %d total %d", cnt++, totalBytes);
+    osMessagePut (myQueue01Handle, used, 100);
   }
   /* USER CODE END StartTask02 */
 }
