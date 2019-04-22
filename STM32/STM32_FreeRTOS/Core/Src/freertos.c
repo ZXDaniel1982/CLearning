@@ -121,7 +121,7 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* definition and creation of myTask02 */
-  osThreadDef(myTask02, StartTask02, osPriorityIdle, 0, 128);
+  osThreadDef(myTask02, StartTask02, osPriorityIdle, 0, 256);
   myTask02Handle = osThreadCreate(osThread(myTask02), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -182,7 +182,7 @@ void StartTask02(void const * argument)
     osDelay(1000);
 
     totalBytes = configTOTAL_HEAP_SIZE;
-    used = xPortGetFreeHeapSize();
+    used = totalBytes - xPortGetFreeHeapSize();
 
     tftprintf("I am sending cnt %d total %d", cnt++, totalBytes);
     osMessagePut (myQueue01Handle, used, 100);
