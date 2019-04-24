@@ -35,6 +35,9 @@
 
 void LCD_Init(void);
 void tftprintf(const char* fmt, ...);
+
+void MonitorDefTask(void);
+void MonitorMyTask(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

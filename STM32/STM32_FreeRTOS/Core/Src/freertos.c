@@ -83,6 +83,8 @@ osThreadId defaultTaskHandle;
 osThreadId myTask02Handle;
 osMessageQId myQueue01Handle;
 
+osMutexId mymutex;
+
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
    
@@ -105,6 +107,8 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
+  osMutexDef(SampleMutex);
+  mymutex = osMutexCreate (osMutex (SampleMutex));
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
@@ -136,6 +140,9 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
+
+  vTaskSetApplicationTaskTag(defaultTaskHandle, ( void * ) '0' );
+  vTaskSetApplicationTaskTag(myTask02Handle, ( void * ) '1' );
 }
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -179,7 +186,7 @@ void StartTask02(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1000);
+    osDelay(2000);
 
     totalBytes = configTOTAL_HEAP_SIZE;
     used = totalBytes - xPortGetFreeHeapSize();
@@ -192,7 +199,23 @@ void StartTask02(void const * argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-     
+void MonitorDefTask()
+{
+  if( xTaskGetCurrentTaskHandle() == defaultTaskHandle )
+  {
+    //tftprintf("Entering StartDefaultTask");
+    //osDelay(50);
+  }
+}
+
+void MonitorMyTask()
+{
+  if( xTaskGetCurrentTaskHandle() == myTask02Handle )
+  {
+    //tftprintf("Leaving StartTask02");
+    //osDelay(50);
+  }
+}
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
