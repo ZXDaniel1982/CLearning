@@ -53,6 +53,7 @@
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
+#include "spc.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
@@ -87,11 +88,12 @@ osMutexId mymutex;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-   
+osThreadId myTask03Handle;
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
 void StartTask02(void const * argument);
+//void MyTask(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -130,6 +132,8 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+  osThreadDef(myTask03, MyTask, osPriorityIdle, 0, 256);
+  myTask03Handle = osThreadCreate(osThread(myTask03), NULL);
   /* USER CODE END RTOS_THREADS */
 
   /* Create the queue(s) */
@@ -196,6 +200,22 @@ void StartTask02(void const * argument)
   }
   /* USER CODE END StartTask02 */
 }
+
+#if 0
+void MyTask(void const * argument)
+{
+  /* USER CODE BEGIN StartTask02 */
+
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(2000);
+
+    tftprintf("I am running MyTask");
+  }
+  /* USER CODE END StartTask02 */
+}
+#endif
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
