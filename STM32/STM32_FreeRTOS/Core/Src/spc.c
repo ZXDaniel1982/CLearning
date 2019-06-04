@@ -1,11 +1,14 @@
+/* Includes ------------------------------------------------------------------*/
 #include "spc.h"
 #include "cmsis_os.h"
 #include "FreeRTOS.h"
-
 #include "lcd.h"
 #include <string.h>
 
-void MyTask(void const * argument)
+/*----------------------------------------------------------------------------*/
+/* Public functions                                                           */
+/*----------------------------------------------------------------------------*/
+void SpcMainLoop(void const * argument)
 {
   /* USER CODE BEGIN StartTask02 */
 
@@ -13,8 +16,7 @@ void MyTask(void const * argument)
   for(;;)
   {
     osDelay(2000);
-
-    tftprintf("I am running MyTask");
+    tftprintf("I am running SpcMainLoop");
   }
   /* USER CODE END StartTask02 */
 }

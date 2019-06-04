@@ -1,14 +1,14 @@
-#ifndef __gpio_H
-#define __gpio_H
+#ifndef __spc_H
+#define __spc_H
 #ifdef __cplusplus
  extern "C" {
 #endif
 
 #include "main.h"
 
-void MyTask(void const * argument);
+void SpcMainLoop(void const * argument);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /*__ pinoutConfig_H */
+#endif /*__spc_H */

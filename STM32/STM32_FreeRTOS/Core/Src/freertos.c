@@ -81,20 +81,19 @@
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
-osThreadId myTask02Handle;
+osThreadId spcTaskHandle;
 osMessageQId myQueue01Handle;
 
 osMutexId mymutex;
 
+//osTimerId sTimer;
+
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-osThreadId myTask03Handle;
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
-void StartTask02(void const * argument);
-//void MyTask(void const * argument);
-
+//void TimerCallback(void const * argument);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /**
@@ -127,13 +126,15 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* definition and creation of myTask02 */
-  osThreadDef(myTask02, StartTask02, osPriorityIdle, 0, 256);
-  myTask02Handle = osThreadCreate(osThread(myTask02), NULL);
+  osThreadDef(spcTask, SpcMainLoop, osPriorityIdle, 0, 256);
+  spcTaskHandle = osThreadCreate(osThread(spcTask), NULL);
+
+  // Create a oneshot timer to trigger a delayed force sync timer after handshake
+  //osTimerDef(myTimer, TimerCallback);
+  //sTimer = osTimerCreate (osTimer(myTimer), pdTRUE, NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  osThreadDef(myTask03, MyTask, osPriorityIdle, 0, 256);
-  myTask03Handle = osThreadCreate(osThread(myTask03), NULL);
   /* USER CODE END RTOS_THREADS */
 
   /* Create the queue(s) */
@@ -146,7 +147,7 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_QUEUES */
 
   vTaskSetApplicationTaskTag(defaultTaskHandle, ( void * ) '0' );
-  vTaskSetApplicationTaskTag(myTask02Handle, ( void * ) '1' );
+  vTaskSetApplicationTaskTag(spcTaskHandle, ( void * ) '1' );
 }
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -160,62 +161,33 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN StartDefaultTask */
+#if 0
   osEvent event;
   size_t used;
+#endif
+
+  //osTimerStart(sTimer, 1000);
+
   /* Infinite loop */
   for(;;)
   {
+#if 0
     event = osMessageGet (myQueue01Handle, 0xffffffff);
     if (event.status == osEventMessage) {
       used = event.value.v;
-      tftprintf("I am recing used %d", used);
+      tftprintf("I am recing used");
     }
+#endif
+    osDelay(1000);
+    HAL_GPIO_TogglePin(Led_GPIO_Port, Led_Pin);
   }
   /* USER CODE END StartDefaultTask */
 }
 
-/* USER CODE BEGIN Header_StartTask02 */
-/**
-* @brief Function implementing the myTask02 thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartTask02 */
-void StartTask02(void const * argument)
-{
-  /* USER CODE BEGIN StartTask02 */
-  uint16_t cnt = 0;
-  size_t totalBytes;
-  size_t used;
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(2000);
-
-    totalBytes = configTOTAL_HEAP_SIZE;
-    used = totalBytes - xPortGetFreeHeapSize();
-
-    tftprintf("I am sending cnt %d total %d", cnt++, totalBytes);
-    osMessagePut (myQueue01Handle, used, 100);
-  }
-  /* USER CODE END StartTask02 */
-}
-
-#if 0
-void MyTask(void const * argument)
-{
-  /* USER CODE BEGIN StartTask02 */
-
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(2000);
-
-    tftprintf("I am running MyTask");
-  }
-  /* USER CODE END StartTask02 */
-}
-#endif
+//void TimerCallback(void const * argument)
+//{
+//  HAL_GPIO_TogglePin(Led_GPIO_Port, Led_Pin);
+//}
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
@@ -230,7 +202,7 @@ void MonitorDefTask()
 
 void MonitorMyTask()
 {
-  if( xTaskGetCurrentTaskHandle() == myTask02Handle )
+  if( xTaskGetCurrentTaskHandle() == spcTaskHandle )
   {
     //tftprintf("Leaving StartTask02");
     //osDelay(50);
