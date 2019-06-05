@@ -81,7 +81,6 @@
 
 /* USER CODE END Variables */
 // definition of Thread
-osThreadId defaultTaskHandle;
 osThreadId spcTaskHandle;
 
 // definition of Message
@@ -97,7 +96,6 @@ osTimerId sTimer;
 /* USER CODE BEGIN FunctionPrototypes */
 /* USER CODE END FunctionPrototypes */
 
-void StartDefaultTask(void const * argument);
 void TimerCallback(void const * argument);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -126,10 +124,6 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_TIMERS */
 
   /* Create the thread(s) */
-  /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
-
   /* definition and creation of myTask02 */
   osThreadDef(spcTask, SpcMainLoop, osPriorityIdle, 0, 256);
   spcTaskHandle = osThreadCreate(osThread(spcTask), NULL);
@@ -137,8 +131,6 @@ void MX_FREERTOS_Init(void) {
   // Create a oneshot timer to trigger a delayed force sync timer after handshake
   osTimerDef(myTimer, TimerCallback);
   sTimer = osTimerCreate (osTimer(myTimer), pdTRUE, NULL);
-
-  //osTimerStart(sTimer, 1000);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -153,33 +145,11 @@ void MX_FREERTOS_Init(void) {
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
 
-  vTaskSetApplicationTaskTag(defaultTaskHandle, ( void * ) '0' );
   vTaskSetApplicationTaskTag(spcTaskHandle, ( void * ) '1' );
-}
-
-/* USER CODE BEGIN Header_StartDefaultTask */
-/**
-  * @brief  Function implementing the defaultTask thread.
-  * @param  argument: Not used 
-  * @retval None
-  */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void const * argument)
-{
-
-  /* USER CODE BEGIN StartDefaultTask */
-
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1000);
-  }
-  /* USER CODE END StartDefaultTask */
 }
 
 void TimerCallback(void const * argument)
 {
-  
   size_t used = 12;
 
   HAL_GPIO_TogglePin(Led_GPIO_Port, Led_Pin);
@@ -188,6 +158,7 @@ void TimerCallback(void const * argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+#if 0
 void MonitorDefTask()
 {
   if( xTaskGetCurrentTaskHandle() == defaultTaskHandle )
@@ -205,6 +176,7 @@ void MonitorMyTask()
     //osDelay(50);
   }
 }
+#endif
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
