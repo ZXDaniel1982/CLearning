@@ -80,20 +80,25 @@
 /* USER CODE BEGIN Variables */
 
 /* USER CODE END Variables */
+// definition of Thread
 osThreadId defaultTaskHandle;
 osThreadId spcTaskHandle;
+
+// definition of Message
 osMessageQId myQueue01Handle;
 
+// definition of Mutex
 osMutexId mymutex;
 
-//osTimerId sTimer;
+// definition of timer
+osTimerId sTimer;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
-//void TimerCallback(void const * argument);
+void TimerCallback(void const * argument);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /**
@@ -130,8 +135,10 @@ void MX_FREERTOS_Init(void) {
   spcTaskHandle = osThreadCreate(osThread(spcTask), NULL);
 
   // Create a oneshot timer to trigger a delayed force sync timer after handshake
-  //osTimerDef(myTimer, TimerCallback);
-  //sTimer = osTimerCreate (osTimer(myTimer), pdTRUE, NULL);
+  osTimerDef(myTimer, TimerCallback);
+  sTimer = osTimerCreate (osTimer(myTimer), pdTRUE, NULL);
+
+  //osTimerStart(sTimer, 1000);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -161,33 +168,23 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN StartDefaultTask */
-#if 0
-  osEvent event;
-  size_t used;
-#endif
-
-  //osTimerStart(sTimer, 1000);
 
   /* Infinite loop */
   for(;;)
   {
-#if 0
-    event = osMessageGet (myQueue01Handle, 0xffffffff);
-    if (event.status == osEventMessage) {
-      used = event.value.v;
-      tftprintf("I am recing used");
-    }
-#endif
     osDelay(1000);
-    HAL_GPIO_TogglePin(Led_GPIO_Port, Led_Pin);
   }
   /* USER CODE END StartDefaultTask */
 }
 
-//void TimerCallback(void const * argument)
-//{
-//  HAL_GPIO_TogglePin(Led_GPIO_Port, Led_Pin);
-//}
+void TimerCallback(void const * argument)
+{
+  
+  size_t used = 12;
+
+  HAL_GPIO_TogglePin(Led_GPIO_Port, Led_Pin);
+  osMessagePut (myQueue01Handle, used, 100);
+}
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
