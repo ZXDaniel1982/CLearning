@@ -158,25 +158,27 @@ void TimerCallback(void const * argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-#if 0
 void MonitorDefTask()
 {
+#if 0
   if( xTaskGetCurrentTaskHandle() == defaultTaskHandle )
   {
     //tftprintf("Entering StartDefaultTask");
     //osDelay(50);
   }
+#endif
 }
 
 void MonitorMyTask()
 {
+#if 0
   if( xTaskGetCurrentTaskHandle() == spcTaskHandle )
   {
     //tftprintf("Leaving StartTask02");
     //osDelay(50);
   }
-}
 #endif
+}
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
