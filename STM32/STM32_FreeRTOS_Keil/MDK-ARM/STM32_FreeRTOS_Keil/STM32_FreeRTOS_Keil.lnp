@@ -10,6 +10,8 @@
 "stm32_freertos_keil\stm32f1xx_it.o"
 "stm32_freertos_keil\stm32f1xx_hal_msp.o"
 "stm32_freertos_keil\stm32f1xx_hal_timebase_tim.o"
+"stm32_freertos_keil\lcd.o"
+"stm32_freertos_keil\scp.o"
 "stm32_freertos_keil\stm32f1xx_hal_gpio_ex.o"
 "stm32_freertos_keil\stm32f1xx_hal_adc.o"
 "stm32_freertos_keil\stm32f1xx_hal_adc_ex.o"

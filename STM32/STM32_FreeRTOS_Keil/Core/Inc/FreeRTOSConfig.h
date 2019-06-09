@@ -103,12 +103,18 @@
 #define configTICK_RATE_HZ                       ((TickType_t)1000)
 #define configMAX_PRIORITIES                     ( 7 )
 #define configMINIMAL_STACK_SIZE                 ((uint16_t)128)
-#define configTOTAL_HEAP_SIZE                    ((size_t)3072)
+#define configTOTAL_HEAP_SIZE                    ((size_t)10000)
 #define configMAX_TASK_NAME_LEN                  ( 16 )
 #define configUSE_16_BIT_TICKS                   0
 #define configUSE_MUTEXES                        1
 #define configQUEUE_REGISTRY_SIZE                8
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION  1
+#define configUSE_APPLICATION_TASK_TAG           1
+
+#define configTIMER_TASK_PRIORITY                3
+#define configTIMER_QUEUE_LENGTH                 10
+#define configTIMER_TASK_STACK_DEPTH             configMINIMAL_STACK_SIZE           
+#define configUSE_TIMERS                         1
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES                    0
@@ -168,5 +174,11 @@ standard names. */
 /* USER CODE BEGIN Defines */   	      
 /* Section where parameter definitions can be added (for instance, to override default ones in FreeRTOS.h) */
 /* USER CODE END Defines */ 
+
+extern void MonitorDefTask(void);
+extern void MonitorMyTask(void);
+
+#define traceTASK_SWITCHED_IN()    MonitorDefTask()
+#define traceTASK_SWITCHED_OUT()   MonitorMyTask()
 
 #endif /* FREERTOS_CONFIG_H */
