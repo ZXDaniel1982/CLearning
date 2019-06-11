@@ -48,24 +48,23 @@
 /* USER CODE BEGIN Variables */
 
 /* USER CODE END Variables */
-osThreadId spcTaskHandle;
+//osThreadId spcLcdUpdateTaskHandle;
 
 // definition of Message
-osMessageQId myQueue01Handle;
+//osMessageQId myQueue01Handle;
 
 // definition of Mutex
-osMutexId mymutex;
+//osMutexId mymutex;
 
 // definition of timer
-osTimerId sTimer;
+//osTimerId KeyDetectionTimerId;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
    
 /* USER CODE END FunctionPrototypes */
 
-void StartDefaultTask(void const * argument);
-void TimerCallback(void const * argument);
+//void StartDefaultTask(void const * argument);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /**
@@ -80,8 +79,8 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
-	osMutexDef(SampleMutex);
-  mymutex = osMutexCreate (osMutex (SampleMutex));
+//	osMutexDef(SampleMutex);
+//  mymutex = osMutexCreate (osMutex (SampleMutex));
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
@@ -91,19 +90,21 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
-	osTimerDef(myTimer, TimerCallback);
-  sTimer = osTimerCreate (osTimer(myTimer), osTimerPeriodic, NULL);
+//	osTimerDef(KeyDetectionTimer, KeyDetectionCallback);
+//  KeyDetectionTimerId = osTimerCreate (osTimer(KeyDetectionTimer), osTimerPeriodic, NULL);
+	
+//	osTimerStart(KeyDetectionTimerId, KEYDETECTION_PERIOD);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
-	osMessageQDef(myQueue01, 4, uint16_t);
-  myQueue01Handle = osMessageCreate(osMessageQ(myQueue01), NULL);
+//	osMessageQDef(myQueue01, 4, uint16_t);
+//  myQueue01Handle = osMessageCreate(osMessageQ(myQueue01), NULL);
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(spcTask, SpcMainLoop, osPriorityBelowNormal, 0, 256);
-  spcTaskHandle = osThreadCreate(osThread(spcTask), NULL);
+//  osThreadDef(spcLcdUpdateTask, LcdUpdateTask, osPriorityBelowNormal, 0, 256);
+//  spcLcdUpdateTaskHandle = osThreadCreate(osThread(spcLcdUpdateTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -111,13 +112,15 @@ void MX_FREERTOS_Init(void) {
   //vTaskSetApplicationTaskTag(spcTaskHandle, ( void * ) '1' );
 }
 
-void TimerCallback(void const * argument)
+#if 0
+void KeyDetectionCallback(void const * argument)
 {
   size_t used = 12;
 
   HAL_GPIO_TogglePin(Led_GPIO_Port, Led_Pin);
   osMessagePut (myQueue01Handle, used, 100);
 }
+#endif
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */

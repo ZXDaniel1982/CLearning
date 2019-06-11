@@ -30,6 +30,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "lcd.h"
+#include "spc.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -104,6 +105,7 @@ int main(void)
 
   /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init();
+	SPC_Init();
 
   /* Start scheduler */
   osKernelStart();
