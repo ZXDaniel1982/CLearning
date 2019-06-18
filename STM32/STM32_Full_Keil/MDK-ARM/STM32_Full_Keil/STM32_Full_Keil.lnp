@@ -1,5 +1,7 @@
 --cpu Cortex-M3
 "stm32_full_keil\startup_stm32f103xe.o"
+"stm32_full_keil\lcd.o"
+"stm32_full_keil\spc.o"
 "stm32_full_keil\main.o"
 "stm32_full_keil\gpio.o"
 "stm32_full_keil\adc.o"
@@ -13,8 +15,7 @@
 "stm32_full_keil\stm32f1xx_it.o"
 "stm32_full_keil\stm32f1xx_hal_msp.o"
 "stm32_full_keil\stm32f1xx_hal_timebase_tim.o"
-"stm32_full_keil\lcd.o"
-"stm32_full_keil\spc.o"
+"stm32_full_keil\eeprom.o"
 "stm32_full_keil\stm32f1xx_hal_gpio_ex.o"
 "stm32_full_keil\stm32f1xx_hal_adc.o"
 "stm32_full_keil\stm32f1xx_hal_adc_ex.o"

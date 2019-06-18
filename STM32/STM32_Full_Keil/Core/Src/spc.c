@@ -423,37 +423,37 @@ int gsm_SetNextEvent(GSM_StateMachine *machine, uint16_t nextEvent, void *eventD
 
 uint16_t spc_InitStateEntry(GSM_StateMachine *gsm)
 {
-  tftprintf("Entering %s", __func__);
+  //tftprintf("Entering %s", __func__);
   return gsm->gsm_currentState;
 }
 
 uint16_t spc_ExeStateEntry(GSM_StateMachine *gsm)
 {
-  tftprintf("Entering %s", __func__);
+  //tftprintf("Entering %s", __func__);
   return gsm->gsm_currentState;
 }
 
 uint16_t spc_StayInitEventHandler(GSM_StateMachine *gsm, void *eventData)
 {
-  tftprintf("Entering %s", __func__);
+  //tftprintf("Entering %s", __func__);
   return gsm->gsm_currentState;
 }
 
 uint16_t spc_GotoExeEventHandler(GSM_StateMachine *gsm, void *eventData)
 {
-  tftprintf("Entering %s", __func__);
+  //tftprintf("Entering %s", __func__);
   return SPC_STATE_EXT;
 }
 
 uint16_t spc_StayExeEventHandler(GSM_StateMachine *gsm, void *eventData)
 {
-  tftprintf("Entering %s", __func__);
+  //tftprintf("Entering %s", __func__);
   return gsm->gsm_currentState;
 }
 
 uint16_t spc_GotoInitEventHandler(GSM_StateMachine *gsm, void *eventData)
 {
-  tftprintf("Entering %s", __func__);
+  //tftprintf("Entering %s", __func__);
   return SPC_STATE_INIT;
 }
 

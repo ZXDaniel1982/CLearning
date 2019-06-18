@@ -34,6 +34,7 @@
 /* USER CODE BEGIN Includes */
 #include "lcd.h"
 #include "spc.h"
+#include "eeprom.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,7 +55,9 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint8_t timeStr[40] = {0};
+RTC_TimeTypeDef sTime = {0};
+RTC_DateTypeDef DateToUpdate = {0};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -101,7 +104,7 @@ int main(void)
   MX_DMA_Init();
   MX_ADC1_Init();
   MX_FSMC_Init();
-  MX_RTC_Init();
+  //MX_RTC_Init();
   MX_SPI1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
@@ -114,6 +117,8 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim5);
   LCD_Init();
 	SPC_Init();
+	EEPRom_Init();
+	MX_RTC_Init();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
@@ -201,7 +206,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   if (htim->Instance == TIM1) {
     HAL_IncTick();
   } else if (htim->Instance == TIM5) {
-	  tftprintf("Timer 2 interupt");
+	  HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BCD);
+		HAL_RTC_GetDate(&hrtc, &DateToUpdate, RTC_FORMAT_BCD);
+		snprintf((char *)timeStr, 40, "Data is 20%02x-%02x-%02x %02x-%02x-%02x",
+							DateToUpdate.Year, DateToUpdate.Month, DateToUpdate.Date,
+							sTime.Hours, sTime.Minutes, sTime.Seconds);
+		tftprintf((char *)timeStr);
 	}
   /* USER CODE BEGIN Callback 1 */
 

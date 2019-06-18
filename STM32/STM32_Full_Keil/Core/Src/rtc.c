@@ -21,7 +21,7 @@
 #include "rtc.h"
 
 /* USER CODE BEGIN 0 */
-
+#include "lcd.h"
 /* USER CODE END 0 */
 
 RTC_HandleTypeDef hrtc;
@@ -41,12 +41,13 @@ void MX_RTC_Init(void)
   {
     Error_Handler();
   }
-
+  tftprintf("RTC read");
   /* USER CODE BEGIN Check_RTC_BKUP */
-  if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1) == 0x32F2)
+  if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1) == 0x32F3)
   {
     return;
   }
+	tftprintf("RTC not stored");
   /* USER CODE END Check_RTC_BKUP */
 
   /** Initialize RTC and set the Time and Date 
@@ -69,7 +70,7 @@ void MX_RTC_Init(void)
     Error_Handler();
   }
 
-	HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1, 0x32F2);
+	HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1, 0x32F3);
 }
 
 void HAL_RTC_MspInit(RTC_HandleTypeDef* rtcHandle)
