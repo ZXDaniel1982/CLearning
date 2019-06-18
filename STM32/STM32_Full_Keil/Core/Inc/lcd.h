@@ -12,12 +12,12 @@
 #define Bank1_LCD_D    ((uint32_t)0x60020000)    //???????
 #define Bank1_LCD_C    ((uint32_t)0x60000000)    //???????
 
-#define LCD_LEN 320
-#define LCD_WID 240
+#define LCD_LEN 240
+#define LCD_WID 320
 #define LCD_CHAR_LEN 6
 #define LCD_CHAR_WID 12
 #define LCD_STR_LEN_MAX ((LCD_LEN-4) / (LCD_CHAR_LEN))
-#define LCD_STR_NUM_MAX ((LCD_WID-4) / (LCD_CHAR_WID+2))
+#define LCD_STR_NUM_MAX (((LCD_WID-4) / (LCD_CHAR_WID+2)) - 1)
 
 #define LCD_CLR_COL ((LCD_LEN) / (LCD_CHAR_LEN))
 #define LCD_CLR_ROW ((LCD_WID) / (LCD_CHAR_WID))
