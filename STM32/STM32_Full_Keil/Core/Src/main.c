@@ -211,7 +211,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		snprintf((char *)timeStr, 40, "Data is 20%02x-%02x-%02x %02x-%02x-%02x",
 							DateToUpdate.Year, DateToUpdate.Month, DateToUpdate.Date,
 							sTime.Hours, sTime.Minutes, sTime.Seconds);
-		tftprintf((char *)timeStr);
+		//tftprintf((char *)timeStr);
 	}
   /* USER CODE BEGIN Callback 1 */
 
