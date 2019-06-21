@@ -104,7 +104,7 @@ int main(void)
   MX_DMA_Init();
   MX_ADC1_Init();
   MX_FSMC_Init();
-  //MX_RTC_Init();
+  MX_RTC_Init();
   MX_SPI1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
@@ -118,7 +118,6 @@ int main(void)
   LCD_Init();
 	SPC_Init();
 	EEPRom_Init();
-	MX_RTC_Init();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
@@ -205,14 +204,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM1) {
     HAL_IncTick();
-  } else if (htim->Instance == TIM5) {
-	  HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BCD);
-		HAL_RTC_GetDate(&hrtc, &DateToUpdate, RTC_FORMAT_BCD);
-		snprintf((char *)timeStr, 40, "Data is 20%02x-%02x-%02x %02x-%02x-%02x",
-							DateToUpdate.Year, DateToUpdate.Month, DateToUpdate.Date,
-							sTime.Hours, sTime.Minutes, sTime.Seconds);
-		//tftprintf((char *)timeStr);
-	}
+  }
+	
   /* USER CODE BEGIN Callback 1 */
 
   /* USER CODE END Callback 1 */
