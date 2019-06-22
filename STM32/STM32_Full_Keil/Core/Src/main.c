@@ -24,6 +24,7 @@
 #include "adc.h"
 #include "dma.h"
 #include "rtc.h"
+#include "sdio.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -112,13 +113,15 @@ int main(void)
   MX_TIM5_Init();
   MX_TIM8_Init();
   MX_USART1_UART_Init();
+  MX_SDIO_SD_Init();
   /* USER CODE BEGIN 2 */
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
 	HAL_TIM_Base_Start_IT(&htim5);
   LCD_Init();
 	SPC_Init();
 	EEPRom_Init();
-  /* USER CODE END 2 */
+	SD_ShowCardInfo();
+	/* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init();
@@ -205,7 +208,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   if (htim->Instance == TIM1) {
     HAL_IncTick();
   }
-	
   /* USER CODE BEGIN Callback 1 */
 
   /* USER CODE END Callback 1 */
