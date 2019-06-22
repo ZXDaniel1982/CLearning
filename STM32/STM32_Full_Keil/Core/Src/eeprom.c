@@ -184,7 +184,7 @@ static void test()
 	uint16_t i=0;	
 /* 将测试用的数据复制到读写缓存区里 */
    for(i=0; i<TxBufferSize1;i++) SST25_buffer[i]=TxBuffer1[i];  
-   SST25_W_BLOCK(0, SST25_buffer,4096);	        //将册数数据写入到SST25VF016B的0页里
+   //SST25_W_BLOCK(0, SST25_buffer,4096);	        //将册数数据写入到SST25VF016B的0页里
 	
 	 memset(SST25_buffer, 0, 4096);
    osDelay(2000);
