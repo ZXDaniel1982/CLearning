@@ -50,6 +50,13 @@
 "stm32_full_keil\cmsis_os.o"
 "stm32_full_keil\heap_4.o"
 "stm32_full_keil\port.o"
+"stm32_full_keil\bsp_driver_sd.o"
+"stm32_full_keil\fatfs.o"
+"stm32_full_keil\diskio.o"
+"stm32_full_keil\ff.o"
+"stm32_full_keil\ff_gen_drv.o"
+"stm32_full_keil\syscall.o"
+"stm32_full_keil\sd_diskio.o"
 --library_type=microlib --strict --scatter "STM32_Full_Keil\STM32_Full_Keil.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

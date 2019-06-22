@@ -21,7 +21,7 @@
 #include "sdio.h"
 
 /* USER CODE BEGIN 0 */
-#include "lcd.c"
+#include "lcd.h"
 /* USER CODE END 0 */
 
 SD_HandleTypeDef hsd;
@@ -38,6 +38,7 @@ void MX_SDIO_SD_Init(void)
   hsd.Init.BusWide = SDIO_BUS_WIDE_1B;
   hsd.Init.HardwareFlowControl = SDIO_HARDWARE_FLOW_CONTROL_DISABLE;
   hsd.Init.ClockDiv = 4;
+	
   if (HAL_SD_Init(&hsd) != HAL_OK)
   {
     Error_Handler();
@@ -46,7 +47,6 @@ void MX_SDIO_SD_Init(void)
   {
     Error_Handler();
   }
-
 }
 
 void HAL_SD_MspInit(SD_HandleTypeDef* sdHandle)
@@ -127,13 +127,13 @@ void SD_ShowCardInfo()
 		
 		HAL_SD_GetCardCID(&hsd, &CardCID);
 		tftprintf("Initial SD card success.");
-		tftprintf("Car block size %d", hsd.SdCard.BlockSize);
-		tftprintf("Car block number %d", hsd.SdCard.BlockNbr);
-		tftprintf("Car capacity %ld", ((uint32_t)hsd.SdCard.BlockSize*hsd.SdCard.BlockNbr));
-		tftprintf("Car type %d", hsd.SdCard.CardType);
-		tftprintf("Car version %d", hsd.SdCard.CardVersion);
-		tftprintf("Car manufacture ID %d", CardCID.ManufacturerID);
-		tftprintf("Car manufacture date %d", CardCID.ManufactDate);
+//		tftprintf("Car block size %d", hsd.SdCard.BlockSize);
+//		tftprintf("Car block number %d", hsd.SdCard.BlockNbr);
+//		tftprintf("Car capacity %ld", ((uint32_t)hsd.SdCard.BlockSize*hsd.SdCard.BlockNbr));
+//		tftprintf("Car type %d", hsd.SdCard.CardType);
+//		tftprintf("Car version %d", hsd.SdCard.CardVersion);
+//		tftprintf("Car manufacture ID %d", CardCID.ManufacturerID);
+//		tftprintf("Car manufacture date %d", CardCID.ManufactDate);
 	} else {
 	  tftprintf("Initial SD card fail.");
 	}
