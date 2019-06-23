@@ -9,6 +9,8 @@
 #include "spi.h"
 #include "cmsis_os.h"
 
+#include "fatfs.h"
+
 /* Select SPI FLASH: ChipSelect pin low  */
 #define Select_Flash()     HAL_GPIO_WritePin(SST_CS_GPIO_Port, SST_CS_Pin, GPIO_PIN_RESET);
 /* Deselect SPI FLASH: ChipSelect pin high */
@@ -202,11 +204,26 @@ static void test()
 	 }
 }
 
+#define SD_FILE_NAME "book1.txt"
 static void EEPRomTask(void const *arg)
 {
+	UINT bytesread = 0;
+	char rtext[10] = {0};
   tftprintf("EEPROM ID is %d", SPI_Flash_ReadID());
 	
 	test();
+	
+	if (f_open(&SDFile, SD_FILE_NAME, FA_OPEN_EXISTING | FA_READ) == FR_OK) {
+	  tftprintf("Opened file %s", SD_FILE_NAME);
+		if (f_read(&SDFile, rtext, sizeof(rtext), &bytesread) == FR_OK) {
+		  tftprintf("Read data %s", rtext);
+		} else {
+		  tftprintf("Fail to read data");
+		}
+		f_close(&SDFile);
+	} else {
+	  tftprintf("Fail to open file %s", SD_FILE_NAME);
+	}
 	
 	while (1) {
 	  osDelay(2000);

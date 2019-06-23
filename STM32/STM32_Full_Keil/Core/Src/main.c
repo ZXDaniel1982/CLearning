@@ -123,7 +123,7 @@ int main(void)
 	SPC_Init();
 	EEPRom_Init();
 	SD_ShowCardInfo();
-	//SD_ShowCardFiles();
+
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

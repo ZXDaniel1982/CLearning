@@ -58,34 +58,7 @@ DWORD get_fattime(void)
 }
 
 /* USER CODE BEGIN Application */
-void SD_ShowCardFiles(void)
-{
-	DIR dirs;
-	FILINFO finfo;
-	char path[50]={""};
-	char rtext[512] = {0};
-	UINT bytesread = 0;
-	UINT res = 0;	
-	
-  if (f_opendir(&dirs, path) == FR_OK) {
-	  while (f_readdir(&dirs, &finfo) == FR_OK) {
-		  if (finfo.fattrib & AM_ARC) {
-			  if(!finfo.fname[0])	 break;
-				
-				tftprintf("File name is:     %s", finfo.fname);	         //输出8.3格式文件名
-				res = f_open(&SDFile, finfo.fname, FA_OPEN_EXISTING | FA_READ);
-				
-				for (;;) {														  //循环读出被打开文件的扇区
-					memset(rtext, 0, sizeof(rtext));
-					res = f_read(&SDFile, rtext, sizeof(rtext), &bytesread);			  //将文件内容读出到数据缓冲区
-					tftprintf("      %s",rtext, bytesread, res);							  //将缓冲区的内容输出到串口1
-					if (res || bytesread == 0) break;   // error or eof				  //判断是否到文件结束
-				}
-				f_close(&SDFile);
-			}
-		}
-	}
-}
+
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
