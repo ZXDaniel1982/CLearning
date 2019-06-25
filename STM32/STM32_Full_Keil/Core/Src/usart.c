@@ -22,7 +22,7 @@
 
 /* USER CODE BEGIN 0 */
 uint8_t UsartTxBuf[17] = {"My uart dma test"};
-uint8_t UsartRxBuf[8] = {0};
+uint8_t UsartRxBuf[2] = {0};
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -46,7 +46,7 @@ void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
-
+  HAL_UART_Receive_DMA(&huart1,UsartRxBuf,2);
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)

@@ -474,6 +474,16 @@
               <FileType>1</FileType>
               <FilePath>../Core/Src/stm32f1xx_hal_timebase_tim.c</FilePath>
             </File>
+            <File>
+              <FileName>cli.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\cli.c</FilePath>
+            </File>
+            <File>
+              <FileName>cli.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Core\Inc\cli.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

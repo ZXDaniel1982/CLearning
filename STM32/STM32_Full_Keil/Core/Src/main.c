@@ -37,6 +37,7 @@
 #include "lcd.h"
 #include "spc.h"
 #include "eeprom.h"
+#include "cli.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -123,7 +124,10 @@ int main(void)
 	SPC_Init();
 	EEPRom_Init();
 	SD_ShowCardInfo();
+	Cli_Init();
 
+  osDelay(2000);
+  HAL_UART_Transmit_DMA(&huart1,UsartTxBuf,10);
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
@@ -194,8 +198,13 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
+	uint16_t val = 0;
   /* Prevent unused argument(s) compilation warning */
-  UNUSED(huart);
+  if(huart == &huart1) {
+	  HAL_UART_Transmit_DMA(&huart1,UsartTxBuf,16);
+		val = ((uint16_t) UsartRxBuf[0] << 8) | UsartRxBuf[1];
+		osMessagePut (CliQueueHandle, val, 100);
+	}
   /* NOTE: This function Should not be modified, when the callback is needed,
            the HAL_UART_RxCpltCallback could be implemented in the user file
    */
@@ -237,9 +246,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM1) {
     HAL_IncTick();
-  } else if (htim->Instance == TIM5) {
-    tftprintf("Uart status is %d", HAL_UART_GetState(&huart1));
-    HAL_UART_Transmit_DMA(&huart1,UsartTxBuf,16);
   }
   /* USER CODE BEGIN Callback 1 */
 

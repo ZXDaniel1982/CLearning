@@ -34,7 +34,7 @@ extern UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN Private defines */
 extern uint8_t UsartTxBuf[17];
-extern uint8_t UsartRxBuf[8];
+extern uint8_t UsartRxBuf[2];
 /* USER CODE END Private defines */
 
 void MX_USART1_UART_Init(void);
