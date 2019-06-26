@@ -21,7 +21,8 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-
+uint8_t UsartTxBuf[17] = {"My uart dma test"};
+uint8_t UsartRxBuf[8] = {0};
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
