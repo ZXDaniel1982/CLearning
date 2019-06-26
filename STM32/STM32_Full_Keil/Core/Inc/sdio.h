@@ -40,6 +40,7 @@ void MX_SDIO_SD_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 void SD_ShowCardInfo(void);
+void cliShowSdFileInfo(void *arg);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

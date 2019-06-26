@@ -2,6 +2,7 @@
 #include "eeprom.h"
 #include "FreeRTOS.h"
 #include "lcd.h"
+#include "usart.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -60,12 +61,12 @@ static uint16_t SPI_Flash_ReadID(void)
 	//?????16??    
 	Temp = 0xFF;
 	HAL_SPI_TransmitReceive(&hspi1, &Temp, &Ret, 1, 1000);
-	tftprintf("High value is %x", Ret);
+	uartprintf("High value is %x\r\n", Ret);
 	id = ((uint16_t) Ret) << 8;
 	
 	Temp = 0xFF;
 	HAL_SPI_TransmitReceive(&hspi1, &Temp, &Ret, 1, 1000);
-	tftprintf("Low value is %x", Ret);
+	uartprintf("Low value is %x\r\n", Ret);
 	id += (uint16_t) Ret;
 	
 	NotSelect_Flash();  
@@ -240,4 +241,12 @@ void EEPRom_Init(void)
 //	
   osThreadDef(EEPRomTaskName, EEPRomTask, osPriorityBelowNormal, 0, 128);
   EEPRomTaskHandle = osThreadCreate(osThread(EEPRomTaskName), NULL);
+}
+
+void cliShowEEPROMInfo(void *arg)
+{
+	UNUSED(arg);
+  uartprintf("EEPROM ID is %d\r\n", SPI_Flash_ReadID());
+	uartprintf("\r\n");
+	uartprintf("\r\n");
 }

@@ -22,6 +22,7 @@
 
 /* USER CODE BEGIN 0 */
 #include "lcd.h"
+#include "usart.h"
 /* USER CODE END 0 */
 
 SD_HandleTypeDef hsd;
@@ -137,6 +138,30 @@ void SD_ShowCardInfo()
 	} else {
 	  tftprintf("Initial SD card fail.");
 	}
+}
+
+/* USER CODE BEGIN 1 */
+void cliShowSdFileInfo(void *arg)
+{
+	UNUSED(arg);
+	HAL_SD_CardStateTypeDef State = HAL_SD_GetCardState(&hsd);
+	if (State == HAL_SD_CARD_TRANSFER) {
+	  HAL_SD_CardCIDTypeDef CardCID;
+		
+		HAL_SD_GetCardCID(&hsd, &CardCID);
+		uartprintf("Car block size %d\r\n", hsd.SdCard.BlockSize);
+		uartprintf("Car block number %d\r\n", hsd.SdCard.BlockNbr);
+		uartprintf("Car capacity %ld\r\n", ((uint32_t)hsd.SdCard.BlockSize*hsd.SdCard.BlockNbr));
+		uartprintf("Car type %d\r\n", hsd.SdCard.CardType);
+		uartprintf("Car version %d\r\n", hsd.SdCard.CardVersion);
+		uartprintf("Car manufacture ID %d\r\n", CardCID.ManufacturerID);
+		uartprintf("Car manufacture date %d\r\n", CardCID.ManufactDate);
+	} else {
+	  uartprintf("Initial SD card fail.\r\n");
+	}
+	
+	uartprintf("\r\n");
+	uartprintf("\r\n");
 }
 /* USER CODE END 1 */
 

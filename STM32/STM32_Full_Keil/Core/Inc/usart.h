@@ -27,20 +27,20 @@
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-
+#define MAX_UART_BUF_LEN 255
 /* USER CODE END Includes */
 
 extern UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN Private defines */
-extern uint8_t UsartTxBuf[17];
+extern uint8_t UsartTxBuf[MAX_UART_BUF_LEN];
 extern uint8_t UsartRxBuf[2];
 /* USER CODE END Private defines */
 
 void MX_USART1_UART_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+void uartprintf(const char* fmt, ...);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
