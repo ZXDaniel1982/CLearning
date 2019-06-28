@@ -247,6 +247,4 @@ void cliShowEEPROMInfo(void *arg)
 {
 	UNUSED(arg);
   uartprintf("EEPROM ID is %d\r\n", SPI_Flash_ReadID());
-	uartprintf("\r\n");
-	uartprintf("\r\n");
 }

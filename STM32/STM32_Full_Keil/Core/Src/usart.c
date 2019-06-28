@@ -23,6 +23,8 @@
 #include "cmsis_os.h"
 #include <stdarg.h>
 
+#include "lcd.h."
+
 /* USER CODE BEGIN 0 */
 uint8_t UsartTxBuf[MAX_UART_BUF_LEN] = {0};
 uint8_t UsartRxBuf[2] = {0};
@@ -156,13 +158,12 @@ void uartprintf(const char* fmt, ...)
 	va_list ap;
 	va_start(ap, fmt);
 	
+	while(huart1.gState != HAL_UART_STATE_READY);
+
 	memset(UsartTxBuf, 0, MAX_UART_BUF_LEN);
 	vsnprintf((char *)UsartTxBuf, MAX_UART_BUF_LEN, fmt, ap);
-
-  while(huart1.gState != HAL_UART_STATE_READY);
-	HAL_UART_Transmit_DMA(&huart1,UsartTxBuf,strlen((char *)UsartTxBuf));
 	
-	osDelay(30);
+	HAL_UART_Transmit_DMA(&huart1,UsartTxBuf,strlen((char *)UsartTxBuf));
 }
 /* USER CODE END 1 */
 

@@ -159,9 +159,6 @@ void cliShowSdFileInfo(void *arg)
 	} else {
 	  uartprintf("Initial SD card fail.\r\n");
 	}
-	
-	uartprintf("\r\n");
-	uartprintf("\r\n");
 }
 /* USER CODE END 1 */
 

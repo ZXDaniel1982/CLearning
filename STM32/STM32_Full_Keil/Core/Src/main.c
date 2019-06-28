@@ -212,9 +212,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
   /* Prevent unused argument(s) compilation warning */
-  if(huart == &huart1) {
-		huart->gState = HAL_UART_STATE_READY;
-	}
+
   /* NOTE: This function Should not be modified, when the callback is needed,
            the HAL_UART_TxCpltCallback could be implemented in the user file
    */ 

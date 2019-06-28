@@ -40,28 +40,35 @@ static void cliShowUage(void)
 	for (i=0; i<ARRY_NUM(cliUsage); i++) {
 		uartprintf(cliUsage[i]);
 	}
-	uartprintf("\r\n");
-	uartprintf("\r\n");
 	return;
+}
+
+static void cliSendBlank(void)
+{
+	uartprintf(BLANK_STR);
 }
 
 static void CliProcessCommand(uint16_t cliCommand)
 {
 	uint8_t i;
 	
+	osDelay(300);
 	if (!ISVALID(cliCommand)) {
 	  cliShowUage();
+		cliSendBlank();
 		return;
 	}
 	
 	for (i=0; i<ARRY_NUM(cliCommandList); i++) {
 	  if (cliCommandList[i].index == cliCommand) {
 		  cliCommandList[i].func(&cliCommand);
+			cliSendBlank();
 			return;
 		}
 	}
 	
 	cliShowUage();
+	cliSendBlank();
 }
 
 static void CliTask(void const *arg)
