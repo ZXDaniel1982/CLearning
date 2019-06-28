@@ -27,19 +27,21 @@
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-
+#define ADC_SAMPLE_RATE 100
+#define V_REF ((4096 * 143) / 330)             //  1774
+#define Avg_Slope 43
 /* USER CODE END Includes */
 
 extern ADC_HandleTypeDef hadc1;
 
 /* USER CODE BEGIN Private defines */
-
+extern uint32_t ADC_Value[100];
 /* USER CODE END Private defines */
 
 void MX_ADC1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+void ADC_ShowTemp(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

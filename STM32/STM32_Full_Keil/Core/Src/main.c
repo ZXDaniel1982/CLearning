@@ -125,8 +125,7 @@ int main(void)
 	EEPRom_Init();
 	Cli_Init();
 
-  osDelay(2000);
-  HAL_UART_Transmit_DMA(&huart1,UsartTxBuf,10);
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&ADC_Value, ADC_SAMPLE_RATE);
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
@@ -245,6 +244,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM1) {
     HAL_IncTick();
+  } else if (htim->Instance == TIM5) {
+    ADC_ShowTemp();
   }
   /* USER CODE BEGIN Callback 1 */
 

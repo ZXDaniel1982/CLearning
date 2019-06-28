@@ -21,7 +21,8 @@
 #include "adc.h"
 
 /* USER CODE BEGIN 0 */
-
+#include "lcd.h"
+uint32_t ADC_Value[ADC_SAMPLE_RATE];
 /* USER CODE END 0 */
 
 ADC_HandleTypeDef hadc1;
@@ -111,7 +112,21 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 } 
 
 /* USER CODE BEGIN 1 */
-
+void ADC_ShowTemp(void)
+{
+  int i;
+	int64_t sum = 0;
+	int32_t sample = 0;
+	int32_t temperature = 0;
+	
+	for (i=0; i<ADC_SAMPLE_RATE; i++) {
+	  sum += (int64_t)ADC_Value[i];
+	}
+	
+	sample = (int32_t)(sum / ADC_SAMPLE_RATE);
+	temperature = (uint16_t)(((int32_t)V_REF-sample)/Avg_Slope/10+25);
+	tftprintf("ADC sample %d temp %d C", sample, temperature);
+}
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
