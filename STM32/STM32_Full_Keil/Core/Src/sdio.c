@@ -21,6 +21,7 @@
 #include "sdio.h"
 
 /* USER CODE BEGIN 0 */
+#include "fatfs.h"
 #include "lcd.h"
 #include "usart.h"
 /* USER CODE END 0 */
@@ -141,7 +142,7 @@ void SD_ShowCardInfo()
 }
 
 /* USER CODE BEGIN 1 */
-void cliShowSdFileInfo(void *arg)
+void cliShowSdInfo(void *arg)
 {
 	UNUSED(arg);
 	HAL_SD_CardStateTypeDef State = HAL_SD_GetCardState(&hsd);
@@ -157,7 +158,30 @@ void cliShowSdFileInfo(void *arg)
 		uartprintf("Car manufacture ID %d\r\n", CardCID.ManufacturerID);
 		uartprintf("Car manufacture date %d\r\n", CardCID.ManufactDate);
 	} else {
-	  uartprintf("Initial SD card fail.\r\n");
+	  uartprintf("Get SD card info fail.\r\n");
+	}
+}
+
+void cliShowSdFileInfo(void *arg)
+{
+	UNUSED(arg);
+	
+	DIR dir;
+	FILINFO finfo;
+	HAL_SD_CardStateTypeDef State = HAL_SD_GetCardState(&hsd);
+	if (State == HAL_SD_CARD_TRANSFER) {
+	  if (f_opendir (&dir, "") == FR_OK) {
+			uartprintf("   %-20s     %-10s    %s\r\n",
+			    F_NAME, F_SIZE, F_DATE);
+		  while (f_readdir(&dir, &finfo) == FR_OK) {
+			  if(!finfo.fname[0])	 break;
+				uartprintf("   %-20s     %-10d    %u-%02u-%02u, %02u:%02u\r\n",
+				    finfo.fname, finfo.fsize, (finfo.fdate >> 9) + 1980, finfo.fdate >> 5 & 15, finfo.fdate & 31,
+               finfo.ftime >> 11, finfo.ftime >> 5 & 63);
+			}
+		}
+	} else {
+	  uartprintf("Get SD card info fail.\r\n");
 	}
 }
 /* USER CODE END 1 */

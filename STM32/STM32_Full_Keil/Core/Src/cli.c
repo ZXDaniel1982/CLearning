@@ -9,6 +9,7 @@ osMessageQId CliQueueHandle;
 
 const CliCommand_t cliCommandList[] = {
   {READ_EEPROM_INFO, cliShowEEPROMInfo},
+	{READ_SD_INFO, cliShowSdInfo},
 	{READ_SD_FILE_LIST, cliShowSdFileInfo}
 };
 
@@ -53,6 +54,7 @@ static void CliProcessCommand(uint16_t cliCommand)
 	uint8_t i;
 	
 	osDelay(300);
+	cliSendBlank();
 	if (!ISVALID(cliCommand)) {
 	  cliShowUage();
 		cliSendBlank();

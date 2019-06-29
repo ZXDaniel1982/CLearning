@@ -27,7 +27,9 @@
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-
+#define F_NAME "FileName"
+#define F_SIZE "FileSize"
+#define F_DATE "FileDate"
 /* USER CODE END Includes */
 
 extern SD_HandleTypeDef hsd;
@@ -40,6 +42,7 @@ void MX_SDIO_SD_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 void SD_ShowCardInfo(void);
+void cliShowSdInfo(void *arg);
 void cliShowSdFileInfo(void *arg);
 /* USER CODE END Prototypes */
 
