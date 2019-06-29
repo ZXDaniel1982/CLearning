@@ -10,9 +10,7 @@ static void TFT_ShowChar(uint8_t x,uint16_t y,uint8_t num);
 static void LCD_WR_CMD(unsigned int index,unsigned int val);
 static void TFT_ShowString(uint8_t x,uint16_t y,const uint8_t *p);
 
-//static unsigned long color1=0;
 static uint16_t POINT_COLOR;
-//static uint8_t blank[] = "                                                    ";
 static uint16_t strIndex = 0;
 
 const unsigned char asc2_1206[95][12]={
@@ -124,10 +122,6 @@ static void lcd_rst(void){
 
 static void LCD_Clear(void)
 {
-//    uint16_t i;
-//    for (i=0;i<=LCD_CLR_ROW;i++)
-//        TFT_ShowString(0,i*12,(uint8_t *)blank);
-
 	uint8_t x = 0;
 	uint16_t y = 0;
 	uint8_t len = 240;
@@ -157,95 +151,6 @@ static void LCD_Clear(void)
 
 void LCD_Init(void)
 {
-#if 0
-	lcd_rst();                  //????
-
-			//Driving ability Setting
-	LCD_WR_CMD(0xEA,0x00); //PTBA[15:8]
-	LCD_WR_CMD(0xEB,0x20); //PTBA[7:0]
-	LCD_WR_CMD(0xEC,0x3C); //STBA[15:8]
-	LCD_WR_CMD(0xED,0xC4); //STBA[7:0]
-	LCD_WR_CMD(0xE8,0x48); //OPON[7:0]
-	LCD_WR_CMD(0xE9,0x38); //OPON1[7:0]
-	LCD_WR_CMD(0xF1,0x01); //OTPS1B
-	LCD_WR_CMD(0xF2,0x08); //GEN
-	//Gamma 2.2 Setting
-	LCD_WR_CMD(0x40,0x01); //
-	LCD_WR_CMD(0x41,0x07); //
-	LCD_WR_CMD(0x42,0x09); //
-	LCD_WR_CMD(0x43,0x19); //
-	LCD_WR_CMD(0x44,0x17); //
-	LCD_WR_CMD(0x45,0x20); //
-	LCD_WR_CMD(0x46,0x18); //
-	LCD_WR_CMD(0x47,0x61); //
-	LCD_WR_CMD(0x48,0x00); //
-	LCD_WR_CMD(0x49,0x10); //
-	LCD_WR_CMD(0x4A,0x17); //
-	LCD_WR_CMD(0x4B,0x19); //
-	LCD_WR_CMD(0x4C,0x14); //
-	LCD_WR_CMD(0x50,0x1F); //
-	LCD_WR_CMD(0x51,0x28); //
-	LCD_WR_CMD(0x52,0x26); //
-	LCD_WR_CMD(0x53,0x36); //
-	LCD_WR_CMD(0x54,0x38); //
-	LCD_WR_CMD(0x55,0x3E); //
-	LCD_WR_CMD(0x56,0x1E); //
-	LCD_WR_CMD(0x57,0x67); //
-	LCD_WR_CMD(0x58,0x0B); //
-	LCD_WR_CMD(0x59,0x06); //
-	LCD_WR_CMD(0x5A,0x08); //
-	LCD_WR_CMD(0x5B,0x0F); //
-	LCD_WR_CMD(0x5C,0x1F); //
-	LCD_WR_CMD(0x5D,0xCC); //
-
-	//Power Voltage Setting
-	LCD_WR_CMD(0x1B,0x1B); //VRH=4.65V
-	LCD_WR_CMD(0x1A,0x01); //BT (VGH~15V,VGL~-10V,DDVDH~5V)
-	LCD_WR_CMD(0x24,0x70); //VMH(VCOM High voltage ~4.2V)
-	LCD_WR_CMD(0x25,0x58); //VML(VCOM Low voltage -1.2V)
-
-	//****VCOM offset**///
-	LCD_WR_CMD(0x23,0x6E); //for Flicker adjust //can reload from OTP
-	//Power on Setting
-	LCD_WR_CMD(0x18,0x36); //I/P_RADJ,N/P_RADJ, Normal mode 70Hz
-	LCD_WR_CMD(0x19,0x01); //OSC_EN='1', start Osc
-	LCD_WR_CMD(0x01,0x00); //DP_STB='0', out deep sleep
-	LCD_WR_CMD(0x1F,0xD0);// GAS=1, VOMG=10, PON=1, DK=0, XDK=0, DDVDH_TRI=0, STB=0
-	LCD_WR_CMD(0x17,0x05); //default 0x06 262k color // 0x05 65k color
-	//SET PANEL
-	LCD_WR_CMD(0x36,0x09); //SS_P, GS_P,REV_P,BGR_P
-	LCD_WR_CMD(0x28,0x3F); //GON=1, DTE=1, D=1100
-	LCD_WR_CMD(0x16,0x50); //?????   ??
-
-	/*
-	 * Memory access control register (PAGE0 -16h)
-	 * MY: 0????, 1????
-	 * MX: 0????, 1????
-	 * MV?????0??1??
-	 * ML??Partial Display Area Setting
-	 * BGR = 0, RGB color filter panel
-	 */
-	LCD_WR_CMD(0x16,0XE0); //
-	LCD_WR_CMD(0x02,0x00);
-	LCD_WR_CMD(0x03,0x00); //Column Start
-	LCD_WR_CMD(0x04,0x00);
-	LCD_WR_CMD(0x05,0xEF); //Column End
-
-	LCD_WR_CMD(0x06,0x00);
-	LCD_WR_CMD(0x07,0x00); //Row Start
-	LCD_WR_CMD(0x08,0x01);
-	LCD_WR_CMD(0x09,0x3F); //Row End
-
-	for(color1=0;color1<76800;color1++)     //?????
-	{
-		LCD_WR_Data(0xffff);
-	}
-	color1=0;
-
-	LCD_Clear();
-	POINT_COLOR = RED;
-#endif
-		
 	unsigned int i;
 	lcd_rst();
 
@@ -329,8 +234,6 @@ static void TFT_ShowChar(uint8_t x,uint16_t y,uint8_t num)
 	uint8_t temp;
 	uint8_t pos,t;
 	if(x>MAX_CHAR_POSX||y>MAX_CHAR_POSY)return;
-	//?????????????
-
 
 	LCD_WR_CMD(0x02,0);
 	LCD_WR_CMD(0x03,x); //Column Start
@@ -346,8 +249,6 @@ static void TFT_ShowChar(uint8_t x,uint16_t y,uint8_t num)
 	LCD_WR_CMD(0x03, x);           //????????? 0-239
 	LCD_WR_CMD(0x06, y>>8);     //????????? 0-319
 	LCD_WR_CMD(0x07, (uint8_t)y);         //????????? 0-319
-
-
 
 	LCD_WR_REG(34);
 	num=num-' ';                        //???????

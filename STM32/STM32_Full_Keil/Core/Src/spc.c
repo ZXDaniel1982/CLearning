@@ -12,10 +12,6 @@
 static GSM_StateMachine *spc_machines[MAX_DEVICES];
 
 osTimerId spcTimer;
-
-//osThreadId spcGSMTestTaskHandle;
-//osMutexId spcGSMTestmutex;
-
 /*----------------------------------------------------------------------------*/
 /* Private functions                                                           */
 /*----------------------------------------------------------------------------*/
@@ -332,7 +328,6 @@ static void gsm_StateMachine(void *arg)
               free(eventData);
               eventData = NULL;
           }
-          
       } else {
           gsm_Wait(machine);
       }
@@ -375,18 +370,6 @@ static void GSM_Start()
   osTimerStart(spcTimer, 1000);
 }
 
-//static void gsm_test(void *arg)
-//{
-//  static int i = 0;
-//  static const int count = NUM_ROWS(spcEventAction);
-//	
-//	while (1) {
-//	  osMutexWait(spcGSMTestmutex, sleepPeriod); // TODO This is inconsistent with add
-//		gsm_SetNextEvent(spc_machines[SPC], spcEventAction[i].event, NULL, 0);
-//    i = (i+1) % count;
-//	}
-//}
-
 /*----------------------------------------------------------------------------*/
 /* Public functions                                                           */
 /*----------------------------------------------------------------------------*/
@@ -397,12 +380,6 @@ void SPC_Init(void)
 
   GSM_Init();
   GSM_Start();
-
-//	osMutexDef(GSMTestmutex);
-//  spcGSMTestmutex = osMutexCreate (osMutex (GSMTestmutex));
-//	
-//  osThreadDef(spcGSMTestTask, gsm_test, osPriorityBelowNormal, 0, 256);
-//  spcGSMTestTaskHandle = osThreadCreate(osThread(spcGSMTestTask), NULL);
 }
 
 int gsm_SetNextEvent(GSM_StateMachine *machine, uint16_t nextEvent, void *eventData, uint16_t dataSize)

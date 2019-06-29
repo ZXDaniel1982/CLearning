@@ -129,13 +129,6 @@ void SD_ShowCardInfo()
 		
 		HAL_SD_GetCardCID(&hsd, &CardCID);
 		tftprintf("Initial SD card success.");
-		tftprintf("Car block size %d", hsd.SdCard.BlockSize);
-		tftprintf("Car block number %d", hsd.SdCard.BlockNbr);
-		tftprintf("Car capacity %ld", ((uint32_t)hsd.SdCard.BlockSize*hsd.SdCard.BlockNbr));
-//		tftprintf("Car type %d", hsd.SdCard.CardType);
-//		tftprintf("Car version %d", hsd.SdCard.CardVersion);
-//		tftprintf("Car manufacture ID %d", CardCID.ManufacturerID);
-//		tftprintf("Car manufacture date %d", CardCID.ManufactDate);
 	} else {
 	  tftprintf("Initial SD card fail.");
 	}

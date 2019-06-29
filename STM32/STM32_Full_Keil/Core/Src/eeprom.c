@@ -29,6 +29,15 @@ const uint8_t TxBuffer1[]={"Chen An SST25VF"};       //???flash???
 osThreadId EEPRomTaskHandle;
 
 static void EEPRomTask(void const *arg);
+static void EEPRom_SendByte(uint8_t byte);
+static uint8_t rdsr(void);
+static void wip(void);
+static void wsr(void);
+static void wen(void);
+static void wdis(void);
+static void EEProm_SectorErrase(unsigned long a1);
+static uint16_t SPI_Flash_ReadID(void);
+static void SST25_W_BLOCK(uint32_t addr, uint8_t *readbuff, uint16_t BlockSize);
 /*----------------------------------------------------------------------------*/
 /* Private functions                                                           */
 /*----------------------------------------------------------------------------*/
@@ -207,8 +216,6 @@ static void test()
 
 static void EEPRomTask(void const *arg)
 {
-	UINT bytesread = 0;
-	char rtext[10] = {0};
   tftprintf("EEPROM ID is %d", SPI_Flash_ReadID());
 	
 	test();
@@ -223,9 +230,6 @@ static void EEPRomTask(void const *arg)
 /*----------------------------------------------------------------------------*/
 void EEPRom_Init(void)
 {
-//	osMutexDef(GSMTestmutex);
-//  spcGSMTestmutex = osMutexCreate (osMutex (GSMTestmutex));
-//	
   osThreadDef(EEPRomTaskName, EEPRomTask, osPriorityBelowNormal, 0, 128);
   EEPRomTaskHandle = osThreadCreate(osThread(EEPRomTaskName), NULL);
 }
