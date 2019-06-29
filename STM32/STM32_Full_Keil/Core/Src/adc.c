@@ -125,7 +125,7 @@ void ADC_ShowTemp(void)
 	
 	sample = (int32_t)(sum / ADC_SAMPLE_RATE);
 	temperature = (uint16_t)(((int32_t)V_REF-sample)/Avg_Slope/10+25);
-	tftprintf("ADC sample %d temp %d C", sample, temperature);
+	//tftprintf("ADC sample %d temp %d C", sample, temperature);
 }
 /* USER CODE END 1 */
 

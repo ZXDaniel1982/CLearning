@@ -205,7 +205,6 @@ static void test()
 	 }
 }
 
-#define SD_FILE_NAME "book1.txt"
 static void EEPRomTask(void const *arg)
 {
 	UINT bytesread = 0;
@@ -213,18 +212,6 @@ static void EEPRomTask(void const *arg)
   tftprintf("EEPROM ID is %d", SPI_Flash_ReadID());
 	
 	test();
-	
-	if (f_open(&SDFile, SD_FILE_NAME, FA_OPEN_EXISTING | FA_READ) == FR_OK) {
-	  tftprintf("Opened file %s", SD_FILE_NAME);
-		if (f_read(&SDFile, rtext, sizeof(rtext), &bytesread) == FR_OK) {
-		  tftprintf("Read data %s", rtext);
-		} else {
-		  tftprintf("Fail to read data");
-		}
-		f_close(&SDFile);
-	} else {
-	  tftprintf("Fail to open file %s", SD_FILE_NAME);
-	}
 	
 	while (1) {
 	  osDelay(2000);
