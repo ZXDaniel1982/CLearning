@@ -18,7 +18,8 @@ const char *cliUsage[] = {
 	"Use bellow commands:         \r\n",
 	"                             \r\n",
 	"1 : Show EEPROM device info  \r\n",
-	"2 : Show SD card files info  \r\n"
+	"2 : Show SD device info      \r\n",
+	"3 : Show SD card files info  \r\n"
 };
 
 static void CliTask(void const *arg);
