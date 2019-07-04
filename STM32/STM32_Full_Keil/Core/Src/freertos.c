@@ -26,7 +26,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
-
+#include "lcd.h"
+#include "cli.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,7 +47,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+osThreadId periodTaskHandle;
+static void periodTask(void const *arg);
 /* USER CODE END Variables */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -83,6 +85,8 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
+  osThreadDef(periodTaskName, periodTask, osPriorityBelowNormal, 0, 128);
+  periodTaskHandle = osThreadCreate(osThread(periodTaskName), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -92,7 +96,28 @@ void MX_FREERTOS_Init(void) {
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-     
+static void periodTask(void const *arg)
+{
+	static int cnt = 0;
+  tftprintf("EEPROM ID is %d", cnt);
+	
+	while (1) {
+	  osDelay(1000);
+		if (cnt++ > 100) cnt = 0;
+		tftprintf("EEPROM ID is %d", cnt);
+	}
+}
+
+void cliTaskOps(void *arg)
+{
+	UNUSED(arg);
+	
+	if (osThreadGetState(periodTaskHandle) != osThreadSuspended) {
+	  osThreadSuspend(periodTaskHandle);
+	} else {
+	  osThreadResume(periodTaskHandle);
+	}
+}
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

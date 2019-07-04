@@ -10,7 +10,8 @@ osMessageQId CliQueueHandle;
 const CliCommand_t cliCommandList[] = {
   {READ_EEPROM_INFO, cliShowEEPROMInfo},
 	{READ_SD_INFO, cliShowSdInfo},
-	{READ_SD_FILE_LIST, cliShowSdFileInfo}
+	{READ_SD_FILE_LIST, cliShowSdFileInfo},
+	{TASK_OPS, cliTaskOps}
 };
 
 const char *cliUsage[] = {
