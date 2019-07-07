@@ -11,10 +11,10 @@
 	 
 enum CLI_COMMAND {
 	INVALID_CLI_COMMAND = 0,
-  READ_EEPROM_INFO = 1,
+    READ_EEPROM_INFO = 1,
 	READ_SD_INFO,
 	READ_SD_FILE_LIST,
-	TASK_OPS,
+	READ_TASK_INFO,
 	MAX_CLI_COMMAND
 };
 
@@ -33,7 +33,7 @@ typedef struct qCliCommand_t{
 extern osMessageQId CliQueueHandle;
 
 void Cli_Init(void);
-void cliTaskOps(void *arg);
+void cliShowTaskInfo(void *arg);
 
 #ifdef __cplusplus
 }

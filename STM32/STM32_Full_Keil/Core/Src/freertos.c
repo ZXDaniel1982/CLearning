@@ -47,8 +47,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-osThreadId periodTaskHandle;
-static void periodTask(void const *arg);
+
 /* USER CODE END Variables */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -85,8 +84,6 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(periodTaskName, periodTask, osPriorityBelowNormal, 0, 128);
-  periodTaskHandle = osThreadCreate(osThread(periodTaskName), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -96,27 +93,60 @@ void MX_FREERTOS_Init(void) {
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-static void periodTask(void const *arg)
+void cliShowTaskInfo(void *arg)
 {
-	static int cnt = 0;
-  tftprintf("EEPROM ID is %d", cnt);
-	
-	while (1) {
-	  osDelay(1000);
-		if (cnt++ > 100) cnt = 0;
-		tftprintf("EEPROM ID is %d", cnt);
-	}
-}
+  UNUSED(arg);
+  
+  char cStatus;
+  uint16_t array;
+  uint32_t TotalRunTime, ulStatsAsPercentage;
+  UBaseType_t ArraySize;
+  TaskStatus_t *StatusArray;
+  ArraySize = uxTaskGetNumberOfTasks();
+  StatusArray = pvPortMalloc(ArraySize*sizeof(TaskStatus_t));
 
-void cliTaskOps(void *arg)
-{
-	UNUSED(arg);
-	
-	if (osThreadGetState(periodTaskHandle) != osThreadSuspended) {
-	  osThreadSuspend(periodTaskHandle);
-	} else {
-	  osThreadResume(periodTaskHandle);
-	}
+  if( StatusArray != NULL ) {
+    ArraySize = uxTaskGetSystemState((TaskStatus_t* ) StatusArray, 
+                                     (UBaseType_t) ArraySize,
+                                     (uint32_t*) &TotalRunTime);
+
+    uartprintf("TotalRunTime : %ld\r\n", TotalRunTime);
+    uartprintf("%s\t%c\t%u\t%u\t%u\t%u\r\n", "TaskName", "TaskStat", "TaskPrio", "StackMin",
+                "TaskNum", "TaskRunTim");
+    for(array=0; array<ArraySize; array++) {
+      switch(StatusArray[array].eCurrentState) {
+        case eRunning:    cStatus = tskRUNNING_CHAR;
+          break;
+        case eReady:    cStatus = tskREADY_CHAR;
+          break;
+        case eBlocked:    cStatus = tskBLOCKED_CHAR;
+          break;
+        case eSuspended:  cStatus = tskSUSPENDED_CHAR;
+          break;
+        case eDeleted:    cStatus = tskDELETED_CHAR;
+          break;
+        case eInvalid:    /* Fall through. */
+        default:      /* Should not get here, but it is included
+                  to prevent static checking errors. */
+          cStatus = (char) 0x00;
+          break;
+      }
+      ulStatsAsPercentage = StatusArray[array].ulRunTimeCounter / TotalRunTime;
+
+      uartprintf("%s\t%c\t%u\t%u\t%u\t%u\t%lu\r\n",
+              StatusArray[array].pcTaskName,
+              cStatus,
+              (unsigned int) StatusArray[array].uxCurrentPriority,
+              (unsigned int) StatusArray[array].usStackHighWaterMark,
+              (unsigned int) StatusArray[array].xTaskNumber,
+              (unsigned int) StatusArray[array].ulRunTimeCounter,
+              ulStatsAsPercentage);
+    }
+
+    vPortFree(StatusArray);
+  } else {
+    mtCOVERAGE_TEST_MARKER();
+  }
 }
 /* USER CODE END Application */
 

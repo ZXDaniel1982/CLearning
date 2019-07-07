@@ -11,7 +11,7 @@ const CliCommand_t cliCommandList[] = {
   {READ_EEPROM_INFO, cliShowEEPROMInfo},
 	{READ_SD_INFO, cliShowSdInfo},
 	{READ_SD_FILE_LIST, cliShowSdFileInfo},
-	{TASK_OPS, cliTaskOps}
+	{READ_TASK_INFO, cliShowTaskInfo}
 };
 
 const char *cliUsage[] = {
@@ -20,7 +20,8 @@ const char *cliUsage[] = {
 	"                             \r\n",
 	"1 : Show EEPROM device info  \r\n",
 	"2 : Show SD device info      \r\n",
-	"3 : Show SD card files info  \r\n"
+	"3 : Show SD card files info  \r\n",
+	"4 : Show TASK info           \r\n"
 };
 
 static void CliTask(void const *arg);
