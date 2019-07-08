@@ -88,4 +88,6 @@ static void CliTask(void const *arg)
       CliProcessCommand(command);
     }
 	}
+
+	osThreadTerminate(CliTaskHandle);
 }

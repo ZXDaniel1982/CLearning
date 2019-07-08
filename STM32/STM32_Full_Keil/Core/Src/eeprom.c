@@ -223,6 +223,8 @@ static void EEPRomTask(void const *arg)
 	while (1) {
 	  osDelay(2000);
 	}
+
+	osThreadTerminate(EEPRomTaskHandle);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -332,6 +332,8 @@ static void gsm_StateMachine(void *arg)
           gsm_Wait(machine);
       }
   }
+
+  vTaskDelete(machine->taskHandle);
 }
 
 static int gsm_StartMachine(GSM_StateMachine *machine, uint16_t startState, uint16_t stateChangeEvent)
