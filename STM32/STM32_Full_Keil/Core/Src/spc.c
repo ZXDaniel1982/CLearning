@@ -344,7 +344,7 @@ static int gsm_StartMachine(GSM_StateMachine *machine, uint16_t startState, uint
   // start our thread
   tftprintf("%s Creating GSM task", machine->gsm_name);
 
-  xTaskCreate(gsm_StateMachine, (const char *)machine->gsm_name, (uint16_t)256,
+  xTaskCreate(gsm_StateMachine, (const char *)machine->gsm_name, (uint16_t)128,
           machine, osPriorityIdle, &machine->taskHandle);
 
   return 0;
