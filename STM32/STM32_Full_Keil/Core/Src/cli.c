@@ -30,7 +30,7 @@ static void CliTask(void const *arg);
 /*----------------------------------------------------------------------------*/
 void Cli_Init(void)
 {
-  osThreadDef(CliTaskName, CliTask, osPriorityBelowNormal, 0, 128);
+  osThreadDef(CliTaskName, CliTask, osPriorityBelowNormal, 0, 256);
   CliTaskHandle = osThreadCreate(osThread(CliTaskName), NULL);
 	
 	osMessageQDef(CliQueueName, 4, uint16_t);

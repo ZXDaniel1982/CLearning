@@ -28,6 +28,7 @@
 /* USER CODE BEGIN Includes */     
 #include "lcd.h"
 #include "cli.h"
+#include "usart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -93,6 +94,11 @@ void MX_FREERTOS_Init(void) {
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+#define tskRUNNING_CHAR		( 'X' )
+#define tskBLOCKED_CHAR		( 'B' )
+#define tskREADY_CHAR		( 'R' )
+#define tskDELETED_CHAR		( 'D' )
+#define tskSUSPENDED_CHAR	( 'S' )
 void cliShowTaskInfo(void *arg)
 {
   UNUSED(arg);
@@ -111,8 +117,8 @@ void cliShowTaskInfo(void *arg)
                                      (uint32_t*) &TotalRunTime);
 
     uartprintf("TotalRunTime : %ld\r\n", TotalRunTime);
-    uartprintf("%s\t%c\t%u\t%u\t%u\t%u\r\n", "TaskName", "TaskStat", "TaskPrio", "StackMin",
-                "TaskNum", "TaskRunTim");
+    uartprintf("  %-20s%-10s%-10s%-10s%-10s%-10s%s\r\n", "TaskName", "TaskStat", "TaskPrio", "StackMin",
+                "TaskNum", "TakRTim", "Avg");
     for(array=0; array<ArraySize; array++) {
       switch(StatusArray[array].eCurrentState) {
         case eRunning:    cStatus = tskRUNNING_CHAR;
@@ -132,15 +138,22 @@ void cliShowTaskInfo(void *arg)
           break;
       }
       ulStatsAsPercentage = StatusArray[array].ulRunTimeCounter / TotalRunTime;
+			
+			char avgStr[10] = {0};
+			if (ulStatsAsPercentage == 0) {
+			  snprintf(avgStr, 10, "%s", "<1");
+			} else {
+			  snprintf(avgStr, 10, "%u", ulStatsAsPercentage);
+			}
 
-      uartprintf("%s\t%c\t%u\t%u\t%u\t%u\t%lu\r\n",
+      uartprintf("  %-20s%-10c%-10u%-10u%-10u%-10u%s\r\n",
               StatusArray[array].pcTaskName,
               cStatus,
               (unsigned int) StatusArray[array].uxCurrentPriority,
               (unsigned int) StatusArray[array].usStackHighWaterMark,
               (unsigned int) StatusArray[array].xTaskNumber,
               (unsigned int) StatusArray[array].ulRunTimeCounter,
-              ulStatsAsPercentage);
+              avgStr);
     }
 
     vPortFree(StatusArray);
