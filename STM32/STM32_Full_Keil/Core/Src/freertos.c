@@ -137,7 +137,7 @@ void cliShowTaskInfo(void *arg)
           cStatus = (char) 0x00;
           break;
       }
-      ulStatsAsPercentage = StatusArray[array].ulRunTimeCounter / TotalRunTime;
+      ulStatsAsPercentage = (StatusArray[array].ulRunTimeCounter * 100) / TotalRunTime;
 			
 			char avgStr[10] = {0};
 			if (ulStatsAsPercentage == 0) {
