@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+osThreadId SpcTaskHandle;
+static void SpcTask(void const *arg);
 /*----------------------------------------------------------------------------*/
 /* Private functions                                                           */
 /*----------------------------------------------------------------------------*/
@@ -26,16 +28,16 @@ static void Spc_StartupLog()
         tftprintf("%s", spcStartupLogOn[i]);
     }
 
-    HAL_Delay(2000);
+    osDelay(2000);
     resetScreen();
     for (i = 0; i < NUM_ROWS(spcStartupLogOff); i++) {
         tftprintf("%s", spcStartupLogOff[i]);
     }
 
-    HAL_Delay(2000);
+    osDelay(2000);
     Spc_ScreenUpdate(SPC_SOFTWARE_VERSION);
 
-    HAL_Delay(2000);
+    osDelay(2000);
 }
 
 //static void Spc_GetTemp(SpcTemperature *temp, uint8_t Channel)
@@ -48,11 +50,21 @@ static void Spc_SelfCheck()
     Spc_ScreenUpdate(SPC_SELFCHECK);
 }
 
+static void SpcTask(void const *arg)
+{
+    Spc_StartupLog();
+    Spc_SelfCheck();
+
+    while (1) {
+        osDelay(2000);
+    }
+}
+
 /*----------------------------------------------------------------------------*/
 /* Public functions                                                           */
 /*----------------------------------------------------------------------------*/
 void SPC_Init(void)
 {
-    Spc_StartupLog();
-    Spc_SelfCheck();
+    osThreadDef(SpcTaskName, SpcTask, osPriorityBelowNormal, 0, 128);
+    SpcTaskHandle = osThreadCreate(osThread(SpcTaskName), NULL);
 }
