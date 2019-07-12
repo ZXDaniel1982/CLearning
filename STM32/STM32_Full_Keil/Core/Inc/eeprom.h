@@ -7,7 +7,6 @@
 #include "main.h"
 #include "cmsis_os.h"
 
-void EEPRom_Init(void);
 void cliShowEEPROMInfo(void *arg);
 
 #ifdef __cplusplus

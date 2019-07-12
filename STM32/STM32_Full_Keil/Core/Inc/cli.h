@@ -28,7 +28,7 @@ typedef struct qCliCommand_t{
 #define ARRY_NUM(x) ((sizeof(x)) / (sizeof(x[0])))
 #define ISVALID(x) (((x)>INVALID_CLI_COMMAND)&&((x)<MAX_CLI_COMMAND))
 
-#define BLANK_STR "\r\n"
+#define UART_BLANK_STR "\r\n"
 	 
 extern osMessageQId CliQueueHandle;
 

@@ -33,7 +33,10 @@
 #define GBLUE 0X07FF;
 #define BLACK 0;
 
+#define LCD_BLAND_STR "    "
+
 void LCD_Init(void);
+void resetScreen(void);
 void tftprintf(const char* fmt, ...);
 
 void MonitorDefTask(void);

@@ -124,7 +124,6 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim5);
   LCD_Init();
 	SPC_Init();
-	EEPRom_Init();
 	Cli_Init();
 
 	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&ADC_Value, ADC_SAMPLE_RATE);

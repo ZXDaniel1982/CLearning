@@ -12,6 +12,9 @@
 static GSM_StateMachine *spc_machines[MAX_DEVICES];
 
 osTimerId spcTimer;
+
+static char StringLine1[SPC_MAX_STR_LEN] = {0};
+static char StringLine2[SPC_MAX_STR_LEN] = {0};
 /*----------------------------------------------------------------------------*/
 /* Private functions                                                           */
 /*----------------------------------------------------------------------------*/
@@ -39,34 +42,35 @@ static t_gsm_queue *gsm_QueueInit(int size)
     return queue;
 }
 
-static GSM_StateMachine *gsm_CreateMachine(
-    const char *name,
-    const gsmStateEntry *entry,
-    const gsmEventAction *action,
-    uint16_t numStates,
-    uint16_t numEvents,
-    uint16_t eventActionSize,
-    uint16_t eventQueueSize,
-    const gsmEnumStringMap *pStateNames,
-    const gsmEnumStringMap *pEventNames)
+static GSM_StateMachine *gsm_CreateMachine(const char *name,
+                       const gsmStateEntry * entry,
+                       const gsmEventAction * action,
+                       uint16_t numStates,
+                       uint16_t numEvents,
+                       uint16_t eventActionSize,
+                       uint16_t eventQueueSize,
+                       const gsmEnumStringMap *
+                       pStateNames,
+                       const gsmEnumStringMap *
+                       pEventNames)
 {
     if (entry == NULL) {
-      tftprintf("Fail to get GSM entry");
+        tftprintf("Fail to get GSM entry");
     }
 
     if (action == NULL) {
-      tftprintf("Fail to get GSM action");
+        tftprintf("Fail to get GSM action");
     }
 
     GSM_StateMachine *machine = malloc(sizeof(GSM_StateMachine));
     if (machine == NULL) {
-        tftprintf("%s alloc failed for GSM_StateMachine",name);
+        tftprintf("%s alloc failed for GSM_StateMachine", name);
         return NULL;
     }
 
     machine->gsm_eventQueue = gsm_QueueInit(eventQueueSize);
     if (machine->gsm_eventQueue == NULL) {
-        tftprintf("%s alloc failed for event queue",name);
+        tftprintf("%s alloc failed for event queue", name);
         free(machine);
         return NULL;
     }
@@ -84,47 +88,46 @@ static GSM_StateMachine *gsm_CreateMachine(
     machine->gsm_stateEntry = entry;
     machine->gsm_eventAction = action;
 
-    tftprintf("%s Created1",name);
+    //tftprintf("%s Created1", name);
 
     osMutexDef(SpcGSMMutex);
-    machine->gsm_stateMutex = osMutexCreate (osMutex (SpcGSMMutex));
+    machine->gsm_stateMutex = osMutexCreate(osMutex(SpcGSMMutex));
 
     osSemaphoreDef(SpcGSMCond);
-    machine->gsm_stateCond = osSemaphoreCreate (osSemaphore (SpcGSMCond), 1);
+    machine->gsm_stateCond = osSemaphoreCreate(osSemaphore(SpcGSMCond), 1);
 
     return machine;
 }
 
 static void GSM_Init()
 {
-  static char gsmName[GSM_NAME_MAX_LEN];
+    static char gsmName[GSM_NAME_MAX_LEN];
 
-  snprintf(gsmName, GSM_NAME_MAX_LEN, "SPCStateMachine");
+    snprintf(gsmName, GSM_NAME_MAX_LEN, "SPCStateMachine");
 
-  spc_machines[SPC] = gsm_CreateMachine(
-            gsmName,                                // char               *name
-            spcStateEntry,                          // gsmStateEntry      *entry
-            spcEventAction,                         // gsmEventAction     *action
-            SPC_STATE_NUM_STATES,                   // uint16_t           numStates
-            SPC_EVENT_NUM_EVENTS,                   // uint16_t           numEvents
-            NUM_ROWS(spcEventAction),               // uint16_t           eventActionSize
-            SPC_MAX_EVENTS,                         // uint16_t           eventQueueSize
-            spcStateNames,                          // gsmEnumStringMap   *pStateNames
-            spcEventNames                           // gsmEnumStringMap   *pEventNames
-  );
+    spc_machines[SPC] = gsm_CreateMachine(gsmName,  // char               *name
+                      spcStateEntry,                // gsmStateEntry      *entry
+                      spcEventAction,               // gsmEventAction     *action
+                      SPC_STATE_NUM_STATES,         // uint16_t           numStates
+                      SPC_EVENT_NUM_EVENTS,         // uint16_t           numEvents
+                      NUM_ROWS(spcEventAction),     // uint16_t           eventActionSize
+                      SPC_MAX_EVENTS,               // uint16_t           eventQueueSize
+                      spcStateNames,                // gsmEnumStringMap   *pStateNames
+                      spcEventNames                 // gsmEnumStringMap   *pEventNames
+    );
 }
 
-static inline bool gsm_QueueIsEmpty(t_gsm_queue *queue)
+static inline bool gsm_QueueIsEmpty(t_gsm_queue * queue)
 {
     return queue->count == 0;
 }
 
-static inline bool gsm_QueueIsFull(t_gsm_queue *queue)
+static inline bool gsm_QueueIsFull(t_gsm_queue * queue)
 {
     return queue->size == queue->count;
 }
 
-static int gsm_EnqueueItem(t_gsm_queue *queue, uint16_t item, void *data)
+static int gsm_EnqueueItem(t_gsm_queue * queue, uint16_t item, void *data)
 {
     if (queue->count >= queue->size) {
         /* queue is full */
@@ -139,7 +142,8 @@ static int gsm_EnqueueItem(t_gsm_queue *queue, uint16_t item, void *data)
     return 0;
 }
 
-static int gsm_DequeueItem(t_gsm_queue *queue, uint16_t *item, void **datap)
+static int gsm_DequeueItem(t_gsm_queue * queue, uint16_t * item,
+               void **datap)
 {
     if (queue->count == 0) {
         /* queue is empty */
@@ -156,56 +160,56 @@ static int gsm_DequeueItem(t_gsm_queue *queue, uint16_t *item, void **datap)
     return 0;
 }
 
-static void gsm_AddEvent(GSM_StateMachine *machine, uint16_t Event, void *eventData, uint16_t dataSize)
+static void gsm_AddEvent(GSM_StateMachine * machine, uint16_t Event,
+             void *eventData, uint16_t dataSize)
 {
     int res = -1;
     void *pEnqData = NULL;
-    
+
     if (!gsm_QueueIsFull(machine->gsm_eventQueue)) {
-        //allocate and copy eventData
-        if(dataSize && eventData){
-            pEnqData = malloc(dataSize);
-            if(!pEnqData){
-                tftprintf("failed to allocate memory for event data");
-                return; 
-            }
-            memcpy(pEnqData, eventData,dataSize);
+    //allocate and copy eventData
+    if (dataSize && eventData) {
+        pEnqData = malloc(dataSize);
+        if (!pEnqData) {
+            tftprintf("failed to allocate memory for event data");
+            return;
         }
-        res = gsm_EnqueueItem(machine->gsm_eventQueue, Event, pEnqData);
+        memcpy(pEnqData, eventData, dataSize);
+    }
+    res = gsm_EnqueueItem(machine->gsm_eventQueue, Event, pEnqData);
     }
 
     if (res < 0) {
         tftprintf("%s ERROR Too many events in queue (%d)",
-                machine->gsm_name, machine->gsm_eventQueue->count);
+              machine->gsm_name, machine->gsm_eventQueue->count);
     }
 }
 
-static int gsm_Wait(GSM_StateMachine *machine)
+static int gsm_Wait(GSM_StateMachine * machine)
 {
     osMutexWait(machine->gsm_stateMutex, sleepPeriod);
 
-    if (gsm_QueueIsEmpty(machine->gsm_eventQueue))
-    {
+    if (gsm_QueueIsEmpty(machine->gsm_eventQueue)) {
         osMutexRelease(machine->gsm_stateMutex);
         osSemaphoreWait(machine->gsm_stateCond, sleepPeriod);
-    }
-    else {
+    } else {
         osMutexRelease(machine->gsm_stateMutex);
     }
-		return 0;
+    return 0;
 }
 
-static void gsm_ProcessStateChange(GSM_StateMachine *pStateMachine,uint16_t newState)
+static void gsm_ProcessStateChange(GSM_StateMachine * pStateMachine,
+                   uint16_t newState)
 {
-    gsmStateEntry entryElement = {0};
+    gsmStateEntry entryElement = { 0 };
     uint16_t nextState = newState;
     int i;
 
     /*Find if entry function exists */
-    for(i = 0; i< pStateMachine->gsm_stateMax; i++){
+    for (i = 0; i < pStateMachine->gsm_stateMax; i++) {
         entryElement = pStateMachine->gsm_stateEntry[i];
-        if(entryElement.state  == newState){
-            if(entryElement.entry) {
+        if (entryElement.state == newState) {
+            if (entryElement.entry) {
                 /*Invoke entry function */
                 nextState = entryElement.entry(pStateMachine);
                 break;
@@ -215,28 +219,31 @@ static void gsm_ProcessStateChange(GSM_StateMachine *pStateMachine,uint16_t newS
 
     if (pStateMachine->gsm_currentState != nextState) {
         /* Queue a state change event */
-        gsm_SetNextEvent(pStateMachine, pStateMachine->gsm_stateChangeEvent, &nextState, sizeof(nextState));
+        gsm_SetNextEvent(pStateMachine,
+                 pStateMachine->gsm_stateChangeEvent, &nextState,
+                 sizeof(nextState));
     }
 }
 
-static void gsm_Start(GSM_StateMachine *pStateMachine,uint16_t startState,uint16_t stateChangeEvent)
+static void gsm_Start(GSM_StateMachine * pStateMachine,
+              uint16_t startState, uint16_t stateChangeEvent)
 {
     if (pStateMachine == NULL) {
-      tftprintf("Could not find any machine");
+        tftprintf("Could not find any machine");
     }
 
     pStateMachine->gsm_currentState = startState;
     pStateMachine->gsm_stateChangeEvent = stateChangeEvent;
     pStateMachine->gsm_status = GSM_RUNNING;
-    gsm_ProcessStateChange(pStateMachine,startState);
+    gsm_ProcessStateChange(pStateMachine, startState);
 }
 
-int gsm_NextEvent(GSM_StateMachine *machine, void **eventData)
+int gsm_NextEvent(GSM_StateMachine * machine, void **eventData)
 {
     uint16_t event = 0;
     int res = -1;
 
-    osMutexWait(machine->gsm_stateMutex, sleepPeriod); // TODO This is inconsistent with add
+    osMutexWait(machine->gsm_stateMutex, sleepPeriod);  // TODO This is inconsistent with add
 
     /* No saved events, check main queue */
     res = gsm_DequeueItem(machine->gsm_eventQueue, &event, eventData);
@@ -250,16 +257,17 @@ int gsm_NextEvent(GSM_StateMachine *machine, void **eventData)
     }
 }
 
-static int32_t gsm_SendEvent(GSM_StateMachine *pStateMachine,uint16_t event, void *eventData)
+static int32_t gsm_SendEvent(GSM_StateMachine * pStateMachine,
+                 uint16_t event, void *eventData)
 {
     const gsmEventAction *actionElement = NULL;
     int i;
-    
+
     if (pStateMachine == NULL) {
-      tftprintf("Could not find any machine");
+        tftprintf("Could not find any machine");
     }
 
-    if(pStateMachine->gsm_status != GSM_RUNNING){
+    if (pStateMachine->gsm_status != GSM_RUNNING) {
         return -1;
     }
     uint16_t nextState = pStateMachine->gsm_currentState;
@@ -267,20 +275,23 @@ static int32_t gsm_SendEvent(GSM_StateMachine *pStateMachine,uint16_t event, voi
     if (event == pStateMachine->gsm_stateChangeEvent) {
         if (eventData == NULL) {
             tftprintf("ERROR %s sent stateChangeEvent %d",
-                    pStateMachine->gsm_name, pStateMachine->gsm_stateChangeEvent);
+                  pStateMachine->gsm_name,
+                  pStateMachine->gsm_stateChangeEvent);
         } else {
-            nextState = *(uint16_t *)eventData;
+            nextState = *(uint16_t *) eventData;
             pStateMachine->gsm_currentState = nextState;
-            gsm_ProcessStateChange(pStateMachine,nextState);
+            gsm_ProcessStateChange(pStateMachine, nextState);
         }
         return -1;
     }
 
     /*Find action function */
-    for(i = 0; i< pStateMachine->gsm_eventActionSize; i++){
+    for (i = 0; i < pStateMachine->gsm_eventActionSize; i++) {
         if (pStateMachine->gsm_eventAction[i].event == event
-            && ((pStateMachine->gsm_eventAction[i].state == pStateMachine->gsm_currentState) ||
-                (pStateMachine->gsm_eventAction[i].state == GSM_STATE_ANY))) {
+            && ((pStateMachine->gsm_eventAction[i].state ==
+              pStateMachine->gsm_currentState)
+             || (pStateMachine->gsm_eventAction[i].state ==
+             GSM_STATE_ANY))) {
             actionElement = &pStateMachine->gsm_eventAction[i];
             break;
         }
@@ -290,86 +301,136 @@ static int32_t gsm_SendEvent(GSM_StateMachine *pStateMachine,uint16_t event, voi
         tftprintf("Could not find any action");
         return -1;
     }
-
     // Handle the event, then free the data
     if (actionElement->action != NULL) {
         nextState = actionElement->action(pStateMachine, eventData);
     }
-    if(eventData){
+    if (eventData) {
         free(eventData);
         eventData = NULL;
     }
 
     /* If next state is different from the current state then queue a state change event for the state machine */
-    if(pStateMachine->gsm_currentState != nextState){
+    if (pStateMachine->gsm_currentState != nextState) {
         /* Got a new state */
-        gsm_SetNextEvent(pStateMachine, pStateMachine->gsm_stateChangeEvent, &nextState, sizeof(nextState));
+        gsm_SetNextEvent(pStateMachine,
+                 pStateMachine->gsm_stateChangeEvent, &nextState,
+                 sizeof(nextState));
     }
     return 0;
 }
 
 static void gsm_StateMachine(void *arg)
 {
-  GSM_StateMachine *machine = (GSM_StateMachine *)arg;
-  int nextEvent;
-  void *eventData = NULL;
-  int32_t res;
+    GSM_StateMachine *machine = (GSM_StateMachine *) arg;
+    int nextEvent;
+    void *eventData = NULL;
+    int32_t res;
 
-  tftprintf("TASK %lu %s", (unsigned long int) xTaskGetCurrentTaskHandle(), machine->gsm_name);
+    //tftprintf("TASK %lu %s", (unsigned long int) xTaskGetCurrentTaskHandle(), machine->gsm_name);
 
-  // start the state machine
-  gsm_Start(machine, machine->gsm_startState, machine->gsm_stateChangeEvent);
+    // start the state machine
+    gsm_Start(machine, machine->gsm_startState,
+          machine->gsm_stateChangeEvent);
 
-  while (1)
-  {
-      if ((nextEvent=gsm_NextEvent(machine, &eventData)) >= 0) {
-          res = gsm_SendEvent(machine, nextEvent, eventData);
-          if(res < 0){ //event not handled so free the data
-              free(eventData);
-              eventData = NULL;
-          }
-      } else {
-          gsm_Wait(machine);
-      }
-  }
+    while (1) {
+        if ((nextEvent = gsm_NextEvent(machine, &eventData)) >= 0) {
+            res = gsm_SendEvent(machine, nextEvent, eventData);
+            if (res < 0) {  //event not handled so free the data
+                free(eventData);
+                eventData = NULL;
+            }
+        } else {
+            gsm_Wait(machine);
+        }
+    }
 
-  vTaskDelete(machine->taskHandle);
+    vTaskDelete(machine->taskHandle);
 }
 
-static int gsm_StartMachine(GSM_StateMachine *machine, uint16_t startState, uint16_t stateChangeEvent)
+static int gsm_StartMachine(GSM_StateMachine * machine,
+                uint16_t startState, uint16_t stateChangeEvent)
 {
-  machine->gsm_startState = startState;
-  machine->gsm_stateChangeEvent = stateChangeEvent;
+    machine->gsm_startState = startState;
+    machine->gsm_stateChangeEvent = stateChangeEvent;
 
-  // start our thread
-  tftprintf("%s Creating GSM task", machine->gsm_name);
+    // start our thread
+    //tftprintf("%s Creating GSM task", machine->gsm_name);
 
-  xTaskCreate(gsm_StateMachine, (const char *)machine->gsm_name, (uint16_t)128,
-          machine, osPriorityIdle, &machine->taskHandle);
+    xTaskCreate(gsm_StateMachine, (const char *) machine->gsm_name,
+        (uint16_t) 128, machine, osPriorityIdle,
+        &machine->taskHandle);
 
-  return 0;
+    return 0;
 }
 
-static void spcTimerCallback(void const * argument)
+static void spcTimerCallback(void const *argument)
 {
-  static int i = 0;
-  static const int count = NUM_ROWS(spcEventAction);
+    static int i = 0;
+    static const int count = NUM_ROWS(spcEventAction);
 
-  HAL_GPIO_TogglePin(Led_GPIO_Port, Led_Pin);
+    HAL_GPIO_TogglePin(Led_GPIO_Port, Led_Pin);
 
-  gsm_SetNextEvent(spc_machines[SPC], spcEventAction[i].event, NULL, 0);
-  
-  i = (i+1) % count;
+    gsm_SetNextEvent(spc_machines[SPC], spcEventAction[i].event, NULL, 0);
+
+    i = (i + 1) % count;
 }
 
 static void GSM_Start()
 {
-  if (gsm_StartMachine(spc_machines[SPC], SPC_STATE_INIT, SPC_EVENT_STATECHANGE) != 0) {
-      /* Failed to start */
-      return;
-  }
+    if (gsm_StartMachine
+    (spc_machines[SPC], SPC_STATE_INIT, SPC_EVENT_STATECHANGE) != 0) {
+        /* Failed to start */
+        return;
+    }
 
-  osTimerStart(spcTimer, 1000);
+    osTimerStart(spcTimer, 1000);
+}
+
+/* SPC related functions */
+static void Spc_ScreenUpdate(SpcInfoType type) {
+    resetScreen();
+    tftprintf(SpcScreenInfo[type].stringLine1);
+    tftprintf(SpcScreenInfo[type].stringLine2);
+}
+
+static void Spc_ClearStrBuffer()
+{
+    memset(StringLine1, 0, SPC_MAX_STR_LEN);
+    memset(StringLine2, 0, SPC_MAX_STR_LEN);
+}
+
+static void Spc_StartupLog()
+{
+    int i;
+    char string1[] = {0};
+    char string2[] = {0};
+ 
+    resetScreen();
+    for (i = 0; i < NUM_ROWS(spcStartupLogOn); i++) {
+        tftprintf("%s", spcStartupLogOn[i]);
+    }
+
+    osDelay(2000);
+    resetScreen();
+    for (i = 0; i < NUM_ROWS(spcStartupLogOff); i++) {
+        tftprintf("%s", spcStartupLogOff[i]);
+    }
+
+    osDelay(2000);
+    Spc_ScreenUpdate(SPC_SOFTWARE_VERSION);
+
+    osDelay(2000);
+}
+
+static void Spc_GetTemp(SpcTemperature *temp, uint8_t Channel)
+{
+    
+}
+
+static void Spc_SelfCheck()
+{
+    Spc_ScreenUpdate(SPC_SELFCHECK);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -377,17 +438,21 @@ static void GSM_Start()
 /*----------------------------------------------------------------------------*/
 void SPC_Init(void)
 {
-  osTimerDef(spcTimer, spcTimerCallback);
-  spcTimer = osTimerCreate (osTimer(spcTimer), osTimerPeriodic, NULL);
+    Spc_StartupLog();
+    Spc_SelfCheck();
 
-  GSM_Init();
-  GSM_Start();
+    osTimerDef(spcTimer, spcTimerCallback);
+    spcTimer = osTimerCreate(osTimer(spcTimer), osTimerPeriodic, NULL);
+
+    GSM_Init();
+    GSM_Start();
 }
 
-int gsm_SetNextEvent(GSM_StateMachine *machine, uint16_t nextEvent, void *eventData, uint16_t dataSize)
+int gsm_SetNextEvent(GSM_StateMachine * machine, uint16_t nextEvent,
+             void *eventData, uint16_t dataSize)
 {
     if (machine == NULL) {
-      tftprintf("Fail to get GSM machine");
+        tftprintf("Fail to get GSM machine");
     }
 
     osMutexWait(machine->gsm_stateMutex, sleepPeriod);
@@ -400,39 +465,32 @@ int gsm_SetNextEvent(GSM_StateMachine *machine, uint16_t nextEvent, void *eventD
     return 0;
 }
 
-uint16_t spc_InitStateEntry(GSM_StateMachine *gsm)
+uint16_t spc_InitStateEntry(GSM_StateMachine * gsm)
 {
-  //tftprintf("Entering %s", __func__);
-  return gsm->gsm_currentState;
+    return gsm->gsm_currentState;
 }
 
-uint16_t spc_ExeStateEntry(GSM_StateMachine *gsm)
+uint16_t spc_ExeStateEntry(GSM_StateMachine * gsm)
 {
-  //tftprintf("Entering %s", __func__);
-  return gsm->gsm_currentState;
+    return gsm->gsm_currentState;
 }
 
-uint16_t spc_StayInitEventHandler(GSM_StateMachine *gsm, void *eventData)
+uint16_t spc_StayInitEventHandler(GSM_StateMachine * gsm, void *eventData)
 {
-  //tftprintf("Entering %s", __func__);
-  return gsm->gsm_currentState;
+    return gsm->gsm_currentState;
 }
 
-uint16_t spc_GotoExeEventHandler(GSM_StateMachine *gsm, void *eventData)
+uint16_t spc_GotoExeEventHandler(GSM_StateMachine * gsm, void *eventData)
 {
-  //tftprintf("Entering %s", __func__);
-  return SPC_STATE_EXT;
+    return SPC_STATE_EXT;
 }
 
-uint16_t spc_StayExeEventHandler(GSM_StateMachine *gsm, void *eventData)
+uint16_t spc_StayExeEventHandler(GSM_StateMachine * gsm, void *eventData)
 {
-  //tftprintf("Entering %s", __func__);
-  return gsm->gsm_currentState;
+    return gsm->gsm_currentState;
 }
 
-uint16_t spc_GotoInitEventHandler(GSM_StateMachine *gsm, void *eventData)
+uint16_t spc_GotoInitEventHandler(GSM_StateMachine * gsm, void *eventData)
 {
-  //tftprintf("Entering %s", __func__);
-  return SPC_STATE_INIT;
+    return SPC_STATE_INIT;
 }
-

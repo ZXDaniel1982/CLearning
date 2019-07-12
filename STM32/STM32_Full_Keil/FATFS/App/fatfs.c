@@ -37,10 +37,7 @@ void MX_FATFS_Init(void)
   /* USER CODE BEGIN Init */
   /* additional user code for init */ 
 	if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0) != FR_OK) {
-	  tftprintf("SD card mount success");
 		Error_Handler();
-	} else {
-	  tftprintf("SD card mount fail");
 	}
   /* USER CODE END Init */
 }
