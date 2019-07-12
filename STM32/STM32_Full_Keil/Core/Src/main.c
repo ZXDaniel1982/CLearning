@@ -38,6 +38,7 @@
 #include "spc.h"
 #include "eeprom.h"
 #include "cli.h"
+#include "statemachine.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -125,6 +126,7 @@ int main(void)
   LCD_Init();
 	SPC_Init();
 	Cli_Init();
+  statemachine_Init();
 
 	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&ADC_Value, ADC_SAMPLE_RATE);
   /* USER CODE END 2 */
