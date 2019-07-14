@@ -33,27 +33,27 @@ static inline bool SpcListIsEmpty(SpcList_t * list);
 
 /* SPC related functions */
 static void Spc_ScreenUpdate(SpcInfoType_t type) {
-    resetScreen();
-    tftprintf(SpcScreenInfo[type].stringLine1);
-    tftprintf(SpcScreenInfo[type].stringLine2);
+    Spc_ResetScreen(SPC_SCREEN_POSITION, SPC_SCREEN_SCALE);
+    tftprintf(SpcStrLine1(type));
+    tftprintf(SpcStrLine2(type));
 }
 
 static void Spc_StartupLog()
 {
     int i;
  
-    resetScreen();
     for (i = 0; i < NUM_ROWS(spcStartupLogOn); i++) {
         tftprintf("%s", spcStartupLogOn[i]);
     }
 
     osDelay(2000);
-    resetScreen();
+    Spc_ResetScreen(SPC_SCREEN_POSITION, NUM_ROWS(spcStartupLogOn));
     for (i = 0; i < NUM_ROWS(spcStartupLogOff); i++) {
         tftprintf("%s", spcStartupLogOff[i]);
     }
 
     osDelay(2000);
+    Spc_ResetScreen(SPC_SCREEN_POSITION, NUM_ROWS(spcStartupLogOff));
     Spc_ScreenUpdate(SPC_SOFTWARE_VERSION);
 
     osDelay(2000);

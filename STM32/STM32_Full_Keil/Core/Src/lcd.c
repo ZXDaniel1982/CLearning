@@ -314,13 +314,13 @@ void tftprintf(const char* fmt, ...)
     va_end(ap);
 }
 
-void resetScreen()
+void Spc_ResetScreen(uint8_t SpcScreenPos, uint8_t SpcScreeScale)
 {
-    strIndex = 0;
-    LCD_Clear();
-
-    for (int i=0; i<4; i++)
+    strIndex = SpcScreenPos;
+    for (uint8_t pos=0; pos<SpcScreeScale; pos++)
         tftprintf(LCD_BLAND_STR);
+
+    strIndex = SpcScreenPos;
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

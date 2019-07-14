@@ -72,6 +72,9 @@ void Error_Handler(void);
 #define LCD_Rst_GPIO_Port GPIOE
 /* USER CODE BEGIN Private defines */
 #define NUM_ROWS(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
+
+#define SPC_SCREEN_POSITION    ( 4 )
+#define SPC_SCREEN_SCALE       ( 2 )
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

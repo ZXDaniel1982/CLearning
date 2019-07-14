@@ -7,11 +7,10 @@
 #include "main.h"
 #include "cmsis_os.h"
 
-#define SPC_CALIB_WANTED
+//#define SPC_CALIB_WANTED
 
 // SPC related definition
-#define SPC_BLANK_STR           "    "
-#define SPC_MAX_STR_LEN         ( 20 )
+#define SPC_MAX_STR_LEN         ( 30 )
 #define SPC_MAX_GFI             ( 20 )
 
 static const char *spcStartupLogOn[] = {
@@ -39,6 +38,21 @@ typedef enum
 
     SPC_MAX_INFO_TYPE
 } SpcInfoType_t;
+
+typedef enum
+{
+    SPC_BLANK_STR = 0,
+    SPC_FIRMWARE_NAME_STR,
+    SPC_FIRMWARE_VER_STR,
+    SPC_SYSTEMCHK_STR,
+    SPC_SELFCHKFAIL_STR,
+
+#ifdef SPC_CALIB_WANTED
+    SPC_CALIB_NEED_STR,
+#endif
+
+    SPC_MAX_STR_TYPE
+} SpcStringType_t;
 
 typedef enum
 {
@@ -103,9 +117,15 @@ typedef struct
 typedef struct
 {
     SpcInfoType_t infoType;
-    char stringLine1[SPC_MAX_STR_LEN];
-    char stringLine2[SPC_MAX_STR_LEN];
+    SpcStringType_t strTypeLine1;
+    SpcStringType_t strTypeLine2;
 } SpcScreenInfo_t;
+
+typedef struct
+{
+    SpcStringType_t StrType;
+    char str[SPC_MAX_STR_LEN];
+} SpcStringPool_t;
 
 typedef struct
 {
@@ -185,12 +205,24 @@ typedef struct
 } SpcValue_t;
 
 static const SpcScreenInfo_t SpcScreenInfo[SPC_MAX_INFO_TYPE] = {
-    {SPC_SOFTWARE_VERSION, "DPC firmware", "Version 1.0"},
-    {SPC_SELFCHECK, "System Check...", SPC_BLANK_STR},
-    {SPC_SELFCHKFAIL, "Self Check Fail", SPC_BLANK_STR},
+    {SPC_SOFTWARE_VERSION, SPC_FIRMWARE_NAME_STR, SPC_FIRMWARE_VER_STR},
+    {SPC_SELFCHECK,        SPC_SYSTEMCHK_STR,     SPC_BLANK_STR},
+    {SPC_SELFCHKFAIL,      SPC_SELFCHKFAIL_STR,   SPC_BLANK_STR},
 
 #ifdef SPC_CALIB_WANTED
-    {SPC_CALIB_NEED, "System Need Cali", SPC_BLANK_STR},
+    {SPC_CALIB_NEED,       SPC_CALIB_NEED_STR,    SPC_BLANK_STR},
+#endif
+};
+
+static SpcStringPool_t SpcStringPool[SPC_MAX_STR_TYPE] = {
+    {SPC_BLANK_STR,         "                 "},
+    {SPC_FIRMWARE_NAME_STR, "SPC firmware"},
+    {SPC_FIRMWARE_VER_STR,  "Version 1.0"},
+    {SPC_SYSTEMCHK_STR,     "System Check..."},
+    {SPC_SELFCHKFAIL_STR,   "Self Check Fail"},
+
+#ifdef SPC_CALIB_WANTED
+    {SPC_CALIB_NEED_STR,    "System Need Cali"},
 #endif
 };
 
@@ -202,6 +234,9 @@ static const SpcAlarm_t SpcAlarmTable[SPC_MAX_ALARM_TYPE] = {
 #define SpcGfi(x)            ( (x)->measure.gfi )
 #define SpcSystemConfig(x)   ( (x)->config.system )
 #define SpcAlarmList(x)      ( (x)->alarmList )
+
+#define SpcStrLine1(x)         ( SpcScreenInfo[(x)].strTypeLine1 )
+#define SpcStrLine2(x)         ( SpcScreenInfo[(x)].strTypeLine2 )
 
 
 // For SPC test 
