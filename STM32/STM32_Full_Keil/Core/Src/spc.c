@@ -34,8 +34,8 @@ static inline bool SpcListIsEmpty(SpcList_t * list);
 /* SPC related functions */
 static void Spc_ScreenUpdate(SpcInfoType_t type) {
     Spc_ResetScreen(SPC_SCREEN_POSITION, SPC_SCREEN_SCALE);
-    tftprintf(SpcStrLine1(type));
-    tftprintf(SpcStrLine2(type));
+    tftprintf(SpcStrPool[SpcStrLine1(type)]);
+    tftprintf(SpcStrPool[SpcStrLine2(type)]);
 }
 
 static void Spc_StartupLog()

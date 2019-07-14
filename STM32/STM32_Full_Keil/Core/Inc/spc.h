@@ -214,7 +214,7 @@ static const SpcScreenInfo_t SpcScreenInfo[SPC_MAX_INFO_TYPE] = {
 #endif
 };
 
-static SpcStringPool_t SpcStringPool[SPC_MAX_STR_TYPE] = {
+static SpcStringPool_t SpcStrPool[SPC_MAX_STR_TYPE] = {
     {SPC_BLANK_STR,         "                 "},
     {SPC_FIRMWARE_NAME_STR, "SPC firmware"},
     {SPC_FIRMWARE_VER_STR,  "Version 1.0"},
