@@ -4,7 +4,6 @@
 #include "lcd.h"
 #include <string.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 #define GSM_NAME_MAX_LEN 20
 #define sleepPeriod      0xffffffff
