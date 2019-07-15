@@ -82,7 +82,53 @@ typedef enum
     SPC_ERROR = false
 } SpcStatus_t;
 
-extern volatile uint32_t spctick = 0;
+typedef enum
+{
+    SPC_ALARM_SELFCHKFAIL = 0,
+    SPC_MAX_ALARM_TYPE
+} SpcAlarmType_t;
+
+typedef void (*pfnDelete)(SpcAlarmType_t alarmType);
+typedef void (*pfnAdd)(SpcAlarmType_t alarmType);
+struct xSpcItem_t
+{
+    SpcAlarmType_t alarmType;
+    bool alarmPrio;
+    pfnDelete delfunc;
+    pfnAdd addfunc;
+    struct xSpcItem_t *next;
+};
+typedef struct xSpcItem_t SpcItem_t;
+
+typedef struct
+{
+    uint8_t totalNum;
+    uint8_t maxSize;
+    SpcItem_t item;
+} SpcList_t;
+
+typedef struct
+{
+    uint32_t alarmMask;
+    SpcList_t alarmList;
+} SpcAlarm_t;
+
+typedef struct
+{
+    SpcAlarmType_t type;
+    bool prio;
+} SpcAlarmTable_t;
+
+#define SpcAlarmEn        ( SPC_NORMAL )
+#define SpcAlarmDis       ( SPC_ERROR )
+#define SpcAlarmCritical  ( SPC_NORMAL )
+#define SpcAlarmNormal    ( SPC_ERROR )
+
+extern volatile uint32_t spctick;
+
+SpcStatus_t SpcListInsert(SpcList_t * list, SpcItem_t *itemToAdd);
+SpcStatus_t SpcListRemove(SpcList_t * list, SpcAlarmType_t alarmType);
+void Spc_AlarmMgr(SpcList_t * list, SpcAlarmType_t type, bool enable);
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

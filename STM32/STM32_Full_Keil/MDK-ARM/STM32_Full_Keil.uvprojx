@@ -484,6 +484,16 @@
               <FileType>1</FileType>
               <FilePath>..\Core\Src\statemachine.c</FilePath>
             </File>
+            <File>
+              <FileName>spcalarm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\spcalarm.c</FilePath>
+            </File>
+            <File>
+              <FileName>spclist.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\spclist.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

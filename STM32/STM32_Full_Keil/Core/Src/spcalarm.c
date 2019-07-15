@@ -1,8 +1,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "spcalarm.h"
-
-static void Spc_AlarmRaise(SpcAlarmType_t alarmType);
-static void Spc_AlarmClear(SpcAlarmType_t alarmType);
+#include "spclist.h"
+#include "spcconst.h"
+#include "FreeRTOS.h"
 
 void Spc_AlarmMgr(SpcList_t * list, SpcAlarmType_t type, bool enable)
 {
@@ -23,12 +23,3 @@ void Spc_AlarmMgr(SpcList_t * list, SpcAlarmType_t type, bool enable)
     }
 }
 
-static void Spc_AlarmRaise(SpcAlarmType_t alarmType)
-{
-    SpcValue.alarmMask |= alarmType;
-}
-
-static void Spc_AlarmClear(SpcAlarmType_t alarmType)
-{
-    SpcValue.alarmMask &= ~alarmType;
-}

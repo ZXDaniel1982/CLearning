@@ -37,6 +37,7 @@
 
 void LCD_Init(void);
 void resetScreen(void);
+void Spc_ResetScreen(uint8_t SpcScreenPos, uint8_t SpcScreeScale);
 void tftprintf(const char* fmt, ...);
 
 void MonitorDefTask(void);

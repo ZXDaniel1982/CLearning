@@ -28,7 +28,7 @@ enum CLI_COMMAND {
 	SPC_KEY_ENTER,
 	SPC_KEY_CLEAR,
 
-	MAX_CLI_COMMAND
+	MAX_CLI_COMMAND,
 };
 
 typedef void (*func_t)(void *arg);

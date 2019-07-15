@@ -7,7 +7,6 @@
 #include "main.h"
 #include "cmsis_os.h"
 
-#include "spcconst.h"
 #include "spcalarm.h"
 
 //#define SPC_CALIB_WANTED
@@ -15,8 +14,6 @@
 // SPC related definition
 #define SpcManuOptEn            ( SPC_NORMAL )
 #define SpcManuOptDis           ( SPC_ERROR )
-#define SpcScreenStatic         ( SPC_NORMAL )
-#define SpcScreenDynamic        ( SPC_ERROR )
 #define SpcTempInCelsius        ( SPC_NORMAL )
 #define SpcTempInFahren         ( SPC_ERROR )
 
@@ -32,6 +29,9 @@ typedef enum
     SPC_DEFINFO_HEAT_TEMP,
     SPC_DEFINFO_HEAT_STATUS,
     SPC_DEFINFO_SYS_STATUS,
+
+    SPC_MENU_INIT,
+    SPC_MENU_RTD_STAT,
 
 #ifdef SPC_CALIB_WANTED
     SPC_CALIB_NEED,
@@ -126,22 +126,19 @@ typedef enum
     SPC_MAX_RTD_STATUS
 } SpcRTDStatus_t;
 
+typedef enum
+{
+    SPC_KEY_NORMAL = 0,
+    SPC_KEY_TIMEOUT,
+    SPC_KEY_NEXT,
+    SPC_MAX_KEY_INPUT
+} SpcKeyType_t;
+
 typedef struct
 {
     SpcRTDStatus_t status;
     SpcStringType_t strType;
 } SpcRtdStatusStr_t;
-
-typedef void (*pfnInfoDetail)(SpcValue_t *SpcValue);
-typedef struct
-{
-    SpcInfoType_t infoType;
-    SpcInfoType_t rightType
-    SpcStringType_t strTypeLine1;
-    SpcStringType_t strTypeLine2;
-    SpcInfoMode_t mode;
-    pfnInfoDetail *infoDetail;
-} SpcScreenInfo_t;
 
 typedef struct
 {
@@ -227,6 +224,16 @@ typedef struct
     SpcAlarm_t alarm;
 } SpcValue_t;
 
+typedef void (*pfnInfoDetail)(SpcValue_t *SpcValue);
+typedef struct
+{
+    SpcInfoType_t infoType;
+    SpcInfoType_t rightType;
+    SpcStringType_t strTypeLine1;
+    SpcStringType_t strTypeLine2;
+    pfnInfoDetail infoDetail;
+} SpcScreenInfo_t;
+
 #define SpcTemp(x,y)              ( (x)->measure.temp[y] )
 #define SpcGfi(x,y)               ( (x)->measure.gfi[y] )
 
@@ -236,13 +243,13 @@ typedef struct
 #define SpcConfTimeout(x)         ( (x)->config.DisplayTime )
 
 #define SpcAlarmList(x)           ( (x)->alarm.alarmList )
+#define SpcAlarmMask(x)           ( (x)->alarm.alarmMask )
 
 #define SpcPosition(x)            ( (x)->runStatus.position )
 #define SpcChannel(x)             ( (x)->runStatus.channel )
 
 #define SpcStrLine1(x)            ( SpcScreenInfo[(x)].strTypeLine1 )
 #define SpcStrLine2(x)            ( SpcScreenInfo[(x)].strTypeLine2 )
-#define SpcStrMode(x)             ( SpcScreenInfo[(x)].mode )
 #define SpcStrDetail(x)           ( SpcScreenInfo[(x)].infoDetail )
 #define SpcRightType(x)           ( SpcScreenInfo[(x)].rightType )
 
@@ -254,6 +261,14 @@ typedef struct
 #define SPC_SIMULATE_GFI        ( 10 )
 
 void SPC_Init(void);
+void cliSpcKeyOpt(void *arg);
+
+void Spc_AlarmRaise(SpcAlarmType_t alarmType);
+void Spc_AlarmClear(SpcAlarmType_t alarmType);
+
+void Spc_GetHeatTempDetail(SpcValue_t *SpcValue);
+void Spc_GetHeatStatusDetail(SpcValue_t *SpcValue);
+void Spc_GetSysStatusDetail(SpcValue_t *SpcValue);
 
 #ifdef __cplusplus
 }

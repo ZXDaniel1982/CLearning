@@ -4,6 +4,9 @@
  extern "C" {
 #endif
 
+#include "main.h"
+#include "spc.h"
+
 static const char *spcStartupLogOn[] = {
     "Turn on Heater Led",
     "Turn on System Fail Led",
@@ -18,31 +21,31 @@ static const char *spcStartupLogOff[] = {
 };
 
 static const SpcScreenInfo_t SpcScreenInfo[SPC_MAX_INFO_TYPE] = {
-    {SPC_SOFTWARE_VERSION, NULL, SPC_FIRMWARE_NAME_STR,    SPC_FIRMWARE_VER_STR,
-        SpcScreenStatic,  NULL},
-    {SPC_SELFCHECK,        NULL, SPC_SYSTEMCHK_STR,        SPC_BLANK_STR,
-        SpcScreenStatic,  NULL},
-    {SPC_SELFCHKFAIL,     NULL,  SPC_SELFCHKFAIL_STR,      SPC_BLANK_STR, 
-        SpcScreenStatic,  NULL},
+    {SPC_SOFTWARE_VERSION,    SPC_MAX_INFO_TYPE,        SPC_FIRMWARE_NAME_STR,    SPC_FIRMWARE_VER_STR,
+        NULL},
+    {SPC_SELFCHECK,           SPC_MAX_INFO_TYPE,        SPC_SYSTEMCHK_STR,        SPC_BLANK_STR,
+        NULL},
+    {SPC_SELFCHKFAIL,         SPC_MAX_INFO_TYPE,        SPC_SELFCHKFAIL_STR,      SPC_BLANK_STR, 
+        NULL},
 
     // default display
-    {SPC_DEFINFO_HEAT_TEMP,  SPC_DEFINFO_HEAT_TEMP, SPC_DEF_HEAT_TEMP_STR,    NULL,
-        SpcScreenDynamic, Spc_GetHeatTempDetail},
-    {SPC_DEFINFO_HEAT_STATUS, SPC_DEFINFO_HEAT_STATUS,  SPC_DEF_HEAT_STATUS_STR,  NULL,
-        SpcScreenDynamic, Spc_GetHeatStatusDetail},
-    {SPC_DEFINFO_SYS_STATUS,  SPC_DEFINFO_SYS_STATUS,  SPC_DEF_SYS_STATUS_STR,   NULL,
-        SpcScreenDynamic, Spc_GetSysStatusDetail},
+    {SPC_DEFINFO_HEAT_TEMP,   SPC_DEFINFO_HEAT_TEMP,    SPC_DEF_HEAT_TEMP_STR,    SPC_MAX_STR_TYPE,
+        Spc_GetHeatTempDetail},
+    {SPC_DEFINFO_HEAT_STATUS, SPC_DEFINFO_HEAT_STATUS,  SPC_DEF_HEAT_STATUS_STR,  SPC_MAX_STR_TYPE,
+        Spc_GetHeatStatusDetail},
+    {SPC_DEFINFO_SYS_STATUS,  SPC_DEFINFO_SYS_STATUS,   SPC_DEF_SYS_STATUS_STR,   SPC_MAX_STR_TYPE,
+        Spc_GetSysStatusDetail},
 
     // menu actual
-    {SPC_MENU_INIT,  SPC_MENU_RTD_STAT,  SPC_MENU_ACT_CATAG_STR,   NULL,
-        SpcScreenDynamic, Spc_GetSysStatusDetail},
+    {SPC_MENU_INIT,           SPC_MENU_RTD_STAT,        SPC_MENU_ACT_CATAG_STR,   SPC_MAX_STR_TYPE,
+        Spc_GetSysStatusDetail},
 
 #ifdef SPC_CALIB_WANTED
-    {SPC_CALIB_NEED,       SPC_CALIB_NEED_STR,    SPC_BLANK_STR},
+    {SPC_CALIB_NEED,       SPC_CALIB_NEED_STR,          SPC_BLANK_STR},
 #endif
 };
 
-static SpcStringPool_t *SpcStrPool[SPC_MAX_STR_TYPE] = {
+static SpcStringPool_t SpcStrPool[SPC_MAX_STR_TYPE] = {
     {SPC_BLANK_STR,                "                 "},
     {SPC_FIRMWARE_NAME_STR,        "SPC firmware"},
     {SPC_FIRMWARE_VER_STR,         "Version 1.0"},
@@ -50,7 +53,7 @@ static SpcStringPool_t *SpcStrPool[SPC_MAX_STR_TYPE] = {
     {SPC_SELFCHKFAIL_STR,          "Self Check Fail"},
 
     // menu
-    {SPC_MENU_ACT_CATAG_STR,       "Actual"}
+    {SPC_MENU_ACT_CATAG_STR,       "Actual"},
 
     // Default Information
     {SPC_DEF_HEAT_TEMP_STR,        "Heater Temp"},
