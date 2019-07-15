@@ -11,7 +11,18 @@ static const CliCommand_t cliCommandList[] = {
     {READ_EEPROM_INFO, cliShowEEPROMInfo},
     {READ_SD_INFO, cliShowSdInfo},
     {READ_SD_FILE_LIST, cliShowSdFileInfo},
-    {READ_TASK_INFO, cliShowTaskInfo}
+    {READ_TASK_INFO, cliShowTaskInfo},
+
+    {SPC_KEY_RIGHT, cliSpcKeyOpt},
+    {SPC_KEY_LEFT, cliSpcKeyOpt},
+    {SPC_KEY_UP, cliSpcKeyOpt},
+    {SPC_KEY_DOWN, cliSpcKeyOpt},
+    {SPC_KEY_ACT, cliSpcKeyOpt},
+    {SPC_KEY_PROG, cliSpcKeyOpt},
+    {SPC_KEY_ALARM, cliSpcKeyOpt},
+    {SPC_KEY_RESET, cliSpcKeyOpt},
+    {SPC_KEY_ENTER, cliSpcKeyOpt},
+    {SPC_KEY_CLEAR, cliSpcKeyOpt},
 };
 
 static const char *cliUsage[] = {
@@ -21,6 +32,7 @@ static const char *cliUsage[] = {
     "1 : Show EEPROM device info  \r\n",
     "2 : Show SD device info      \r\n",
     "3 : Show SD card files info  \r\n",
+    "4 : Show TASK info           \r\n",
     "4 : Show TASK info           \r\n"
 };
 

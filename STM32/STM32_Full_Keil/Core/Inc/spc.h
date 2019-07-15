@@ -7,30 +7,31 @@
 #include "main.h"
 #include "cmsis_os.h"
 
+#include "spcconst.h"
+#include "spcalarm.h"
+
 //#define SPC_CALIB_WANTED
 
 // SPC related definition
+#define SpcManuOptEn            ( SPC_NORMAL )
+#define SpcManuOptDis           ( SPC_ERROR )
+#define SpcScreenStatic         ( SPC_NORMAL )
+#define SpcScreenDynamic        ( SPC_ERROR )
+#define SpcTempInCelsius        ( SPC_NORMAL )
+#define SpcTempInFahren         ( SPC_ERROR )
+
 #define SPC_MAX_STR_LEN         ( 30 )
 #define SPC_MAX_GFI             ( 20 )
-
-static const char *spcStartupLogOn[] = {
-    "Turn on Heater Led",
-    "Turn on System Fail Led",
-    "Turn on Alarm Led",
-    "Turn on Communication Led",
-};
-static const char *spcStartupLogOff[] = {
-    "Turn off Heater Led",
-    "Turn off System Fail Led",
-    "Turn off Alarm Led",
-    "Turn off Communication Led",
-};
 
 typedef enum
 {
     SPC_SOFTWARE_VERSION = 0,
     SPC_SELFCHECK,
     SPC_SELFCHKFAIL,
+
+    SPC_DEFINFO_HEAT_TEMP,
+    SPC_DEFINFO_HEAT_STATUS,
+    SPC_DEFINFO_SYS_STATUS,
 
 #ifdef SPC_CALIB_WANTED
     SPC_CALIB_NEED,
@@ -46,6 +47,22 @@ typedef enum
     SPC_FIRMWARE_VER_STR,
     SPC_SYSTEMCHK_STR,
     SPC_SELFCHKFAIL_STR,
+
+    // menu
+    SPC_MENU_ACT_CATAG_STR,
+
+    // Default Info
+    SPC_DEF_HEAT_TEMP_STR,
+    SPC_DEF_HEAT_STATUS_STR,
+    SPC_DEF_SYS_STATUS_STR,
+
+    // Substring
+    SPC_RTD_SHORT_STR,
+    SPC_RTD_OPEN_STR,
+    SPC_RTD_OFF_STR,
+    SPC_RTD_ON_STR,
+    SPC_RTD_MANOFF_STR,
+    SPC_RTD_MANON_STR,
 
 #ifdef SPC_CALIB_WANTED
     SPC_CALIB_NEED_STR,
@@ -76,15 +93,10 @@ typedef enum
     SPC_TEMP_RTD_SHORT,
     SPC_TEMP_RTD_OPEN,
     SPC_TEMP_OUTRANGE,
+    SPC_TEMP_OFF,
 
     SPC_MAX_TEMP_STATUS
 } SpcTempStatus_t;
-
-typedef enum
-{
-    SPC_NORMAL = true,
-    SPC_ERROR = false
-} SpcStatus_t;
 
 typedef enum
 {
@@ -97,28 +109,38 @@ typedef enum
     SPC_MAX_RTD_OPT_MOD
 } SpcRTDOptMode_t;
 
-#define SpcAlarmEn        ( SPC_NORMAL )
-#define SpcAlarmDis       ( SPC_ERROR )
-#define SpcAlarmCritical  ( SPC_NORMAL )
-#define SpcAlarmNormal    ( SPC_ERROR )
 typedef enum
 {
-    SPC_ALARM_SELFCHKFAIL = 0,
-    SPC_MAX_ALARM_TYPE
-} SpcAlarmType_t;
-#define SpcAlarmMask(x) ( 1 << (x) )
+    SYSTEM_STATUS_MOD = 0,
+    HEATER_STATUS_MOD,
+    HEATER_TEMP_MOD,
+    SPC_MAX_DEF_INFO
+} SpcDefalutInfo_t;
+
+typedef enum
+{
+    SPC_RTD_OFF = 0,
+    SPC_RTD_ON,
+    SPC_RTD_MANOFF,
+    SPC_RTD_MANON,
+    SPC_MAX_RTD_STATUS
+} SpcRTDStatus_t;
 
 typedef struct
 {
-    SpcAlarmType_t type;
-    bool prio;
-} SpcAlarm_t;
+    SpcRTDStatus_t status;
+    SpcStringType_t strType;
+} SpcRtdStatusStr_t;
 
+typedef void (*pfnInfoDetail)(SpcValue_t *SpcValue);
 typedef struct
 {
     SpcInfoType_t infoType;
+    SpcInfoType_t rightType
     SpcStringType_t strTypeLine1;
     SpcStringType_t strTypeLine2;
+    SpcInfoMode_t mode;
+    pfnInfoDetail *infoDetail;
 } SpcScreenInfo_t;
 
 typedef struct
@@ -148,95 +170,81 @@ typedef struct
 
 typedef struct
 {
-    uint32_t spc_units_c:1;
-    uint32_t heater_en:1;
-    uint32_t man_on:1;
-    uint32_t ctl_type:1;
-    uint32_t rtd_opr:3;
-    uint32_t rtd_fail_mod:1;
-    uint32_t password_en:1;
-    uint32_t usr_advanced:1;
-    uint32_t def_display:2;
-    uint32_t baud:3;
-    uint32_t gfi_test_mod:2;
-    uint32_t heater_type:1;
-    uint32_t cable_type:1;
-    uint32_t reservd:13;
-} SpcAlarmSystemConfigBytes_t;
+    uint16_t heater_en:1;
+    uint16_t ctl_type:1;
+    uint16_t rtdMod:3;
+    uint16_t rtd_fail_mod:1;
+    uint16_t password_en:1;
+    uint16_t usr_advanced:1;
+    uint16_t baud:3;
+    uint16_t gfi_test_mod:2;
+    uint16_t heater_type:1;
+    uint16_t cable_type:1;
+    uint16_t reservd:1;
+} SpcSysConfBytes_t;
 
 typedef union
 {
     uint32_t word;
-    SpcAlarmSystemConfigBytes_t bytes;
-} SpcSystemConfig_t;
+    SpcSysConfBytes_t bytes;
+} SpcSysConf_t;
 
 typedef struct
 {
-    SpcSystemConfig_t system;
+    uint8_t manual:1;
+    uint8_t unit:1;
+    uint8_t defInfo:2;
+    uint8_t rdtStat:2;
+    uint8_t reservd:2;
+} SpcSysConfChnelBytes_t;
+
+typedef union
+{
+    uint8_t word;
+    SpcSysConfChnelBytes_t bytes;
+} SpcSysConfIndiv_t;
+
+typedef struct
+{
+    SpcSysConf_t system;
+    uint16_t DisplayTime;
+
+    SpcTemperature_t MaintainTemp[SPC_MAX_RTD_CHANNEL];
+    SpcSysConfIndiv_t sysChnel[SPC_MAX_RTD_CHANNEL];
 } SpcConfig_t;
 
-// List
-#define SPC_MAX_LIST    ( 20 )
-typedef void (*pfnDelete)(SpcAlarmType_t alarmType);
-typedef void (*pfnAdd)(SpcAlarmType_t alarmType);
-struct xSpcItem_t
+typedef struct
 {
-    SpcAlarmType_t alarmType;
-    bool alarmPrio;
-    pfnDelete delfunc;
-    pfnAdd addfunc;
-    struct xSpcItem_t *next;
-};
-typedef struct xSpcItem_t SpcItem_t;
+    SpcInfoType_t position;
+    SpcRtdChannel_t channel;
+} SpcRunStatus_t;
 
 typedef struct
 {
-    uint8_t totalNum;
-    uint8_t maxSize;
-    SpcItem_t item;
-} SpcList_t;
-
-typedef struct
-{
+    SpcRunStatus_t runStatus;
     SpcMeasure_t measure;
     SpcConfig_t config;
-    SpcList_t alarmList;
-    uint32_t alarmMask;
+    SpcAlarm_t alarm;
 } SpcValue_t;
 
-static const SpcScreenInfo_t SpcScreenInfo[SPC_MAX_INFO_TYPE] = {
-    {SPC_SOFTWARE_VERSION, SPC_FIRMWARE_NAME_STR, SPC_FIRMWARE_VER_STR},
-    {SPC_SELFCHECK,        SPC_SYSTEMCHK_STR,     SPC_BLANK_STR},
-    {SPC_SELFCHKFAIL,      SPC_SELFCHKFAIL_STR,   SPC_BLANK_STR},
+#define SpcTemp(x,y)              ( (x)->measure.temp[y] )
+#define SpcGfi(x,y)               ( (x)->measure.gfi[y] )
 
-#ifdef SPC_CALIB_WANTED
-    {SPC_CALIB_NEED,       SPC_CALIB_NEED_STR,    SPC_BLANK_STR},
-#endif
-};
+#define SpcSysConfChn(x, y)       ( (x)->config.sysChnel[y] )
+#define SpcSysConf(x)             ( (x)->config.system )
+#define SpcSysConfMainTemp(x,y)   ( (x)->config.MaintainTemp[y] )
+#define SpcConfTimeout(x)         ( (x)->config.DisplayTime )
 
-static SpcStringPool_t SpcStrPool[SPC_MAX_STR_TYPE] = {
-    {SPC_BLANK_STR,         "                 "},
-    {SPC_FIRMWARE_NAME_STR, "SPC firmware"},
-    {SPC_FIRMWARE_VER_STR,  "Version 1.0"},
-    {SPC_SYSTEMCHK_STR,     "System Check..."},
-    {SPC_SELFCHKFAIL_STR,   "Self Check Fail"},
+#define SpcAlarmList(x)           ( (x)->alarm.alarmList )
 
-#ifdef SPC_CALIB_WANTED
-    {SPC_CALIB_NEED_STR,    "System Need Cali"},
-#endif
-};
+#define SpcPosition(x)            ( (x)->runStatus.position )
+#define SpcChannel(x)             ( (x)->runStatus.channel )
 
-static const SpcAlarm_t SpcAlarmTable[SPC_MAX_ALARM_TYPE] = {
-    {SPC_ALARM_SELFCHKFAIL, SpcAlarmCritical}
-};
-
-#define SpcTemperature(x)    ( (x)->measure.temp )
-#define SpcGfi(x)            ( (x)->measure.gfi )
-#define SpcSystemConfig(x)   ( (x)->config.system )
-#define SpcAlarmList(x)      ( (x)->alarmList )
-
-#define SpcStrLine1(x)         ( SpcScreenInfo[(x)].strTypeLine1 )
-#define SpcStrLine2(x)         ( SpcScreenInfo[(x)].strTypeLine2 )
+#define SpcStrLine1(x)            ( SpcScreenInfo[(x)].strTypeLine1 )
+#define SpcStrLine2(x)            ( SpcScreenInfo[(x)].strTypeLine2 )
+#define SpcStrMode(x)             ( SpcScreenInfo[(x)].mode )
+#define SpcStrDetail(x)           ( SpcScreenInfo[(x)].infoDetail )
+#define SpcRightType(x)           ( SpcScreenInfo[(x)].rightType )
 
 
 // For SPC test 

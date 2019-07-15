@@ -75,6 +75,14 @@ void Error_Handler(void);
 
 #define SPC_SCREEN_POSITION    ( 4 )
 #define SPC_SCREEN_SCALE       ( 2 )
+
+typedef enum
+{
+    SPC_NORMAL = true,
+    SPC_ERROR = false
+} SpcStatus_t;
+
+extern volatile uint32_t spctick = 0;
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

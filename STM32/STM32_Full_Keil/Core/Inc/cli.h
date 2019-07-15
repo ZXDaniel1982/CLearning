@@ -8,6 +8,7 @@
 #include "cmsis_os.h"
 #include "eeprom.h"
 #include "sdio.h"
+#include "spc.h"
 	 
 enum CLI_COMMAND {
 	INVALID_CLI_COMMAND = 0,
@@ -15,6 +16,18 @@ enum CLI_COMMAND {
 	READ_SD_INFO,
 	READ_SD_FILE_LIST,
 	READ_TASK_INFO,
+
+	SPC_KEY_RIGHT,
+	SPC_KEY_LEFT,
+	SPC_KEY_UP,
+	SPC_KEY_DOWN,
+	SPC_KEY_ACT,
+	SPC_KEY_PROG,
+	SPC_KEY_ALARM,
+	SPC_KEY_RESET,
+	SPC_KEY_ENTER,
+	SPC_KEY_CLEAR,
+
 	MAX_CLI_COMMAND
 };
 

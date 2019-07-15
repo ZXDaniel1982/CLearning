@@ -64,6 +64,7 @@ RTC_TimeTypeDef sTime = {0};
 RTC_DateTypeDef DateToUpdate = {0};
 
 volatile uint32_t ulHighFrequencyTimerTicks = 0;
+volatile uint32_t spctick = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -249,6 +250,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   } else if (htim->Instance == TIM5) {
     ulHighFrequencyTimerTicks++;
+    spctick++;
   }
   /* USER CODE BEGIN Callback 1 */
 
