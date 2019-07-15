@@ -494,6 +494,11 @@
               <FileType>1</FileType>
               <FilePath>..\Core\Src\spclist.c</FilePath>
             </File>
+            <File>
+              <FileName>spccommon.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Core\Inc\spccommon.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

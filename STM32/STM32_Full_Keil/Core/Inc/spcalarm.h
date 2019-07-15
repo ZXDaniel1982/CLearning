@@ -5,8 +5,7 @@
 #endif
 
 #include "main.h"
-#include "spc.h"
-#include "spclist.h"
+#include "spccommon.h"
 
 #define SpcAlarmTypeToMask(x)   ( 1 << (x) )
 

@@ -5,7 +5,7 @@
 #endif
 
 #include "main.h"
-#include "spc.h"
+#include "spccommon.h"
 
 static const char *spcStartupLogOn[] = {
     "Turn on Heater Led",

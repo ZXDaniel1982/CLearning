@@ -1,8 +1,5 @@
 /* Includes ------------------------------------------------------------------*/
-//#include "spc.h"
-#include "spclist.h"
-#include "spcconst.h"
-#include "spcalarm.h"
+#include "spc.h"
 #include "FreeRTOS.h"
 #include "lcd.h"
 #include "cli.h"

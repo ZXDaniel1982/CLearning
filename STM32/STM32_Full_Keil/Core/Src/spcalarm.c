@@ -1,6 +1,5 @@
 /* Includes ------------------------------------------------------------------*/
 #include "spcalarm.h"
-#include "spclist.h"
 #include "spcconst.h"
 #include "FreeRTOS.h"
 

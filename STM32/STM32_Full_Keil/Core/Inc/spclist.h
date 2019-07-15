@@ -5,11 +5,9 @@
 #endif
 
 #include "main.h"
+#include "spccommon.h"
 
 // List
-#define SPC_MAX_LIST    ( 20 )
-
-void SpcListInit(SpcList_t * list, uint8_t size);
 
 #ifdef __cplusplus
 }
