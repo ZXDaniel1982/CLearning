@@ -37,10 +37,6 @@ typedef enum
     SPC_MENU_INIT,
     SPC_MENU_RTD_STAT,
 
-#ifdef SPC_CALIB_WANTED
-    SPC_CALIB_NEED,
-#endif
-
     SPC_MAX_INFO_TYPE
 } SpcInfoType_t;
 
@@ -52,8 +48,9 @@ typedef enum
     SPC_SYSTEMCHK_STR,
     SPC_SELFCHKFAIL_STR,
 
-    // menu
+    // menu actual
     SPC_MENU_ACT_CATAG_STR,
+    SPC_MENU_ACT_OPTVAL_STR,
 
     // Default Info
     SPC_DEF_HEAT_TEMP_STR,
@@ -68,10 +65,6 @@ typedef enum
     SPC_RTD_MANOFF_STR,
     SPC_RTD_MANON_STR,
 
-#ifdef SPC_CALIB_WANTED
-    SPC_CALIB_NEED_STR,
-#endif
-
     SPC_MAX_STR_TYPE
 } SpcStringType_t;
 
@@ -79,17 +72,10 @@ typedef enum
 {
     SPC_RTD_CHANNEL1 = 0,
     SPC_RTD_CHANNEL2,
+    SPC_RTD_COMBIN,
 
     SPC_MAX_RTD_CHANNEL
 } SpcRtdChannel_t;
-
-typedef enum
-{
-    SPC_GFI_CHANNEL1 = 0,
-    SPC_GFI_CHANNEL2,
-
-    SPC_MAX_GFI_CHANNEL
-} SpcGfiChannel_t;
 
 typedef enum
 {
@@ -135,6 +121,8 @@ typedef enum
     SPC_KEY_NORMAL = 0,
     SPC_KEY_TIMEOUT,
     SPC_KEY_NEXT,
+    SPC_KEY_RESETCANCLE,
+    SPC_KEY_RESETCOMPLETE,
     SPC_MAX_KEY_INPUT
 } SpcKeyType_t;
 
@@ -197,22 +185,29 @@ typedef struct
 typedef struct
 {
     SpcTemperature_t temp[SPC_MAX_RTD_CHANNEL];
-    SpcGFIMeasure_t gfi[SPC_MAX_GFI_CHANNEL];
+    SpcGFIMeasure_t gfi;
+    int32_t PowerPercent;
+    int32_t Current;
+    int32_t Voltage;
 } SpcMeasure_t;
 
 typedef struct
 {
-    uint16_t heater_en:1;
-    uint16_t ctl_type:1;
-    uint16_t rtdMod:3;
-    uint16_t rtd_fail_mod:1;
-    uint16_t password_en:1;
-    uint16_t usr_advanced:1;
-    uint16_t baud:3;
-    uint16_t gfi_test_mod:2;
-    uint16_t heater_type:1;
-    uint16_t cable_type:1;
-    uint16_t reservd:1;
+    uint32_t unit:1;
+    uint32_t heater_en:1;
+    uint32_t manual:1;
+    uint32_t ctl_type:1;
+    uint32_t rtdMod:3;
+    uint32_t rtd_fail_mod:1;
+    uint32_t password_en:1;
+    uint32_t defInfo:2;
+    uint32_t rdtStat:2;
+    uint32_t usr_advanced:1;
+    uint32_t baud:3;
+    uint32_t gfi_test_mod:2;
+    uint32_t heater_type:1;
+    uint32_t cable_type:1;
+    uint32_t reservd:11;
 } SpcSysConfBytes_t;
 
 typedef union
@@ -223,47 +218,67 @@ typedef union
 
 typedef struct
 {
-    uint8_t manual:1;
-    uint8_t unit:1;
-    uint8_t defInfo:2;
-    uint8_t rdtStat:2;
-    uint8_t reservd:2;
-} SpcSysConfChnelBytes_t;
-
-typedef union
-{
-    uint8_t word;
-    SpcSysConfChnelBytes_t bytes;
-} SpcSysConfIndiv_t;
-
-typedef struct
-{
     SpcSysConf_t system;
     uint16_t DisplayTime;
 
-    SpcTemperature_t MaintainTemp[SPC_MAX_RTD_CHANNEL];
-    SpcSysConfIndiv_t sysChnel[SPC_MAX_RTD_CHANNEL];
+    SpcTemperature_t MaintainTemp;
 } SpcConfig_t;
 
 typedef struct
 {
     SpcInfoType_t position;
-    SpcRtdChannel_t channel;
 } SpcRunStatus_t;
+
+typedef struct
+{
+    SpcTemperature_t maxTemp;
+    SpcTemperature_t minTemp;
+    int32_t   MaxCurrent;           //16
+    int32_t   MaxGFCurrent;         //17
+    int32_t   MaxVoltage;           //18
+    int32_t   MinVoltage;           //19
+    int32_t   EnergyUsed;               //20
+    int32_t   EnergyCost;               //21
+    int32_t   RunTime;                  //22
+    int32_t   HeaterOnTime;             //24
+    int32_t   Version;                  //25
+} SpcStatistic_t;
 
 typedef struct
 {
     SpcRunStatus_t runStatus;
     SpcMeasure_t measure;
     SpcConfig_t config;
+    SpcStatistic_t status;
     SpcAlarm_t alarm;
 } SpcValue_t;
 
-typedef void (*pfnInfoDetail)(SpcValue_t *SpcValue);
+typedef struct
+{
+    SpcInfoType_t type;
+    SpcRtdChannel_t channel;
+} SpcChannelPool_t;
+
+typedef struct
+{
+    SpcInfoType_t type;
+    char prefix[SPC_MAX_STR_LEN];
+    char suffix[SPC_MAX_STR_LEN];
+    int32_t val;
+} SpcParamTable_t;
+
+typedef SpcKeyType_t (*pfnInfoDetail)(SpcValue_t *SpcValue, int32_t *command);
 typedef struct
 {
     SpcInfoType_t infoType;
     SpcInfoType_t rightType;
+    SpcInfoType_t leftType;
+    SpcInfoType_t actType;
+    SpcInfoType_t progType;
+    SpcInfoType_t alarmType;
+    SpcInfoType_t resetType;
+    SpcInfoType_t enterType;
+
     SpcStringType_t strTypeLine1;
     SpcStringType_t strTypeLine2;
     pfnInfoDetail infoDetail;
@@ -278,9 +293,10 @@ SpcStatus_t SpcListInsert(SpcList_t * list, SpcItem_t *itemToAdd);
 SpcStatus_t SpcListRemove(SpcList_t * list, SpcAlarmType_t alarmType);
 void Spc_AlarmMgr(SpcList_t * list, SpcAlarmType_t type, bool enable);
 
-void Spc_GetHeatTempDetail(SpcValue_t *SpcValue);
-void Spc_GetHeatStatusDetail(SpcValue_t *SpcValue);
-void Spc_GetSysStatusDetail(SpcValue_t *SpcValue);
+void Spc_GetHeatTempDetail(SpcValue_t *SpcValue, uint16_t *command);
+void Spc_GetHeatStatusDetail(SpcValue_t *SpcValue, uint16_t *command);
+void Spc_GetSysStatusDetail(SpcValue_t *SpcValue, uint16_t *command);
+void Spc_GetSysPercent(SpcValue_t *SpcValue, uint16_t *command);
 
 void Spc_AlarmRaise(SpcAlarmType_t alarmType);
 void Spc_AlarmClear(SpcAlarmType_t alarmType);

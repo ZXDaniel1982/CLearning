@@ -13,7 +13,7 @@ static void SpcTask(void const *arg);
 
 osMessageQId SpcKeyQueueHandle;
 
-SpcValue_t SpcValue = {0};
+static SpcValue_t SpcValue = {0};
 
 static void Spc_ScreenUpdateStatic(SpcInfoType_t type);
 static void Spc_StartupLog(void);
@@ -22,6 +22,33 @@ static SpcStatus_t Spc_TestGfi(SpcValue_t *SpcValue);
 static void Spc_SelfCheck(SpcValue_t *SpcValue);
 static void Spc_SystemConfigInit(SpcValue_t *SpcValue);
 static void Spc_SystemConfigInit(SpcValue_t *SpcValue);
+
+
+// SPC alarm
+void Spc_AlarmRaise(SpcAlarmType_t alarmType)
+{
+    SpcValue.alarm.alarmMask |= alarmType;
+}
+
+void Spc_AlarmClear(SpcAlarmType_t alarmType)
+{
+    SpcValue.alarm.alarmMask &= ~alarmType;
+}
+
+oid SPC_Init(void)
+{
+    osThreadDef(SpcTaskName, SpcTask, osPriorityBelowNormal, 0, 256);
+    SpcTaskHandle = osThreadCreate(osThread(SpcTaskName), NULL);
+
+    osMessageQDef(SpcKeyQueueName, 4, uint16_t);
+    SpcKeyQueueHandle = osMessageCreate(osMessageQ(SpcKeyQueueName), NULL);
+}
+
+void cliSpcKeyOpt(void *arg)
+{
+    uint16_t command = *(uint16_t *) arg;
+    osMessagePut (SpcKeyQueueHandle, command, 400);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Private functions                                                           */
@@ -61,6 +88,31 @@ static void Spc_StartupLog()
     osDelay(2000);
 }
 
+static void Spc_SystemInit(SpcValue_t *SpcValue)
+{
+    SpcSysConf(SpcValue).bytes.manual = SpcManuOptDis;
+    SpcSysConf(SpcValue).bytes.rdtStat = SPC_RTD_OFF;
+    SpcSysConf(SpcValue).bytes.unit = SpcTempInCelsius;
+    SpcSysConf(SpcValue).bytes.defInfo = HEATER_STATUS_MOD;
+    SpcSysConf(SpcValue).bytes.rtdMod = SPC_ONE_RTD_MOD;
+    SpcConfTimeout(SpcValue) = 120;
+    SpcPercent(SpcValue) = 10;
+
+    SpcListInit(&SpcAlarmList(SpcValue), SPC_MAX_LIST);
+}
+
+static void Spc_SelfCheck(SpcValue_t *SpcValue)
+{
+    Spc_ScreenUpdateStatic(SPC_SELFCHECK);
+
+    if ((Spc_TestTemp(SpcValue) == SPC_ERROR) ||
+        (Spc_TestGfi(SpcValue) == SPC_ERROR)) {
+        Spc_AlarmMgr(&SpcAlarmList(SpcValue), SPC_ALARM_SELFCHKFAIL, SpcAlarmEn);
+        Spc_ScreenUpdateStatic(SPC_SELFCHKFAIL);
+    }
+    osDelay(2000);
+}
+
 static SpcStatus_t Spc_TestTemp(SpcValue_t *SpcValue)
 {
     for (uint8_t Channel=SPC_RTD_CHANNEL1; Channel<SPC_MAX_RTD_CHANNEL; Channel++) {
@@ -83,51 +135,20 @@ static SpcStatus_t Spc_TestGfi(SpcValue_t *SpcValue)
 {
     SpcStatus_t ret = SPC_NORMAL; 
 
-    for (uint8_t Channel=SPC_GFI_CHANNEL1; Channel<SPC_MAX_GFI_CHANNEL; Channel++) {
-        SpcGfi(SpcValue, Channel).val = SPC_SIMULATE_GFI;
-        if (SpcGfi(SpcValue, Channel).val > SPC_MAX_GFI) {
-            SpcGfi(SpcValue, Channel).gfiStatus = SPC_ERROR;
-            ret = SPC_ERROR;
-        } else {
-            SpcGfi(SpcValue, Channel).gfiStatus = SPC_NORMAL;
-        }
+    SpcGfi(SpcValue).val = SPC_SIMULATE_GFI;
+    if (SpcGfi(SpcValue).val > SPC_MAX_GFI) {
+        SpcGfi(SpcValue).gfiStatus = SPC_ERROR;
+        ret = SPC_ERROR;
+    } else {
+        SpcGfi(SpcValue).gfiStatus = SPC_NORMAL;
     }
 
     return ret;
 }
 
-static void Spc_SelfCheck(SpcValue_t *SpcValue)
-{
-    Spc_ScreenUpdateStatic(SPC_SELFCHECK);
-
-    if ((Spc_TestTemp(SpcValue) == SPC_ERROR) ||
-        (Spc_TestGfi(SpcValue) == SPC_ERROR)) {
-        Spc_AlarmMgr(&SpcAlarmList(SpcValue), SPC_ALARM_SELFCHKFAIL, SpcAlarmEn);
-        Spc_ScreenUpdateStatic(SPC_SELFCHKFAIL);
-    }
-    osDelay(2000);
-}
-
-static void Spc_SystemConfigInit(SpcValue_t *SpcValue)
-{
-    for (uint8_t Channel=SPC_RTD_CHANNEL1; Channel<SPC_MAX_RTD_CHANNEL; Channel++) {
-        SpcSysConfChn(SpcValue, Channel).bytes.manual = SpcManuOptDis;
-        SpcSysConfChn(SpcValue, Channel).bytes.rdtStat = SPC_RTD_OFF;
-        SpcSysConfChn(SpcValue, Channel).bytes.unit = SpcTempInCelsius;
-        SpcSysConfChn(SpcValue, Channel).bytes.defInfo = HEATER_STATUS_MOD;
-    }
-
-    SpcSysConf(SpcValue).bytes.rtdMod = SPC_ONE_RTD_MOD;
-    SpcConfTimeout(SpcValue) = 120;
-    SpcChannel(SpcValue) = SPC_RTD_CHANNEL1;
-
-    SpcListInit(&SpcAlarmList(SpcValue), SPC_MAX_LIST);
-}
-
 static void SpcShowDefInfo(SpcValue_t *SpcValue)
 {
-    SpcRtdChannel_t channel = SpcChannel(SpcValue);
-    switch (SpcSysConfChn(SpcValue, channel).bytes.defInfo) {
+    switch (SpcSysConf(SpcValue).bytes.defInfo) {
         case SYSTEM_STATUS_MOD:
             SpcPosition(SpcValue) = SPC_DEFINFO_SYS_STATUS;
             break;
@@ -138,76 +159,140 @@ static void SpcShowDefInfo(SpcValue_t *SpcValue)
             SpcPosition(SpcValue) = SPC_DEFINFO_HEAT_TEMP;
             break;
         default :
-            SpcSysConfChn(SpcValue, channel).bytes.defInfo = HEATER_STATUS_MOD;
+            SpcSysConf(SpcValue).bytes.defInfo = HEATER_STATUS_MOD;
             SpcPosition(SpcValue) = SPC_DEFINFO_HEAT_STATUS;
             break;
     }
 
     SpcInfoType_t type = SpcPosition(SpcValue);
     if (SpcStrDetail(type) != NULL) {
-        SpcStrDetail(type)(SpcValue);
+        SpcStrDetail(type)(SpcValue, NULL);
     } else {
         Spc_ScreenUpdateStatic(type);
     }
 }
 
-#ifdef SPC_CALIB_WANTED
-static void Spc_Calibration()
-{
-    Spc_ScreenUpdateStatic(SPC_CALIB_NEED);
-    osDelay(2000);
-}
-#endif
+//========================================================================================
+// menu common
+//========================================================================================
 
-static SpcKeyType_t SpcActSubProcess(SpcValue_t *SpcValue, uint16_t command)
+static void Spc_ShowNextInfo(SpcValue_t *SpcValue, SpcInfoType_t nextType, uint16_t command)
 {
-    switch (command) {
-        case SPC_KEY_ACT:
-            return SPC_KEY_NORMAL;
-        default:
-            return SPC_KEY_NEXT;
+    uint16_t nextCmd = command;
+    SpcPosition(SpcValue) = nextType;
+    if (SpcStrDetail(nextType) != NULL) {
+        while (SpcStrDetail(nextType)(SpcValue, &nextCmd) == SPC_KEY_NEXT);
+    } else {
+        Spc_ScreenUpdateStatic(nextType);
     }
 }
 
-static SpcKeyType_t SpcActualProcess(SpcValue_t *SpcValue, uint16_t *nextCmd)
+static bool Spc_GetActParamTable(SpcInfoType_t type, SpcParamTable_t *param)
 {
-    osEvent event;
-    uint16_t command = 0;
-    uint32_t startTime, curTime;
-
-    startTime = spctick;
-
-    while (1) {
-        event = osMessageGet(SpcKeyQueueHandle, SPC_KEY_MONITOR_TIMEOUT);
-        if (event.status == osEventMessage) {
-            command = event.value.v;
-            if (SpcActSubProcess(SpcValue, command) == SPC_KEY_NEXT) {
-                *nextCmd = command;
-                return SPC_KEY_NEXT;
-            }
+    for (uint8_t i=0; i<NUM_ROWS(SpcParamTable); i++) {
+        if (SpcParamTable[i].type == type) {
+            memcpy(param, &SpcParamTable[i]);
+            return true;
         }
-        curTime = spctick;
-        if ((curTime - startTime) >= SpcConfTimeout(SpcValue)) {
-            SpcShowDefInfo(SpcValue);
-            return SPC_KEY_TIMEOUT;
-        }
+    }
+    return false;
+}
+
+static void SpcGetTempStr(char *buf, uint8_t len, SpcValue_t *SpcValue)
+{
+    SpcInfoType_t type = SpcPosition(SpcValue);
+    SpcRtdChannel_t channel = SpcGetChannel(type);
+
+    if (SpcTemp(SpcValue, channel).tempStatus == SPC_TEMP_RTD_SHORT) {
+        strncpy(buf, SpcStrPool[SPC_RTD_SHORT_STR].str, len);
+    } else if (SpcTemp(SpcValue, channel).tempStatus == SPC_TEMP_RTD_OPEN) {
+        strncpy(buf, SpcStrPool[SPC_RTD_OPEN_STR].str, len);
+    } else {
+        if (SpcSysConf(SpcValue).bytes.unit == SpcTempInCelsius)
+            snprintf(buf, len, "%d C", SpcTemp(SpcValue, channel).tempc);
+        else
+            snprintf(buf, len, "%d F", SpcTemp(SpcValue, channel).tempf);
     }
 }
 
-static SpcKeyType_t Spc_KeyOptProcess(SpcValue_t *SpcValue, uint16_t command, uint16_t *nextCmd)
+//========================================================================================
+// menu function
+//========================================================================================
+SpcKeyType_t Spc_GetHeatTempDetail(SpcValue_t *SpcValue, uint16_t *command)
 {
+    char buf[SPC_MAX_STR_LEN] = {0};
+    SpcInfoType_t type = SpcPosition(SpcValue);
+
+    if (SpcSysConfMainTemp(SpcValue).tempStatus == SPC_TEMP_OFF) {
+        strncpy(buf, SpcStrPool[SPC_BLANK_STR].str, sizeof(buf));
+    } else {
+        SpcGetTempStr(buf, sizeof(buf), SpcValue);
+    }
+
+    Spc_ScreenUpdateDynamic(type, buf);
+    return SPC_KEY_NORMAL;
+}
+
+SpcKeyType_t Spc_GetHeatStatusDetail(SpcValue_t *SpcValue, uint16_t *command)
+{
+    char buf[SPC_MAX_STR_LEN] = {0};
+    SpcRTDStatus_t rtdStatus = (SpcRTDStatus_t) (SpcSysConf(SpcValue).bytes.rdtStat);
+    SpcStringType_t strType = SpcRtdStatStrPool[rtdStatus].strType;
     SpcInfoType_t infoType = SpcPosition(SpcValue);
-    switch(command) {
-        case SPC_KEY_RIGHT:
-            if (infoType == SpcRightType(infoType)) return SPC_KEY_NORMAL;
-            break;
-        case SPC_KEY_LEFT:
-            if (infoType == SpcRightType(infoType)) return SPC_KEY_NORMAL;
-            break;
-        case SPC_KEY_ACT:
-            return SpcActualProcess(SpcValue, nextCmd);
+
+    strncpy(buf, SpcStrPool[strType].str, sizeof(buf));
+    Spc_ScreenUpdateDynamic(infoType, buf);
+    return SPC_KEY_NORMAL;
+}
+
+SpcKeyType_t Spc_GetSysStatusDetail(SpcValue_t *SpcValue, uint16_t *command)
+{
+    char buf[SPC_MAX_STR_LEN] = {0};
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+
+    snprintf(buf, sizeof(buf), "%d Alarms", SpcAlarmList(SpcValue).totalNum);
+    Spc_ScreenUpdateDynamic(infoType, buf);
+    return SPC_KEY_NORMAL;
+}
+
+SpcKeyType_t Spc_GetActValue(SpcValue_t *SpcValue, uint16_t *command)
+{
+    char buf[SPC_MAX_STR_LEN] = {0};
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    SpcParamTable_t SpcParam;
+
+    if ((*command == SPC_KEY_RIGHT) || (*command == SPC_KEY_LEFT)) {
+        if (Spc_GetActParamTable(infoType, &SpcParam)) {
+            snprintf(buf, sizeof(buf), "%s%d%s", SpcParam.prefix, SpcParam.val, SpcParam.suffix);
+            Spc_ScreenUpdateDynamic(infoType, buf);
+        }
     }
     return SPC_KEY_NORMAL;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Public functions                                                           */
+/*----------------------------------------------------------------------------*/
+static SpcRtdChannel_t SpcGetChannel(SpcInfoType_t type)
+{
+    SpcChannelPool_t *channelPool = NULL;
+
+    for (uint8_t i=0; i<NUM_ROWS(SpcChannelPool); i++) {
+        if (SpcChannelPool[i].type == type) {
+            return SpcChannelPool[i].channel;
+        }
+    }
+}
+
+static bool Spc_GetActParamTable(SpcInfoType_t type, SpcParamTable_t *param)
+{
+    for (uint8_t i=0; i<NUM_ROWS(SpcParamTable); i++) {
+        if (SpcParamTable[i].type == type) {
+            memcpy(param, &SpcParamTable[i]);
+            return true;
+        }
+    }
+    return false;
 }
 
 static void SpcTask(void const *arg)
@@ -216,13 +301,8 @@ static void SpcTask(void const *arg)
     uint16_t command = 0, nextCmd = 0;
 
     Spc_StartupLog();
-    Spc_SystemConfigInit(&SpcValue);
+    Spc_SystemInit(&SpcValue);
     Spc_SelfCheck(&SpcValue);
-
-#ifdef SPC_CALIB_WANTED
-    Spc_Calibration();
-#endif
-
     SpcShowDefInfo(&SpcValue);
 
     while (1) {
@@ -236,82 +316,202 @@ static void SpcTask(void const *arg)
     }
 }
 
-static void SpcGetTempStr(char *buf, uint8_t len, SpcValue_t *SpcValue)
+static SpcKeyType_t Spc_KeyOptProcess(SpcValue_t *SpcValue, uint16_t command, uint16_t *nextCmd)
 {
-    SpcRtdChannel_t channel = SpcChannel(SpcValue);
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    SpcInfoType_t nextType;
+    switch(command) {
+        case SPC_KEY_RIGHT:
+            if (infoType == SpcRightType(infoType)) return SPC_KEY_NORMAL;
+            break;
+        case SPC_KEY_LEFT:
+            if (infoType == SpcLeftType(infoType)) return SPC_KEY_NORMAL;
+            break;
+        case SPC_KEY_ACT:
+            nextType = SpcActType(infoType);
+            Spc_ShowNextInfo(SpcValue, nextType);
+            return SpcActualProcess(SpcValue, nextCmd);
+        case SPC_KEY_PROG:
+            nextType = SpcProgType(infoType);
+            Spc_ShowNextInfo(SpcValue, nextType);
+            return SpcProgProcess(SpcValue, nextCmd);
+    }
+    return SPC_KEY_NORMAL;
+}
 
-    if (SpcTemp(SpcValue, channel).tempStatus == SPC_TEMP_RTD_SHORT) {
-        strncpy(buf, SpcStrPool[SPC_RTD_SHORT_STR].str, len);
-    } else if (SpcTemp(SpcValue, channel).tempStatus == SPC_TEMP_RTD_OPEN) {
-        strncpy(buf, SpcStrPool[SPC_RTD_OPEN_STR].str, len);
-    } else {
-        if (SpcSysConfChn(SpcValue, channel).bytes.unit == SpcTempInCelsius)
-            snprintf(buf, len, "%d C", SpcTemp(SpcValue, channel).tempc);
-        else
-            snprintf(buf, len, "%d F", SpcTemp(SpcValue, channel).tempf);
+static SpcKeyType_t SpcActualProcess(SpcValue_t *SpcValue, uint16_t *nextCmd)
+{
+    osEvent event;
+    uint16_t command = 0;
+    uint32_t startTime, curTime;
+
+    startTime = spctick;
+    while (1) {
+        event = osMessageGet(SpcKeyQueueHandle, SPC_KEY_MONITOR_TIMEOUT);
+        if (event.status == osEventMessage) {
+            command = event.value.v;
+            startTime = curTime;
+            if (SpcActSubProcess(SpcValue, command) == SPC_KEY_NEXT) {
+                *nextCmd = command;
+                return SPC_KEY_NEXT;
+            }
+        }
+        curTime = spctick;
+        if ((curTime - startTime) >= SpcConfTimeout(SpcValue)) {
+            SpcShowDefInfo(SpcValue);
+            return SPC_KEY_TIMEOUT;
+        }
     }
 }
 
-/*----------------------------------------------------------------------------*/
-/* Public functions                                                           */
-/*----------------------------------------------------------------------------*/
-void SPC_Init(void)
+static SpcKeyType_t SpcProgProcess(SpcValue_t *SpcValue, uint16_t *nextCmd)
 {
-    osThreadDef(SpcTaskName, SpcTask, osPriorityBelowNormal, 0, 256);
-    SpcTaskHandle = osThreadCreate(osThread(SpcTaskName), NULL);
+    osEvent event;
+    uint16_t command = 0;
+    uint32_t startTime, curTime;
 
-    osMessageQDef(SpcKeyQueueName, 4, uint16_t);
-    SpcKeyQueueHandle = osMessageCreate(osMessageQ(SpcKeyQueueName), NULL);
+    startTime = spctick;
+    while (1) {
+        event = osMessageGet(SpcKeyQueueHandle, SPC_KEY_MONITOR_TIMEOUT);
+        if (event.status == osEventMessage) {
+            command = event.value.v;
+            startTime = curTime;
+            if (SpcProgSubProcess(SpcValue, command) == SPC_KEY_NEXT) {
+                *nextCmd = command;
+                return SPC_KEY_NEXT;
+            }
+        }
+        curTime = spctick;
+        if ((curTime - startTime) >= SpcConfTimeout(SpcValue)) {
+            SpcShowDefInfo(SpcValue);
+            return SPC_KEY_TIMEOUT;
+        }
+    }
 }
 
-void cliSpcKeyOpt(void *arg)
+static SpcKeyType_t SpcActSubProcess(SpcValue_t *SpcValue, uint16_t command)
 {
-    uint16_t command = *(uint16_t *) arg;
-    osMessagePut (SpcKeyQueueHandle, command, 400);
+    SpcInfoType_t curType = SpcPosition(SpcValue);
+    SpcInfoType_t nextType;
+    switch (command) {
+        case SPC_KEY_ACT:
+            nextType = SpcActType(curType);
+            break;
+        case SPC_KEY_RIGHT:
+            nextType = SpcRightType(curType);
+            break;
+        case SPC_KEY_LEFT:
+            nextType = SpcLeftType(curType);
+            break;
+        case SPC_KEY_UP:
+        case SPC_KEY_DOWN:
+            return SPC_KEY_NORMAL;
+        case SPC_KEY_ENTER:
+            return Spc_ResetStatSingle(SpcValue);
+        default:
+            return SPC_KEY_NEXT;
+    }
+    if (curType == nextType) {
+        return SPC_KEY_NORMAL;
+    }
+    Spc_ShowNextInfo(SpcValue, nextType, command);
+    return SPC_KEY_NORMAL;
 }
 
-void Spc_GetHeatTempDetail(SpcValue_t *SpcValue)
+static SpcKeyType_t SpcProgSubProcess(SpcValue_t *SpcValue, uint16_t command)
 {
-    char buf[SPC_MAX_STR_LEN] = {0};
+    SpcInfoType_t curType = SpcPosition(SpcValue);
+    SpcInfoType_t nextType;
+    switch (command) {
+        case SPC_KEY_PROG:
+            nextType = SpcProgType(curType);
+            break;
+        case SPC_KEY_RIGHT:
+            nextType = SpcRightType(curType);
+            break;
+        case SPC_KEY_LEFT:
+            nextType = SpcLeftType(curType);
+            break;
+        default:
+            return SPC_KEY_NEXT;
+    }
+    if (curType == nextType) {
+        return SPC_KEY_NORMAL;
+    }
+    Spc_ShowNextInfo(SpcValue, nextType);
+    return SPC_KEY_NORMAL;
+}
 
-    if (SpcSysConfMainTemp(SpcValue, SpcChannel(SpcValue)).tempStatus ==
-            SPC_TEMP_OFF) {
-        strncpy(buf, SpcStrPool[SPC_BLANK_STR].str, sizeof(buf));
-    } else {
-        SpcGetTempStr(buf, sizeof(buf), SpcValue);
+static SpcKeyType_t Spc_ResetStatSingle(SpcValue_t *SpcValue)
+{
+    osEvent event;
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    SpcKeyType_t ret;
+    uint16_t command = 0, ResetStatus = 1;
+    uint32_t startTime, curTime;
+
+    SpcParamTable_t SpcParam;
+    if (!Spc_GetActParamTable(infoType, &SpcParam)) {
+        return SPC_KEY_NORMAL;
     }
 
-    SpcInfoType_t type = SpcPosition(SpcValue);
-    Spc_ScreenUpdateDynamic(type, buf);
+    SpcInfoType_t resetType = SPC_RESET_STAT_NO;
+
+    Spc_ScreenUpdateStatic(resetType);
+
+    startTime = spctick;
+    while (1) {
+        event = osMessageGet(SpcKeyQueueHandle, SPC_KEY_MONITOR_TIMEOUT);
+        if (event.status == osEventMessage) {
+            command = event.value.v;
+            startTime = curTime;
+            ret = SpcResetStatProcess(SpcValue, command, &SpcParam, &resetType);
+            if (ret == SPC_KEY_RESETCOMPLETE) {
+                osDelay(2000);
+                Spc_ShowNextInfo(SpcValue, infoType);
+                break;
+            } else if (ret == SPC_KEY_RESETCANCLE) {
+                Spc_ShowNextInfo(SpcValue, infoType);
+                break;
+            }
+        }
+        curTime = spctick;
+        if ((curTime - startTime) >= SpcConfTimeout(SpcValue)) {
+            SpcShowDefInfo(SpcValue);
+            return SPC_KEY_TIMEOUT;
+        }
+    }
 }
 
-void Spc_GetHeatStatusDetail(SpcValue_t *SpcValue)
+static SpcKeyType_t SpcResetStatProcess(SpcValue_t *SpcValue, uint16_t command,
+    SpcParamTable_t *SpcParam, SpcInfoType_t *resetType)
 {
-    char buf[SPC_MAX_STR_LEN] = {0};
-    SpcRtdChannel_t channel = SpcChannel(SpcValue);
-    SpcRTDStatus_t rtdStatus = (SpcRTDStatus_t) (SpcSysConfChn(SpcValue, channel).bytes.rdtStat);
-    SpcStringType_t strType = SpcRtdStatStrPool[rtdStatus].strType;
-    SpcInfoType_t infoType = SpcPosition(SpcValue);
-
-    strncpy(buf, SpcStrPool[strType].str, sizeof(buf));
-    Spc_ScreenUpdateDynamic(infoType, buf);
-}
-
-void Spc_GetSysStatusDetail(SpcValue_t *SpcValue)
-{
-    char buf[SPC_MAX_STR_LEN] = {0};
-    SpcInfoType_t infoType = SpcPosition(SpcValue);
-
-    snprintf(buf, sizeof(buf), "%d Alarms", SpcAlarmList(SpcValue).totalNum);
-    Spc_ScreenUpdateDynamic(infoType, buf);
-}
-
-void Spc_AlarmRaise(SpcAlarmType_t alarmType)
-{
-    SpcValue.alarm.alarmMask |= alarmType;
-}
-
-void Spc_AlarmClear(SpcAlarmType_t alarmType)
-{
-    SpcValue.alarm.alarmMask &= ~alarmType;
+    SpcInfoType_t infoType = *resetType;
+    SpcKeyType_t ret;
+    switch (command) {
+        case SPC_KEY_UP:
+            *resetType = SpcRightType(*resetType);
+            break;
+        case SPC_KEY_DOWN:
+            *resetType = SpcLeftType(*resetType);
+            break;
+        case SPC_KEY_ENTER:
+            *resetType = SpcEnterType(*resetType);
+            if (*resetType == SPC_RESET_STAT_COMPLETE) {
+                SpcParam->val = 0;
+                ret = SPC_KEY_RESETCOMPLETE;
+            } else {
+                return SPC_KEY_RESETCANCLE;
+            }
+            break;
+        case SPC_KEY_RESET:
+            return SPC_KEY_RESETCANCLE;
+        default:
+            return SPC_KEY_NEXT;
+    }
+    if (infoType == *resetType) {
+        return SPC_KEY_NORMAL;
+    }
+    Spc_ScreenUpdateStatic(resetType);
+    return SPC_KEY_NORMAL;
 }
