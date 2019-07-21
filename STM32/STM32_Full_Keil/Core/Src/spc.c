@@ -11,8 +11,6 @@
 osThreadId SpcTaskHandle;
 static void SpcTask(void const *arg);
 
-osMessageQId SpcKeyQueueHandle;
-
 static SpcValue_t SpcValue = {0};
 
 static void Spc_ScreenUpdateStatic(SpcInfoType_t type);
@@ -39,16 +37,185 @@ oid SPC_Init(void)
 {
     osThreadDef(SpcTaskName, SpcTask, osPriorityBelowNormal, 0, 256);
     SpcTaskHandle = osThreadCreate(osThread(SpcTaskName), NULL);
-
-    osMessageQDef(SpcKeyQueueName, 4, uint16_t);
-    SpcKeyQueueHandle = osMessageCreate(osMessageQ(SpcKeyQueueName), NULL);
 }
 
 void cliSpcKeyOpt(void *arg)
 {
     uint16_t command = *(uint16_t *) arg;
-    osMessagePut (SpcKeyQueueHandle, command, 400);
+    Spc_KeyOptInput(command);
 }
+
+/*----------------------------------------------------------------------------*/
+/* Private functions                                                           */
+/*----------------------------------------------------------------------------*/
+static void Spc_KeyOptInput(command)
+{
+    int16_t event = Spc_GetKeyEvent();
+    Spc_SetNextEvent(SpcMachine, event, NULL);
+}
+
+static void SpcTask(void const *arg)
+{
+    uint16_t nextEvent = 0, nextState = 0;
+
+    Spc_StartupLog();
+    Spc_SystemInit(&SpcValue);
+    Spc_SelfCheck(&SpcValue);
+    Spc_StartMachine(&SpcValue, &SpcMachine);
+
+    while (1) {
+        if ((nextEvent = Spc_NextEvent(&SpcMachine, &nextState)) >= 0) {
+            Spc_SendEvent(nextEvent, nextState);
+        } else {
+            Scp_Wait();
+        }
+    }
+}
+
+void Spc_StartMachine(SpcValue_t *SpcValue, SpcMachine_t *SpcMachine)
+{
+    int16_t state;
+    switch (SpcSysConf(SpcValue).bytes.defInfo) {
+        case SYSTEM_STATUS_MOD:
+            state = SPC_STATUS_DEFINFO_SYS;
+            break;
+        case HEATER_STATUS_MOD:
+            state = SPC_STATUS_DEFINFO_HEAT;
+            break;
+        case HEATER_TEMP_MOD:
+            state = SPC_STATUS_DEFINFO_HEAT_TEMP;
+            break;
+        default :
+            SpcSysConf(SpcValue).bytes.defInfo = HEATER_STATUS_MOD;
+            state = SPC_STATUS_DEFINFO_SYS;
+            break;
+    }
+    SpcMachine->eventChange = SPC_NO_EVENT;
+    SpcMachine->startEvent = SPC_START_EVENT;
+
+    osMutexDef(SpcMutex);
+    SpcMachine->mutex = osMutexCreate(osMutex(SpcMutex));
+    osSemaphoreDef(SpcCond);
+    SpcMachine->cond = osSemaphoreCreate(osSemaphore(SpcCond), 1);
+    Spc_ProcessStateChange(SpcMachine, state);
+}
+
+static int16_t Spc_NextEvent(SpcMachine_t * SpcMachine, int16_t *nextState)
+{
+    int16_t event = 0;
+    bool res = false;
+
+    osMutexWait(SpcMachine->mutex, sleepPeriod);  // TODO This is inconsistent with add
+
+    /* No saved events, check main queue */
+    res = Spc_GetNewEvent(SpcMachine, &event, nextState);
+    osMutexRelease(SpcMachine->mutex);
+
+    if (res) {
+        return event;
+    } else {
+        /* no item available */
+        return -1;
+    }
+}
+
+static bool Spc_GetNewEvent(SpcMachine_t * SpcMachine, int16_t *newEvent, int16_t *nextState)
+{
+    if (SpcMachine->eventChange == SPC_NEW_EVENT) {
+        SpcMachine->eventChange = SPC_NO_EVENT;
+        *newEvent = SpcMachine->newEvent;
+        *nextState = SpcMachine->newState;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+static void Spc_ProcessStateChange(SpcMachine_t * SpcMachine, uint16_t newState)
+{
+    SpcStateEntry_t entryElement = { 0 };
+    uint16_t nextState = newState;
+    int i;
+
+    /*Find if entry function exists */
+    for (i = 0; i < SpcMachine->stateMax; i++) {
+        entryElement = SpcMachine->stateEntry[i];
+        if (entryElement.state == newState) {
+            if (entryElement.entry) {
+                /*Invoke entry function */
+                nextState = entryElement.entry(SpcMachine);
+                break;
+            }
+        }
+    }
+}
+
+static int Spc_SetNextEvent(SpcMachine_t * SpcMachine, uint16_t nextEvent, int16_t *nextState)
+{
+    osMutexWait(SpcMachine->mutex, sleepPeriod);
+
+    gsm_AddEvent(SpcMachine, nextEvent, nextState);
+
+    osSemaphoreRelease(SpcMachine->cond); // will wake up thread if sleeping
+    osMutexRelease(SpcMachine->mutex);
+}
+
+static inline void Spc_AddEvent(SpcMachine_t * SpcMachine, uint16_t newEvent, int16_t *nextState)
+{
+    SpcMachine->eventChange = SPC_NEW_EVENT;
+    SpcMachine->newEvent = newEvent;
+
+    if (nextState != NULL) {
+        SpcMachine->newState = *nextState;
+    }
+}
+
+static void Spc_SendEvent(SpcMachine_t * SpcMachine, int16_t nextEvent, int16_t nextState)
+{
+    uint16_t state = SpcMachine->gsm_currentState;
+    const gsmEventAction *actionElement = NULL;
+    int16_t i;
+    /* Check for state change event, do the state change first before checking for state change handler */
+    if (nextEvent == SpcMachine->startEvent) {
+        state = nextState;
+        SpcMachine->gsm_currentState = state;
+        Spc_ProcessStateChange(SpcMachine, state);
+        return -1;
+    }
+
+    /*Find action function */
+    for (i = 0; i < SpcMachine->gsm_eventActionSize; i++) {
+        if ((SpcMachine->gsm_eventAction[i].event == nextEvent)
+            && ((SpcMachine->gsm_eventAction[i].state == SpcMachine->gsm_currentState)
+             || (SpcMachine->gsm_eventAction[i].state == GSM_STATE_ANY))) {
+            actionElement = &SpcMachine->gsm_eventAction[i];
+            break;
+        }
+    }
+
+    // Can't handle the event, so save it until we can
+    if (actionElement == NULL) {
+        return -1;
+    }
+    // Handle the event, then free the data
+    if (actionElement->action != NULL) {
+        state = actionElement->action(SpcMachine);
+    }
+
+    /* If next state is different from the current state then queue a state change event for the state machine */
+    if (SpcMachine->gsm_currentState != state) {
+        /* Got a new state */
+        Spc_SetNextEvent(SpcMachine, SpcMachine->startEvent, &state);
+    }
+    return 0;
+}
+
+int16_t SpcShowInfo(SpcMachine_t * SpcMachine)
+{
+    
+}
+
+#if 0
 
 /*----------------------------------------------------------------------------*/
 /* Private functions                                                           */
@@ -515,3 +682,4 @@ static SpcKeyType_t SpcResetStatProcess(SpcValue_t *SpcValue, uint16_t command,
     Spc_ScreenUpdateStatic(resetType);
     return SPC_KEY_NORMAL;
 }
+#endif

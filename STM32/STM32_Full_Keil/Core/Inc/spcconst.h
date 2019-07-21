@@ -305,6 +305,78 @@ static const SpcResetTable_t SpcResetTable[] = {
     {SPC_ACT_VOLT,      "", " V",   &SpcVoltage(&SpcValue)},
 }
 
+static const SpcStateEntry_t SpcStateEntry[] = {
+    {SPC_STATE_DEFINFO_SYS,  SpcShowInfo},
+    {SPC_STATE_DEFINFO_HEAT, SpcShowInfo},
+    {SPC_STATE_DEFINFO_HEAT_TEMP, SpcShowInfo},
+
+    {SPC_STATE_ACT_INIT,        SpcShowInfo},
+    {SPC_STATE_ACT_HEAT_STATUS, SpcShowInfo},
+    {SPC_STATE_ACT_HEAT_TEMP,   SpcShowInfo},
+    {SPC_STATE_ACT_HEAT_TEMP_A, SpcShowInfo},
+    {SPC_STATE_ACT_HEAT_TEMP_B, SpcShowInfo},
+    {SPC_STATE_ACT_HEAT_POWER,  SpcShowInfo},
+    {SPC_STATE_ACT_CURRENT,     SpcShowInfo},
+    {SPC_STATE_ACT_GFIC,        SpcShowInfo},
+    {SPC_STATE_ACT_VOLT,        SpcShowInfo},
+
+    {SPC_STATE_STATIS_INIT,        SpcShowInfo},
+    {SPC_STATE_STATIS_MAX_TEMP, SpcShowInfo},
+    {SPC_STATE_STATIS_MIN_TEMP,   SpcShowInfo},
+    {SPC_STATE_STATIS_MAX_CURRENT, SpcShowInfo},
+    {SPC_STATE_STATIS_MAX_GFI, SpcShowInfo},
+    {SPC_STATE_STATIS_MAX_VOLT,  SpcShowInfo},
+    {SPC_STATE_STATIS_MIN_VOLT,     SpcShowInfo},
+    {SPC_STATE_STATIS_ENEGY,        SpcShowInfo},
+    {SPC_STATE_STATIS_COST,        SpcShowInfo},
+    {SPC_STATE_STATIS_ONTIME, SpcShowInfo},
+    {SPC_STATE_STATIS_ONPERCENT,     SpcShowInfo},
+    {SPC_STATE_STATIS_RESET,        SpcShowInfo},
+    {SPC_STATE_STATIS_VERSION,        SpcShowInfo},
+
+    {SPC_STATE_CONF_INIT,        SpcShowInfo},
+    {SPC_STATE_CONF_TEMP,        SpcShowInfo},
+    {SPC_STATE_CONF_LOW_TEMP,        SpcShowInfo},
+    {SPC_STATE_CONF_HIGH_TEMP,        SpcShowInfo},
+    {SPC_STATE_CONF_LOW_CURRENT,        SpcShowInfo},
+    {SPC_STATE_CONF_HIGH_CURRENT,        SpcShowInfo},
+    {SPC_STATE_CONF_GFI_ALARM,        SpcShowInfo},
+    {SPC_STATE_CONF_GIF_TRIP,        SpcShowInfo},
+    {SPC_STATE_CONF_LOW_VOLT,        SpcShowInfo},
+    {SPC_STATE_CONF_HIGH_VOLT,        SpcShowInfo},
+
+    {SPC_STATE_RTD_INIT,        SpcShowInfo},
+    {SPC_STATE_RTD_EN,        SpcShowInfo},
+    {SPC_STATE_RTD_ID,        SpcShowInfo},
+    {SPC_STATE_RTD_TYPE,        SpcShowInfo},
+    {SPC_STATE_RTD_MANUAL,        SpcShowInfo},
+    {SPC_STATE_RTD_DEADBAND,        SpcShowInfo},
+    {SPC_STATE_RTD_CTLTYPE,        SpcShowInfo},
+    {SPC_STATE_RTD_CURLMT,        SpcShowInfo},
+    {SPC_STATE_RTD_SOFTST,        SpcShowInfo},
+    {SPC_STATE_RTD_AUTOTEST,        SpcShowInfo},
+    {SPC_STATE_RTD_OPTMODE,        SpcShowInfo},
+    {SPC_STATE_RTD_FAILMODE,        SpcShowInfo},
+
+    {SPC_STATE_SYS_INIT,        SpcShowInfo},
+    {SPC_STATE_SYS_PWD,        SpcShowInfo},
+    {SPC_STATE_SYS_NEWPWD,        SpcShowInfo},
+    {SPC_STATE_SYS_UNIT,        SpcShowInfo},
+    {SPC_STATE_SYS_PRICE,        SpcShowInfo},
+    {SPC_STATE_SYS_DIPMODE,        SpcShowInfo},
+    {SPC_STATE_SYS_DEFDIP,        SpcShowInfo},
+    {SPC_STATE_SYS_DIPTIMEOUT,        SpcShowInfo},
+    {SPC_STATE_SYS_SCANSPD,        SpcShowInfo},
+    {SPC_STATE_SYS_MODBUS,        SpcShowInfo},
+    {SPC_STATE_SYS_BAUD,        SpcShowInfo},
+    {SPC_STATE_SYS_RESET,        SpcShowInfo},
+
+    {SPC_STATE_TEST_INIT,        SpcShowInfo},
+    {SPC_STATE_TEST_ALMOUT,        SpcShowInfo},
+    {SPC_STATE_TEST_RTD,        SpcShowInfo},
+    {SPC_STATE_TEST_GFI,        SpcShowInfo},
+};
+
 #ifdef __cplusplus
 }
 #endif

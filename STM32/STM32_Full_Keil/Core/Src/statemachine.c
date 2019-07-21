@@ -98,17 +98,17 @@ static void GSM_Init()
 {
     static char gsmName[GSM_NAME_MAX_LEN];
 
-    snprintf(gsmName, GSM_NAME_MAX_LEN, "SPCStateMachine");
+    snprintf(gsmName, GSM_NAME_MAX_LEN, "GSMStateMachine");
 
-    gsm_machines[SPC] = gsm_CreateMachine(gsmName,  // char               *name
-                      spcStateEntry,                // gsmStateEntry      *entry
-                      spcEventAction,               // gsmEventAction     *action
-                      SPC_STATE_NUM_STATES,         // uint16_t           numStates
-                      SPC_EVENT_NUM_EVENTS,         // uint16_t           numEvents
-                      NUM_ROWS(spcEventAction),     // uint16_t           eventActionSize
+    gsm_machines[GSM] = gsm_CreateMachine(gsmName,  // char               *name
+                      gsmStateEntry,                // gsmStateEntry      *entry
+                      gsmEventAction,               // gsmEventAction     *action
+                      GSM_STATE_NUM_STATES,         // uint16_t           numStates
+                      GSM_EVENT_NUM_EVENTS,         // uint16_t           numEvents
+                      NUM_ROWS(gsmEventAction),     // uint16_t           eventActionSize
                       GSM_MAX_EVENTS,               // uint16_t           eventQueueSize
-                      spcStateNames,                // gsmEnumStringMap   *pStateNames
-                      spcEventNames                 // gsmEnumStringMap   *pEventNames
+                      gsmStateNames,                // gsmEnumStringMap   *pStateNames
+                      gsmEventNames                 // gsmEnumStringMap   *pEventNames
     );
 }
 
@@ -359,14 +359,14 @@ static int gsm_StartMachine(GSM_StateMachine * machine,
     return 0;
 }
 
-static void spcTimerCallback(void const *argument)
+static void gsmTimerCallback(void const *argument)
 {
     static int i = 0;
-    static const int count = NUM_ROWS(spcEventAction);
+    static const int count = NUM_ROWS(gsmEventAction);
 
     HAL_GPIO_TogglePin(Led_GPIO_Port, Led_Pin);
 
-    gsm_SetNextEvent(gsm_machines[SPC], spcEventAction[i].event, NULL, 0);
+    gsm_SetNextEvent(gsm_machines[GSM], gsmEventAction[i].event, NULL, 0);
 
     i = (i + 1) % count;
 }
@@ -374,7 +374,7 @@ static void spcTimerCallback(void const *argument)
 static void GSM_Start()
 {
     if (gsm_StartMachine
-    (gsm_machines[SPC], SPC_STATE_INIT, SPC_EVENT_STATECHANGE) != 0) {
+    (gsm_machines[GSM], GSM_STATE_INIT, GSM_EVENT_STATECHANGE) != 0) {
         /* Failed to start */
         return;
     }
@@ -387,7 +387,7 @@ static void GSM_Start()
 /*----------------------------------------------------------------------------*/
 void statemachine_Init(void)
 {
-    osTimerDef(gsmTimer, spcTimerCallback);
+    osTimerDef(gsmTimer, gsmTimerCallback);
     gsmTimer = osTimerCreate(osTimer(gsmTimer), osTimerPeriodic, NULL);
 
     GSM_Init();
@@ -411,32 +411,32 @@ int gsm_SetNextEvent(GSM_StateMachine * machine, uint16_t nextEvent,
     return 0;
 }
 
-uint16_t spc_InitStateEntry(GSM_StateMachine * gsm)
+uint16_t gsm_InitStateEntry(GSM_StateMachine * gsm)
 {
     return gsm->gsm_currentState;
 }
 
-uint16_t spc_ExeStateEntry(GSM_StateMachine * gsm)
+uint16_t gsm_ExeStateEntry(GSM_StateMachine * gsm)
 {
     return gsm->gsm_currentState;
 }
 
-uint16_t spc_StayInitEventHandler(GSM_StateMachine * gsm, void *eventData)
+uint16_t gsm_StayInitEventHandler(GSM_StateMachine * gsm, void *eventData)
 {
     return gsm->gsm_currentState;
 }
 
-uint16_t spc_GotoExeEventHandler(GSM_StateMachine * gsm, void *eventData)
+uint16_t gsm_GotoExeEventHandler(GSM_StateMachine * gsm, void *eventData)
 {
-    return SPC_STATE_EXT;
+    return GSM_STATE_EXT;
 }
 
-uint16_t spc_StayExeEventHandler(GSM_StateMachine * gsm, void *eventData)
+uint16_t gsm_StayExeEventHandler(GSM_StateMachine * gsm, void *eventData)
 {
     return gsm->gsm_currentState;
 }
 
-uint16_t spc_GotoInitEventHandler(GSM_StateMachine * gsm, void *eventData)
+uint16_t gsm_GotoInitEventHandler(GSM_StateMachine * gsm, void *eventData)
 {
-    return SPC_STATE_INIT;
+    return GSM_STATE_INIT;
 }

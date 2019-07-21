@@ -12,9 +12,9 @@
 
 typedef enum
 {
-    SPC,                        /*!<state machine running.*/
+    GSM,                        /*!<state machine running.*/
     MAX_DEVICES,                        /*!<state machine stopped.*/
-} spc_gsm_devices;
+} gsm_gsm_devices;
 
 typedef struct
 {
@@ -84,57 +84,57 @@ typedef struct GSM_StateMachine GSM_StateMachine;
 
 typedef enum
 {
-    SPC_STATE_INIT = 1,
-    SPC_STATE_EXT,
-    SPC_STATE_NUM_STATES
-} SPC_STATE_T;
+    GSM_STATE_INIT = 1,
+    GSM_STATE_EXT,
+    GSM_STATE_NUM_STATES
+} GSM_STATE_T;
 
 typedef enum
 {
-    SPC_EVENT_STATECHANGE = 0,               /**< enum On changing to this state */
-    SPC_EVENT_STAY_INIT,                 /**< enum On Firmware Load Timer expiring */
-    SPC_EVENT_GOTO_EXE,
-    SPC_EVENT_STAY_EXE,
-    SPC_EVENT_GOTO_INIT,
-    SPC_EVENT_NUM_EVENTS,
-    SPC_EVENT_NOEVENT
-} SPC_EVENT_T;
+    GSM_EVENT_STATECHANGE = 0,               /**< enum On changing to this state */
+    GSM_EVENT_STAY_INIT,                 /**< enum On Firmware Load Timer expiring */
+    GSM_EVENT_GOTO_EXE,
+    GSM_EVENT_STAY_EXE,
+    GSM_EVENT_GOTO_INIT,
+    GSM_EVENT_NUM_EVENTS,
+    GSM_EVENT_NOEVENT
+} GSM_EVENT_T;
 
-uint16_t spc_InitStateEntry(GSM_StateMachine *gsm);
-uint16_t spc_ExeStateEntry(GSM_StateMachine *gsm);
-uint16_t spc_StayInitEventHandler(GSM_StateMachine *gsm, void *eventData);
-uint16_t spc_GotoExeEventHandler(GSM_StateMachine *gsm, void *eventData);
-uint16_t spc_StayExeEventHandler(GSM_StateMachine *gsm, void *eventData);
-uint16_t spc_GotoInitEventHandler(GSM_StateMachine *gsm, void *eventData);
+uint16_t gsm_InitStateEntry(GSM_StateMachine *gsm);
+uint16_t gsm_ExeStateEntry(GSM_StateMachine *gsm);
+uint16_t gsm_StayInitEventHandler(GSM_StateMachine *gsm, void *eventData);
+uint16_t gsm_GotoExeEventHandler(GSM_StateMachine *gsm, void *eventData);
+uint16_t gsm_StayExeEventHandler(GSM_StateMachine *gsm, void *eventData);
+uint16_t gsm_GotoInitEventHandler(GSM_StateMachine *gsm, void *eventData);
 
-static const gsmStateEntry spcStateEntry[] = {
-    { SPC_STATE_INIT,                     spc_InitStateEntry },
-    { SPC_STATE_EXT,                      spc_ExeStateEntry },
+static const gsmStateEntry gsmStateEntry[] = {
+    { GSM_STATE_INIT,                     gsm_InitStateEntry },
+    { GSM_STATE_EXT,                      gsm_ExeStateEntry },
 };
 
-static const gsmEventAction spcEventAction[] = {
+static const gsmEventAction gsmEventAction[] = {
 
-    { SPC_STATE_INIT,            SPC_EVENT_STAY_INIT,         spc_StayInitEventHandler},
-    { SPC_STATE_INIT,            SPC_EVENT_GOTO_EXE,          spc_GotoExeEventHandler},
-    { SPC_STATE_EXT,             SPC_EVENT_STAY_EXE,          spc_StayExeEventHandler},
-    { SPC_STATE_EXT,             SPC_EVENT_GOTO_INIT,         spc_GotoInitEventHandler},
+    { GSM_STATE_INIT,            GSM_EVENT_STAY_INIT,         gsm_StayInitEventHandler},
+    { GSM_STATE_INIT,            GSM_EVENT_GOTO_EXE,          gsm_GotoExeEventHandler},
+    { GSM_STATE_EXT,             GSM_EVENT_STAY_EXE,          gsm_StayExeEventHandler},
+    { GSM_STATE_EXT,             GSM_EVENT_GOTO_INIT,         gsm_GotoInitEventHandler},
 };
 
 /**
  * Table containing the state enum-to-name mapping
  */
 #define ENUM_STRING(x) {x, #x}
-static const gsmEnumStringMap spcStateNames[] = {
-    ENUM_STRING(SPC_STATE_INIT),
-    ENUM_STRING(SPC_STATE_EXT),
+static const gsmEnumStringMap gsmStateNames[] = {
+    ENUM_STRING(GSM_STATE_INIT),
+    ENUM_STRING(GSM_STATE_EXT),
 };
 
-static const gsmEnumStringMap spcEventNames[] = {
-    ENUM_STRING(SPC_EVENT_STATECHANGE),
-    ENUM_STRING(SPC_EVENT_STAY_INIT),
-    ENUM_STRING(SPC_EVENT_GOTO_EXE),
-    ENUM_STRING(SPC_EVENT_STAY_EXE),
-    ENUM_STRING(SPC_EVENT_GOTO_INIT),
+static const gsmEnumStringMap gsmEventNames[] = {
+    ENUM_STRING(GSM_EVENT_STATECHANGE),
+    ENUM_STRING(GSM_EVENT_STAY_INIT),
+    ENUM_STRING(GSM_EVENT_GOTO_EXE),
+    ENUM_STRING(GSM_EVENT_STAY_EXE),
+    ENUM_STRING(GSM_EVENT_GOTO_INIT),
 };
 
 void statemachine_Init(void);
