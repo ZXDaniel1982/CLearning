@@ -26,16 +26,7 @@ typedef enum
 
 typedef enum
 {
-    SPC_SOFTWARE_VERSION = 0,
-    SPC_SELFCHECK,
-    SPC_SELFCHKFAIL,
-
-    SPC_DEFINFO_HEAT_TEMP,
-    SPC_DEFINFO_HEAT_STATUS,
-    SPC_DEFINFO_SYS_STATUS,
-
-    SPC_MENU_INIT,
-    SPC_MENU_RTD_STAT,
+    SPC_MENU_ACT_INIT = 0,
 
     SPC_MAX_INFO_TYPE
 } SpcInfoType_t;
@@ -267,22 +258,30 @@ typedef struct
     int32_t val;
 } SpcParamTable_t;
 
-typedef SpcKeyType_t (*pfnInfoDetail)(SpcValue_t *SpcValue, int32_t *command);
+typedef struct {
+    SpcInfoType_t type;
+    int16_t line1;
+    int16_t line2;
+} SpcStaticInfo_t;
+
+typedef SpcKeyType_t (*pfnAction)(SpcValue_t *SpcValue);
+typedef struct {
+    SpcInfoType_t type;
+    pfnAction action;
+} SpcInfoEntry_t;
 typedef struct
 {
-    SpcInfoType_t infoType;
-    SpcInfoType_t rightType;
-    SpcInfoType_t leftType;
-    SpcInfoType_t actType;
-    SpcInfoType_t progType;
-    SpcInfoType_t alarmType;
-    SpcInfoType_t resetType;
-    SpcInfoType_t enterType;
-
-    SpcStringType_t strTypeLine1;
-    SpcStringType_t strTypeLine2;
-    pfnInfoDetail infoDetail;
-} SpcScreenInfo_t;
+    SpcInfoEntry_t initEntry;
+    SpcInfoEntry_t rightEntry;
+    SpcInfoEntry_t leftEntry;
+    SpcInfoEntry_t upEntry;
+    SpcInfoEntry_t downEntry;
+    SpcInfoEntry_t actEntry;
+    SpcInfoEntry_t progEntry;
+    SpcInfoEntry_t resetEntry;
+    SpcInfoEntry_t enterEntry;
+    SpcInfoEntry_t alarmEntry;
+} SpcStateAction_t;
 
 #define SpcAlarmEn        ( SPC_NORMAL )
 #define SpcAlarmDis       ( SPC_ERROR )

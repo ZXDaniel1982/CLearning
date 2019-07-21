@@ -12,10 +12,10 @@
 extern static SpcValue_t SpcValue;
 
 // SPC related definition
-#define SpcManuOptEn            ( SPC_NORMAL )
-#define SpcManuOptDis           ( SPC_ERROR )
-#define SpcTempInCelsius        ( SPC_NORMAL )
-#define SpcTempInFahren         ( SPC_ERROR )
+#define SpcManuOptEn              ( SPC_NORMAL )
+#define SpcManuOptDis             ( SPC_ERROR )
+#define SpcTempInCelsius          ( SPC_NORMAL )
+#define SpcTempInFahren           ( SPC_ERROR )
 
 #define SpcTemp(x,y)              ( (x)->measure.temp[y] )
 #define SpcGfi(x)                 ( (x)->measure.gfi )
@@ -23,8 +23,8 @@ extern static SpcValue_t SpcValue;
 #define SpcCurrent(x)             ( (x)->measure.Current )
 #define SpcVoltage(x)             ( (x)->measure.Voltage )
 
-#define SpcSysConf(x)             ( (x)->config.system )
-#define SpcSysConfMainTemp(x)     ( (x)->config.MaintainTemp )
+#define SpcConf(x)                ( (x)->config.system )
+#define SpcConfMainTemp(x)        ( (x)->config.MaintainTemp )
 #define SpcConfTimeout(x)         ( (x)->config.DisplayTime )
 
 #define SpcAlarmList(x)           ( (x)->alarm.alarmList )
@@ -32,22 +32,22 @@ extern static SpcValue_t SpcValue;
 
 #define SpcPosition(x)            ( (x)->runStatus.position )
 
-#define SpcStrLine1(x)            ( SpcScreenInfo[(x)].strTypeLine1 )
-#define SpcStrLine2(x)            ( SpcScreenInfo[(x)].strTypeLine2 )
-#define SpcStrDetail(x)           ( SpcScreenInfo[(x)].infoDetail )
-#define SpcRightType(x)           ( SpcScreenInfo[(x)].rightType )
-#define SpcLeftType(x)            ( SpcScreenInfo[(x)].leftType )
-#define SpcActType(x)             ( SpcScreenInfo[(x)].actType )
-#define SpcProgType(x)            ( SpcScreenInfo[(x)].progType )
-#define SpcAlarmType(x)           ( SpcScreenInfo[(x)].alarmType )
-#define SpcResetType(x)           ( SpcScreenInfo[(x)].resetType )
-#define SpcEnterType(x)           ( SpcScreenInfo[(x)].enterType )
+#define SpcInitEntry(x)           ( SpcStateAction[(x)].initEntry )
+#define SpcRight(x)               ( SpcStateAction[(x)].rightEntry )
+#define SpcLeft(x)                ( SpcStateAction[(x)].leftEntry )
+#define SpcUp(x)                  ( SpcStateAction[(x)].upEntry )
+#define SpcDown(x)                ( SpcStateAction[(x)].downEntry )
+#define SpcAct(x)                 ( SpcStateAction[(x)].actEntry )
+#define SpcProg(x)                ( SpcStateAction[(x)].progEntry )
+#define SpcAlarm(x)               ( SpcStateAction[(x)].alarmEntry )
+#define SpcReset(x)               ( SpcStateAction[(x)].resetEntry )
+#define SpcEnter(x)               ( SpcStateAction[(x)].enterEntry )
 
 // For SPC test 
-#define SPC_TEST_TEMP_STATUS    ( SPC_TEMP_NORMAL )
-#define SPC_SIMULATE_TEMP_C     ( 20 )
-#define SPC_SIMULATE_TEMP_F     ( 20 )
-#define SPC_SIMULATE_GFI        ( 10 )
+#define SPC_TEST_TEMP_STATUS      ( SPC_TEMP_NORMAL )
+#define SPC_SIMULATE_TEMP_C       ( 20 )
+#define SPC_SIMULATE_TEMP_F       ( 20 )
+#define SPC_SIMULATE_GFI          ( 10 )
 
 void SPC_Init(void);
 void cliSpcKeyOpt(void *arg);
