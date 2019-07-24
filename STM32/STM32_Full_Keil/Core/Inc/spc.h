@@ -9,8 +9,6 @@
 #include "spccommon.h"
 #include "spcconst.h"
 
-extern static SpcValue_t SpcValue;
-
 // SPC related definition
 #define SpcManuOptEn              ( SPC_NORMAL )
 #define SpcManuOptDis             ( SPC_ERROR )

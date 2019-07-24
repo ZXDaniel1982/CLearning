@@ -40,8 +40,8 @@ static t_gsm_queue *gsm_QueueInit(int size)
 }
 
 static GSM_StateMachine *gsm_CreateMachine(const char *name,
-                       const gsmStateEntry * entry,
-                       const gsmEventAction * action,
+                       const gsmStateEntry_t * entry,
+                       const gsmEventAction_t * action,
                        uint16_t numStates,
                        uint16_t numEvents,
                        uint16_t eventActionSize,
@@ -196,7 +196,7 @@ static int gsm_Wait(GSM_StateMachine * machine)
 static void gsm_ProcessStateChange(GSM_StateMachine * pStateMachine,
                    uint16_t newState)
 {
-    gsmStateEntry entryElement = { 0 };
+    gsmStateEntry_t entryElement = { 0 };
     uint16_t nextState = newState;
     int i;
 
@@ -255,7 +255,7 @@ int gsm_NextEvent(GSM_StateMachine * machine, void **eventData)
 static int32_t gsm_SendEvent(GSM_StateMachine * pStateMachine,
                  uint16_t event, void *eventData)
 {
-    const gsmEventAction *actionElement = NULL;
+    const gsmEventAction_t *actionElement = NULL;
     int i;
 
     if (pStateMachine == NULL) {

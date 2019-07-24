@@ -156,8 +156,8 @@ typedef struct
 
 typedef struct
 {
-    SpcStringType_t StrType;
-    char str[SPC_MAX_STR_LEN];
+    const SpcStringType_t StrType;
+    const char str[SPC_MAX_STR_LEN];
 } SpcStringPool_t;
 
 typedef struct
@@ -264,10 +264,10 @@ typedef struct {
     int16_t line2;
 } SpcStaticInfo_t;
 
-typedef SpcKeyType_t (*pfnAction)(SpcValue_t *SpcValue);
+typedef SpcKeyType_t (*pfnAct)(SpcValue_t *SpcValue);
 typedef struct {
     SpcInfoType_t type;
-    pfnAction action;
+    pfnAct action;
 } SpcInfoEntry_t;
 typedef struct
 {
@@ -301,6 +301,7 @@ void Spc_AlarmRaise(SpcAlarmType_t alarmType);
 void Spc_AlarmClear(SpcAlarmType_t alarmType);
 
 void SpcListInit(SpcList_t * list, uint8_t size);
+SpcKeyType_t SpcEntryInit(SpcValue_t *SpcValue);
 
 #ifdef __cplusplus
 }

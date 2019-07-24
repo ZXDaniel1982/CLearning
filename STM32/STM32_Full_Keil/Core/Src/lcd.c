@@ -316,8 +316,9 @@ void tftprintf(const char* fmt, ...)
 
 void Spc_ResetScreen(uint8_t SpcScreenPos, uint8_t SpcScreeScale)
 {
+    uint8_t pos;
     strIndex = SpcScreenPos;
-    for (uint8_t pos=0; pos<SpcScreeScale; pos++)
+    for (pos=0; pos<SpcScreeScale; pos++)
         tftprintf(LCD_BLAND_STR);
 
     strIndex = SpcScreenPos;

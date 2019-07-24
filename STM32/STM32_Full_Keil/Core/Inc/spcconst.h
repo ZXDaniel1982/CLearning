@@ -161,7 +161,7 @@ static const SpcStateAction_t SpcStateAction[] = {
 
 static const SpcStaticInfo_t SpcStaticInfo[] = {
     {0, SPC_MENU_ACT_CATAG_STR, SPC_MENU_ACT_OPTVAL_STR},
-}
+};
 
 #ifdef __cplusplus
 }

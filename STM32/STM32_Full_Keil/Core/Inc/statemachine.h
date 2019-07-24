@@ -51,14 +51,14 @@ typedef struct
 {
     uint16_t state;                     /*!<state in the state machine.*/
     pfnEntry entry;                     /*!<Pointer to the function that needs to be invoked upon a state entry.*/
-} gsmStateEntry;
+} gsmStateEntry_t;
 
 typedef struct
 {
     uint16_t state;                    /*!<state in the state machine.*/
     uint16_t event;                    /*!<event in the state machine.*/
     pfnAction action;                  /*!<Pointer to the function that needs to be invoked upon an event.*/
-} gsmEventAction;
+} gsmEventAction_t;
 
 struct GSM_StateMachine
 {
@@ -75,8 +75,8 @@ struct GSM_StateMachine
     const gsmEnumStringMap *gsm_eventNames;     /*!<Pointer to the table containing event enums and their string description.*/
     uint16_t gsm_currentState;                  /*!<current active state.*/ 
     gsmStatus gsm_status;                       /*!<whether running or not.1- currently running and 0 else.*/
-    const gsmStateEntry *gsm_stateEntry;        /*!<Pointer to the table of entry function pointers for each state.*/
-    const gsmEventAction *gsm_eventAction;      /*!<Pointer to the table of action function pointers for each event.*/
+    const gsmStateEntry_t *gsm_stateEntry;        /*!<Pointer to the table of entry function pointers for each state.*/
+    const gsmEventAction_t *gsm_eventAction;      /*!<Pointer to the table of action function pointers for each event.*/
     TaskHandle_t taskHandle;
 };
 
@@ -107,12 +107,12 @@ uint16_t gsm_GotoExeEventHandler(GSM_StateMachine *gsm, void *eventData);
 uint16_t gsm_StayExeEventHandler(GSM_StateMachine *gsm, void *eventData);
 uint16_t gsm_GotoInitEventHandler(GSM_StateMachine *gsm, void *eventData);
 
-static const gsmStateEntry gsmStateEntry[] = {
+static const gsmStateEntry_t gsmStateEntry[] = {
     { GSM_STATE_INIT,                     gsm_InitStateEntry },
     { GSM_STATE_EXT,                      gsm_ExeStateEntry },
 };
 
-static const gsmEventAction gsmEventAction[] = {
+static const gsmEventAction_t gsmEventAction[] = {
 
     { GSM_STATE_INIT,            GSM_EVENT_STAY_INIT,         gsm_StayInitEventHandler},
     { GSM_STATE_INIT,            GSM_EVENT_GOTO_EXE,          gsm_GotoExeEventHandler},

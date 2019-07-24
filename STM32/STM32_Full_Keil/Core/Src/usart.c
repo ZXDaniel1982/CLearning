@@ -23,7 +23,7 @@
 #include "cmsis_os.h"
 #include <stdarg.h>
 
-#include "lcd.h."
+#include "lcd.h"
 
 /* USER CODE BEGIN 0 */
 uint8_t UsartTxBuf[MAX_UART_BUF_LEN] = {0};
