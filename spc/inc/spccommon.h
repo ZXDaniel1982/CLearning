@@ -14,6 +14,21 @@
 #define SPC_MAX_GFI            ( 20 )
 #define SPC_MAX_LIST           ( 20 )
 
+#define MAX_TEMP_C             ( 500 )
+#define MIN_TEMP_C             ( -50 )
+#define MAX_TEMP_F             ( 932 )
+#define MIN_TEMP_F             ( -58 )
+
+#define MAX_DEADBAND_C         ( 5 )
+#define MIN_DEADBAND_C         ( 1 )
+#define MAX_DEADBAND_F         ( 10 )
+#define MIN_DEADBAND_F         ( 1 )
+
+#define MIN_SPCCURRENT         ( 1 )
+#define MAX_SPCCURRENT         ( 300 )
+#define MIN_SPCHIGHCURRENT     ( 10 )
+#define MAX_SPCLOWCURRENT      ( 290 )
+
 typedef enum
 {
     SPC_NORMAL = true,
@@ -76,7 +91,7 @@ typedef enum
 #define SpcPosition(x)         ( (x)->runStatus.position )
 
 #define SpcStackPos(x)         ( (x)->stack.position )
-#define SpcStackVal(x)         ( (x)->stack.val )
+#define SpcStackData(x)        ( (x)->stack.data )
 #define SpcStackTemp(x)        ( (x)->stack.temp )
 
 #define SpcInitEntry(x)        ( SpcStateAction[(x)].initEntry )
@@ -218,8 +233,10 @@ typedef enum
     SPC_YES_STR,
     SPC_ON_STR,
     SPC_OFF_STR,
+    SPC_NONE_STR,
     SPC_ENABLE_STR,
     SPC_DISABLE_STR,
+    SPC_CONTINUE_STR,
     SPC_FIX_RESIS_STR,
     SPC_SELF_REG_STR,
     SPC_ONOFF_STR,
@@ -255,6 +272,7 @@ typedef enum
 
     // Reset
     SPC_MENU_RESET_CONFIRM_STR,
+    SPC_MENU_RESET_FINISH_STR,
 
     SPC_MAX_STR_TYPE
 } SpcStringType_t;
@@ -268,14 +286,17 @@ typedef enum
 
 typedef enum
 {
-    SPC_TEMP_NORMAL = 0,
-    SPC_TEMP_RTD_SHORT,
-    SPC_TEMP_RTD_OPEN,
-    SPC_TEMP_OUTRANGE,
-    SPC_TEMP_OFF,
+    SPC_DATA_NORMAL = 0,
+    SPC_RTD_SHORT,
+    SPC_RTD_OPEN,
+    SPC_OUTRANGE,
+    SPC_OFF,
+    SPC_NONE,
+    SPC_DISABLE,
+    SPC_CONTINUE,
 
     SPC_MAX_TEMP_STATUS
-} SpcTempStatus_t;
+} SpcDataStatus_t;
 
 typedef enum
 {
@@ -300,9 +321,9 @@ typedef struct
 
 typedef struct
 {
-    SpcTempStatus_t tempStatus;
-    int8_t tempf;
-    int8_t tempc;
+    SpcDataStatus_t status;
+    int16_t tempf;
+    int16_t tempc;
 } SpcTemperature_t;
 
 typedef struct
@@ -340,27 +361,33 @@ typedef union
 
 typedef struct
 {
+    SpcDataStatus_t status;
+    int16_t val;
+} SpcConfInt16_t;
+
+typedef struct
+{
     SpcTemperature_t MaintainTemp;
     SpcTemperature_t LowTemp;
     SpcTemperature_t HighTemp;
     SpcTemperature_t DeadBand;
-    int16_t   LowCurrent;
-    int16_t   HighCurrent;
-    int16_t   GFIAlarm;
-    int16_t   GFITrip;
-    int16_t   LowVoltage;
-    int16_t   HighVoltage;
-    int16_t   LimitedCurrent;
-    int16_t   SoftStartTime;
-    int16_t   AutoTestTime;
-    int16_t   DisplayTime;
-    int16_t   CostPerKWH;
-    int16_t   ScanSpeed;
-    int16_t   ModbusAdd;
-    int16_t   BaudRate;
-    int16_t   AlarmOutTest;
-    int16_t   HeaterTest;
-    int16_t   GFTest;
+    SpcConfInt16_t   LowCurrent;
+    SpcConfInt16_t   HighCurrent;
+    SpcConfInt16_t   GFIAlarm;
+    SpcConfInt16_t   GFITrip;
+    SpcConfInt16_t   LowVoltage;
+    SpcConfInt16_t   HighVoltage;
+    SpcConfInt16_t   LimitedCurrent;
+    SpcConfInt16_t   SoftStartTime;
+    SpcConfInt16_t   AutoTestTime;
+    SpcConfInt16_t   DisplayTime;
+    SpcConfInt16_t   CostPerKWH;
+    SpcConfInt16_t   ScanSpeed;
+    SpcConfInt16_t   ModbusAdd;
+    SpcConfInt16_t   BaudRate;
+    SpcConfInt16_t   AlarmOutTest;
+    SpcConfInt16_t   HeaterTest;
+    SpcConfInt16_t   GFTest;
 
     SpcSysConf_t system;
 } SpcConfig_t;
@@ -407,7 +434,7 @@ typedef struct
 typedef struct
 {
     SpcInfoType_t position;
-    int16_t val;
+    SpcConfInt16_t data;
     SpcTemperature_t temp;
 } SpcStack_t;
 
@@ -480,6 +507,21 @@ typedef struct
 {
     SpcInfoType_t type;
     SpcStringType_t line1;
+    SpcConfInt16_t *data;
+    char prefix[SPC_MAX_UNIT_STR_LEN];
+    char suffix[SPC_MAX_UNIT_STR_LEN];
+} SpcConfDataInt16_t;
+
+typedef struct
+{
+    SpcInfoType_t type;
+    int16_t *val;
+} SpcStatisticInt_t;
+
+typedef struct
+{
+    SpcInfoType_t type;
+    SpcStringType_t line1;
     int32_t *val;
     char prefix[SPC_MAX_UNIT_STR_LEN];
     char suffix[SPC_MAX_UNIT_STR_LEN];
@@ -500,6 +542,17 @@ typedef struct
     uint8_t tableSize;
     const SpcByteStrPool_t *table;
 } SpcDataByte_t;
+
+typedef struct
+{
+    SpcInfoType_t type;
+    int16_t max;
+    int16_t min;
+    SpcConfInt16_t *maxPtr;
+    SpcConfInt16_t *minPtr;
+    uint8_t size;
+    const SpcDataStatus_t *status;
+} SpcConfIntLimit_t;
 
 extern SpcValue_t SpcValue;
 
@@ -522,5 +575,29 @@ SpcKeyType_t SpcEntryShowInt16(SpcValue_t *SpcValue);
 SpcKeyType_t SpcEntryShowInt32(SpcValue_t *SpcValue);
 SpcKeyType_t SpcEntryShowByte(SpcValue_t *SpcValue);
 SpcKeyType_t SpcEntryShowSysStatus(SpcValue_t *SpcValue);
+SpcKeyType_t SpcEntryShowConfInt16(SpcValue_t *SpcValue);
+
+SpcKeyType_t SpcPushTempRet(SpcValue_t *SpcValue);
+SpcKeyType_t SpcPushIntRet(SpcValue_t *SpcValue);
+SpcKeyType_t SpcPushAllRet(SpcValue_t *SpcValue);
+SpcKeyType_t SpcResetRet(SpcValue_t *SpcValue);
+SpcKeyType_t SpcConfirmTemp(SpcValue_t *SpcValue);
+SpcKeyType_t SpcConfirmInt(SpcValue_t *SpcValue);
+SpcKeyType_t SpcConfirmAll(SpcValue_t *SpcValue);
+
+SpcKeyType_t SpcPushTmUp(SpcValue_t *SpcValue);
+SpcKeyType_t SpcPushTmDown(SpcValue_t *SpcValue);
+SpcKeyType_t SpcUpTemp(SpcValue_t *SpcValue);
+SpcKeyType_t SpcDownTemp(SpcValue_t *SpcValue);
+SpcKeyType_t SpcPopRight(SpcValue_t *SpcValue);
+SpcKeyType_t SpcPopLeft(SpcValue_t *SpcValue);
+SpcKeyType_t SpcPopProg(SpcValue_t *SpcValue);
+SpcKeyType_t SpcPopTempConf(SpcValue_t *SpcValue);
+
+SpcKeyType_t SpcPushIntUp(SpcValue_t *SpcValue);
+SpcKeyType_t SpcPushIntDown(SpcValue_t *SpcValue);
+SpcKeyType_t SpcUpInt(SpcValue_t *SpcValue);
+SpcKeyType_t SpcDownInt(SpcValue_t *SpcValue);
+SpcKeyType_t SpcPopIntConf(SpcValue_t *SpcValue);
 
 #endif // __spc_common_H

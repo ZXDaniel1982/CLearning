@@ -36,7 +36,7 @@ void Spc_SystemInit(SpcValue_t *SpcValue)
     SpcConf(SpcValue).bytes.defInfo = HEATER_STATUS_MOD;
     SpcConf(SpcValue).bytes.rtdMod = SPC_ONE_RTD_MOD;
 
-    SpcConfMainTemp(SpcValue).tempStatus = SPC_TEMP_NORMAL;
+    SpcConfMainTemp(SpcValue).status = SPC_DATA_NORMAL;
 
     SpcListInit(&SpcAlarmList(SpcValue), SPC_MAX_LIST);
 }
@@ -74,15 +74,15 @@ void SpcShowDefInfo(SpcValue_t *SpcValue)
 
 void SpcSetTestData(SpcValue_t *SpcValue)
 {
-    SpcTemp(SpcValue, SPC_RTD_COMBIN).tempStatus = SPC_TEST_TEMP_STATUS;
+    SpcTemp(SpcValue, SPC_RTD_COMBIN).status = SPC_TEST_TEMP_STATUS;
     SpcTemp(SpcValue, SPC_RTD_COMBIN).tempf = SPC_SIMULATE_TEMP_F;
     SpcTemp(SpcValue, SPC_RTD_COMBIN).tempc = SPC_SIMULATE_TEMP_C;
 
-    SpcTemp(SpcValue, SPC_RTD_CHANNEL1).tempStatus = SPC_TEMP_RTD_SHORT;
+    SpcTemp(SpcValue, SPC_RTD_CHANNEL1).status = SPC_RTD_SHORT;
     SpcTemp(SpcValue, SPC_RTD_CHANNEL1).tempf = SPC_SIMULATE_TEMP_F;
     SpcTemp(SpcValue, SPC_RTD_CHANNEL1).tempc = SPC_SIMULATE_TEMP_C;
 
-    SpcTemp(SpcValue, SPC_RTD_CHANNEL2).tempStatus = SPC_TEMP_RTD_OPEN;
+    SpcTemp(SpcValue, SPC_RTD_CHANNEL2).status = SPC_RTD_OPEN;
     SpcTemp(SpcValue, SPC_RTD_CHANNEL2).tempf = SPC_SIMULATE_TEMP_F;
     SpcTemp(SpcValue, SPC_RTD_CHANNEL2).tempc = SPC_SIMULATE_TEMP_C;
 
@@ -90,10 +90,14 @@ void SpcSetTestData(SpcValue_t *SpcValue)
     SpcConf(SpcValue).bytes.heater_en = 1;
     SpcConf(SpcValue).bytes.ctl_type = 1;
 
-    SpcConfTimeout(SpcValue) = 120;
+    SpcConfTimeout(SpcValue).status = SPC_DATA_NORMAL;
+    SpcConfTimeout(SpcValue).val = 120;
     SpcPercent(SpcValue) = 10;
     SpcCurrent(SpcValue) = 30;
     SpcVoltage(SpcValue) = 110;
+
+    SpcConfLowCurrent(SpcValue).status = SPC_OFF;
+    SpcConfHighCurrent(SpcValue).status = SPC_OFF;
 
     strncpy(SpcName(SpcValue), "My Spc", SPC_MAX_STR_LEN);
 }
@@ -102,14 +106,14 @@ static SpcStatus_t Spc_TestTemp(SpcValue_t *SpcValue)
 {
     uint8_t Channel;
     for (Channel=SPC_RTD_CHANNEL1; Channel<SPC_MAX_RTD_CHANNEL; Channel++) {
-        SpcTemp(SpcValue, Channel).tempStatus = SPC_TEST_TEMP_STATUS;
+        SpcTemp(SpcValue, Channel).status = SPC_TEST_TEMP_STATUS;
         SpcTemp(SpcValue, Channel).tempf = SPC_SIMULATE_TEMP_F;
         SpcTemp(SpcValue, Channel).tempc = SPC_SIMULATE_TEMP_C;
     }
 
-    if (SpcTemp(SpcValue, SPC_RTD_CHANNEL1).tempStatus != SPC_TEMP_NORMAL) {
+    if (SpcTemp(SpcValue, SPC_RTD_CHANNEL1).status != SPC_DATA_NORMAL) {
         if ((SpcConf(SpcValue).bytes.rtdMod == SPC_ONE_RTD_MOD) ||
-            (SpcTemp(SpcValue, SPC_RTD_CHANNEL2).tempStatus != SPC_TEMP_NORMAL)) {
+            (SpcTemp(SpcValue, SPC_RTD_CHANNEL2).status != SPC_DATA_NORMAL)) {
             return SPC_ERROR;
         }
     }

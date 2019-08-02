@@ -4,7 +4,7 @@
 #include "spcconst.h"
 
 // For SPC test 
-#define SPC_TEST_TEMP_STATUS      ( SPC_TEMP_NORMAL )
+#define SPC_TEST_TEMP_STATUS      ( SPC_DATA_NORMAL )
 #define SPC_SIMULATE_TEMP_C       ( 20 )
 #define SPC_SIMULATE_TEMP_F       ( 20 )
 #define SPC_SIMULATE_GFI          ( 10 )

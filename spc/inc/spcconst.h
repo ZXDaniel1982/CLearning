@@ -111,8 +111,10 @@ static SpcStringPool_t SpcStrPool[SPC_MAX_STR_TYPE] = {
     {SPC_YES_STR,                    "yes"},
     {SPC_ON_STR,                     "On"},
     {SPC_OFF_STR,                    "Off"},
+    {SPC_NONE_STR,                   "None"},
     {SPC_ENABLE_STR,                 "Enable"},
     {SPC_DISABLE_STR,                "Disable"},
+    {SPC_CONTINUE_STR,               "Continue"},
     {SPC_FIX_RESIS_STR,              "Fix-Res"},
     {SPC_SELF_REG_STR,               "Self-Reg"},
     {SPC_ONOFF_STR,                  "On_off"},
@@ -148,6 +150,7 @@ static SpcStringPool_t SpcStrPool[SPC_MAX_STR_TYPE] = {
 
     // Reset
     {SPC_MENU_RESET_CONFIRM_STR,     "Comfirm Reset?"},
+    {SPC_MENU_RESET_FINISH_STR,      "Reset Complete"},
 };
 
 static const SpcStaticInfo_t SpcStaticInfo[] = {
@@ -165,6 +168,8 @@ static const SpcStaticInfo_t SpcStaticInfo[] = {
     {64, SPC_MENU_RESET_CONFIRM_STR, SPC_YES_STR},
     {65, SPC_MENU_RESET_CONFIRM_STR, SPC_NO_STR},
     {66, SPC_MENU_RESET_CONFIRM_STR, SPC_YES_STR},
+    {67, SPC_MENU_RESET_CONFIRM_STR, SPC_NO_STR},
+    {68, SPC_MENU_RESET_CONFIRM_STR, SPC_YES_STR},
 };
 
 static const SpcDataTemp_t SpcDataTemp[] = {
@@ -191,6 +196,9 @@ static const SpcDataInt16_t SpcDataInt16[] = {
     {15, SPC_MENU_ACT_MIN_VOLT_STR,        &SpcMinVolt(&SpcValue),    "", " V"},
     {16, SPC_MENU_ACT_USAGE_STR,           &SpcUsage(&SpcValue),      "", " KWh"},
     {19, SPC_MENU_ACT_ONTIME_STR,          &SpcOnPercent(&SpcValue),  "", " %"},
+};
+
+static const SpcConfDataInt16_t SpcConfDataInt16[] = {
     {26, SPC_MENU_PROG_LOW_CURRENT_STR,    &SpcConfLowCurrent(&SpcValue),  "", " A"},
     {27, SPC_MENU_PROG_HIGH_CURRENT_STR,   &SpcConfHighCurrent(&SpcValue),  "", " A"},
     {28, SPC_MENU_PROG_GFI_ALARM_STR,      &SpcConfGFIAlarm(&SpcValue),  "", " mA"},
@@ -207,6 +215,14 @@ static const SpcDataInt16_t SpcDataInt16[] = {
     {57, SPC_MENU_PROG_ALARMOUT_STR,       &SpcConfAlarmOut(&SpcValue),  "", " Hours"},
     {58, SPC_MENU_PROG_RTDTEST_STR,        &SpcConfHeatTest(&SpcValue),  "", " Hours"},
 };
+
+static const SpcStatisticInt_t SpcStatisticInt[] = {
+    {12, &SpcCurrent(&SpcValue)},
+    {13, &SpcGfi(&SpcValue)},
+    {14, &SpcVoltage(&SpcValue)},
+    {15, &SpcVoltage(&SpcValue)},
+};
+
 
 static const SpcDataInt32_t SpcDataInt32[] = {
     {17, SPC_MENU_ACT_COST_STR,            &SpcCost(&SpcValue),       "", " NZD"},
@@ -305,85 +321,99 @@ static const SpcDataByte_t SpcDataByte[] = {
     {61, SPC_DEF_HEAT_STATUS_STR,       11,  0x00000003, 2,  SpcRTDStatStr},
 };
 
+static const SpcDataStatus_t SpcNorIntStatus[] = {
+    SPC_OFF,
+};
+
+static const SpcConfIntLimit_t SpcConfIntLimit[] = {
+    {26, MAX_SPCLOWCURRENT, MIN_SPCCURRENT, &SpcConfHighCurrent(&SpcValue), NULL, 1, SpcNorIntStatus},
+    {27, MAX_SPCCURRENT, MIN_SPCHIGHCURRENT, NULL, &SpcConfLowCurrent(&SpcValue), 1, SpcNorIntStatus},
+};
+
 static const SpcStateAction_t SpcStateAction[] = {
-//    entry                         right      left        up                    down                  act                prog                reset                  enter                alarm   
-    {{0,SpcEntryInit},             {1,NULL},  {21,NULL},  {0,NULL},             {0,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
-    {{1,SpcEntryShowHeatStatus},   {2,NULL},  {0,NULL},   {1,NULL},             {1,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
-    {{2,SpcEntryShowHeatTemp},     {3,NULL},  {1,NULL},   {2,NULL},             {2,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
-    {{3,SpcEntryShowHeatTemp},     {4,NULL},  {2,NULL},   {3,NULL},             {3,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
-    {{4,SpcEntryShowHeatTemp},     {5,NULL},  {3,NULL},   {4,NULL},             {4,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
-    {{5,SpcEntryShowInt16},        {6,NULL},  {4,NULL},   {5,NULL},             {5,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
-    {{6,SpcEntryShowInt16},        {7,NULL},  {5,NULL},   {6,NULL},             {6,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
-    {{7,SpcEntryShowInt16},        {8,NULL},  {6,NULL},   {7,NULL},             {7,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
-    {{8,SpcEntryShowInt16},        {9,NULL},  {7,NULL},   {8,NULL},             {8,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
+//    entry                         right                  left                  up                    down                  act                prog                reset                  enter                alarm   
+    {{0,SpcEntryInit},             {1,NULL},              {21,NULL},            {0,NULL},             {0,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
+    {{1,SpcEntryShowHeatStatus},   {2,NULL},              {0,NULL},             {1,NULL},             {1,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
+    {{2,SpcEntryShowHeatTemp},     {3,NULL},              {1,NULL},             {2,NULL},             {2,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
+    {{3,SpcEntryShowHeatTemp},     {4,NULL},              {2,NULL},             {3,NULL},             {3,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
+    {{4,SpcEntryShowHeatTemp},     {5,NULL},              {3,NULL},             {4,NULL},             {4,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
+    {{5,SpcEntryShowInt16},        {6,NULL},              {4,NULL},             {5,NULL},             {5,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
+    {{6,SpcEntryShowInt16},        {7,NULL},              {5,NULL},             {6,NULL},             {6,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
+    {{7,SpcEntryShowInt16},        {8,NULL},              {6,NULL},             {7,NULL},             {7,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
+    {{8,SpcEntryShowInt16},        {9,NULL},              {7,NULL},             {8,NULL},             {8,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
 
-    {{9,SpcEntryInit},             {10,NULL}, {8,NULL},   {9,NULL},             {9,NULL},             {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{10,SpcEntryShowHeatTemp},    {11,NULL}, {9,NULL},   {10,NULL},            {10,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,SpcPushTempReset},{9,NULL}},
-    {{11,SpcEntryShowHeatTemp},    {12,NULL}, {10,NULL},  {11,NULL},            {11,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{12,SpcEntryShowInt16},       {13,NULL}, {11,NULL},  {12,NULL},            {12,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{13,SpcEntryShowInt16},       {14,NULL}, {12,NULL},  {13,NULL},            {13,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{14,SpcEntryShowInt16},       {15,NULL}, {13,NULL},  {14,NULL},            {14,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{15,SpcEntryShowInt16},       {16,NULL}, {14,NULL},  {15,NULL},            {15,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{16,SpcEntryShowInt16},       {17,NULL}, {15,NULL},  {16,NULL},            {16,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{17,SpcEntryShowInt32},       {18,NULL}, {16,NULL},  {17,NULL},            {17,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{18,SpcEntryShowInt32},       {19,NULL}, {17,NULL},  {18,NULL},            {18,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{19,SpcEntryShowInt16},       {20,NULL}, {18,NULL},  {19,NULL},            {19,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{20,SpcEntryInit},            {21,NULL}, {19,NULL},  {20,NULL},            {20,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{21,SpcEntryInit},            {0,NULL},  {20,NULL},  {21,NULL},            {21,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{9,SpcEntryInit},             {10,NULL},             {8,NULL},             {9,NULL},             {9,NULL},             {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{10,SpcEntryShowHeatTemp},    {11,NULL},             {9,NULL},             {10,NULL},            {10,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {10,SpcPushTempRet}, {9,NULL}},
+    {{11,SpcEntryShowHeatTemp},    {12,NULL},             {10,NULL},            {11,NULL},            {11,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {11,SpcPushTempRet}, {9,NULL}},
+    {{12,SpcEntryShowInt16},       {13,NULL},             {11,NULL},            {12,NULL},            {12,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {12,SpcPushIntRet},  {9,NULL}},
+    {{13,SpcEntryShowInt16},       {14,NULL},             {12,NULL},            {13,NULL},            {13,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {13,SpcPushIntRet},  {9,NULL}},
+    {{14,SpcEntryShowInt16},       {15,NULL},             {13,NULL},            {14,NULL},            {14,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {14,SpcPushIntRet},  {9,NULL}},
+    {{15,SpcEntryShowInt16},       {16,NULL},             {14,NULL},            {15,NULL},            {15,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {15,SpcPushIntRet},  {9,NULL}},
+    {{16,SpcEntryShowInt16},       {17,NULL},             {15,NULL},            {16,NULL},            {16,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{17,SpcEntryShowInt32},       {18,NULL},             {16,NULL},            {17,NULL},            {17,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{18,SpcEntryShowInt32},       {19,NULL},             {17,NULL},            {18,NULL},            {18,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{19,SpcEntryShowInt16},       {20,NULL},             {18,NULL},            {19,NULL},            {19,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{20,SpcEntryInit},            {21,NULL},             {19,NULL},            {20,NULL},            {20,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {20,SpcPushAllRet},  {9,NULL}},
+    {{21,SpcEntryInit},            {0,NULL},              {20,NULL},            {21,NULL},            {21,NULL},            {0,NULL},          {22,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
 
-    {{22,SpcEntryInit},            {23,NULL}, {59,NULL},  {22,NULL},            {22,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{23,SpcEntryShowHeatTemp},    {24,NULL}, {22,NULL},  {21,NULL},            {21,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{24,SpcEntryShowHeatTemp},    {25,NULL}, {23,NULL},  {21,NULL},            {21,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{25,SpcEntryShowHeatTemp},    {26,NULL}, {24,NULL},  {21,NULL},            {21,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{26,SpcEntryShowInt16},       {27,NULL}, {25,NULL},  {21,NULL},            {21,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{27,SpcEntryShowInt16},       {28,NULL}, {26,NULL},  {21,NULL},            {21,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{28,SpcEntryShowInt16},       {29,NULL}, {27,NULL},  {21,NULL},            {21,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{29,SpcEntryShowInt16},       {30,NULL}, {28,NULL},  {21,NULL},            {21,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{30,SpcEntryShowInt16},       {31,NULL}, {29,NULL},  {21,NULL},            {21,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
-    {{31,SpcEntryShowInt16},       {32,NULL}, {30,NULL},  {21,NULL},            {21,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{22,SpcEntryInit},            {23,NULL},             {59,NULL},            {22,NULL},            {22,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{23,SpcEntryShowHeatTemp},    {24,NULL},             {22,NULL},            {23,SpcPushTmUp},     {23,SpcPushTmDown},   {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{24,SpcEntryShowHeatTemp},    {25,NULL},             {23,NULL},            {24,SpcPushTmUp},     {24,SpcPushTmDown},   {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{25,SpcEntryShowHeatTemp},    {26,NULL},             {24,NULL},            {25,SpcPushTmUp},     {25,SpcPushTmDown},   {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{26,SpcEntryShowConfInt16},   {27,NULL},             {25,NULL},            {26,SpcPushIntUp},    {26,SpcPushIntDown},  {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{27,SpcEntryShowConfInt16},   {28,NULL},             {26,NULL},            {27,SpcPushIntUp},    {27,SpcPushIntDown},  {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{28,SpcEntryShowConfInt16},   {29,NULL},             {27,NULL},            {21,NULL},            {21,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{29,SpcEntryShowConfInt16},   {30,NULL},             {28,NULL},            {21,NULL},            {21,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{30,SpcEntryShowConfInt16},   {31,NULL},             {29,NULL},            {21,NULL},            {21,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
+    {{31,SpcEntryShowConfInt16},   {32,NULL},             {30,NULL},            {21,NULL},            {21,NULL},            {0,NULL},          {32,NULL},          {9,NULL},              {9,NULL},            {9,NULL}},
 
-    {{32,SpcEntryInit},            {33,NULL}, {31,NULL},  {32,NULL},            {32,NULL},            {0,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{33,SpcEntryShowByte},        {34,NULL}, {32,NULL},  {33,NULL},            {33,NULL},            {0,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{34,SpcEntryShowId},          {35,NULL}, {33,NULL},  {34,NULL},            {34,NULL},            {0,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{35,SpcEntryShowByte},        {36,NULL}, {34,NULL},  {35,NULL},            {35,NULL},            {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{36,SpcEntryShowByte},        {37,NULL}, {35,NULL},  {36,NULL},            {36,NULL},            {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{37,SpcEntryShowHeatTemp},    {38,NULL}, {36,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{38,SpcEntryShowByte},        {39,NULL}, {37,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{39,SpcEntryShowInt16},       {40,NULL}, {38,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{40,SpcEntryShowInt16},       {41,NULL}, {39,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{41,SpcEntryShowInt16},       {42,NULL}, {40,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{42,SpcEntryShowByte},        {43,NULL}, {41,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{43,SpcEntryShowByte},        {44,NULL}, {42,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{32,SpcEntryInit},            {33,NULL},             {31,NULL},            {32,NULL},            {32,NULL},            {0,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{33,SpcEntryShowByte},        {34,NULL},             {32,NULL},            {33,NULL},            {33,NULL},            {0,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{34,SpcEntryShowId},          {35,NULL},             {33,NULL},            {34,NULL},            {34,NULL},            {0,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{35,SpcEntryShowByte},        {36,NULL},             {34,NULL},            {35,NULL},            {35,NULL},            {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{36,SpcEntryShowByte},        {37,NULL},             {35,NULL},            {36,NULL},            {36,NULL},            {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{37,SpcEntryShowHeatTemp},    {38,NULL},             {36,NULL},            {37,SpcPushTmUp},     {0,SpcPushTmDown},    {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{38,SpcEntryShowByte},        {39,NULL},             {37,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{39,SpcEntryShowConfInt16},   {40,NULL},             {38,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{40,SpcEntryShowConfInt16},   {41,NULL},             {39,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{41,SpcEntryShowConfInt16},   {42,NULL},             {40,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{42,SpcEntryShowByte},        {43,NULL},             {41,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{43,SpcEntryShowByte},        {44,NULL},             {42,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {44,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
 
-    {{44,SpcEntryInit},            {45,NULL}, {43,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{45,SpcEntryShowByte},        {46,NULL}, {44,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{46,SpcEntryInit},            {47,NULL}, {45,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{47,SpcEntryShowByte},        {48,NULL}, {46,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{48,SpcEntryShowInt16},       {49,NULL}, {47,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{49,SpcEntryShowByte},        {50,NULL}, {48,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{50,SpcEntryShowByte},        {51,NULL}, {49,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{51,SpcEntryShowInt16},       {52,NULL}, {50,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{52,SpcEntryShowInt16},       {53,NULL}, {51,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{53,SpcEntryShowInt16},       {54,NULL}, {52,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{54,SpcEntryShowByte},        {55,NULL}, {53,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{55,SpcEntryInit},            {56,NULL}, {54,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{44,SpcEntryInit},            {45,NULL},             {43,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{45,SpcEntryShowByte},        {46,NULL},             {44,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{46,SpcEntryInit},            {47,NULL},             {45,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{47,SpcEntryShowByte},        {48,NULL},             {46,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{48,SpcEntryShowConfInt16},   {49,NULL},             {47,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{49,SpcEntryShowByte},        {50,NULL},             {48,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{50,SpcEntryShowByte},        {51,NULL},             {49,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{51,SpcEntryShowConfInt16},   {52,NULL},             {50,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{52,SpcEntryShowConfInt16},   {53,NULL},             {51,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{53,SpcEntryShowConfInt16},   {54,NULL},             {52,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{54,SpcEntryShowByte},        {55,NULL},             {53,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{55,SpcEntryInit},            {56,NULL},             {54,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {56,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
 
-    {{56,SpcEntryInit},            {57,NULL}, {55,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{57,SpcEntryShowInt16},       {58,NULL}, {56,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{58,SpcEntryShowInt16},       {59,NULL}, {57,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
-    {{59,SpcEntryShowByte},        {22,NULL}, {58,NULL},  {0,NULL},             {0,NULL},             {0,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{56,SpcEntryInit},            {57,NULL},             {55,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{57,SpcEntryShowConfInt16},   {58,NULL},             {56,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{58,SpcEntryShowConfInt16},   {59,NULL},             {57,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
+    {{59,SpcEntryShowByte},        {22,NULL},             {58,NULL},            {0,NULL},             {0,NULL},             {0,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {70,NULL}},
 
 // Default display
-    {{60,SpcEntryShowSysStatus},   {60,NULL}, {60,NULL},  {60,NULL},            {60,NULL},            {0,NULL},          {22,NULL},          {60,NULL},             {60,NULL},           {60,NULL}},
-    {{61,SpcEntryShowByte},        {61,NULL}, {61,NULL},  {61,NULL},            {61,NULL},            {0,NULL},          {22,NULL},          {61,NULL},             {61,NULL},           {61,NULL}},
-    {{62,SpcEntryShowHeatTemp},    {62,NULL}, {62,NULL},  {62,NULL},            {62,NULL},            {0,NULL},          {22,NULL},          {62,NULL},             {62,NULL},           {62,NULL}},
+    {{60,SpcEntryShowSysStatus},   {60,NULL},             {60,NULL},            {60,NULL},            {60,NULL},            {0,NULL},          {22,NULL},          {60,NULL},             {60,NULL},           {60,NULL}},
+    {{61,SpcEntryShowByte},        {61,NULL},             {61,NULL},            {61,NULL},            {61,NULL},            {0,NULL},          {22,NULL},          {61,NULL},             {61,NULL},           {61,NULL}},
+    {{62,SpcEntryShowHeatTemp},    {62,NULL},             {62,NULL},            {62,NULL},            {62,NULL},            {0,NULL},          {22,NULL},          {62,NULL},             {62,NULL},           {62,NULL}},
 
 // Statistic reset
-    {{63,SpcEntryInit},            {63,NULL}, {63,NULL},  {64,NULL},            {63,NULL},            {0,NULL},          {22,NULL},          {63,SpcResetRet},      {63,SpcResetRet},    {63,NULL}},
-    {{64,SpcEntryInit},            {64,NULL}, {64,NULL},  {64,NULL},            {63,NULL},            {0,NULL},          {22,NULL},          {64,SpcResetRet},      {64,SpcConfirmTemp}, {64,NULL}},
-    {{65,SpcEntryInit},            {65,NULL}, {65,NULL},  {66,NULL},            {65,NULL},            {0,NULL},          {22,NULL},          {65,SpcResetRet},      {65,SpcResetRet},    {65,NULL}},
-    {{66,SpcEntryInit},            {66,NULL}, {66,NULL},  {66,NULL},            {65,NULL},            {0,NULL},          {22,NULL},          {66,SpcResetRet},      {66,SpcConfirmTemp}, {66,NULL}},
+    {{63,SpcEntryInit},            {63,NULL},             {63,NULL},            {64,NULL},            {63,NULL},            {0,NULL},          {22,NULL},          {63,SpcResetRet},      {63,SpcResetRet},    {63,NULL}},
+    {{64,SpcEntryInit},            {64,NULL},             {64,NULL},            {64,NULL},            {63,NULL},            {0,NULL},          {22,NULL},          {64,SpcResetRet},      {64,SpcConfirmTemp}, {64,NULL}},
+    {{65,SpcEntryInit},            {65,NULL},             {65,NULL},            {66,NULL},            {65,NULL},            {0,NULL},          {22,NULL},          {65,SpcResetRet},      {65,SpcResetRet},    {65,NULL}},
+    {{66,SpcEntryInit},            {66,NULL},             {66,NULL},            {66,NULL},            {65,NULL},            {0,NULL},          {22,NULL},          {66,SpcResetRet},      {66,SpcConfirmInt},  {66,NULL}},
+    {{67,SpcEntryInit},            {67,NULL},             {67,NULL},            {68,NULL},            {67,NULL},            {0,NULL},          {22,NULL},          {67,SpcResetRet},      {67,SpcResetRet},    {67,NULL}},
+    {{68,SpcEntryInit},            {68,NULL},             {68,NULL},            {68,NULL},            {67,NULL},            {0,NULL},          {22,NULL},          {68,SpcResetRet},      {68,SpcConfirmAll},  {68,NULL}},
 
+// Config
+    {{69,SpcEntryInit},            {69,SpcPopRight},      {69,SpcPopLeft},      {69,SpcUpTemp},       {69,SpcDownTemp},     {0,NULL},          {69,SpcPopProg},    {69,SpcResetRet},      {69,SpcPopTempConf}, {69,NULL}},
+    {{70,SpcEntryInit},            {70,SpcPopRight},      {70,SpcPopLeft},      {70,SpcUpInt},        {70,SpcDownInt},      {0,NULL},          {70,SpcPopProg},    {70,SpcResetRet},      {70,SpcPopIntConf},  {70,NULL}},
 };
 
 #endif // __spc_const_H
