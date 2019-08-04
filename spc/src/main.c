@@ -20,7 +20,7 @@ static const SpcDataTemp_t *SpcGetDataTemp(SpcInfoType_t infoType);
 static const SpcStatisticInt_t *SpcGetStatisticInt(SpcInfoType_t infoType);
 static const SpcDataInt16_t *SpcGetDataInt16(SpcInfoType_t infoType);
 static const SpcDataInt32_t *SpcGetDataInt32(SpcValue_t *SpcValue);
-static const SpcDataByte_t *SpcGetDataByte(SpcValue_t *SpcValue);
+static const SpcDataByte_t *SpcGetDataByte(SpcInfoType_t infoType);
 static const SpcConfDataInt16_t *SpcGetConfInt16(SpcInfoType_t infoType);
 static const SpcStringType_t SpcGetDataByteStr(const SpcDataByte_t *element, uint8_t val);
 static void SpcShowTemperature(SpcValue_t *SpcValue, int16_t line1, SpcTemperature_t *temp);
@@ -41,6 +41,10 @@ static void SpcUpdateDipInt(SpcConfInt16_t *data, const SpcConfDataInt16_t *elem
 static void SpcModifyInt(SpcConfInt16_t *data, SpcInfoType_t infoType, bool increase);
 static uint8_t SpcGetConfStatusIndex(const SpcConfIntLimit_t *element, SpcDataStatus_t status);
 static const SpcConfIntLimit_t *SpcGetConfIntLimit(SpcInfoType_t infoType);
+
+static inline bool SpcModifyByte(int16_t *val, const SpcDataByte_t *element, bool increase);
+
+static uint8_t SpcGetIdCharIndex(char c);
 
 bool keyPressed(int *character)
 {
@@ -136,35 +140,95 @@ void Spc_AlarmClear(SpcAlarmType_t alarmType)
     SpcValue.alarm.alarmMask &= ~alarmType;
 }
 
-SpcKeyType_t SpcEntryInit(SpcValue_t *SpcValue)
+SpcInfoType_t SpcEntryInit(SpcValue_t *SpcValue)
 {
     int16_t i;
     SpcInfoType_t infoType = SpcPosition(SpcValue);
     for (i=0; i<NUM_ROWS(SpcStaticInfo);i++) {
         if (SpcStaticInfo[i].type == infoType) {
             Spc_ScreenUpdateStatic(SpcStaticInfo[i].line1, SpcStaticInfo[i].line2);
-            return SPC_KEY_NORMAL;
+            return infoType;
         }
     }
-    return SPC_KEY_NORMAL;
+    return infoType;
 }
 
-SpcKeyType_t SpcEntryShowId(SpcValue_t *SpcValue)
+SpcInfoType_t SpcEntryShowId(SpcValue_t *SpcValue)
 {
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    memset(SpcStackStr(SpcValue).str, 0, SPC_MAX_STR_LEN);
+    strncpy(SpcStackStr(SpcValue).str, SpcName(SpcValue), SPC_MAX_STR_LEN);
+    SpcStackStr(SpcValue).index = 0;
+    SpcStackStr(SpcValue).charIndex = SpcGetIdCharIndex(SpcStackStr(SpcValue).str[0]);
     Spc_ScreenUpdateDynamic(SPC_MENU_PROG_HEATID_STR, SpcName(SpcValue));
-    return SPC_KEY_NORMAL;
+    return infoType;
 }
 
-SpcKeyType_t SpcEntryShowHeatStatus(SpcValue_t *SpcValue)
+SpcInfoType_t SpcIdUp(SpcValue_t *SpcValue)
 {
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    uint8_t index = 0, charIndex = 0;
+    if (SpcStackStr(SpcValue).charIndex < NUM_ROWS(SpcCharactors)) {
+        SpcStackStr(SpcValue).charIndex++;
+
+        index = SpcStackStr(SpcValue).index;
+        charIndex = SpcStackStr(SpcValue).charIndex;
+        SpcStackStr(SpcValue).str[index] = SpcCharactors[charIndex];
+        Spc_ScreenUpdateDynamic(SPC_MENU_PROG_HEATID_STR, SpcStackStr(SpcValue).str);
+    }
+
+    return infoType;
+}
+
+SpcInfoType_t SpcIdDown(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    uint8_t index = 0, charIndex = 0;
+    if (SpcStackStr(SpcValue).charIndex > 0) {
+        SpcStackStr(SpcValue).charIndex--;
+
+        index = SpcStackStr(SpcValue).index;
+        charIndex = SpcStackStr(SpcValue).charIndex;
+        SpcStackStr(SpcValue).str[index] = SpcCharactors[charIndex];
+        Spc_ScreenUpdateDynamic(SPC_MENU_PROG_HEATID_STR, SpcStackStr(SpcValue).str);
+    }
+
+    return infoType;
+}
+
+SpcInfoType_t SpcIdConf(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    uint8_t index = 0, charIndex = 0;
+
+    if (SpcStackStr(SpcValue).index >= 16) {
+        memset(SpcName(SpcValue), 0, SPC_MAX_STR_LEN);
+        strncpy(SpcName(SpcValue), SpcStackStr(SpcValue).str, SPC_MAX_STR_LEN);
+
+        SpcStackStr(SpcValue).index = 0;
+        SpcStackStr(SpcValue).charIndex = SpcGetIdCharIndex(SpcStackStr(SpcValue).str[0]);
+        Spc_ScreenUpdateDynamic(SPC_MENU_PROG_HEATID_STR, SpcName(SpcValue));
+    } else {
+        SpcStackStr(SpcValue).index++;
+        index = SpcStackStr(SpcValue).index;
+        SpcStackStr(SpcValue).charIndex = SpcGetIdCharIndex(SpcStackStr(SpcValue).str[index]);
+        Spc_ScreenUpdateDynamic(SPC_MENU_PROG_HEATID_STR, SpcStackStr(SpcValue).str);
+    }
+
+    return infoType;
+}
+
+SpcInfoType_t SpcEntryShowHeatStatus(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
     SpcRTDStatus_t rtdStatus = (SpcRTDStatus_t) (SpcConf(SpcValue).bytes.rdtStat);
     SpcStringType_t line1 = SpcRtdStatStrPool[rtdStatus].line1;
     SpcStringType_t line2 = SpcRtdStatStrPool[rtdStatus].line2;
     Spc_ScreenUpdateStatic(line1, line2);
-    return SPC_KEY_NORMAL;
+    return infoType;
 }
 
-SpcKeyType_t SpcEntryShowHeatTemp(SpcValue_t *SpcValue)
+SpcInfoType_t SpcEntryShowHeatTemp(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcPosition(SpcValue);
     const SpcDataTemp_t *element = SpcGetDataTemp(infoType);
@@ -175,10 +239,10 @@ SpcKeyType_t SpcEntryShowHeatTemp(SpcValue_t *SpcValue)
         SpcShowTemperature(SpcValue, element->line1, element->temp);
     }
 
-    return SPC_KEY_NORMAL;
+    return infoType;
 }
 
-SpcKeyType_t SpcEntryShowInt16(SpcValue_t *SpcValue)
+SpcInfoType_t SpcEntryShowInt16(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcPosition(SpcValue);
     char buf[SPC_MAX_STR_LEN] = {0};
@@ -187,10 +251,10 @@ SpcKeyType_t SpcEntryShowInt16(SpcValue_t *SpcValue)
     snprintf(buf, SPC_MAX_STR_LEN, "%s%d%s", element->prefix,
         *(element->val), element->suffix);
     Spc_ScreenUpdateDynamic(element->line1, buf);
-    return SPC_KEY_NORMAL;
+    return infoType;
 }
 
-SpcKeyType_t SpcEntryShowConfInt16(SpcValue_t *SpcValue)
+SpcInfoType_t SpcEntryShowConfInt16(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcPosition(SpcValue);
     const SpcConfDataInt16_t *element = SpcGetConfInt16(infoType);
@@ -207,72 +271,75 @@ SpcKeyType_t SpcEntryShowConfInt16(SpcValue_t *SpcValue)
             element->data->val, element->suffix);
         Spc_ScreenUpdateDynamic(element->line1, buf);
     }
-    return SPC_KEY_NORMAL;
+    return infoType;
 }
 
-SpcKeyType_t SpcEntryShowInt32(SpcValue_t *SpcValue)
+SpcInfoType_t SpcEntryShowInt32(SpcValue_t *SpcValue)
 {
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
     char buf[SPC_MAX_STR_LEN] = {0};
     const SpcDataInt32_t *element = SpcGetDataInt32(SpcValue);
 
     snprintf(buf, SPC_MAX_STR_LEN, "%s%d%s", element->prefix,
         *(element->val), element->suffix);
     Spc_ScreenUpdateDynamic(element->line1, buf);
-    return SPC_KEY_NORMAL;
+    return infoType;
 }
 
-SpcKeyType_t SpcEntryShowByte(SpcValue_t *SpcValue)
+SpcInfoType_t SpcEntryShowByte(SpcValue_t *SpcValue)
 {
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
     uint32_t word = SpcConf(SpcValue).word;
     char buf[SPC_MAX_STR_LEN] = {0};
-    const SpcDataByte_t *element = SpcGetDataByte(SpcValue);
+    const SpcDataByte_t *element = SpcGetDataByte(infoType);
 
     uint8_t val = (uint8_t)((word >> element->offset) & element->field);
     const SpcStringType_t line2 = SpcGetDataByteStr(element, val);
     Spc_ScreenUpdateStatic(element->line1, line2);
-    return SPC_KEY_NORMAL;
+    return infoType;
 }
 
-SpcKeyType_t SpcEntryShowSysStatus(SpcValue_t *SpcValue)
+SpcInfoType_t SpcEntryShowSysStatus(SpcValue_t *SpcValue)
 {
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
     char buf[SPC_MAX_STR_LEN] = {0};
 
     snprintf(buf, sizeof(buf), "%d Alarms", SpcAlarmList(SpcValue).totalNum);
     Spc_ScreenUpdateDynamic(SPC_DEF_SYS_STATUS_STR, buf);
-    return SPC_KEY_NORMAL;
+    return infoType;
 }
 
 
 //=========================================================================================
 // Enter reset statistic
 //=========================================================================================
-SpcKeyType_t SpcPushTempRet(SpcValue_t *SpcValue)
+SpcInfoType_t SpcPushTempRet(SpcValue_t *SpcValue)
 {
     SpcStackPos(SpcValue) = SpcPosition(SpcValue);
 
     return 63;
 }
 
-SpcKeyType_t SpcPushIntRet(SpcValue_t *SpcValue)
+SpcInfoType_t SpcPushIntRet(SpcValue_t *SpcValue)
 {
     SpcStackPos(SpcValue) = SpcPosition(SpcValue);
 
     return 65;
 }
 
-SpcKeyType_t SpcPushAllRet(SpcValue_t *SpcValue)
+SpcInfoType_t SpcPushAllRet(SpcValue_t *SpcValue)
 {
     SpcStackPos(SpcValue) = SpcPosition(SpcValue);
 
     return 67;
 }
 
-SpcKeyType_t SpcResetRet(SpcValue_t *SpcValue)
+SpcInfoType_t SpcResetRet(SpcValue_t *SpcValue)
 {
     return SpcStackPos(SpcValue);
 }
 
-SpcKeyType_t SpcConfirmTemp(SpcValue_t *SpcValue)
+SpcInfoType_t SpcConfirmTemp(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcStackPos(SpcValue);
     const SpcDataTemp_t *element = SpcGetDataTemp(infoType);
@@ -286,7 +353,7 @@ SpcKeyType_t SpcConfirmTemp(SpcValue_t *SpcValue)
     return SpcStackPos(SpcValue);
 }
 
-SpcKeyType_t SpcConfirmInt(SpcValue_t *SpcValue)
+SpcInfoType_t SpcConfirmInt(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcStackPos(SpcValue);
     const SpcDataInt16_t *element = SpcGetDataInt16(infoType);
@@ -301,7 +368,7 @@ SpcKeyType_t SpcConfirmInt(SpcValue_t *SpcValue)
     return SpcStackPos(SpcValue);
 }
 
-SpcKeyType_t SpcConfirmAll(SpcValue_t *SpcValue)
+SpcInfoType_t SpcConfirmAll(SpcValue_t *SpcValue)
 {
     memcpy(&SpcMaxTemp(SpcValue), &SpcTemp(SpcValue,SPC_RTD_COMBIN), sizeof(SpcTemperature_t));
     memcpy(&SpcMinTemp(SpcValue), &SpcTemp(SpcValue,SPC_RTD_COMBIN), sizeof(SpcTemperature_t));
@@ -324,7 +391,7 @@ SpcKeyType_t SpcConfirmAll(SpcValue_t *SpcValue)
 //=========================================================================================
 // Enter config temperature
 //=========================================================================================
-SpcKeyType_t SpcPushTmUp(SpcValue_t *SpcValue)
+SpcInfoType_t SpcPushTmUp(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcPosition(SpcValue);
     const SpcDataTemp_t *element = SpcGetDataTemp(infoType);
@@ -353,7 +420,7 @@ SpcKeyType_t SpcPushTmUp(SpcValue_t *SpcValue)
     return 69;
 }
 
-SpcKeyType_t SpcPushTmDown(SpcValue_t *SpcValue)
+SpcInfoType_t SpcPushTmDown(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcPosition(SpcValue);
     const SpcDataTemp_t *element = SpcGetDataTemp(infoType);
@@ -382,7 +449,7 @@ SpcKeyType_t SpcPushTmDown(SpcValue_t *SpcValue)
     return 69;
 }
 
-SpcKeyType_t SpcUpTemp(SpcValue_t *SpcValue)
+SpcInfoType_t SpcUpTemp(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcStackPos(SpcValue);
     const SpcDataTemp_t *element = SpcGetDataTemp(infoType);
@@ -407,7 +474,7 @@ SpcKeyType_t SpcUpTemp(SpcValue_t *SpcValue)
     return SpcPosition(SpcValue);
 }
 
-SpcKeyType_t SpcDownTemp(SpcValue_t *SpcValue)
+SpcInfoType_t SpcDownTemp(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcStackPos(SpcValue);
     const SpcDataTemp_t *element = SpcGetDataTemp(infoType);
@@ -433,7 +500,7 @@ SpcKeyType_t SpcDownTemp(SpcValue_t *SpcValue)
 }
 
 
-SpcKeyType_t SpcPopRight(SpcValue_t *SpcValue)
+SpcInfoType_t SpcPopRight(SpcValue_t *SpcValue)
 {
     SpcInfoType_t nextType;
     SpcInfoType_t infoType = SpcStackPos(SpcValue);
@@ -446,7 +513,7 @@ SpcKeyType_t SpcPopRight(SpcValue_t *SpcValue)
     return nextType;
 }
 
-SpcKeyType_t SpcPopLeft(SpcValue_t *SpcValue)
+SpcInfoType_t SpcPopLeft(SpcValue_t *SpcValue)
 {
     SpcInfoType_t nextType;
     SpcInfoType_t infoType = SpcStackPos(SpcValue);
@@ -459,7 +526,7 @@ SpcKeyType_t SpcPopLeft(SpcValue_t *SpcValue)
     return nextType;
 }
 
-SpcKeyType_t SpcPopProg(SpcValue_t *SpcValue)
+SpcInfoType_t SpcPopProg(SpcValue_t *SpcValue)
 {
     SpcInfoType_t nextType;
     SpcInfoType_t infoType = SpcStackPos(SpcValue);
@@ -472,7 +539,7 @@ SpcKeyType_t SpcPopProg(SpcValue_t *SpcValue)
     return nextType;
 }
 
-SpcKeyType_t SpcPopTempConf(SpcValue_t *SpcValue)
+SpcInfoType_t SpcPopTempConf(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcStackPos(SpcValue);
     const SpcDataTemp_t *element = SpcGetDataTemp(infoType);
@@ -488,7 +555,7 @@ SpcKeyType_t SpcPopTempConf(SpcValue_t *SpcValue)
 //=========================================================================================
 // Enter config int
 //=========================================================================================
-SpcKeyType_t SpcPushIntUp(SpcValue_t *SpcValue)
+SpcInfoType_t SpcPushIntUp(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcPosition(SpcValue);
     const SpcConfDataInt16_t *element = SpcGetConfInt16(infoType);
@@ -504,7 +571,7 @@ SpcKeyType_t SpcPushIntUp(SpcValue_t *SpcValue)
     return 70;
 }
 
-SpcKeyType_t SpcPushIntDown(SpcValue_t *SpcValue)
+SpcInfoType_t SpcPushIntDown(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcPosition(SpcValue);
     const SpcConfDataInt16_t *element = SpcGetConfInt16(infoType);
@@ -520,7 +587,7 @@ SpcKeyType_t SpcPushIntDown(SpcValue_t *SpcValue)
     return 70;
 }
 
-SpcKeyType_t SpcUpInt(SpcValue_t *SpcValue)
+SpcInfoType_t SpcUpInt(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcStackPos(SpcValue);
     const SpcConfDataInt16_t *element = SpcGetConfInt16(infoType);
@@ -532,7 +599,7 @@ SpcKeyType_t SpcUpInt(SpcValue_t *SpcValue)
     return SpcPosition(SpcValue);
 }
 
-SpcKeyType_t SpcDownInt(SpcValue_t *SpcValue)
+SpcInfoType_t SpcDownInt(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcStackPos(SpcValue);
     const SpcConfDataInt16_t *element = SpcGetConfInt16(infoType);
@@ -544,7 +611,7 @@ SpcKeyType_t SpcDownInt(SpcValue_t *SpcValue)
     return SpcPosition(SpcValue);
 }
 
-SpcKeyType_t SpcPopIntConf(SpcValue_t *SpcValue)
+SpcInfoType_t SpcPopIntConf(SpcValue_t *SpcValue)
 {
     SpcInfoType_t infoType = SpcStackPos(SpcValue);
     const SpcConfDataInt16_t *element = SpcGetConfInt16(infoType);
@@ -552,6 +619,110 @@ SpcKeyType_t SpcPopIntConf(SpcValue_t *SpcValue)
 
     return infoType;
 }
+
+//=========================================================================================
+// Enter config byte
+//=========================================================================================
+static inline bool SpcModifyByte(int16_t *val, const SpcDataByte_t *element, bool increase)
+{
+    uint8_t size = element->tableSize;
+
+    if (increase) {
+        if (*val < (size-1)) {
+            (*val)++;
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        if (*val > 0) {
+            (*val)--;
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+SpcInfoType_t SpcPushByteUp(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    const SpcDataByte_t *element = SpcGetDataByte(infoType);
+
+    uint32_t word = SpcConf(SpcValue).word;
+    int16_t val = (int16_t)((word >> element->offset) & element->field);
+
+    SpcStackData(SpcValue).val = val;
+
+    if (SpcModifyByte(&(SpcStackData(SpcValue).val), element, true)) {
+        const SpcStringType_t line2 = SpcGetDataByteStr(element, SpcStackData(SpcValue).val);
+        Spc_ScreenUpdateStatic(element->line1, line2);
+    }
+
+    SpcStackPos(SpcValue) = SpcPosition(SpcValue);
+
+    return 71;
+}
+
+SpcInfoType_t SpcPushByteDown(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    const SpcDataByte_t *element = SpcGetDataByte(infoType);
+
+    uint32_t word = SpcConf(SpcValue).word;
+    int16_t val = (int16_t)((word >> element->offset) & element->field);
+
+    SpcStackData(SpcValue).val = val;
+
+    if (SpcModifyByte(&(SpcStackData(SpcValue).val), element, false)) {
+        const SpcStringType_t line2 = SpcGetDataByteStr(element, SpcStackData(SpcValue).val);
+        Spc_ScreenUpdateStatic(element->line1, line2);
+    }
+
+    SpcStackPos(SpcValue) = SpcPosition(SpcValue);
+
+    return 71;
+}
+
+SpcInfoType_t SpcUpByte(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcStackPos(SpcValue);
+    const SpcDataByte_t *element = SpcGetDataByte(infoType);
+
+    if (SpcModifyByte(&(SpcStackData(SpcValue).val), element, true)) {
+        const SpcStringType_t line2 = SpcGetDataByteStr(element, SpcStackData(SpcValue).val);
+        Spc_ScreenUpdateStatic(element->line1, line2);
+    }
+
+    return SpcPosition(SpcValue);
+}
+
+SpcInfoType_t SpcDownByte(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcStackPos(SpcValue);
+    const SpcDataByte_t *element = SpcGetDataByte(infoType);
+
+    if (SpcModifyByte(&(SpcStackData(SpcValue).val), element, false)) {
+        const SpcStringType_t line2 = SpcGetDataByteStr(element, SpcStackData(SpcValue).val);
+        Spc_ScreenUpdateStatic(element->line1, line2);
+    }
+
+    return SpcPosition(SpcValue);
+}
+
+SpcInfoType_t SpcPopByteConf(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcStackPos(SpcValue);
+    const SpcDataByte_t *element = SpcGetDataByte(infoType);
+    uint32_t mask = ~(element->field << element->offset);
+    uint32_t val = ((uint32_t) (SpcStackData(SpcValue).val)) << element->offset;
+
+    SpcConf(SpcValue).word = (SpcConf(SpcValue).word & mask) | val;
+
+    return infoType;
+}
+
+
 
 //=========================================================================================
 // Private Functions
@@ -618,9 +789,8 @@ static const SpcDataInt32_t *SpcGetDataInt32(SpcValue_t *SpcValue)
     }
 }
 
-static const SpcDataByte_t *SpcGetDataByte(SpcValue_t *SpcValue)
+static const SpcDataByte_t *SpcGetDataByte(SpcInfoType_t infoType)
 {
-    SpcInfoType_t infoType = SpcPosition(SpcValue);
     for (int16_t i=0; i<NUM_ROWS(SpcDataByte);i++) {
         if (SpcDataByte[i].type == infoType) {
             return &SpcDataByte[i];
@@ -959,6 +1129,16 @@ static uint8_t SpcGetConfStatusIndex(const SpcConfIntLimit_t *element, SpcDataSt
     }
 }
 
+// id config
+static uint8_t SpcGetIdCharIndex(char c)
+{
+    uint8_t charIndex = 0;
+
+    for (charIndex=0; charIndex<NUM_ROWS(SpcCharactors); charIndex++) {
+        if (SpcCharactors[charIndex] == c)
+            return charIndex;
+    }
+}
 
 
 

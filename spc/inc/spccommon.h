@@ -28,6 +28,32 @@
 #define MAX_SPCCURRENT         ( 300 )
 #define MIN_SPCHIGHCURRENT     ( 10 )
 #define MAX_SPCLOWCURRENT      ( 290 )
+#define MIN_SPCGFIALARM        ( 10 )
+#define MAX_SPCGFIALARM        ( 500 )
+#define MIN_SPCHIGHGFIALARM    ( 15 )
+#define MAX_SPCLOWGFIALARM     ( 495 )
+#define MIN_SPCVOLT            ( 85 )
+#define MAX_SPCVOLT            ( 280 )
+#define MIN_SPCHIGHVOLT        ( 95 )
+#define MAX_SPCLOWVOLT         ( 270 )
+#define MIN_SPCCURRENTLMT      ( 20 )
+#define MAX_SPCCURRENTLMT      ( 100 )
+#define MAX_SOFTSTART          ( 999 )
+#define MIN_SOFTSTART          ( 10 )
+#define MAX_AUTOTEST           ( 720 )
+#define MIN_AUTOTEST           ( 1 )
+#define MAX_SPCOST             ( 100 )
+#define MIN_SPCOST             ( 1 )
+#define MAX_TIMEOUT            ( 600 )
+#define MIN_TIMEOUT            ( 5 )
+#define MAX_SCANSPEED          ( 10 )
+#define MIN_SCANSPEED          ( 3 )
+#define MAX_MODBUS             ( 255 )
+#define MIN_MODBUS             ( 1 )
+#define MAX_ALARMOUT           ( 24 )
+#define MIN_ALARMOUT           ( 1 )
+#define MAX_HEATERTEST         ( 24 )
+#define MIN_HEATERTEST         ( 1 )
 
 typedef enum
 {
@@ -93,6 +119,7 @@ typedef enum
 #define SpcStackPos(x)         ( (x)->stack.position )
 #define SpcStackData(x)        ( (x)->stack.data )
 #define SpcStackTemp(x)        ( (x)->stack.temp )
+#define SpcStackStr(x)         ( (x)->stack.string )
 
 #define SpcInitEntry(x)        ( SpcStateAction[(x)].initEntry )
 #define SpcRight(x)            ( SpcStateAction[(x)].rightEntry )
@@ -269,6 +296,12 @@ typedef enum
 
     // Password
     SPC_MENU_PROG_PSWINIT_STR,
+    SPC_PSW_OLD,
+    SPC_PSW_NEW,
+    SPC_PSW_NEW_AGAIN,
+    SPC_PSW_SUCCESS,
+    SPC_PSW_INVALID,
+    SPC_PSW_NOT_MATCH,
 
     // Reset
     SPC_MENU_RESET_CONFIRM_STR,
@@ -433,6 +466,15 @@ typedef struct
 
 typedef struct
 {
+    uint8_t index;
+    uint8_t charIndex;
+    char str[SPC_MAX_STR_LEN];
+} SpcStrStack_t;
+
+typedef struct
+{
+    SpcStrStack_t string;
+    SpcStrStack_t newString;
     SpcInfoType_t position;
     SpcConfInt16_t data;
     SpcTemperature_t temp;
@@ -441,6 +483,7 @@ typedef struct
 typedef struct
 {
     char name[SPC_MAX_STR_LEN];
+    char password[SPC_MAX_STR_LEN];
     SpcRunStatus_t runStatus;
     SpcMeasure_t measure;
     SpcConfig_t config;
@@ -461,7 +504,7 @@ typedef struct {
     int16_t line2;
 } SpcStaticInfo_t;
 
-typedef SpcKeyType_t (*pfnAct)(SpcValue_t *SpcValue);
+typedef SpcInfoType_t (*pfnAct)(SpcValue_t *SpcValue);
 typedef struct {
     SpcInfoType_t type;
     pfnAct action;
@@ -567,37 +610,46 @@ SpcStatus_t SpcListRemove(SpcList_t * list, SpcAlarmType_t alarmType);
 void Spc_AlarmRaise(SpcAlarmType_t alarmType);
 void Spc_AlarmClear(SpcAlarmType_t alarmType);
 
-SpcKeyType_t SpcEntryInit(SpcValue_t *SpcValue);
-SpcKeyType_t SpcEntryShowId(SpcValue_t *SpcValue);
-SpcKeyType_t SpcEntryShowHeatStatus(SpcValue_t *SpcValue);
-SpcKeyType_t SpcEntryShowHeatTemp(SpcValue_t *SpcValue);
-SpcKeyType_t SpcEntryShowInt16(SpcValue_t *SpcValue);
-SpcKeyType_t SpcEntryShowInt32(SpcValue_t *SpcValue);
-SpcKeyType_t SpcEntryShowByte(SpcValue_t *SpcValue);
-SpcKeyType_t SpcEntryShowSysStatus(SpcValue_t *SpcValue);
-SpcKeyType_t SpcEntryShowConfInt16(SpcValue_t *SpcValue);
+SpcInfoType_t SpcEntryInit(SpcValue_t *SpcValue);
+SpcInfoType_t SpcEntryShowId(SpcValue_t *SpcValue);
+SpcInfoType_t SpcIdUp(SpcValue_t *SpcValue);
+SpcInfoType_t SpcIdDown(SpcValue_t *SpcValue);
+SpcInfoType_t SpcIdConf(SpcValue_t *SpcValue);
+SpcInfoType_t SpcEntryShowHeatStatus(SpcValue_t *SpcValue);
+SpcInfoType_t SpcEntryShowHeatTemp(SpcValue_t *SpcValue);
+SpcInfoType_t SpcEntryShowInt16(SpcValue_t *SpcValue);
+SpcInfoType_t SpcEntryShowInt32(SpcValue_t *SpcValue);
+SpcInfoType_t SpcEntryShowByte(SpcValue_t *SpcValue);
+SpcInfoType_t SpcEntryShowSysStatus(SpcValue_t *SpcValue);
+SpcInfoType_t SpcEntryShowConfInt16(SpcValue_t *SpcValue);
 
-SpcKeyType_t SpcPushTempRet(SpcValue_t *SpcValue);
-SpcKeyType_t SpcPushIntRet(SpcValue_t *SpcValue);
-SpcKeyType_t SpcPushAllRet(SpcValue_t *SpcValue);
-SpcKeyType_t SpcResetRet(SpcValue_t *SpcValue);
-SpcKeyType_t SpcConfirmTemp(SpcValue_t *SpcValue);
-SpcKeyType_t SpcConfirmInt(SpcValue_t *SpcValue);
-SpcKeyType_t SpcConfirmAll(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPushTempRet(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPushIntRet(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPushAllRet(SpcValue_t *SpcValue);
+SpcInfoType_t SpcResetRet(SpcValue_t *SpcValue);
+SpcInfoType_t SpcConfirmTemp(SpcValue_t *SpcValue);
+SpcInfoType_t SpcConfirmInt(SpcValue_t *SpcValue);
+SpcInfoType_t SpcConfirmAll(SpcValue_t *SpcValue);
 
-SpcKeyType_t SpcPushTmUp(SpcValue_t *SpcValue);
-SpcKeyType_t SpcPushTmDown(SpcValue_t *SpcValue);
-SpcKeyType_t SpcUpTemp(SpcValue_t *SpcValue);
-SpcKeyType_t SpcDownTemp(SpcValue_t *SpcValue);
-SpcKeyType_t SpcPopRight(SpcValue_t *SpcValue);
-SpcKeyType_t SpcPopLeft(SpcValue_t *SpcValue);
-SpcKeyType_t SpcPopProg(SpcValue_t *SpcValue);
-SpcKeyType_t SpcPopTempConf(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPushTmUp(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPushTmDown(SpcValue_t *SpcValue);
+SpcInfoType_t SpcUpTemp(SpcValue_t *SpcValue);
+SpcInfoType_t SpcDownTemp(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPopRight(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPopLeft(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPopProg(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPopTempConf(SpcValue_t *SpcValue);
 
-SpcKeyType_t SpcPushIntUp(SpcValue_t *SpcValue);
-SpcKeyType_t SpcPushIntDown(SpcValue_t *SpcValue);
-SpcKeyType_t SpcUpInt(SpcValue_t *SpcValue);
-SpcKeyType_t SpcDownInt(SpcValue_t *SpcValue);
-SpcKeyType_t SpcPopIntConf(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPushIntUp(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPushIntDown(SpcValue_t *SpcValue);
+SpcInfoType_t SpcUpInt(SpcValue_t *SpcValue);
+SpcInfoType_t SpcDownInt(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPopIntConf(SpcValue_t *SpcValue);
+
+SpcInfoType_t SpcPushByteUp(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPushByteDown(SpcValue_t *SpcValue);
+SpcInfoType_t SpcUpByte(SpcValue_t *SpcValue);
+SpcInfoType_t SpcDownByte(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPopByteConf(SpcValue_t *SpcValue);
 
 #endif // __spc_common_H

@@ -1,3 +1,3 @@
 /home/dzhang/workspace/CLearning/spc/CMakeFiles/rebuild_cache.dir
-/home/dzhang/workspace/CLearning/spc/CMakeFiles/edit_cache.dir
 /home/dzhang/workspace/CLearning/spc/CMakeFiles/spc.dir
+/home/dzhang/workspace/CLearning/spc/CMakeFiles/edit_cache.dir

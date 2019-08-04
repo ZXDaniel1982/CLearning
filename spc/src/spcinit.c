@@ -99,7 +99,7 @@ void SpcSetTestData(SpcValue_t *SpcValue)
     SpcConfLowCurrent(SpcValue).status = SPC_OFF;
     SpcConfHighCurrent(SpcValue).status = SPC_OFF;
 
-    strncpy(SpcName(SpcValue), "My Spc", SPC_MAX_STR_LEN);
+    strncpy(SpcName(SpcValue), "My Spc           ", SPC_MAX_STR_LEN);
 }
 
 static SpcStatus_t Spc_TestTemp(SpcValue_t *SpcValue)
