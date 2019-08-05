@@ -13,6 +13,8 @@
 static int stdin_fd = -1;
 static struct termios original;
 
+static bool enable = false;
+
 SpcValue_t SpcValue = {0};
 
 static SpcKeyType_t Spc_KeyOptProcess(SpcValue_t *SpcValue, uint16_t command);
@@ -44,7 +46,9 @@ static const SpcConfIntLimit_t *SpcGetConfIntLimit(SpcInfoType_t infoType);
 
 static inline bool SpcModifyByte(int16_t *val, const SpcDataByte_t *element, bool increase);
 
-static uint8_t SpcGetIdCharIndex(char c);
+static uint8_t SpcGetCharIndex(char c);
+
+static const SpcPasswordStatus_t *SpcGetPswStatus(SpcInfoType_t infoType);
 
 bool keyPressed(int *character)
 {
@@ -159,7 +163,7 @@ SpcInfoType_t SpcEntryShowId(SpcValue_t *SpcValue)
     memset(SpcStackStr(SpcValue).str, 0, SPC_MAX_STR_LEN);
     strncpy(SpcStackStr(SpcValue).str, SpcName(SpcValue), SPC_MAX_STR_LEN);
     SpcStackStr(SpcValue).index = 0;
-    SpcStackStr(SpcValue).charIndex = SpcGetIdCharIndex(SpcStackStr(SpcValue).str[0]);
+    SpcStackStr(SpcValue).charIndex = SpcGetCharIndex(SpcStackStr(SpcValue).str[0]);
     Spc_ScreenUpdateDynamic(SPC_MENU_PROG_HEATID_STR, SpcName(SpcValue));
     return infoType;
 }
@@ -206,12 +210,12 @@ SpcInfoType_t SpcIdConf(SpcValue_t *SpcValue)
         strncpy(SpcName(SpcValue), SpcStackStr(SpcValue).str, SPC_MAX_STR_LEN);
 
         SpcStackStr(SpcValue).index = 0;
-        SpcStackStr(SpcValue).charIndex = SpcGetIdCharIndex(SpcStackStr(SpcValue).str[0]);
+        SpcStackStr(SpcValue).charIndex = SpcGetCharIndex(SpcStackStr(SpcValue).str[0]);
         Spc_ScreenUpdateDynamic(SPC_MENU_PROG_HEATID_STR, SpcName(SpcValue));
     } else {
         SpcStackStr(SpcValue).index++;
         index = SpcStackStr(SpcValue).index;
-        SpcStackStr(SpcValue).charIndex = SpcGetIdCharIndex(SpcStackStr(SpcValue).str[index]);
+        SpcStackStr(SpcValue).charIndex = SpcGetCharIndex(SpcStackStr(SpcValue).str[index]);
         Spc_ScreenUpdateDynamic(SPC_MENU_PROG_HEATID_STR, SpcStackStr(SpcValue).str);
     }
 
@@ -722,7 +726,192 @@ SpcInfoType_t SpcPopByteConf(SpcValue_t *SpcValue)
     return infoType;
 }
 
+//=========================================================================================
+// Password
+//=========================================================================================
+static const SpcPasswordStatus_t *SpcGetPswStatus(SpcInfoType_t infoType)
+{
+    uint8_t i;
+    for (i=0; i<NUM_ROWS(SpcPasswordStatus); i++) {
+        if (SpcPasswordStatus[i].type == infoType) {
+            return &SpcPasswordStatus[i];
+        }
+    }
+}
 
+SpcInfoType_t SpcPswInitUp(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+
+    Spc_ScreenUpdateStatic(SPC_MENU_PROG_PSWINIT_STR, SPC_YES_STR);
+
+    SpcStackPos(SpcValue) = SpcPosition(SpcValue);
+
+    return 73;
+}
+
+SpcInfoType_t SpcPswInitDown(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+
+    Spc_ScreenUpdateStatic(SPC_MENU_PROG_PSWINIT_STR, SPC_NO_STR);
+
+    SpcStackPos(SpcValue) = SpcPosition(SpcValue);
+
+    return 72;
+}
+
+SpcInfoType_t SpcPswStart(SpcValue_t *SpcValue)
+{
+    memset(SpcStackStr(SpcValue).str, 0, SPC_MAX_STR_LEN);
+    SpcStackStr(SpcValue).index = 0;
+    SpcStackStr(SpcValue).charIndex = 1;
+    SpcStackStr(SpcValue).str[0] = SpcCharactors[1];
+    Spc_ScreenUpdateDynamic(SPC_PSW_OLD, SpcStackStr(SpcValue).str);
+
+    return 74;
+}
+
+SpcInfoType_t SpcPswUp(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    const SpcPasswordStatus_t *element = SpcGetPswStatus(infoType);
+    SpcStrStack_t *stack = element->stack;
+    uint8_t index = 0, charIndex = 0, i;
+    if (stack->charIndex < NUM_ROWS(SpcCharactors)) {
+        stack->charIndex++;
+
+        index = stack->index;
+        charIndex = stack->charIndex;
+        stack->str[index] = SpcCharactors[charIndex];
+
+        char buf[SPC_MAX_STR_LEN] = {0};
+        strncpy(buf, stack->str, SPC_MAX_STR_LEN);
+
+        for (i=0; i<index; i++) buf[i] = '*';
+        Spc_ScreenUpdateDynamic(element->line1, buf);
+    }
+
+    return infoType;
+}
+
+SpcInfoType_t SpcPswDown(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    const SpcPasswordStatus_t *element = SpcGetPswStatus(infoType);
+    SpcStrStack_t *stack = element->stack;
+    uint8_t index = 0, charIndex = 0, i;
+    if (stack->charIndex > 1) {
+        stack->charIndex--;
+
+        index = stack->index;
+        charIndex = stack->charIndex;
+        stack->str[index] = SpcCharactors[charIndex];
+
+        char buf[SPC_MAX_STR_LEN] = {0};
+        strncpy(buf, stack->str, SPC_MAX_STR_LEN);
+
+        for (i=0; i<index; i++) buf[i] = '*';
+        Spc_ScreenUpdateDynamic(element->line1, stack->str);
+    }
+
+    return infoType;
+}
+
+SpcInfoType_t SpcPswRight(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    const SpcPasswordStatus_t *element = SpcGetPswStatus(infoType);
+    SpcStrStack_t *stack = element->stack;
+    uint8_t index = 0, charIndex = 0, i;
+
+    stack->index++;
+    stack->charIndex = 1;
+
+    index = stack->index;
+    charIndex = stack->charIndex;
+    stack->str[index] = SpcCharactors[charIndex];
+
+    char buf[SPC_MAX_STR_LEN] = {0};
+    strncpy(buf, stack->str, SPC_MAX_STR_LEN);
+
+    for (i=0; i<index; i++) buf[i] = '*';
+    Spc_ScreenUpdateDynamic(element->line1, buf);
+
+    return infoType;
+}
+
+SpcInfoType_t SpcOldPswEnter(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    SpcInfoType_t nextType = SpcStackPos(SpcValue);
+    const SpcPasswordStatus_t *element = SpcGetPswStatus(infoType);
+    SpcStrStack_t *stack = element->stack;
+
+    if (strncmp(stack->str, SpcPassword(SpcValue), SPC_MAX_STR_LEN) == 0) {
+        const SpcPasswordStatus_t *nextEle = SpcGetPswStatus(75);
+        SpcStrStack_t *nextStack = nextEle->stack;
+
+        memset(nextStack->str, 0, SPC_MAX_STR_LEN);
+        nextStack->index = 0;
+        nextStack->charIndex = 1;
+        nextStack->str[0] = SpcCharactors[1];
+        Spc_ScreenUpdateDynamic(nextEle->line1, nextStack->str);
+
+        return 75;
+    } else {
+        Spc_ScreenUpdateStatic(SPC_PSW_INVALID, SPC_BLANK_STR);
+        sleep(2);
+
+        return nextType;
+    }
+}
+
+SpcInfoType_t SpcPswNew(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    SpcInfoType_t nextType = SpcStackPos(SpcValue);
+    const SpcPasswordStatus_t *element = SpcGetPswStatus(infoType);
+    SpcStrStack_t *stack = element->stack;
+
+    if (stack->index < 3) {
+        Spc_ScreenUpdateStatic(SPC_PSW_INVALID, SPC_BLANK_STR);
+        sleep(2);
+
+        return nextType;
+    } else {
+        const SpcPasswordStatus_t *nextEle = SpcGetPswStatus(76);
+        SpcStrStack_t *nextStack = nextEle->stack;
+
+        memset(nextStack->str, 0, SPC_MAX_STR_LEN);
+        nextStack->index = 0;
+        nextStack->charIndex = 1;
+        nextStack->str[0] = SpcCharactors[1];
+        Spc_ScreenUpdateDynamic(nextEle->line1, nextStack->str);
+
+        return 76;
+    }
+}
+
+SpcInfoType_t SpcPswNewAgain(SpcValue_t *SpcValue)
+{
+    SpcInfoType_t infoType = SpcPosition(SpcValue);
+    SpcInfoType_t nextType = SpcStackPos(SpcValue);
+    const SpcPasswordStatus_t *element = SpcGetPswStatus(75);
+    const SpcPasswordStatus_t *NewEle = SpcGetPswStatus(76);
+    SpcStrStack_t *stack = element->stack;
+    SpcStrStack_t *newStack = NewEle->stack;
+
+    if (strncmp(stack->str, newStack->str, SPC_MAX_STR_LEN) == 0) {
+        strncpy(SpcPassword(SpcValue), newStack->str, SPC_MAX_STR_LEN);
+        Spc_ScreenUpdateStatic(SPC_PSW_SUCCESS, SPC_BLANK_STR);
+        sleep(2);
+    } else {
+        Spc_ScreenUpdateStatic(SPC_PSW_NOT_MATCH, SPC_BLANK_STR);
+        sleep(2);
+    }
+    return nextType;
+}
 
 //=========================================================================================
 // Private Functions
@@ -1130,7 +1319,7 @@ static uint8_t SpcGetConfStatusIndex(const SpcConfIntLimit_t *element, SpcDataSt
 }
 
 // id config
-static uint8_t SpcGetIdCharIndex(char c)
+static uint8_t SpcGetCharIndex(char c)
 {
     uint8_t charIndex = 0;
 

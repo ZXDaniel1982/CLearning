@@ -71,6 +71,7 @@ typedef enum
 #define SpcAlarmNormal         ( SPC_ERROR )
 
 #define SpcName(x)             ( (x)->name )
+#define SpcPassword(x)         ( (x)->password )
 
 #define SpcTemp(x,y)           ( (x)->measure.temp[y] )
 #define SpcGfi(x)              ( (x)->measure.gfi )
@@ -120,6 +121,7 @@ typedef enum
 #define SpcStackData(x)        ( (x)->stack.data )
 #define SpcStackTemp(x)        ( (x)->stack.temp )
 #define SpcStackStr(x)         ( (x)->stack.string )
+#define SpcStackNewStr(x)      ( (x)->stack.newString )
 
 #define SpcInitEntry(x)        ( SpcStateAction[(x)].initEntry )
 #define SpcRight(x)            ( SpcStateAction[(x)].rightEntry )
@@ -597,6 +599,13 @@ typedef struct
     const SpcDataStatus_t *status;
 } SpcConfIntLimit_t;
 
+typedef struct
+{
+    SpcInfoType_t type;
+    SpcStringType_t line1;
+    SpcStrStack_t *stack;
+} SpcPasswordStatus_t;
+
 extern SpcValue_t SpcValue;
 
 void Spc_ScreenUpdateStatic(int16_t line1, int16_t line2);
@@ -651,5 +660,15 @@ SpcInfoType_t SpcPushByteDown(SpcValue_t *SpcValue);
 SpcInfoType_t SpcUpByte(SpcValue_t *SpcValue);
 SpcInfoType_t SpcDownByte(SpcValue_t *SpcValue);
 SpcInfoType_t SpcPopByteConf(SpcValue_t *SpcValue);
+
+SpcInfoType_t SpcPswInitUp(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPswInitDown(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPswStart(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPswUp(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPswDown(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPswRight(SpcValue_t *SpcValue);
+SpcInfoType_t SpcOldPswEnter(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPswNew(SpcValue_t *SpcValue);
+SpcInfoType_t SpcPswNewAgain(SpcValue_t *SpcValue);
 
 #endif // __spc_common_H

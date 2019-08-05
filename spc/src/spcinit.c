@@ -100,6 +100,7 @@ void SpcSetTestData(SpcValue_t *SpcValue)
     SpcConfHighCurrent(SpcValue).status = SPC_OFF;
 
     strncpy(SpcName(SpcValue), "My Spc           ", SPC_MAX_STR_LEN);
+    strncpy(SpcPassword(SpcValue), "1234", SPC_MAX_STR_LEN);
 }
 
 static SpcStatus_t Spc_TestTemp(SpcValue_t *SpcValue)

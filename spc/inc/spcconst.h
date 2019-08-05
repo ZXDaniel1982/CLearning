@@ -185,6 +185,8 @@ static const SpcStaticInfo_t SpcStaticInfo[] = {
     {66, SPC_MENU_RESET_CONFIRM_STR, SPC_YES_STR},
     {67, SPC_MENU_RESET_CONFIRM_STR, SPC_NO_STR},
     {68, SPC_MENU_RESET_CONFIRM_STR, SPC_YES_STR},
+    {72, SPC_MENU_PROG_PSWINIT_STR,  SPC_NO_STR},
+    {73, SPC_MENU_PROG_PSWINIT_STR,  SPC_YES_STR},
 };
 
 static const SpcDataTemp_t SpcDataTemp[] = {
@@ -363,6 +365,12 @@ static const SpcConfIntLimit_t SpcConfIntLimit[] = {
     {58, MAX_HEATERTEST, MIN_HEATERTEST, NULL, NULL, 2, SpcTestIntStatus},
 };
 
+static const SpcPasswordStatus_t SpcPasswordStatus[] = {
+    {74, SPC_PSW_OLD,        &SpcStackStr(&SpcValue)},
+    {75, SPC_PSW_NEW,        &SpcStackStr(&SpcValue)},
+    {76, SPC_PSW_NEW_AGAIN,  &SpcStackNewStr(&SpcValue)},
+};
+
 static const SpcStateAction_t SpcStateAction[] = {
 //    entry                         right                  left                  up                    down                  act                prog                reset                  enter                alarm   
     {{0,SpcEntryInit},             {1,NULL},              {21,NULL},            {0,NULL},             {0,NULL},             {9,NULL},          {22,NULL},          {0,NULL},              {0,NULL},            {0,NULL}},
@@ -448,6 +456,14 @@ static const SpcStateAction_t SpcStateAction[] = {
     {{69,SpcEntryInit},            {69,SpcPopRight},      {69,SpcPopLeft},      {69,SpcUpTemp},       {69,SpcDownTemp},     {0,NULL},          {69,SpcPopProg},    {69,SpcResetRet},      {69,SpcPopTempConf}, {69,NULL}},
     {{70,SpcEntryInit},            {70,SpcPopRight},      {70,SpcPopLeft},      {70,SpcUpInt},        {70,SpcDownInt},      {0,NULL},          {70,SpcPopProg},    {70,SpcResetRet},      {70,SpcPopIntConf},  {70,NULL}},
     {{71,SpcEntryInit},            {71,SpcPopRight},      {71,SpcPopLeft},      {71,SpcUpByte},       {71,SpcDownByte},     {0,NULL},          {71,SpcPopProg},    {71,SpcResetRet},      {71,SpcPopByteConf}, {71,NULL}},
+
+// Password
+    {{72,SpcEntryInit},            {72,NULL},             {72,NULL},            {73,NULL},            {72,NULL},            {0,NULL},          {22,NULL},          {72,SpcResetRet},      {72,SpcResetRet},    {72,NULL}},
+    {{73,SpcEntryInit},            {73,NULL},             {73,NULL},            {73,NULL},            {72,NULL},            {0,NULL},          {22,NULL},          {73,SpcResetRet},      {73,SpcPswStart},    {73,NULL}},
+    {{74,SpcEntryInit},            {74,SpcPswRight},      {74,NULL},            {74,SpcPswUp},        {74,SpcPswDown},      {0,NULL},          {22,NULL},          {74,SpcResetRet},      {74,SpcOldPswEnter}, {74,NULL}},
+    {{75,SpcEntryInit},            {75,SpcPswRight},      {75,NULL},            {75,SpcPswUp},        {75,SpcPswDown},      {0,NULL},          {22,NULL},          {75,SpcResetRet},      {75,SpcPswNew},      {75,NULL}},
+    {{76,SpcEntryInit},            {76,SpcPswRight},      {76,NULL},            {76,SpcPswUp},        {76,SpcPswDown},      {0,NULL},          {22,NULL},          {76,SpcResetRet},      {76,SpcPswNewAgain}, {76,NULL}},
+
 };
 
 #endif // __spc_const_H
