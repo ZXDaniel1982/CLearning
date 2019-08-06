@@ -1,7 +1,10 @@
-/* Includes ------------------------------------------------------------------*/
-#include "spcalarm.h"
+//#include "spcalarm.h"
 #include "spcconst.h"
 #include "FreeRTOS.h"
+
+static const SpcAlarmTable_t SpcAlarmTable[SPC_MAX_ALARM_TYPE] = {
+    {SPC_ALARM_SELFCHKFAIL, SpcAlarmCritical},
+};
 
 void Spc_AlarmMgr(SpcList_t * list, SpcAlarmType_t type, bool enable)
 {
@@ -21,4 +24,3 @@ void Spc_AlarmMgr(SpcList_t * list, SpcAlarmType_t type, bool enable)
         SpcListRemove(list, type);
     }
 }
-

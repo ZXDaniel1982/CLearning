@@ -55,7 +55,6 @@ static uint8_t SpcGetCharIndex(char c);
 static const SpcPasswordStatus_t *SpcGetPswStatus(SpcInfoType_t infoType);
 
 
-
 static const char *spcStartupLogOn[] = {
     "Turn on Heater Led",
     "Turn on System Fail Led",

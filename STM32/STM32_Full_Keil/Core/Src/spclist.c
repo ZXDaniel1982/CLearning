@@ -1,6 +1,7 @@
-/* Includes ------------------------------------------------------------------*/
-#include "spclist.h"
+//#include "spclist.h"
 #include "FreeRTOS.h"
+
+#include "spcconst.h"
 
 static inline bool SpcListIsFull(SpcList_t * list);
 static inline bool SpcListIsEmpty(SpcList_t * list);
