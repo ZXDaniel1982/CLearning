@@ -53,7 +53,7 @@ static uint8_t SpcGetCharIndex(char c);
 
 static const SpcPasswordStatus_t *SpcGetPswStatus(SpcInfoType_t infoType);
 
-/*
+
 static const char *spcStartupLogOn[] = {
     "Turn on Heater Led",
     "Turn on System Fail Led",
@@ -390,8 +390,8 @@ static const SpcDataStatus_t SpcNorIntStatus[] = {
 };
 
 static const SpcDataStatus_t SpcTestIntStatus[] = {
-    SPC_DISABLE_STR,
-    SPC_CONTINUE_STR,
+    SPC_DISABLE,
+    SPC_CONTINUE,
 };
 
 static const SpcConfIntLimit_t SpcConfIntLimit[] = {
@@ -512,7 +512,7 @@ static const SpcStateAction_t SpcStateAction[] = {
     {{76,SpcEntryInit},            {76,SpcPswRight},      {76,NULL},            {76,SpcPswUp},        {76,SpcPswDown},      {0,NULL},          {22,NULL},          {76,SpcResetRet},      {76,SpcPswNewAgain}, {76,NULL}},
 
 };
-*/
+
 
 
 

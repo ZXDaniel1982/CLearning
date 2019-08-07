@@ -579,6 +579,7 @@ typedef struct
     SpcStatistic_t status;
     SpcAlarm_t alarm;
     SpcStack_t stack;
+	uint32_t tset;
 } SpcValue_t;
 
 typedef struct

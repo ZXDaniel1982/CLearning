@@ -6,7 +6,7 @@
 #endif
 
 #include "spc.h"
-
+/*
 static const char *spcStartupLogOn[] = {
     "Turn on Heater Led",
     "Turn on System Fail Led",
@@ -469,7 +469,7 @@ static const SpcStateAction_t SpcStateAction[] = {
     {{76,SpcEntryInit},            {76,SpcPswRight},      {76,NULL},            {76,SpcPswUp},        {76,SpcPswDown},      {0,NULL},          {22,NULL},          {76,SpcResetRet},      {76,SpcPswNewAgain}, {76,NULL}},
 
 };
-
+*/
 
 #ifdef __cplusplus
 }
