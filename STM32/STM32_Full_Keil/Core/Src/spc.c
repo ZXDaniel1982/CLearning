@@ -53,7 +53,9 @@ static uint8_t SpcGetCharIndex(char c);
 
 static const SpcPasswordStatus_t *SpcGetPswStatus(SpcInfoType_t infoType);
 
-
+//=====================================================================================//
+// const value define
+//=====================================================================================//
 static const char *spcStartupLogOn[] = {
     "Turn on Heater Led",
     "Turn on System Fail Led",
@@ -513,8 +515,9 @@ static const SpcStateAction_t SpcStateAction[] = {
 
 };
 
-
-
+//=====================================================================================//
+// Public functions
+//=====================================================================================//
 
 // SPC alarm
 void Spc_AlarmRaise(SpcAlarmType_t alarmType)

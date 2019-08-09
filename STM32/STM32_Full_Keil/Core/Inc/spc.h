@@ -1,5 +1,5 @@
-#ifndef __spc_common_H
-#define __spc_common_H
+#ifndef __spc_H
+#define __spc_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -579,7 +579,6 @@ typedef struct
     SpcStatistic_t status;
     SpcAlarm_t alarm;
     SpcStack_t stack;
-	uint32_t tset;
 } SpcValue_t;
 
 typedef struct
@@ -762,4 +761,4 @@ void SPC_Init(void);
 #ifdef __cplusplus
 }
 #endif
-#endif // __spc_common_H
+#endif // __spc_H
