@@ -23,7 +23,7 @@
 #include "usbd_storage_if.h"
 
 /* USER CODE BEGIN INCLUDE */
-
+#include "sdio.h"
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/

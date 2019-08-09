@@ -21,7 +21,8 @@
 #include "sdio.h"
 
 /* USER CODE BEGIN 0 */
-
+#include "ff.h"
+#include "fatfs.h"
 /* USER CODE END 0 */
 
 SD_HandleTypeDef hsd;
@@ -111,19 +112,21 @@ void HAL_SD_MspDeInit(SD_HandleTypeDef* sdHandle)
 } 
 
 /* USER CODE BEGIN 1 */
-bool SD_IAPUpdateReq()
+uint8_t SD_IAPUpdateReq()
 {
-  uint8_t update = 0;
-  uint8_t cnt = 0;
+  UINT update = 0;
+  UINT cnt = 0;
   if (f_open (&SDFile, IAP_STATUS_FILE, FA_READ | FA_OPEN_ALWAYS) != FR_OK)
-    return false;
+    return 0;
 
   if (f_read (&SDFile, &update, 1, &cnt) != FR_OK) {
     f_close(&SDFile);
-    return false;
+    return 0;
   }
 
-  return ((update == 1) ? true : false);
+	f_close(&SDFile);
+	
+  return ((update == '1') ? 1 : 0);
 }
 /* USER CODE END 1 */
 

@@ -95,7 +95,11 @@ int main(void)
   MX_FATFS_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-  bool update = SD_IAPUpdateReq();
+  uint8_t update = SD_IAPUpdateReq(); 
+	
+	if (update) {
+	  HAL_GPIO_WritePin(Led_GPIO_Port, Led_Pin, GPIO_PIN_SET);
+	}
   /* USER CODE END 2 */
 
   /* Infinite loop */
