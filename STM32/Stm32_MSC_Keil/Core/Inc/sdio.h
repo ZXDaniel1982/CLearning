@@ -33,13 +33,13 @@
 extern SD_HandleTypeDef hsd;
 
 /* USER CODE BEGIN Private defines */
-#define IAP_STATUS_FILE "iap_update"
+#define IAP_STATUS_FILE "new.txt"
 /* USER CODE END Private defines */
 
 void MX_SDIO_SD_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-uint8_t SD_IAPUpdateReq(void); 
+uint8_t SD_IAPUpdateReq(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

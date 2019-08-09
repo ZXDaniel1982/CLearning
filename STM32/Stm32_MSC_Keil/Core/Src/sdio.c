@@ -40,6 +40,12 @@ void MX_SDIO_SD_Init(void)
   hsd.Init.HardwareFlowControl = SDIO_HARDWARE_FLOW_CONTROL_DISABLE;
   hsd.Init.ClockDiv = 4;
 
+	if (HAL_SD_Init(&hsd) != HAL_OK) {
+			Error_Handler();
+	}
+	if (HAL_SD_ConfigWideBusOperation(&hsd, SDIO_BUS_WIDE_4B) != HAL_OK) {
+			Error_Handler();
+	}
 }
 
 void HAL_SD_MspInit(SD_HandleTypeDef* sdHandle)
@@ -116,8 +122,10 @@ uint8_t SD_IAPUpdateReq()
 {
   UINT update = 0;
   UINT cnt = 0;
-  if (f_open (&SDFile, IAP_STATUS_FILE, FA_READ | FA_OPEN_ALWAYS) != FR_OK)
-    return 0;
+  if (f_open (&SDFile, IAP_STATUS_FILE, FA_READ | FA_OPEN_ALWAYS) != FR_OK) {
+	  HAL_GPIO_WritePin(Led_GPIO_Port, Led_Pin, GPIO_PIN_SET);
+		return 0;
+	}
 
   if (f_read (&SDFile, &update, 1, &cnt) != FR_OK) {
     f_close(&SDFile);
