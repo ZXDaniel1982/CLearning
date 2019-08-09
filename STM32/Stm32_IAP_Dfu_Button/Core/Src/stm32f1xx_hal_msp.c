@@ -102,7 +102,7 @@ void HAL_MspInit(void)
 
   /* System interrupt init*/
 
-  /**ENABLE: Full SWJ (JTAG-DP + SW-DP): Reset State 
+  /** ENABLE: Full SWJ (JTAG-DP + SW-DP): Reset State 
   */
   __HAL_AFIO_REMAP_SWJ_ENABLE();
 

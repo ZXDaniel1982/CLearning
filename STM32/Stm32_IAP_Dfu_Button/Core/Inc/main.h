@@ -92,6 +92,7 @@ void Error_Handler(void);
 #define UsbEnable_GPIO_Port GPIOC
 #define Key_Pin GPIO_PIN_15
 #define Key_GPIO_Port GPIOB
+#define Key_EXTI_IRQn EXTI15_10_IRQn
 #define Led_Pin GPIO_PIN_5
 #define Led_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
