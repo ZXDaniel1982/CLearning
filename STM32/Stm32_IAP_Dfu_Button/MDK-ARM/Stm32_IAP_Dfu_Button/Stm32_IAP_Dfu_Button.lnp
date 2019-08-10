@@ -7,7 +7,7 @@
 "stm32_iap_dfu_button\stm32f1xx_hal_timebase_tim.o"
 "stm32_iap_dfu_button\usb_device.o"
 "stm32_iap_dfu_button\usbd_desc.o"
-"stm32_iap_dfu_button\usbd_dfu_if.o"
+"stm32_iap_dfu_button\usbd_cdc_if.o"
 "stm32_iap_dfu_button\usbd_conf.o"
 "stm32_iap_dfu_button\stm32f1xx_hal_gpio_ex.o"
 "stm32_iap_dfu_button\stm32f1xx_hal_pcd.o"
@@ -29,7 +29,7 @@
 "stm32_iap_dfu_button\usbd_core.o"
 "stm32_iap_dfu_button\usbd_ctlreq.o"
 "stm32_iap_dfu_button\usbd_ioreq.o"
-"stm32_iap_dfu_button\usbd_dfu.o"
+"stm32_iap_dfu_button\usbd_cdc.o"
 --library_type=microlib --strict --scatter "Stm32_IAP_Dfu_Button\Stm32_IAP_Dfu_Button.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
