@@ -22,7 +22,7 @@
 #include "usbd_dfu_if.h"
 
 /* USER CODE BEGIN INCLUDE */
-#include "usart.h"
+
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/

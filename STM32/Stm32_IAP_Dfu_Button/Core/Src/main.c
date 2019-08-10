@@ -76,7 +76,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-static bool Jump = false;
+static uint8_t Jump = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -200,7 +200,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
    */
   if (GPIO_Pin == Key_Pin)
   {
-    Jump = true;
+    Jump = 1;
   }
 }
 /* USER CODE END 4 */
