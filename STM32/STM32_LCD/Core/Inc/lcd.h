@@ -8,15 +8,16 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-#define Bank1_LCD_D    ((uint32_t)0x60020000)    //显示区数据地址
-#define Bank1_LCD_C    ((uint32_t)0x60000000)    //显示区指令地址
+/* USER CODE BEGIN Prototypes */
+#define Bank1_LCD_D    ((uint32_t)0x60020000)    //???????
+#define Bank1_LCD_C    ((uint32_t)0x60000000)    //???????
 
-#define LCD_LEN 320
-#define LCD_WID 240
+#define LCD_LEN 240
+#define LCD_WID 320
 #define LCD_CHAR_LEN 6
 #define LCD_CHAR_WID 12
 #define LCD_STR_LEN_MAX ((LCD_LEN-4) / (LCD_CHAR_LEN))
-#define LCD_STR_NUM_MAX ((LCD_WID-4) / (LCD_CHAR_WID+2))
+#define LCD_STR_NUM_MAX (((LCD_WID-4) / (LCD_CHAR_WID+2)) - 1)
 
 #define LCD_CLR_COL ((LCD_LEN) / (LCD_CHAR_LEN))
 #define LCD_CLR_ROW ((LCD_WID) / (LCD_CHAR_WID))
@@ -32,10 +33,23 @@
 #define GBLUE 0X07FF;
 #define BLACK 0;
 
+#define LCD_BLAND_STR "    "
+
 void LCD_Init(void);
-void tftprintf(uint8_t *p);
+void tftprintf(const char* fmt, ...);
+/* USER CODE END Prototypes */
 
 #ifdef __cplusplus
 }
 #endif
-#endif /*__ pinoutConfig_H */
+#endif /*__lcd_H */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

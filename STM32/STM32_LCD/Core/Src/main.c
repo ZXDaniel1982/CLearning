@@ -69,7 +69,6 @@
 
 /* USER CODE BEGIN PV */
 static uint16_t cnt = 0;
-static uint8_t buf[LCD_STR_LEN_MAX] = {0};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -125,8 +124,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     HAL_Delay(1000);
-    snprintf((char *)buf, LCD_STR_LEN_MAX, "I am counting 2 %d", cnt++);
-    tftprintf(buf);
+    tftprintf("I am counting 2 %d", cnt++);
   }
   /* USER CODE END 3 */
 }
