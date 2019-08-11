@@ -69,9 +69,9 @@ startup_stm32f103xe.s
 #######################################
 # binaries
 #######################################
-#PREFIX = arm-none-eabi-
-PREFIX = arm-atollic-eabi-
-GCC_PATH = /opt/Atollic_TrueSTUDIO_for_STM32_x86_64_9.3.0/ARMTools/bin
+PREFIX = arm-none-eabi-
+#PREFIX = arm-atollic-eabi-
+#GCC_PATH = /opt/Atollic_TrueSTUDIO_for_STM32_x86_64_9.3.0/ARMTools/bin
 
 # The gcc compiler bin path can be either defined in make command via GCC_PATH variable (> make GCC_PATH=xxx)
 # either it can be added to the PATH environment variable.
