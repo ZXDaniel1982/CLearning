@@ -23,7 +23,7 @@
 #include "usbd_cdc_if.h"
 
 /* USER CODE BEGIN INCLUDE */
-
+#include "eeprom.h"
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -132,7 +132,16 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length);
 static int8_t CDC_Receive_FS(uint8_t* pbuf, uint32_t *Len);
 
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_DECLARATION */
-
+static void ProcessRxData(uint8_t* Buf, uint32_t *Len);
+static uint8_t CDC_HeaderIsValid(uint8_t* Buf);
+static uint8_t CDC_LenIsValid(uint8_t* Buf, uint32_t *Len);
+static void CDC_CacheData(uint8_t* Buf, uint32_t *Len);
+static void CDC_StoreData(uint8_t* Buf, uint32_t *Len);
+static void CDC_GetData(uint8_t* Buf, uint32_t *Len);
+static void CDC_GetInfo(uint8_t* Buf, uint32_t *Len);
+static void CDC_SetInfo(uint8_t* Buf, uint32_t *Len);
+static void CDC_SendReplyData();
+static void CDC_SendReply(uint8_t replyType, uint8_t replyDetail);
 /* USER CODE END PRIVATE_FUNCTIONS_DECLARATION */
 
 /**
@@ -304,7 +313,7 @@ static void ProcessRxData(uint8_t* Buf, uint32_t *Len)
   }
 
   if (CDC_LenIsValid(Buf, Len) == 0) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_HEAD_INVALID);
+    CDC_SendReply(CDC_ERROR, CDC_ERROR_LEN_INVALID);
     return;
   }
 
@@ -312,6 +321,7 @@ static void ProcessRxData(uint8_t* Buf, uint32_t *Len)
   CDC_StoreData(Buf, Len);
   CDC_GetInfo(Buf, Len);
   CDC_SetInfo(Buf, Len);
+  CDC_GetData(Buf, Len);
 }
 
 static uint8_t CDC_HeaderIsValid(uint8_t* Buf)
@@ -363,17 +373,17 @@ static void CDC_CacheData(uint8_t* Buf, uint32_t *Len)
 static void CDC_StoreData(uint8_t* Buf, uint32_t *Len)
 {
   if ((Buf == NULL) || (Len == NULL)) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_CACHE_FAIL);
+    CDC_SendReply(CDC_ERROR, CDC_ERROR_STORE_FAIL);
     return;
   }
 
   if (Buf[4] != CDC_CMD_STORE) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_CACHE_FAIL);
+    CDC_SendReply(CDC_ERROR, CDC_ERROR_STORE_FAIL);
     return;
   }
 
   if ((*Len) != CDC_LEN_STORE) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_CACHE_FAIL);
+    CDC_SendReply(CDC_ERROR, CDC_ERROR_STORE_FAIL);
     return;
   }
 
@@ -381,6 +391,47 @@ static void CDC_StoreData(uint8_t* Buf, uint32_t *Len)
   SST25_W_BLOCK(page, SST25_buffer,4096);
 
   CDC_SendReply(CDC_SUCCESS, CDC_SUCCESS_STORE);
+}
+
+static void CDC_GetData(uint8_t* Buf, uint32_t *Len)
+{
+  if ((Buf == NULL) || (Len == NULL)) {
+    CDC_SendReply(CDC_ERROR, CDC_ERROR_GET_DATA_FAIL);
+    return;
+  }
+
+  if (Buf[4] != CDC_CMD_GET_DATA) {
+    CDC_SendReply(CDC_ERROR, CDC_ERROR_GET_DATA_FAIL);
+    return;
+  }
+
+  if ((*Len) != CDC_LEN_GET_DATA) {
+    CDC_SendReply(CDC_ERROR, CDC_ERROR_GET_DATA_FAIL);
+    return;
+  }
+
+  uint16_t page = Buf[5] * 256 + Buf[6];
+  SST25_R_BLOCK(page, SST25_buffer,4096);
+
+  uint8_t i;
+  memset(UserTxBufferFS, 0, APP_TX_DATA_SIZE);
+  UserTxBufferFS[0] = 0x33;
+  UserTxBufferFS[1] = 0x44;
+  UserTxBufferFS[2] = CDC_SUCCESS;
+  UserTxBufferFS[3] = CDC_SUCCESS_GET_DATA;
+
+  uint16_t len = 6 + 512;
+  UserTxBufferFS[4] = (uint8_t)((len >> 8) & 0x00ff);
+  UserTxBufferFS[5] = (uint8_t)(len & 0x00ff);
+
+  uint16_t index = 0;
+  for (i=0; i<8; i++) {
+    index = i*512;
+    memcpy(&UserTxBufferFS[6], &SST25_buffer[index], 512);
+    CDC_Transmit_FS(UserTxBufferFS, len);
+
+    HAL_Delay(100);
+  }
 }
 
 static void CDC_GetInfo(uint8_t* Buf, uint32_t *Len)
@@ -437,7 +488,7 @@ static void CDC_SendReplyData()
   UserTxBufferFS[4] = (uint8_t)((len >> 8) & 0x00ff);
   UserTxBufferFS[5] = (uint8_t)(len & 0x00ff);
   memcpy(&UserTxBufferFS[6], &eepInfo, sizeof(eepInfo_t));
-  CDC_Transmit_FS(UserTxBufferFS, &len);
+  CDC_Transmit_FS(UserTxBufferFS, len);
 }
 
 static void CDC_SendReply(uint8_t replyType, uint8_t replyDetail)
@@ -451,7 +502,7 @@ static void CDC_SendReply(uint8_t replyType, uint8_t replyDetail)
   uint16_t len = 6;
   UserTxBufferFS[4] = (uint8_t)((len >> 8) & 0x00ff);
   UserTxBufferFS[5] = (uint8_t)(len & 0x00ff);
-  CDC_Transmit_FS(UserTxBufferFS, &len);
+  CDC_Transmit_FS(UserTxBufferFS, len);
 }
 /* USER CODE END PRIVATE_FUNCTIONS_IMPLEMENTATION */
 

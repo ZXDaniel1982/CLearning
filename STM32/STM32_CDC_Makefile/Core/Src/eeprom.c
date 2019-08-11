@@ -10,13 +10,13 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "lcd.h"
+//#include "lcd.h"
 #include "spi.h"
-#include "usart.h"
-#include "fatfs.h"
+//#include "usart.h"
+//#include "fatfs.h"
 #include "eeprom.h"
-#include "cmsis_os.h"
-#include "FreeRTOS.h"
+//#include "cmsis_os.h"
+//#include "FreeRTOS.h"
 
 /* Select SPI FLASH: ChipSelect pin low  */
 #define Select_Flash()     HAL_GPIO_WritePin(SST_CS_GPIO_Port, SST_CS_Pin, GPIO_PIN_RESET);
@@ -24,7 +24,7 @@
 #define NotSelect_Flash()    HAL_GPIO_WritePin(SST_CS_GPIO_Port, SST_CS_Pin, GPIO_PIN_SET);
 
 uint8_t SST25_buffer[4096];
-uint8_t SST25_bufferV[4096];
+eepInfo_t eepInfo;
 
 static void wip(void);
 static void wsr(void);
@@ -34,8 +34,7 @@ static uint8_t rdsr(void);
 static uint16_t SPI_Flash_ReadID(void);
 static void EEPRom_SendByte(uint8_t byte);
 static void EEProm_SectorErrase(unsigned long a1);
-static void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff,
-              uint16_t BlockSize);
+
 /*----------------------------------------------------------------------------*/
 /* Private functions                                                           */
 /*----------------------------------------------------------------------------*/
@@ -143,7 +142,7 @@ static void wdis(void)
     wip();
 }
 
-static void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff,
+void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff,
               uint16_t BlockSize)
 {
     uint16_t i = 0, a2;
@@ -182,7 +181,7 @@ static void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff,
     wip();
 }
 
-static void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff,
+void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff,
               unsigned int BlockSize)
 {
     uint16_t i = 0;

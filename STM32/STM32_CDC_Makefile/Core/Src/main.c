@@ -26,7 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "eeprom.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -93,7 +93,12 @@ int main(void)
   MX_SPI1_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-
+  if (EEPROMIsValid() == 0) {
+    return -1;
+  }
+  if (EEPROMGetInfo(&eepInfo) == 0) {
+    return -1;
+  }
   /* USER CODE END 2 */
 
   /* Infinite loop */
