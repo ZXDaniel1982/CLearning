@@ -184,10 +184,9 @@ __ALIGN_BEGIN USBD_DFU_MediaTypeDef USBD_DFU_fops_FS __ALIGN_END =
 uint16_t MEM_If_Init_FS(void)
 {
   /* USER CODE BEGIN 0 */
-  uint8_t txBuf[13] = "init\r\n"
+  uint8_t txBuf[13] = "init\r\n";
   while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
-  if (HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff) != HAL_OK)
-    return 1;
+  HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff);
 
 	HAL_FLASH_Unlock();
   return (USBD_OK);
@@ -201,10 +200,9 @@ uint16_t MEM_If_Init_FS(void)
 uint16_t MEM_If_DeInit_FS(void)
 {
   /* USER CODE BEGIN 1 */
-  uint8_t txBuf[13] = "deinit\r\n"
+  uint8_t txBuf[13] = "deinit\r\n";
   while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
-  if (HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff) != HAL_OK)
-    return 1;
+  HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff);
 
 	HAL_FLASH_Lock();
   return (USBD_OK);
@@ -222,10 +220,9 @@ uint16_t MEM_If_Erase_FS(uint32_t Add)
   uint32_t PageError = 0;
 
   uint8_t txBuf[255] = {0};
-  vsnprintf((char *)txBuf, 255, "erase %x\r\n", Add);
+  snprintf((char *)txBuf, 255, "erase %x\r\n", Add);
   while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
-  if (HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff) != HAL_OK)
-    return 1;
+  HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff);
   /* Variable contains Flash operation status */
   HAL_StatusTypeDef status;
   FLASH_EraseInitTypeDef eraseinitstruct;
@@ -257,10 +254,9 @@ uint16_t MEM_If_Write_FS(uint8_t *src, uint8_t *dest, uint32_t Len)
 	uint32_t i = 0;
 
   uint8_t txBuf[255] = {0};
-  vsnprintf((char *)txBuf, 255, "write len %d dest %x\r\n", Len, dest);
+  snprintf((char *)txBuf, 255, "write len %d dest %x\r\n", Len, dest);
   while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
-  if (HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff) != HAL_OK)
-    return 1;
+  HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff);
 
   for (i = 0; i < Len; i += 4)
   {
@@ -297,10 +293,9 @@ uint16_t MEM_If_Write_FS(uint8_t *src, uint8_t *dest, uint32_t Len)
 uint8_t *MEM_If_Read_FS(uint8_t *src, uint8_t *dest, uint32_t Len)
 {
   uint8_t txBuf[255] = {0};
-  vsnprintf((char *)txBuf, 255, "read len %d src %x\r\n", Len, src);
+  snprintf((char *)txBuf, 255, "read len %d src %x\r\n", Len, src);
   while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
-  if (HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff) != HAL_OK)
-    return 1;
+  HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff);
   /* Return a valid address to avoid HardFault */
   /* USER CODE BEGIN 4 */
 	uint32_t i = 0;
@@ -324,10 +319,9 @@ uint8_t *MEM_If_Read_FS(uint8_t *src, uint8_t *dest, uint32_t Len)
 uint16_t MEM_If_GetStatus_FS(uint32_t Add, uint8_t Cmd, uint8_t *buffer)
 {
   uint8_t txBuf[255] = {0};
-  vsnprintf((char *)txBuf, 255, "get add %x cmd %d\r\n", Len);
+  snprintf((char *)txBuf, 255, "get add %x cmd %d\r\n", Add, Cmd);
   while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
-  if (HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff) != HAL_OK)
-    return 1;
+  HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff);
   /* USER CODE BEGIN 5 */
   switch (Cmd)
   {

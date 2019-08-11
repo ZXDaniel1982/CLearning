@@ -88,23 +88,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static uint16_t GetCmdViaServer()
-{
-  uint8_t txBuf[2] = {0x24, 0x34};
-	uint8_t rxBuf[2] = {0};
-	
-	while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
-	if (HAL_UART_Transmit(&huart1, txBuf, 2, 0xffff) != HAL_OK)
-		return 1;
-	while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
-	if (HAL_UART_Receive(&huart1, rxBuf, 2, 0xffff) != HAL_OK)
-		return 1;
-	
-	if ((rxBuf[0] == 0x15) && (rxBuf[1] == 0x17))
-		return 2;
-	
-	return 1;
-}
+
 /* USER CODE END 0 */
 
 /**
@@ -138,23 +122,6 @@ int main(void)
   MX_GPIO_Init();
 	MX_USART1_UART_Init();
 	
-	if (GetCmdViaServer() == 2) {
-	  /* Test if user code is programmed starting from address 0x08007000 */
-    if (((*(__IO uint32_t *) USBD_DFU_APP_DEFAULT_ADD) & 0x2FFE0000) ==
-        0x20000000)
-    {
-			__disable_irq();
-			HAL_DeInit();
-      /* Jump to user application */
-      JumpAddress = *(__IO uint32_t *) (USBD_DFU_APP_DEFAULT_ADD + 4);
-      JumpToApplication = (pFunction) JumpAddress;
-
-      /* Initialize user application's Stack Pointer */
-      __set_MSP(*(__IO uint32_t *) USBD_DFU_APP_DEFAULT_ADD);
-      JumpToApplication();
-    }
-	}
-
 	HAL_GPIO_WritePin(UsbEnable_GPIO_Port, UsbEnable_Pin, GPIO_PIN_RESET);
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
