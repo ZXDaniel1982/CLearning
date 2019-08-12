@@ -135,13 +135,15 @@ static int8_t CDC_Receive_FS(uint8_t* pbuf, uint32_t *Len);
 static void ProcessRxData(uint8_t* Buf, uint32_t *Len);
 static uint8_t CDC_HeaderIsValid(uint8_t* Buf);
 static uint8_t CDC_LenIsValid(uint8_t* Buf, uint32_t *Len);
-static void CDC_CacheData(uint8_t* Buf, uint32_t *Len);
-static void CDC_StoreData(uint8_t* Buf, uint32_t *Len);
-static void CDC_GetData(uint8_t* Buf, uint32_t *Len);
+static void CDC_Erase(uint8_t* Buf, uint32_t *Len);
+static void CDC_Store(uint8_t* Buf, uint32_t *Len);
 static void CDC_GetInfo(uint8_t* Buf, uint32_t *Len);
 static void CDC_SetInfo(uint8_t* Buf, uint32_t *Len);
-static void CDC_SendReplyData();
+static void CDC_SendReplyData(void);
 static void CDC_SendReply(uint8_t replyType, uint8_t replyDetail);
+static void CDC_EraseProcess(uint32_t Add);
+static void CDC_StoreProcess(uint8_t *src, uint8_t *dest, uint32_t Len);
+static inline uint32_t CDC_CONV_TO_32(uint8_t *buf);
 /* USER CODE END PRIVATE_FUNCTIONS_DECLARATION */
 
 /**
@@ -165,6 +167,7 @@ static int8_t CDC_Init_FS(void)
 {
   /* USER CODE BEGIN 3 */
   /* Set Application Buffers */
+  HAL_FLASH_Unlock();
   USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
   return (USBD_OK);
@@ -178,6 +181,7 @@ static int8_t CDC_Init_FS(void)
 static int8_t CDC_DeInit_FS(void)
 {
   /* USER CODE BEGIN 4 */
+  HAL_FLASH_Lock();
   return (USBD_OK);
   /* USER CODE END 4 */
 }
@@ -317,11 +321,10 @@ static void ProcessRxData(uint8_t* Buf, uint32_t *Len)
     return;
   }
 
-  CDC_CacheData(Buf, Len);
-  CDC_StoreData(Buf, Len);
+  CDC_Erase(Buf, Len);
+  CDC_Store(Buf, Len);
   CDC_GetInfo(Buf, Len);
   CDC_SetInfo(Buf, Len);
-  CDC_GetData(Buf, Len);
 }
 
 static uint8_t CDC_HeaderIsValid(uint8_t* Buf)
@@ -347,107 +350,64 @@ static uint8_t CDC_LenIsValid(uint8_t* Buf, uint32_t *Len)
   return 1;
 }
 
-static void CDC_CacheData(uint8_t* Buf, uint32_t *Len)
+static void CDC_Erase(uint8_t* Buf, uint32_t *Len)
 {
   if ((Buf == NULL) || (Len == NULL)) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_CACHE_FAIL);
+    CDC_SendReply(CDC_ERROR, CDC_ERASE_FAIL);
     return;
   }
 
-  if (Buf[4] != CDC_CMD_CACHE) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_CACHE_FAIL);
+  if (Buf[4] != CDC_CMD_ERASE) {
+    CDC_SendReply(CDC_ERROR, CDC_ERASE_FAIL);
     return;
   }
 
-  if ((*Len) != CDC_LEN_CACHE) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_CACHE_FAIL);
+  if ((*Len) != CDC_LEN_ERASE) {
+    CDC_SendReply(CDC_ERROR, CDC_ERASE_FAIL);
     return;
   }
 
-  uint16_t index = (uint16_t)Buf[5] * 512;
-  memcpy(&SST25_buffer[index], &Buf[6], 512);
-
-  CDC_SendReply(CDC_SUCCESS, CDC_SUCCESS_CACHE);
+  uint32_t addr = CDC_CONV_TO_32(&Buf[5]);
+  CDC_EraseProcess(addr);
 }
 
-static void CDC_StoreData(uint8_t* Buf, uint32_t *Len)
+static void CDC_Store(uint8_t* Buf, uint32_t *Len)
 {
   if ((Buf == NULL) || (Len == NULL)) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_STORE_FAIL);
+    CDC_SendReply(CDC_ERROR, CDC_STORE_FAIL);
     return;
   }
 
   if (Buf[4] != CDC_CMD_STORE) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_STORE_FAIL);
+    CDC_SendReply(CDC_ERROR, CDC_STORE_FAIL);
     return;
   }
 
   if ((*Len) != CDC_LEN_STORE) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_STORE_FAIL);
+    CDC_SendReply(CDC_ERROR, CDC_STORE_FAIL);
     return;
   }
 
-  uint16_t page = Buf[5] * 256 + Buf[6];
-  SST25_W_BLOCK(page, SST25_buffer,4096);
+  uint8_t *src = (uint8_t *)CDC_CONV_TO_32(&Buf[5]);
+  uint32_t len = (*Len) - 9;
 
-  CDC_SendReply(CDC_SUCCESS, CDC_SUCCESS_STORE);
-}
-
-static void CDC_GetData(uint8_t* Buf, uint32_t *Len)
-{
-  if ((Buf == NULL) || (Len == NULL)) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_GET_DATA_FAIL);
-    return;
-  }
-
-  if (Buf[4] != CDC_CMD_GET_DATA) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_GET_DATA_FAIL);
-    return;
-  }
-
-  if ((*Len) != CDC_LEN_GET_DATA) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_GET_DATA_FAIL);
-    return;
-  }
-
-  uint16_t page = Buf[5] * 256 + Buf[6];
-  SST25_R_BLOCK(page, SST25_buffer,4096);
-
-  uint8_t i;
-  memset(UserTxBufferFS, 0, APP_TX_DATA_SIZE);
-  UserTxBufferFS[0] = 0x33;
-  UserTxBufferFS[1] = 0x44;
-  UserTxBufferFS[2] = CDC_SUCCESS;
-  UserTxBufferFS[3] = CDC_SUCCESS_GET_DATA;
-
-  uint16_t len = 6 + 512;
-  UserTxBufferFS[4] = (uint8_t)((len >> 8) & 0x00ff);
-  UserTxBufferFS[5] = (uint8_t)(len & 0x00ff);
-
-  uint16_t index = 0;
-  for (i=0; i<8; i++) {
-    index = i*512;
-    memcpy(&UserTxBufferFS[6], &SST25_buffer[index], 512);
-    CDC_Transmit_FS(UserTxBufferFS, len);
-
-    HAL_Delay(100);
-  }
+  CDC_StoreProcess(src, &Buf[9], len);
 }
 
 static void CDC_GetInfo(uint8_t* Buf, uint32_t *Len)
 {
   if ((Buf == NULL) || (Len == NULL)) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_GET_INFO_FAIL);
+    CDC_SendReply(CDC_ERROR, CDC_GET_INFO_FAIL);
     return;
   }
 
   if (Buf[4] != CDC_CMD_GET_INFO) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_GET_INFO_FAIL);
+    CDC_SendReply(CDC_ERROR, CDC_GET_INFO_FAIL);
     return;
   }
 
   if ((*Len) != CDC_LEN_GET_INFO) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_GET_INFO_FAIL);
+    CDC_SendReply(CDC_ERROR, CDC_GET_INFO_FAIL);
     return;
   }
 
@@ -457,20 +417,21 @@ static void CDC_GetInfo(uint8_t* Buf, uint32_t *Len)
 static void CDC_SetInfo(uint8_t* Buf, uint32_t *Len)
 {
   if ((Buf == NULL) || (Len == NULL)) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_SET_INFO_FAIL);
+    CDC_SendReply(CDC_ERROR, CDC_SET_INFO_FAIL);
     return;
   }
 
   if (Buf[4] != CDC_CMD_SET_INFO) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_SET_INFO_FAIL);
+    CDC_SendReply(CDC_ERROR, CDC_SET_INFO_FAIL);
     return;
   }
 
-  if ((*Len) != CDC_LEN_SET_INFO) {
-    CDC_SendReply(CDC_ERROR, CDC_ERROR_SET_INFO_FAIL);
+  if ((*Len) != (5+sizeof(eepInfo_t))) {
+    CDC_SendReply(CDC_ERROR, CDC_SET_INFO_FAIL);
     return;
   }
 
+  memset(SST25_buffer, 0, 4096);
   memcpy(SST25_buffer, &Buf[5], sizeof(eepInfo_t));
   SST25_W_BLOCK(1, SST25_buffer,4096);
   CDC_SendReply(CDC_SUCCESS, CDC_SUCCESS_SET_INFO);
@@ -503,6 +464,80 @@ static void CDC_SendReply(uint8_t replyType, uint8_t replyDetail)
   UserTxBufferFS[4] = (uint8_t)((len >> 8) & 0x00ff);
   UserTxBufferFS[5] = (uint8_t)(len & 0x00ff);
   CDC_Transmit_FS(UserTxBufferFS, len);
+}
+
+static void CDC_EraseProcess(uint32_t Add)
+{
+  /* USER CODE BEGIN 2 */
+  uint32_t PageError = 0;
+
+  uint8_t txBuf[255] = {0};
+  snprintf((char *)txBuf, 255, "erase %lx\r\n", Add);
+  while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
+  HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff);
+  /* Variable contains Flash operation status */
+  HAL_StatusTypeDef status;
+  FLASH_EraseInitTypeDef eraseinitstruct;
+
+  /* Get the number of sector to erase from 1st sector */
+  eraseinitstruct.TypeErase = FLASH_TYPEERASE_PAGES;
+  eraseinitstruct.PageAddress = Add;
+  eraseinitstruct.NbPages = 1;
+  status = HAL_FLASHEx_Erase(&eraseinitstruct, &PageError);
+
+  if (status != HAL_OK) {
+    CDC_SendReply(CDC_ERROR, CDC_ERASE_FAIL);
+  } else {
+    CDC_SendReply(CDC_SUCCESS, CDC_SUCCESS_ERASE);
+  }
+  /* USER CODE END 2 */
+}
+
+static void CDC_StoreProcess(uint8_t *src, uint8_t *dest, uint32_t Len)
+{
+  /* USER CODE BEGIN 3 */
+  uint32_t i = 0;
+
+  uint8_t txBuf[255] = {0};
+  snprintf((char *)txBuf, 255, "write len %d dest %x\r\n", Len, dest);
+  while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
+  HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff);
+
+  for (i = 0; i < Len; i += 4)
+  {
+    /* Device voltage range supposed to be [2.7V to 3.6V], the operation will
+     * be done by byte */
+    if (HAL_FLASH_Program
+        (FLASH_TYPEPROGRAM_WORD, (uint32_t) (dest + i),
+         *(uint32_t *) (src + i)) == HAL_OK)
+    {
+      /* Check the written value */
+      if (*(uint32_t *) (src + i) != *(uint32_t *) (dest + i))
+      {
+        /* Flash content doesn't match SRAM content */
+        CDC_SendReply(CDC_ERROR, CDC_STORE_FAIL);
+        return;
+      }
+    }
+    else
+    {
+      /* Error occurred while writing data in Flash memory */
+      CDC_SendReply(CDC_ERROR, CDC_STORE_BUSY);
+      return;
+    }
+  }
+  CDC_SendReply(CDC_SUCCESS, CDC_SUCCESS_STORE);
+  /* USER CODE END 3 */
+}
+
+static inline uint32_t CDC_CONV_TO_32(uint8_t *buf)
+{
+  uint32_t ret = 0;
+  ret = (*buf) << 24;
+  ret += *(buf+1) << 16;
+  ret += *(buf+2) << 8;
+  ret += *(buf+3);
+  return ret;
 }
 /* USER CODE END PRIVATE_FUNCTIONS_IMPLEMENTATION */
 
