@@ -60,6 +60,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define UsbEnable_Pin GPIO_PIN_13
 #define UsbEnable_GPIO_Port GPIOC
+#define SST_CS_Pin GPIO_PIN_4
+#define SST_CS_GPIO_Port GPIOA
 #define Key_Pin GPIO_PIN_15
 #define Key_GPIO_Port GPIOB
 #define Led_Pin GPIO_PIN_5

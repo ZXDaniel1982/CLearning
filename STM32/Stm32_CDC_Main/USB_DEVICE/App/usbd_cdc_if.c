@@ -24,6 +24,7 @@
 
 /* USER CODE BEGIN INCLUDE */
 #include "usart.h"
+#include "eeprom.h"
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/

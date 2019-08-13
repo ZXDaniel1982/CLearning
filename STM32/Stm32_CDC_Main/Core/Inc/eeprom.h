@@ -19,7 +19,7 @@ typedef struct
 	appInfo_t info[2];
 } eepInfo_t;
 
-uint8_t EEPROMIsValid();
+uint8_t EEPROMIsValid(void);
 uint8_t EEPROMGetInfo(eepInfo_t *info);
 void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff,
               uint16_t BlockSize);
