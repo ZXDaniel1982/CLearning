@@ -169,7 +169,7 @@ static int8_t CDC_Init_FS(void)
   /* USER CODE BEGIN 3 */
   /* Set Application Buffers */
   uint8_t txBuf[10] = {0};
-  snprintf((char *)txBuf, 10, "Init\r\n", Add);
+  snprintf((char *)txBuf, 10, "Init\r\n");
   while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
   HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff);
 
@@ -188,7 +188,7 @@ static int8_t CDC_DeInit_FS(void)
 {
   /* USER CODE BEGIN 4 */
   uint8_t txBuf[10] = {0};
-  snprintf((char *)txBuf, 10, "DeInit\r\n", Add);
+  snprintf((char *)txBuf, 10, "DeInit\r\n");
   while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
   HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff);
 
