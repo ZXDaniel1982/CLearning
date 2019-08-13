@@ -52,6 +52,7 @@
 #define CDC_LEN_ERASE ( 9 )
 #define CDC_LEN_STORE ( 9 + 512 )
 #define CDC_LEN_GET_INFO ( 5 )
+#define CDC_LEN_REBOOT ( 5 )
 
 typedef enum
 {
@@ -77,6 +78,10 @@ typedef enum
   CDC_SET_INFO_FAIL,
   CDC_SUCCESS_SET_INFO,
   CDC_CMD_SET_INFO,
+
+  CDC_REBOOT_FAIL,
+  CDC_SUCCESS_REBOOT,
+  CDC_CMD_REBOOT,
 
   CDC_MAX_COMMAND = 100,
 } CDC_COMMANDS;

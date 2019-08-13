@@ -24,6 +24,7 @@
 
 /* USER CODE BEGIN INCLUDE */
 #include "eeprom.h"
+#include "usart.h"
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -135,6 +136,7 @@ static int8_t CDC_Receive_FS(uint8_t* pbuf, uint32_t *Len);
 static void ProcessRxData(uint8_t* Buf, uint32_t *Len);
 static uint8_t CDC_HeaderIsValid(uint8_t* Buf);
 static uint8_t CDC_LenIsValid(uint8_t* Buf, uint32_t *Len);
+static void CDC_Reboot(uint8_t* Buf, uint32_t *Len);
 static void CDC_Erase(uint8_t* Buf, uint32_t *Len);
 static void CDC_Store(uint8_t* Buf, uint32_t *Len);
 static void CDC_GetInfo(uint8_t* Buf, uint32_t *Len);
@@ -325,6 +327,7 @@ static void ProcessRxData(uint8_t* Buf, uint32_t *Len)
   CDC_Store(Buf, Len);
   CDC_GetInfo(Buf, Len);
   CDC_SetInfo(Buf, Len);
+  CDC_Reboot(Buf, Len);
 }
 
 static uint8_t CDC_HeaderIsValid(uint8_t* Buf)
@@ -348,6 +351,27 @@ static uint8_t CDC_LenIsValid(uint8_t* Buf, uint32_t *Len)
   }
 
   return 1;
+}
+
+static void CDC_Reboot(uint8_t* Buf, uint32_t *Len)
+{
+  if ((Buf == NULL) || (Len == NULL)) {
+    CDC_SendReply(CDC_ERROR, CDC_REBOOT_FAIL);
+    return;
+  }
+
+  if (Buf[4] != CDC_CMD_REBOOT) {
+    CDC_SendReply(CDC_ERROR, CDC_REBOOT_FAIL);
+    return;
+  }
+
+  if ((*Len) != CDC_LEN_REBOOT) {
+    CDC_SendReply(CDC_ERROR, CDC_REBOOT_FAIL);
+    return;
+  }
+
+  HAL_NVIC_SystemReset();
+  CDC_SendReply(CDC_ERROR, CDC_SUCCESS_REBOOT);
 }
 
 static void CDC_Erase(uint8_t* Buf, uint32_t *Len)
@@ -499,7 +523,7 @@ static void CDC_StoreProcess(uint8_t *src, uint8_t *dest, uint32_t Len)
   uint32_t i = 0;
 
   uint8_t txBuf[255] = {0};
-  snprintf((char *)txBuf, 255, "write len %d dest %x\r\n", Len, dest);
+  snprintf((char *)txBuf, 255, "write len %ld dest %x\r\n", Len, dest);
   while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
   HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff);
 

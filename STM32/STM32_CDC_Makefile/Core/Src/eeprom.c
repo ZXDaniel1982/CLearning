@@ -214,7 +214,7 @@ uint8_t EEPROMGetInfo(eepInfo_t *info)
 {
     if (info == NULL) return 0;
 
-    SST25_R_BLOCK(1, info, sizeof(eepInfo_t));
+    SST25_R_BLOCK(1, (unsigned char *)info, sizeof(eepInfo_t));
 
     if (info->id == 0xab) return 1;
     else return 0;
