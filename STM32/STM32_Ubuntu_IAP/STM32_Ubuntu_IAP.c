@@ -9,7 +9,7 @@
 
 #include "STM32_Ubuntu_IAP.h"
 
-char *portname = "/dev/ttyUSB0";
+char *portname = "/dev/ttyACM0";
 
 uint8_t txBuf[1000] = {0};
 uint8_t rxBuf[1000] = {0};
@@ -129,33 +129,38 @@ int main(int argc, char **argv)
 
     printf("Start programming mini STM32\n");
 
-    while (1) {
-        IAP_InitTxPackage(txBuf);
-        IAP_GenInfoGetPack(txBuf, &len);
+    IAP_InitTxPackage(txBuf);
+    IAP_GenInfoGetPack(txBuf, &len);
 
-        printf("Require eeprom infro\n");
-        write (fd, txBuf, len);
+    printf("Require eeprom infro\n");
+    write (fd, txBuf, len);
 
-        uint16_t num = read (fd, rxBuf, sizeof rxBuf);
-        if (num <= 0) {
-            printf("Invalid bytes when reading eeprom info %d\n", num);
-            return -1;
-        }
-
-        if (!IAP_InfoHeaderIsValid(rxBuf)) {
-            printf("Invalid header\n");
-            return -1;
-        }
-
-        if (!IAP_InfoLenIsValid(rxBuf, num)) {
-            printf("Invalid length\n");
-            return -1;
-        }
-
-        eepInfo_t eepInfo;
-        memset(&eepInfo, 0, sizeof(eepInfo_t));
-        memcpy(&eepInfo, &rxBuf[6], sizeof(eepInfo_t));
-
-        printf("id %d, active %d\n", eepInfo.id, eepInfo.active);
+    uint16_t num = read (fd, rxBuf, sizeof rxBuf);
+    if (num <= 0) {
+        printf("Invalid bytes when reading eeprom info %d\n", num);
+        return -1;
     }
+
+    printf("num %d\n", num);
+
+    uint8_t i;
+    for (i=0; i<num; i++){
+        printf(" %x\n", rxBuf[i]);
+    }
+
+    if (!IAP_InfoHeaderIsValid(rxBuf)) {
+        printf("Invalid header\n");
+        return -1;
+    }
+
+    if (!IAP_InfoLenIsValid(rxBuf, num)) {
+        printf("Invalid length\n");
+        return -1;
+    }
+
+    eepInfo_t eepInfo;
+    memset(&eepInfo, 0, sizeof(eepInfo_t));
+    memcpy(&eepInfo, &rxBuf[6], sizeof(eepInfo_t));
+
+    printf("id %d, active %d\n", eepInfo.id, eepInfo.active);
 }
