@@ -434,11 +434,6 @@
               <FileType>1</FileType>
               <FilePath>..\Core\Src\eeprom.c</FilePath>
             </File>
-            <File>
-              <FileName>eeprom.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Core\Inc\eeprom.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

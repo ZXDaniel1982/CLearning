@@ -471,7 +471,9 @@ static void CDC_SendReplyData()
   uint16_t len = 6 + sizeof(eepInfo_t);
   UserTxBufferFS[4] = (uint8_t)((len >> 8) & 0x00ff);
   UserTxBufferFS[5] = (uint8_t)(len & 0x00ff);
-  memcpy(&UserTxBufferFS[6], &eepInfo, sizeof(eepInfo_t));
+	
+	SST25_R_BLOCK(1, SST25_buffer,4096);
+  memcpy(&UserTxBufferFS[6], SST25_buffer, sizeof(eepInfo_t));
   CDC_Transmit_FS(UserTxBufferFS, len);
 }
 
