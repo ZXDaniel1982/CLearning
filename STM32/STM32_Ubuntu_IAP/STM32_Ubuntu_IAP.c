@@ -4,11 +4,15 @@
 #include <string.h>
 #include <termios.h>
 #include <unistd.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+#include "STM32_Ubuntu_IAP.h"
 
 char *portname = "/dev/ttyUSB0";
 
-char txBuf[1000] = {0};
-char rxBuf[1000] = {0};
+uint8_t txBuf[1000] = {0};
+uint8_t rxBuf[1000] = {0};
 uint16_t len = 0;
 
 static int set_interface_attribs (int fd, int speed, int parity)
@@ -68,13 +72,13 @@ static void set_blocking (int fd, int should_block)
         printf("%s:%d error setting term attributes", __func__, __LINE__);
 }
 
-static void IAP_InitTxPackage(char *buf)
+static void IAP_InitTxPackage(uint8_t *buf)
 {
     buf[0] = 0x22;
     buf[1] = 0x33;
 }
 
-static void IAP_GenInfoGetPack(char *buf, uint16_t *len)
+static void IAP_GenInfoGetPack(uint8_t *buf, uint16_t *len)
 {
     buf[2] = 0x0;
     buf[3] = 0x5;
@@ -83,14 +87,37 @@ static void IAP_GenInfoGetPack(char *buf, uint16_t *len)
     *len = 5;
 }
 
+static bool IAP_InfoHeaderIsValid(uint8_t *buf)
+{
+    bool ret = false;
+
+    if ((buf[0] == 0x33) && (buf[1] == 0x44))
+        ret = true;
+    else
+        ret = false;
+
+    if (buf[2] == CDC_SUCCESS) {
+        ret = true;
+    } else {
+        printf("reply type %d, detail %d\n", buf[2], buf[3]);
+        ret = false;
+    }
+}
+
+static bool IAP_InfoLenIsValid(uint8_t *buf, uint16_t len)
+{
+    uint16_t rxLen = (uint16_t)(buf[4] * 256) + buf[5];
+
+    printf("rxLen is %d, num is %d\n", rxLen, len);
+    if (rxLen != len) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 int main(int argc, char **argv)
 {
-    int i;
-    int cmd = 0;
-    if (argc != 2) {
-        return -1;
-    }
-
     int fd = open (portname, O_RDWR | O_NOCTTY);
     if (fd < 0) {
         printf("%s:%d error opening %s %d\n", __func__, __LINE__, portname, fd);
@@ -109,28 +136,26 @@ int main(int argc, char **argv)
         printf("Require eeprom infro\n");
         write (fd, txBuf, len);
 
-        int num = read (fd, rxBuf, sizeof rxBuf);
+        uint16_t num = read (fd, rxBuf, sizeof rxBuf);
         if (num <= 0) {
-            printf("Invalid bytes when reading eeprom info %d\n", n);
+            printf("Invalid bytes when reading eeprom info %d\n", num);
             return -1;
         }
 
-        if (IAP_InfoIsValid()) {
-
-        } else {
-
+        if (!IAP_InfoHeaderIsValid(rxBuf)) {
+            printf("Invalid header\n");
+            return -1;
         }
-        printf("Received data 0x%02x 0x%02x\n", rxBuf[0], rxBuf[1]);
 
-        if ((rxBuf[0] == 0x24) && (rxBuf[1] == 0x34)) {
-            if (cmd == 1) {
-                // run app
-                txBuf[0] = 0x15;  txBuf[1] = 0x17;
-            } else if (cmd == 2) {
-                // update app
-                txBuf[0] = 0x25;  txBuf[1] = 0x27;
-            }
-            write (fd, txBuf, 2);
+        if (!IAP_InfoLenIsValid(rxBuf, num)) {
+            printf("Invalid length\n");
+            return -1;
         }
+
+        eepInfo_t eepInfo;
+        memset(&eepInfo, 0, sizeof(eepInfo_t));
+        memcpy(&eepInfo, &rxBuf[6], sizeof(eepInfo_t));
+
+        printf("id %d, active %d\n", eepInfo.id, eepInfo.active);
     }
 }
