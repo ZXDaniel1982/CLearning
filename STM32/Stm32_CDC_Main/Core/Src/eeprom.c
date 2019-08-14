@@ -228,4 +228,16 @@ void test()
 	  memset(SST25_buffer, 0, 4096);
     SST25_R_BLOCK(0, SST25_buffer,4096); 
     uartprintf("%s\r\n", SST25_buffer);
+	
+//	  memset(SST25_buffer, 0, 4096);
+//	  eepInfo_t *info = (eepInfo_t *)SST25_buffer;
+//	  info->id = 0xee;
+//	  info->active = 0;
+//	  SST25_W_BLOCK(4096, SST25_buffer, 4096);
+//    HAL_Delay(2000);
+//	
+//	  memset(SST25_buffer, 0, 4096);
+//    SST25_R_BLOCK(4096, SST25_buffer,4096); 
+//	  info = (eepInfo_t *)SST25_buffer;
+//    uartprintf("id %x act %d\r\n", info->id, info->active);
 }
