@@ -12,6 +12,7 @@
 
 #include "spi.h"
 #include "eeprom.h"
+#include "usart.h"
 
 /* Select SPI FLASH: ChipSelect pin low  */
 #define Select_Flash()     HAL_GPIO_WritePin(SST_CS_GPIO_Port, SST_CS_Pin, GPIO_PIN_RESET);
@@ -62,10 +63,12 @@ static uint16_t SPI_Flash_ReadID(void)
     //?????16??    
     Temp = 0xFF;
     HAL_SPI_TransmitReceive(&hspi1, &Temp, &Ret, 1, 1000);
+		uartprintf("id high %x\r\n", Ret);
     id = ((uint16_t) Ret) << 8;
 
     Temp = 0xFF;
     HAL_SPI_TransmitReceive(&hspi1, &Temp, &Ret, 1, 1000);
+		uartprintf("id low %x\r\n", Ret);
     id += (uint16_t) Ret;
 
     NotSelect_Flash();
@@ -213,4 +216,16 @@ uint8_t IAP_GotoBackup(eepInfo_t *info)
 
     if (info->active == 0) return 0;
     else return 1;
+}
+
+void test()
+{
+    memset(SST25_buffer, 0, 4096);
+	  strncpy((char *)SST25_buffer, "EEprom test", 4096);
+	  SST25_W_BLOCK(0, SST25_buffer, 4096);
+    HAL_Delay(2000);
+	
+	  memset(SST25_buffer, 0, 4096);
+    SST25_R_BLOCK(0, SST25_buffer,4096); 
+    uartprintf("%s\r\n", SST25_buffer);
 }

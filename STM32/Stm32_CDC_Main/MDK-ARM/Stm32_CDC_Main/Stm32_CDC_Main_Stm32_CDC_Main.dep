@@ -1,12 +1,9 @@
 Dependencies for Project 'Stm32_CDC_Main', Target 'Stm32_CDC_Main': (DO NOT MODIFY !)
-F (startup_stm32f103xe.s)(0x5D532AE9)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include--pd "__UVISION_VERSION SETA 522" --pd "_RTE_ SETA 1" --pd "STM32F10X_HD SETA 1"--list startup_stm32f103xe.lst --xref -o stm32_cdc_main\startup_stm32f103xe.o --depend stm32_cdc_main\startup_stm32f103xe.d)
-F (..\Core\Src\eeprom.c)(0x5D5329D9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\eeprom.o --omf_browse stm32_cdc_main\eeprom.crf --depend stm32_cdc_main\eeprom.d)
-I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
-I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
-I (../Core/Inc/spi.h)(0x5D532AE4)
-I (../Core/Inc/main.h)(0x5D532AE6)
+F (startup_stm32f103xe.s)(0x5D549109)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include--pd "__UVISION_VERSION SETA 522" --pd "_RTE_ SETA 1" --pd "STM32F10X_HD SETA 1"--list startup_stm32f103xe.lst --xref -o stm32_cdc_main\startup_stm32f103xe.o --depend stm32_cdc_main\startup_stm32f103xe.d)
+F (../Core/Src/main.c)(0x5D5491B2)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\main.o --omf_browse stm32_cdc_main\main.crf --depend stm32_cdc_main\main.d)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -28,6 +25,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -35,54 +34,22 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
-I (../Core/Inc/eeprom.h)(0x5D532C60)
-F (../Core/Src/main.c)(0x5D532C4F)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\main.o --omf_browse stm32_cdc_main\main.crf --depend stm32_cdc_main\main.d)
-I (../Core/Inc/main.h)(0x5D532AE6)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
-I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
-I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h)(0x5D4D7620)
-I (../Drivers/CMSIS/Include/core_cm3.h)(0x5D4D7625)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F606B8)
-I (../Drivers/CMSIS/Include/cmsis_version.h)(0x5D4D7625)
-I (../Drivers/CMSIS/Include/cmsis_compiler.h)(0x5D4D7625)
-I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x5D4D7625)
-I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x5D4D7620)
-I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F606B8)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_exti.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma_ex.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
-I (../Core/Inc/spi.h)(0x5D532AE4)
-I (../Core/Inc/usart.h)(0x5D532AE4)
-I (../USB_DEVICE/App/usb_device.h)(0x5D532AE4)
+I (../Core/Inc/sdio.h)(0x5D549104)
+I (../Core/Inc/spi.h)(0x5D549104)
+I (../Core/Inc/usart.h)(0x5D549104)
+I (../USB_DEVICE/App/usb_device.h)(0x5D549105)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D532AE5)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D549105)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
-I (../Core/Inc/gpio.h)(0x5D532AE3)
-I (../Core/Inc/eeprom.h)(0x5D532C60)
-F (../Core/Src/gpio.c)(0x5D532AE3)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\gpio.o --omf_browse stm32_cdc_main\gpio.crf --depend stm32_cdc_main\gpio.d)
-I (../Core/Inc/gpio.h)(0x5D532AE3)
-I (../Core/Inc/main.h)(0x5D532AE6)
+I (../Core/Inc/gpio.h)(0x5D549103)
+I (../Core/Inc/eeprom.h)(0x5D548B86)
+F (../Core/Src/gpio.c)(0x5D549103)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\gpio.o --omf_browse stm32_cdc_main\gpio.crf --depend stm32_cdc_main\gpio.d)
+I (../Core/Inc/gpio.h)(0x5D549103)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -104,6 +71,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -111,11 +80,11 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
-F (../Core/Src/spi.c)(0x5D532AE4)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\spi.o --omf_browse stm32_cdc_main\spi.crf --depend stm32_cdc_main\spi.d)
-I (../Core/Inc/spi.h)(0x5D532AE4)
-I (../Core/Inc/main.h)(0x5D532AE6)
+F (../Core/Src/sdio.c)(0x5D549104)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\sdio.o --omf_browse stm32_cdc_main\sdio.crf --depend stm32_cdc_main\sdio.d)
+I (../Core/Inc/sdio.h)(0x5D549104)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -137,6 +106,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -144,11 +115,11 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
-F (../Core/Src/usart.c)(0x5D532AE4)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\usart.o --omf_browse stm32_cdc_main\usart.crf --depend stm32_cdc_main\usart.d)
-I (../Core/Inc/usart.h)(0x5D532AE4)
-I (../Core/Inc/main.h)(0x5D532AE6)
+F (../Core/Src/spi.c)(0x5D549104)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\spi.o --omf_browse stm32_cdc_main\spi.crf --depend stm32_cdc_main\spi.d)
+I (../Core/Inc/spi.h)(0x5D549104)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -170,6 +141,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -177,10 +150,11 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
-F (../Core/Src/stm32f1xx_it.c)(0x5D532AE5)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_it.o --omf_browse stm32_cdc_main\stm32f1xx_it.crf --depend stm32_cdc_main\stm32f1xx_it.d)
-I (../Core/Inc/main.h)(0x5D532AE6)
+F (../Core/Src/usart.c)(0x5D549104)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\usart.o --omf_browse stm32_cdc_main\usart.crf --depend stm32_cdc_main\usart.d)
+I (../Core/Inc/usart.h)(0x5D549104)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -202,6 +176,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -209,11 +185,13 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_it.h)(0x5D532AE5)
-F (../Core/Src/stm32f1xx_hal_msp.c)(0x5D532AE5)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_msp.o --omf_browse stm32_cdc_main\stm32f1xx_hal_msp.crf --depend stm32_cdc_main\stm32f1xx_hal_msp.d)
-I (../Core/Inc/main.h)(0x5D532AE6)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
+I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x57F606B8)
+F (../Core/Src/stm32f1xx_it.c)(0x5D549105)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_it.o --omf_browse stm32_cdc_main\stm32f1xx_it.crf --depend stm32_cdc_main\stm32f1xx_it.d)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -235,6 +213,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -242,9 +222,11 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
-F (../Core/Src/stm32f1xx_hal_timebase_tim.c)(0x5D532AE6)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_timebase_tim.o --omf_browse stm32_cdc_main\stm32f1xx_hal_timebase_tim.crf --depend stm32_cdc_main\stm32f1xx_hal_timebase_tim.d)
+I (../Core/Inc/stm32f1xx_it.h)(0x5D549105)
+F (../Core/Src/stm32f1xx_hal_msp.c)(0x5D549105)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_msp.o --omf_browse stm32_cdc_main\stm32f1xx_hal_msp.crf --depend stm32_cdc_main\stm32f1xx_hal_msp.d)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -266,6 +248,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -273,8 +257,81 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
-F (../USB_DEVICE/App/usb_device.c)(0x5D532AE4)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\usb_device.o --omf_browse stm32_cdc_main\usb_device.crf --depend stm32_cdc_main\usb_device.d)
-I (../USB_DEVICE/App/usb_device.h)(0x5D532AE4)
+F (../Core/Src/stm32f1xx_hal_timebase_tim.c)(0x5D549106)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_timebase_tim.o --omf_browse stm32_cdc_main\stm32f1xx_hal_timebase_tim.crf --depend stm32_cdc_main\stm32f1xx_hal_timebase_tim.d)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h)(0x5D4D7620)
+I (../Drivers/CMSIS/Include/core_cm3.h)(0x5D4D7625)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F606B8)
+I (../Drivers/CMSIS/Include/cmsis_version.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Include/cmsis_compiler.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x5D4D7620)
+I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F606B8)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_exti.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
+F (..\Core\Src\eeprom.c)(0x5D548F54)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\eeprom.o --omf_browse stm32_cdc_main\eeprom.crf --depend stm32_cdc_main\eeprom.d)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
+I (../Core/Inc/spi.h)(0x5D549104)
+I (../Core/Inc/main.h)(0x5D549150)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h)(0x5D4D7620)
+I (../Drivers/CMSIS/Include/core_cm3.h)(0x5D4D7625)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F606B8)
+I (../Drivers/CMSIS/Include/cmsis_version.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Include/cmsis_compiler.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x5D4D7620)
+I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F606B8)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_exti.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
+I (../Core/Inc/eeprom.h)(0x5D548B86)
+I (../Core/Inc/usart.h)(0x5D549104)
+F (..\Core\Inc\eeprom.h)(0x5D548B86)()
+F (../USB_DEVICE/App/usb_device.c)(0x5D549104)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\usb_device.o --omf_browse stm32_cdc_main\usb_device.crf --depend stm32_cdc_main\usb_device.d)
+I (../USB_DEVICE/App/usb_device.h)(0x5D549105)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h)(0x5D4D7620)
 I (../Drivers/CMSIS/Include/core_cm3.h)(0x5D4D7625)
@@ -284,7 +341,7 @@ I (../Drivers/CMSIS/Include/cmsis_compiler.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x5D4D7620)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F606B8)
@@ -298,6 +355,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -306,26 +365,26 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D532AE5)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D549105)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
-I (../Core/Inc/main.h)(0x5D532AE6)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h)(0x5D4D7626)
-I (../USB_DEVICE/App/usbd_desc.h)(0x5D532AE5)
+I (../USB_DEVICE/App/usbd_desc.h)(0x5D549105)
 I (../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h)(0x5D4D7626)
-I (../USB_DEVICE/App/usbd_cdc_if.h)(0x5D532AE5)
-F (../USB_DEVICE/App/usbd_desc.c)(0x5D532AE5)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\usbd_desc.o --omf_browse stm32_cdc_main\usbd_desc.crf --depend stm32_cdc_main\usbd_desc.d)
+I (../USB_DEVICE/App/usbd_cdc_if.h)(0x5D549105)
+F (../USB_DEVICE/App/usbd_desc.c)(0x5D549105)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\usbd_desc.o --omf_browse stm32_cdc_main\usbd_desc.crf --depend stm32_cdc_main\usbd_desc.d)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D532AE5)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D549105)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
-I (../Core/Inc/main.h)(0x5D532AE6)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -347,6 +406,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -357,19 +418,19 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h)(0x5D4D7626)
-I (../USB_DEVICE/App/usbd_desc.h)(0x5D532AE5)
-F (../USB_DEVICE/App/usbd_cdc_if.c)(0x5D532BA7)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\usbd_cdc_if.o --omf_browse stm32_cdc_main\usbd_cdc_if.crf --depend stm32_cdc_main\usbd_cdc_if.d)
-I (../USB_DEVICE/App/usbd_cdc_if.h)(0x5D532AE5)
+I (../USB_DEVICE/App/usbd_desc.h)(0x5D549105)
+F (../USB_DEVICE/App/usbd_cdc_if.c)(0x5D549105)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\usbd_cdc_if.o --omf_browse stm32_cdc_main\usbd_cdc_if.crf --depend stm32_cdc_main\usbd_cdc_if.d)
+I (../USB_DEVICE/App/usbd_cdc_if.h)(0x5D549105)
 I (../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D532AE5)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D549105)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
-I (../Core/Inc/main.h)(0x5D532AE6)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -391,6 +452,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -400,9 +463,9 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h)(0x5D4D7626)
-I (../Core/Inc/usart.h)(0x5D532AE4)
-I (../Core/Inc/eeprom.h)(0x5D532C60)
-F (../USB_DEVICE/Target/usbd_conf.c)(0x5D532AE5)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\usbd_conf.o --omf_browse stm32_cdc_main\usbd_conf.crf --depend stm32_cdc_main\usbd_conf.d)
+I (../Core/Inc/usart.h)(0x5D549104)
+I (../Core/Inc/eeprom.h)(0x5D548B86)
+F (../USB_DEVICE/Target/usbd_conf.c)(0x5D549105)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\usbd_conf.o --omf_browse stm32_cdc_main\usbd_conf.crf --depend stm32_cdc_main\usbd_conf.d)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h)(0x5D4D7620)
 I (../Drivers/CMSIS/Include/core_cm3.h)(0x5D4D7625)
@@ -412,7 +475,7 @@ I (../Drivers/CMSIS/Include/cmsis_compiler.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x5D4D7620)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F606B8)
@@ -426,6 +489,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -434,18 +499,18 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D532AE5)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D549105)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
-I (../Core/Inc/main.h)(0x5D532AE6)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h)(0x5D4D7626)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_gpio_ex.o --omf_browse stm32_cdc_main\stm32f1xx_hal_gpio_ex.crf --depend stm32_cdc_main\stm32f1xx_hal_gpio_ex.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -467,6 +532,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -476,7 +543,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_pcd.o --omf_browse stm32_cdc_main\stm32f1xx_hal_pcd.crf --depend stm32_cdc_main\stm32f1xx_hal_pcd.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -498,6 +565,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -507,7 +576,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd_ex.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_pcd_ex.o --omf_browse stm32_cdc_main\stm32f1xx_hal_pcd_ex.crf --depend stm32_cdc_main\stm32f1xx_hal_pcd_ex.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -529,6 +598,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -538,7 +609,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_ll_usb.o --omf_browse stm32_cdc_main\stm32f1xx_ll_usb.crf --depend stm32_cdc_main\stm32f1xx_ll_usb.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -560,6 +631,74 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
+F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_sdmmc.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_ll_sdmmc.o --omf_browse stm32_cdc_main\stm32f1xx_ll_sdmmc.crf --depend stm32_cdc_main\stm32f1xx_ll_sdmmc.d)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h)(0x5D4D7620)
+I (../Drivers/CMSIS/Include/core_cm3.h)(0x5D4D7625)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F606B8)
+I (../Drivers/CMSIS/Include/cmsis_version.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Include/cmsis_compiler.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x5D4D7620)
+I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F606B8)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_exti.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
+F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_sd.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_sd.o --omf_browse stm32_cdc_main\stm32f1xx_hal_sd.crf --depend stm32_cdc_main\stm32f1xx_hal_sd.d)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h)(0x5D4D7620)
+I (../Drivers/CMSIS/Include/core_cm3.h)(0x5D4D7625)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F606B8)
+I (../Drivers/CMSIS/Include/cmsis_version.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Include/cmsis_compiler.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x5D4D7625)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x5D4D7620)
+I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F606B8)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_exti.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -569,7 +708,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_spi.o --omf_browse stm32_cdc_main\stm32f1xx_hal_spi.crf --depend stm32_cdc_main\stm32f1xx_hal_spi.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -591,6 +730,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -600,7 +741,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_tim.o --omf_browse stm32_cdc_main\stm32f1xx_hal_tim.crf --depend stm32_cdc_main\stm32f1xx_hal_tim.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -622,6 +763,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -631,7 +774,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_tim_ex.o --omf_browse stm32_cdc_main\stm32f1xx_hal_tim_ex.crf --depend stm32_cdc_main\stm32f1xx_hal_tim_ex.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -653,6 +796,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -662,7 +807,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_uart.o --omf_browse stm32_cdc_main\stm32f1xx_hal_uart.crf --depend stm32_cdc_main\stm32f1xx_hal_uart.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -684,6 +829,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -693,7 +840,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal.o --omf_browse stm32_cdc_main\stm32f1xx_hal.crf --depend stm32_cdc_main\stm32f1xx_hal.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -715,6 +862,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -724,7 +873,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_rcc.o --omf_browse stm32_cdc_main\stm32f1xx_hal_rcc.crf --depend stm32_cdc_main\stm32f1xx_hal_rcc.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -746,6 +895,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -755,7 +906,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_rcc_ex.o --omf_browse stm32_cdc_main\stm32f1xx_hal_rcc_ex.crf --depend stm32_cdc_main\stm32f1xx_hal_rcc_ex.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -777,6 +928,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -786,7 +939,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_gpio.o --omf_browse stm32_cdc_main\stm32f1xx_hal_gpio.crf --depend stm32_cdc_main\stm32f1xx_hal_gpio.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -808,6 +961,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -817,7 +972,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_dma.o --omf_browse stm32_cdc_main\stm32f1xx_hal_dma.crf --depend stm32_cdc_main\stm32f1xx_hal_dma.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -839,6 +994,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -848,7 +1005,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_cortex.o --omf_browse stm32_cdc_main\stm32f1xx_hal_cortex.crf --depend stm32_cdc_main\stm32f1xx_hal_cortex.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -870,6 +1027,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -879,7 +1038,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_pwr.o --omf_browse stm32_cdc_main\stm32f1xx_hal_pwr.crf --depend stm32_cdc_main\stm32f1xx_hal_pwr.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -901,6 +1060,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -910,7 +1071,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_flash.o --omf_browse stm32_cdc_main\stm32f1xx_hal_flash.crf --depend stm32_cdc_main\stm32f1xx_hal_flash.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -932,6 +1093,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -941,7 +1104,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_flash_ex.o --omf_browse stm32_cdc_main\stm32f1xx_hal_flash_ex.crf --depend stm32_cdc_main\stm32f1xx_hal_flash_ex.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -963,6 +1126,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -972,7 +1137,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c)(0x5D4D7625)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\stm32f1xx_hal_exti.o --omf_browse stm32_cdc_main\stm32f1xx_hal_exti.crf --depend stm32_cdc_main\stm32f1xx_hal_exti.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -994,6 +1159,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -1001,7 +1168,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
-F (../Core/Src/system_stm32f1xx.c)(0x5D5328F6)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\system_stm32f1xx.o --omf_browse stm32_cdc_main\system_stm32f1xx.crf --depend stm32_cdc_main\system_stm32f1xx.d)
+F (../Core/Src/system_stm32f1xx.c)(0x5D5486F1)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\system_stm32f1xx.o --omf_browse stm32_cdc_main\system_stm32f1xx.crf --depend stm32_cdc_main\system_stm32f1xx.d)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h)(0x5D4D7620)
 I (../Drivers/CMSIS/Include/core_cm3.h)(0x5D4D7625)
@@ -1011,7 +1178,7 @@ I (../Drivers/CMSIS/Include/cmsis_compiler.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x5D4D7620)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F606B8)
@@ -1025,6 +1192,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -1034,13 +1203,13 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c)(0x5D4D7626)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\usbd_core.o --omf_browse stm32_cdc_main\usbd_core.crf --depend stm32_cdc_main\usbd_core.d)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D532AE5)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D549105)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
-I (../Core/Inc/main.h)(0x5D532AE6)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -1062,6 +1231,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -1075,13 +1246,13 @@ I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h)(0x5D4D7626
 F (../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c)(0x5D4D7626)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\usbd_ctlreq.o --omf_browse stm32_cdc_main\usbd_ctlreq.crf --depend stm32_cdc_main\usbd_ctlreq.d)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D532AE5)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D549105)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
-I (../Core/Inc/main.h)(0x5D532AE6)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -1103,6 +1274,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -1115,13 +1288,13 @@ I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h)(0x5D4D7626)
 F (../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c)(0x5D4D7626)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_CDC_Main\MDK-ARM\RTE\_Stm32_CDC_Main-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_cdc_main\usbd_ioreq.o --omf_browse stm32_cdc_main\usbd_ioreq.crf --depend stm32_cdc_main\usbd_ioreq.d)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D532AE5)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D549105)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
-I (../Core/Inc/main.h)(0x5D532AE6)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -1143,6 +1316,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)
@@ -1156,13 +1331,13 @@ F (../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c)(0x5D4D76
 I (../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D532AE5)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D549105)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
-I (../Core/Inc/main.h)(0x5D532AE6)
+I (../Core/Inc/main.h)(0x5D549150)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D532AE6)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D549106)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x5D4D7625)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
@@ -1184,6 +1359,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_sd.h)(0x5D4D7625)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_sdmmc.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x5D4D7625)

@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "sdio.h"
 #include "spi.h"
 #include "usart.h"
 #include "usb_device.h"
@@ -69,8 +70,8 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  pFunction JumpToApplication;
-  uint32_t JumpAddress;
+  //pFunction JumpToApplication;
+  //uint32_t JumpAddress;
   /* USER CODE END 1 */
   
 
@@ -92,31 +93,13 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_SPI1_Init();
-  MX_USART1_UART_Init();
-
-  if (EEPROMIsValid() == 0) {
-    uartprintf("EEPROM Id check is failed\r\n");
-    return -1;
-  }
-
-  if (IAP_GotoBackup(&eepInfo)) {
-    /* Test if user code is programmed starting from address 0x08007000 */
-    if (((*(__IO uint32_t *) APP_DEFAULT_ADD) & 0x2FFE0000) ==
-        0x20000000)
-    {
-      /* Jump to user application */
-      JumpAddress = *(__IO uint32_t *) (APP_DEFAULT_ADD + 4);
-      JumpToApplication = (pFunction) JumpAddress;
-
-      /* Initialize user application's Stack Pointer */
-      __set_MSP(*(__IO uint32_t *) APP_DEFAULT_ADD);
-      JumpToApplication();
-    }
-  }
-
   MX_USB_DEVICE_Init();
+  MX_USART1_UART_Init();
+  MX_SDIO_SD_Init();
+  MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
+	EEPROMIsValid();
+	test();
   uartprintf("Running main task\r\n");
   /* USER CODE END 2 */
 

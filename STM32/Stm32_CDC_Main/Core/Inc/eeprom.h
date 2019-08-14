@@ -26,6 +26,8 @@ void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff,
 void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff,
               unsigned int BlockSize);
 
+void test(void);
+
 extern eepInfo_t eepInfo;
 extern uint8_t SST25_buffer[4096];
 
