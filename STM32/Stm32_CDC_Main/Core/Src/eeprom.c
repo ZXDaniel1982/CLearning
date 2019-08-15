@@ -10,13 +10,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-//#include "lcd.h"
 #include "spi.h"
-//#include "usart.h"
-//#include "fatfs.h"
 #include "eeprom.h"
-//#include "cmsis_os.h"
-//#include "FreeRTOS.h"
 
 /* Select SPI FLASH: ChipSelect pin low  */
 #define Select_Flash()     HAL_GPIO_WritePin(SST_CS_GPIO_Port, SST_CS_Pin, GPIO_PIN_RESET);
@@ -67,13 +62,11 @@ static uint16_t SPI_Flash_ReadID(void)
     //?????16??    
     Temp = 0xFF;
     HAL_SPI_TransmitReceive(&hspi1, &Temp, &Ret, 1, 1000);
-    //uartprintf("High value is %x\r\n", Ret);
-    //id = ((uint16_t) Ret) << 8;
+    id = ((uint16_t) Ret) << 8;
 
     Temp = 0xFF;
     HAL_SPI_TransmitReceive(&hspi1, &Temp, &Ret, 1, 1000);
-    //uartprintf("Low value is %x\r\n", Ret);
-    //id += (uint16_t) Ret;
+    id += (uint16_t) Ret;
 
     NotSelect_Flash();
 
@@ -210,12 +203,14 @@ uint8_t EEPROMIsValid()
     else return 0;
 }
 
-uint8_t EEPROMGetInfo(eepInfo_t *info)
+uint8_t IAP_GotoBackup(eepInfo_t *info)
 {
     if (info == NULL) return 0;
 
     SST25_R_BLOCK(1, (unsigned char *)info, sizeof(eepInfo_t));
 
-    if (info->id == 0xab) return 1;
-    else return 0;
+    if (info->id != 0xab) return 0;
+
+    if (info->active == 0) return 0;
+    else return 1;
 }

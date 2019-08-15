@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "STM32_Ubuntu_IAP.h"
+#include "common.h"
 
 char *portname = "/dev/ttyACM0";
 
@@ -78,7 +78,7 @@ static void IAP_InitTxPackage(uint8_t *buf)
     buf[1] = 0x33;
 }
 
-static void IAP_GenInfoGetPack(uint8_t *buf, uint16_t *len)
+static void IAP_GeneratePack(uint8_t *buf, uint16_t *len)
 {
     buf[2] = 0x0;
     buf[3] = 0x5;
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
     printf("Start programming mini STM32\n");
 
     IAP_InitTxPackage(txBuf);
-    IAP_GenInfoGetPack(txBuf, &len);
+    IAP_GeneratePack(txBuf, &len);
 
     printf("Require eeprom infro\n");
     write (fd, txBuf, len);
@@ -138,23 +138,19 @@ int main(int argc, char **argv)
     uint16_t num = read (fd, rxBuf, sizeof rxBuf);
     if (num <= 0) {
         printf("Invalid bytes when reading eeprom info %d\n", num);
+        close(fd);
         return -1;
-    }
-
-    printf("num %d\n", num);
-
-    uint8_t i;
-    for (i=0; i<num; i++){
-        printf(" %x\n", rxBuf[i]);
     }
 
     if (!IAP_InfoHeaderIsValid(rxBuf)) {
         printf("Invalid header\n");
+        close(fd);
         return -1;
     }
 
     if (!IAP_InfoLenIsValid(rxBuf, num)) {
         printf("Invalid length\n");
+        close(fd);
         return -1;
     }
 
@@ -163,4 +159,5 @@ int main(int argc, char **argv)
     memcpy(&eepInfo, &rxBuf[6], sizeof(eepInfo_t));
 
     printf("id %d, active %d\n", eepInfo.id, eepInfo.active);
+    close(fd);
 }

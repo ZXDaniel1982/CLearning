@@ -67,7 +67,7 @@ void Error_Handler(void);
 #define Led_Pin GPIO_PIN_5
 #define Led_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
-
+#define APP_DEFAULT_ADD 0x804B000
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

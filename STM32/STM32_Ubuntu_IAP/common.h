@@ -1,5 +1,5 @@
-#ifndef __USBD_CDC_IF_H__
-#define __USBD_CDC_IF_H__
+#ifndef __COMMON_H__
+#define __COMMON_H__
 
 #ifdef __cplusplus
  extern "C" {
@@ -59,6 +59,6 @@ typedef struct
 }
 #endif
 
-#endif /* __USBD_CDC_IF_H__ */
+#endif /* __COMMON_H__ */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
