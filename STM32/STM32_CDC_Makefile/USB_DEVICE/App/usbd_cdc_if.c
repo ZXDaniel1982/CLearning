@@ -169,6 +169,8 @@ static int8_t CDC_Init_FS(void)
 {
   /* USER CODE BEGIN 3 */
   /* Set Application Buffers */
+  uartprintf("Init\r\n");
+
   HAL_FLASH_Unlock();
   USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
@@ -183,6 +185,8 @@ static int8_t CDC_Init_FS(void)
 static int8_t CDC_DeInit_FS(void)
 {
   /* USER CODE BEGIN 4 */
+  uartprintf("DeInit\r\n");
+
   HAL_FLASH_Lock();
   return (USBD_OK);
   /* USER CODE END 4 */
@@ -361,7 +365,6 @@ static void CDC_Reboot(uint8_t* Buf, uint32_t *Len)
   }
 
   if (Buf[4] != CDC_CMD_REBOOT) {
-    CDC_SendReply(CDC_ERROR, CDC_REBOOT_FAIL);
     return;
   }
 
@@ -382,7 +385,6 @@ static void CDC_Erase(uint8_t* Buf, uint32_t *Len)
   }
 
   if (Buf[4] != CDC_CMD_ERASE) {
-    CDC_SendReply(CDC_ERROR, CDC_ERASE_FAIL);
     return;
   }
 
@@ -403,7 +405,6 @@ static void CDC_Store(uint8_t* Buf, uint32_t *Len)
   }
 
   if (Buf[4] != CDC_CMD_STORE) {
-    CDC_SendReply(CDC_ERROR, CDC_STORE_FAIL);
     return;
   }
 
@@ -426,7 +427,6 @@ static void CDC_GetInfo(uint8_t* Buf, uint32_t *Len)
   }
 
   if (Buf[4] != CDC_CMD_GET_INFO) {
-    CDC_SendReply(CDC_ERROR, CDC_GET_INFO_FAIL);
     return;
   }
 
@@ -446,7 +446,6 @@ static void CDC_SetInfo(uint8_t* Buf, uint32_t *Len)
   }
 
   if (Buf[4] != CDC_CMD_SET_INFO) {
-    CDC_SendReply(CDC_ERROR, CDC_SET_INFO_FAIL);
     return;
   }
 
@@ -495,10 +494,7 @@ static void CDC_EraseProcess(uint32_t Add)
   /* USER CODE BEGIN 2 */
   uint32_t PageError = 0;
 
-  uint8_t txBuf[255] = {0};
-  snprintf((char *)txBuf, 255, "erase %lx\r\n", Add);
-  while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
-  HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff);
+  uartprintf("erase %lx\r\n", Add);
   /* Variable contains Flash operation status */
   HAL_StatusTypeDef status;
   FLASH_EraseInitTypeDef eraseinitstruct;
@@ -522,10 +518,7 @@ static void CDC_StoreProcess(uint8_t *src, uint8_t *dest, uint32_t Len)
   /* USER CODE BEGIN 3 */
   uint32_t i = 0;
 
-  uint8_t txBuf[255] = {0};
-  snprintf((char *)txBuf, 255, "write len %ld dest %x\r\n", Len, dest);
-  while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
-  HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff);
+  uartprintf("write len %ld dest %x\r\n", Len, dest);
 
   for (i = 0; i < Len; i += 4)
   {

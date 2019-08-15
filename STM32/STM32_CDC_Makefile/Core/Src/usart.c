@@ -103,7 +103,17 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 } 
 
 /* USER CODE BEGIN 1 */
-
+#define MAX_UART_BUF_LEN 255
+void uartprintf(const char* fmt, ...)
+{
+  va_list ap;
+  va_start(ap, fmt);
+  
+  uint8_t txBuf[MAX_UART_BUF_LEN] = {0};
+  vsnprintf((char *)txBuf, MAX_UART_BUF_LEN, fmt, ap);
+  while (HAL_UART_GetState(&huart1) != HAL_UART_STATE_READY) {}
+  HAL_UART_Transmit(&huart1, txBuf, strlen((char *)txBuf), 0xffff);
+}
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
