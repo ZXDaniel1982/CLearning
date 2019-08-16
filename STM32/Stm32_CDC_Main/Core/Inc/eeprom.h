@@ -16,17 +16,16 @@ typedef struct
 {
 	uint8_t id;
 	uint8_t active;
+	uint8_t current;
 	appInfo_t info[2];
 } eepInfo_t;
 
 uint8_t EEPROMIsValid(void);
-uint8_t EEPROMGetInfo(eepInfo_t *info);
+uint8_t IAP_GotoBackup(void);
 void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff,
               uint16_t BlockSize);
 void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff,
               unsigned int BlockSize);
-
-void test(void);
 
 extern eepInfo_t eepInfo;
 extern uint8_t SST25_buffer[4096];

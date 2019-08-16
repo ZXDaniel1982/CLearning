@@ -20,7 +20,6 @@
 #define NotSelect_Flash()    HAL_GPIO_WritePin(SST_CS_GPIO_Port, SST_CS_Pin, GPIO_PIN_SET);
 
 uint8_t SST25_buffer[4096];
-eepInfo_t eepInfo;
 
 static void wip(void);
 static void wsr(void);
@@ -63,12 +62,10 @@ static uint16_t SPI_Flash_ReadID(void)
     //?????16??    
     Temp = 0xFF;
     HAL_SPI_TransmitReceive(&hspi1, &Temp, &Ret, 1, 1000);
-		uartprintf("id high %x\r\n", Ret);
     id = ((uint16_t) Ret) << 8;
 
     Temp = 0xFF;
     HAL_SPI_TransmitReceive(&hspi1, &Temp, &Ret, 1, 1000);
-		uartprintf("id low %x\r\n", Ret);
     id += (uint16_t) Ret;
 
     NotSelect_Flash();
@@ -199,45 +196,24 @@ void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff,
 /*----------------------------------------------------------------------------*/
 /* Public functions                                                           */
 /*----------------------------------------------------------------------------*/
-#define SST25VF016B_ID 0xBF41
+#define SST25VF016B_ID 0x0023
 uint8_t EEPROMIsValid()
 {
     if (SST25VF016B_ID == SPI_Flash_ReadID()) return 1;
     else return 0;
 }
 
-uint8_t IAP_GotoBackup(eepInfo_t *info)
+uint8_t IAP_GotoBackup()
 {
-    if (info == NULL) return 0;
+    eepInfo_t info;
 
-    SST25_R_BLOCK(1, (unsigned char *)info, sizeof(eepInfo_t));
-
-    if (info->id != 0xab) return 0;
-
-    if (info->active == 0) return 0;
-    else return 1;
-}
-
-void test()
-{
+    memset(&info, 0, sizeof(eepInfo_t));
     memset(SST25_buffer, 0, 4096);
-	  strncpy((char *)SST25_buffer, "EEprom test", 4096);
-	  SST25_W_BLOCK(0, SST25_buffer, 4096);
-    HAL_Delay(2000);
-	
-	  memset(SST25_buffer, 0, 4096);
-    SST25_R_BLOCK(0, SST25_buffer,4096); 
-    uartprintf("%s\r\n", SST25_buffer);
-	
-//	  memset(SST25_buffer, 0, 4096);
-//	  eepInfo_t *info = (eepInfo_t *)SST25_buffer;
-//	  info->id = 0xee;
-//	  info->active = 0;
-//	  SST25_W_BLOCK(4096, SST25_buffer, 4096);
-//    HAL_Delay(2000);
-//	
-//	  memset(SST25_buffer, 0, 4096);
-//    SST25_R_BLOCK(4096, SST25_buffer,4096); 
-//	  info = (eepInfo_t *)SST25_buffer;
-//    uartprintf("id %x act %d\r\n", info->id, info->active);
+    SST25_R_BLOCK(4096, SST25_buffer,4096); 
+	  memcpy(&info, SST25_buffer, sizeof(eepInfo_t));
+
+    if (info.id != 0xab) return 0;
+
+    if (info.active == 0) return 0;
+    else return 1;
 }
