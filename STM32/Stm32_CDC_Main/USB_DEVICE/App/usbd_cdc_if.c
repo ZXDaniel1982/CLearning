@@ -517,7 +517,7 @@ static void CDC_EraseProcess(uint32_t Add)
   /* USER CODE END 2 */
 }
 
-static void CDC_StoreProcess(uint8_t *src, uint8_t *dest, uint32_t Len)
+static void CDC_StoreProcess(uint8_t *dest, uint8_t *src, uint32_t Len)
 {
   /* USER CODE BEGIN 3 */
   uint32_t i = 0;
