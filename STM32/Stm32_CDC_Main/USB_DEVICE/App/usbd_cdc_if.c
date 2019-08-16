@@ -351,6 +351,7 @@ static uint8_t CDC_LenIsValid(uint8_t* Buf, uint32_t *Len)
 
   uint16_t length = (uint16_t)Buf[2] * 256 + Buf[3];
 
+	uartprintf("length %d Len %d\r\n", length, *Len);
   if (length != (*Len)) {
     return 0;
   }
@@ -375,6 +376,7 @@ static void CDC_Reboot(uint8_t* Buf, uint32_t *Len)
   }
 
   CDC_SendReply(CDC_ERROR, CDC_SUCCESS_REBOOT);
+	uartprintf("reboot device\r\n");
 	HAL_Delay(500);
 	HAL_NVIC_SystemReset();
 }

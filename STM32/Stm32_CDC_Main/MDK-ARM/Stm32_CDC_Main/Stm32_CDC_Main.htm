@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Stm32_CDC_Main\Stm32_CDC_Main.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Stm32_CDC_Main\Stm32_CDC_Main.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Sat Aug 17 01:00:06 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Sat Aug 17 01:31:46 2019
 <BR><P>
 <H3>Maximum Stack Usage =        392 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1900,6 +1900,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EEPROMIsValid
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ProcessRxData
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CDC_StoreProcess
 <LI><a href="#[7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CDC_Init_FS
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CDC_Erase
@@ -2044,10 +2045,11 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ProcessRxData
 </UL>
 
-<P><STRONG><a name="[7a]"></a>ProcessRxData</STRONG> (Thumb, 234 bytes, Stack size 16 bytes, usbd_cdc_if.o(i.ProcessRxData))
+<P><STRONG><a name="[7a]"></a>ProcessRxData</STRONG> (Thumb, 250 bytes, Stack size 16 bytes, usbd_cdc_if.o(i.ProcessRxData))
 <BR><BR>[Stack]<UL><LI>Max Depth = 384<LI>Call Chain = ProcessRxData &rArr; CDC_Erase &rArr; uartprintf &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SST25_W_BLOCK
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uartprintf
 <LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SystemReset
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CDC_StoreProcess
