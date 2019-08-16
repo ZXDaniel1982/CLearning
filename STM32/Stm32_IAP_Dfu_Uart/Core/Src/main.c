@@ -143,8 +143,7 @@ int main(void)
     if (((*(__IO uint32_t *) USBD_DFU_APP_DEFAULT_ADD) & 0x2FFE0000) ==
         0x20000000)
     {
-			__disable_irq();
-			HAL_DeInit();
+      SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
       /* Jump to user application */
       JumpAddress = *(__IO uint32_t *) (USBD_DFU_APP_DEFAULT_ADD + 4);
       JumpToApplication = (pFunction) JumpAddress;
