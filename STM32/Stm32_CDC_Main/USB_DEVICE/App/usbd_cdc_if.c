@@ -412,11 +412,6 @@ static void CDC_Store(uint8_t* Buf, uint32_t *Len)
     return;
   }
 
-  if ((*Len) != CDC_LEN_STORE) {
-    CDC_SendReply(CDC_ERROR, CDC_STORE_FAIL);
-    return;
-  }
-
   uint8_t *src = (uint8_t *)CDC_CONV_TO_32(&Buf[5]);
   uint32_t len = (*Len) - 9;
 
