@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Stm32_CDC_Main\Stm32_CDC_Main.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Stm32_CDC_Main\Stm32_CDC_Main.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Sat Aug 17 04:47:30 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Sat Aug 17 05:19:30 2019
 <BR><P>
 <H3>Maximum Stack Usage =        392 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1872,7 +1872,7 @@ Global Symbols
 
 <P><STRONG><a name="[157]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
-<P><STRONG><a name="[5b]"></a>main</STRONG> (Thumb, 108 bytes, Stack size 8 bytes, main.o(i.main))
+<P><STRONG><a name="[5b]"></a>main</STRONG> (Thumb, 116 bytes, Stack size 8 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 352<LI>Call Chain = main &rArr; EEPROMIsValid &rArr; uartprintf &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uartprintf
@@ -2035,7 +2035,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ProcessRxData
 </UL>
 
-<P><STRONG><a name="[80]"></a>CDC_StoreProcess</STRONG> (Thumb, 74 bytes, Stack size 24 bytes, usbd_cdc_if.o(i.CDC_StoreProcess))
+<P><STRONG><a name="[80]"></a>CDC_StoreProcess</STRONG> (Thumb, 80 bytes, Stack size 24 bytes, usbd_cdc_if.o(i.CDC_StoreProcess))
 <BR><BR>[Stack]<UL><LI>Max Depth = 360<LI>Call Chain = CDC_StoreProcess &rArr; uartprintf &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uartprintf

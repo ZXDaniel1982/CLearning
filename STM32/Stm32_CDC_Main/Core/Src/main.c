@@ -104,6 +104,8 @@ int main(void)
 	
 	if (IAP_GotoBackup()) {
 		uartprintf("Jump to backup\r\n");
+		uint32_t first = *(__IO uint32_t *) APP_DEFAULT_ADD;
+		uartprintf("First word %x\r\n", first);
 	  if (((*(__IO uint32_t *) APP_DEFAULT_ADD) & 0x2FFE0000) ==
         0x20000000)
     {
