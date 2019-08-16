@@ -117,6 +117,7 @@ int main(void)
 	pFunction JumpToApplication;
   uint32_t JumpAddress;
   /* USER CODE END 1 */
+  
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -136,14 +137,13 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-	MX_USART1_UART_Init();
-	
-	if (GetCmdViaServer() == 2) {
-	  /* Test if user code is programmed starting from address 0x08007000 */
+  MX_USART1_UART_Init();
+
+  if (GetCmdViaServer() == 2) {
+    /* Test if user code is programmed starting from address 0x08007000 */
     if (((*(__IO uint32_t *) USBD_DFU_APP_DEFAULT_ADD) & 0x2FFE0000) ==
         0x20000000)
     {
-      SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
       /* Jump to user application */
       JumpAddress = *(__IO uint32_t *) (USBD_DFU_APP_DEFAULT_ADD + 4);
       JumpToApplication = (pFunction) JumpAddress;
@@ -152,9 +152,9 @@ int main(void)
       __set_MSP(*(__IO uint32_t *) USBD_DFU_APP_DEFAULT_ADD);
       JumpToApplication();
     }
-	}
+  }
 
-	HAL_GPIO_WritePin(UsbEnable_GPIO_Port, UsbEnable_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(UsbEnable_GPIO_Port, UsbEnable_Pin, GPIO_PIN_RESET);
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
@@ -181,7 +181,7 @@ void SystemClock_Config(void)
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
-  /**Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -194,7 +194,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /**Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
@@ -218,27 +218,6 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
-
-/**
-  * @brief  Period elapsed callback in non blocking mode
-  * @note   This function is called  when TIM1 interrupt took place, inside
-  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
-  * a global variable "uwTick" used as application time base.
-  * @param  htim : TIM handle
-  * @retval None
-  */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  /* USER CODE BEGIN Callback 0 */
-
-  /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM1) {
-    HAL_IncTick();
-  }
-  /* USER CODE BEGIN Callback 1 */
-
-  /* USER CODE END Callback 1 */
-}
 
 /**
   * @brief  This function is executed in case of error occurrence.

@@ -98,8 +98,6 @@ int main(void)
   MX_SDIO_SD_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-	EEPROMIsValid();
-	test();
   uartprintf("Running main task\r\n");
   /* USER CODE END 2 */
 
