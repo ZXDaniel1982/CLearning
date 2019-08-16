@@ -96,7 +96,8 @@ int main(void)
   MX_SPI1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  if (EEPROMIsValid()) {
+	HAL_Delay(2000);
+  if (!EEPROMIsValid()) {
 	    uartprintf("EEPROM is invalid\r\n");
 		  return -1;
 	}

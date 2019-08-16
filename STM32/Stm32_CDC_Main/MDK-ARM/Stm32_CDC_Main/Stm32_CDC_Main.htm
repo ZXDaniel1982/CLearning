@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Stm32_CDC_Main\Stm32_CDC_Main.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Stm32_CDC_Main\Stm32_CDC_Main.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Sat Aug 17 00:40:44 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Sat Aug 17 01:00:06 2019
 <BR><P>
 <H3>Maximum Stack Usage =        392 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -500,10 +500,11 @@ Global Symbols
 <P><STRONG><a name="[1c]"></a>DebugMon_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_it.o(i.DebugMon_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[83]"></a>EEPROMIsValid</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, eeprom.o(i.EEPROMIsValid))
-<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = EEPROMIsValid &rArr; SPI_Flash_ReadID &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
+<P><STRONG><a name="[83]"></a>EEPROMIsValid</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, eeprom.o(i.EEPROMIsValid))
+<BR><BR>[Stack]<UL><LI>Max Depth = 344<LI>Call Chain = EEPROMIsValid &rArr; uartprintf &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Flash_ReadID
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uartprintf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -536,7 +537,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ProcessRxData
+<BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ProcessRxData
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SDIO_PowerState_ON
 </UL>
 
@@ -1870,8 +1872,8 @@ Global Symbols
 
 <P><STRONG><a name="[157]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
-<P><STRONG><a name="[5b]"></a>main</STRONG> (Thumb, 86 bytes, Stack size 8 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 344<LI>Call Chain = main &rArr; uartprintf &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
+<P><STRONG><a name="[5b]"></a>main</STRONG> (Thumb, 96 bytes, Stack size 8 bytes, main.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 352<LI>Call Chain = main &rArr; EEPROMIsValid &rArr; uartprintf &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uartprintf
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USB_DEVICE_Init
@@ -1881,6 +1883,7 @@ Global Symbols
 <LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 <LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_GotoBackup
 <LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
+<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EEPROMIsValid
 <LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
@@ -1895,7 +1898,8 @@ Global Symbols
 <LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EEPROMIsValid
+<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CDC_StoreProcess
 <LI><a href="#[7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CDC_Init_FS
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CDC_Erase
@@ -2044,8 +2048,8 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 384<LI>Call Chain = ProcessRxData &rArr; CDC_Erase &rArr; uartprintf &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SST25_W_BLOCK
-<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SystemReset
 <LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
+<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SystemReset
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CDC_StoreProcess
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CDC_SendReplyData
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CDC_SendReply

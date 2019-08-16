@@ -199,7 +199,10 @@ void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff,
 #define SST25VF016B_ID 0x0023
 uint8_t EEPROMIsValid()
 {
-    if (SST25VF016B_ID == SPI_Flash_ReadID()) return 1;
+	  uint16_t id = SPI_Flash_ReadID();
+	
+	  uartprintf("EEPROM id is %x, compare with %x\r\n", id, SST25VF016B_ID);
+    if (SST25VF016B_ID == id) return 1;
     else return 0;
 }
 
