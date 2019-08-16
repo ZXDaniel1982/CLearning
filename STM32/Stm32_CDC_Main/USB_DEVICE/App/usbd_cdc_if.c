@@ -517,23 +517,31 @@ static void CDC_EraseProcess(uint32_t Add)
   /* USER CODE END 2 */
 }
 
-static void CDC_StoreProcess(uint8_t *dest, uint8_t *src, uint32_t Len)
+static void CDC_StoreProcess(uint8_t *dest, uint8_t *buf, uint32_t Len)
 {
   /* USER CODE BEGIN 3 */
   uint32_t i = 0;
+	uint32_t data = 0;
   __disable_irq();
-  uartprintf("write len %ld dest %x src %x\r\n", Len, dest, *(__IO uint32_t *) src);
+	
+	data = ((uint32_t) buf[i]) << 24;
+  data += ((uint32_t) buf[i+1]) << 16;
+	data += ((uint32_t) buf[i+2]) << 8;
+	data += (uint32_t) buf[i+3];
+  uartprintf("write len %ld dest %x data %x\r\n", Len, dest, data);
 
   for (i = 0; i < Len; i += 4)
   {
     /* Device voltage range supposed to be [2.7V to 3.6V], the operation will
      * be done by byte */
-    if (HAL_FLASH_Program
-        (FLASH_TYPEPROGRAM_WORD, (uint32_t) (dest + i),
-         *(uint32_t *) (src + i)) == HAL_OK)
+		data = ((uint32_t) buf[i]) << 24;
+		data += ((uint32_t) buf[i+1]) << 16;
+		data += ((uint32_t) buf[i+2]) << 8;
+		data += (uint32_t) buf[i+3];
+    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, (uint32_t) (dest + i), data) == HAL_OK)
     {
       /* Check the written value */
-      if (*(uint32_t *) (src + i) != *(uint32_t *) (dest + i))
+      if (data != *(uint32_t *) (dest + i))
       {
         /* Flash content doesn't match SRAM content */
         CDC_SendReply(CDC_ERROR, CDC_STORE_FAIL);
