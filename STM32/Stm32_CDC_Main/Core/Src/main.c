@@ -103,9 +103,11 @@ int main(void)
 	}
 	
 	if (IAP_GotoBackup()) {
+		uartprintf("Jump to backup\r\n");
 	  if (((*(__IO uint32_t *) APP_DEFAULT_ADD) & 0x2FFE0000) ==
         0x20000000)
     {
+			uartprintf("Jump execute\r\n");
       /* Jump to user application */
       JumpAddress = *(__IO uint32_t *) (APP_DEFAULT_ADD + 4);
       JumpToApplication = (pFunction) JumpAddress;
