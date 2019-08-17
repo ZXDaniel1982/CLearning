@@ -123,7 +123,7 @@ static bool IAP_InfoLenIsValid(uint8_t *buf, uint16_t len)
 int main(int argc, char **argv)
 {
     eepInfo.id = 0xab;
-    eepInfo.active = 0;
+    eepInfo.active = 1;
 
     int fd = open (portname, O_RDWR | O_NOCTTY);
     if (fd < 0) {

@@ -213,7 +213,7 @@ uint8_t IAP_GotoBackup()
     memset(&info, 0, sizeof(eepInfo_t));
     memset(SST25_buffer, 0, 4096);
     SST25_R_BLOCK(4096, SST25_buffer,4096); 
-	  memcpy(&info, SST25_buffer, sizeof(eepInfo_t));
+	memcpy(&info, SST25_buffer, sizeof(eepInfo_t));
 
     if (info.id != 0xab) return 0;
 

@@ -216,7 +216,7 @@ int main(int argc, char **argv)
             return -1;
         }
 
-        for (uint32_t j=0; j<4; j++) {
+        for (uint32_t j=0; j<64; j++) {
             // store
             printf("Store addr %x\n", addr);
             memset(txBuf, 0, 1000);
