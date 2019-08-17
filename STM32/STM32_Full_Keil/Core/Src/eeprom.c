@@ -23,6 +23,8 @@
 /* Deselect SPI FLASH: ChipSelect pin high */
 #define NotSelect_Flash()    HAL_GPIO_WritePin(SST_CS_GPIO_Port, SST_CS_Pin, GPIO_PIN_SET);
 
+uint8_t SST25_buffer[4096];
+
 static void wip(void);
 static void wsr(void);
 static void wen(void);
@@ -205,4 +207,29 @@ void cliShowEEPROMInfo(void *arg)
 {
     UNUSED(arg);
     uartprintf("EEPROM ID is %d\r\n", SPI_Flash_ReadID());
+}
+
+#define SST25VF016B_ID 0x0023
+uint8_t EEPROMIsValid()
+{
+	  uint16_t id = SPI_Flash_ReadID();
+	
+	  uartprintf("EEPROM id is %x, compare with %x\r\n", id, SST25VF016B_ID);
+    if (SST25VF016B_ID == id) return 1;
+    else return 0;
+}
+
+uint8_t IAP_GotoBackup()
+{
+    eepInfo_t info;
+
+    memset(&info, 0, sizeof(eepInfo_t));
+    memset(SST25_buffer, 0, 4096);
+    SST25_R_BLOCK(4096, SST25_buffer,4096); 
+	  memcpy(&info, SST25_buffer, sizeof(eepInfo_t));
+
+    if (info.id != 0xab) return 0;
+
+    if (info.active == 0) return 0;
+    else return 1;
 }

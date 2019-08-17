@@ -86,7 +86,8 @@ void MX_FREERTOS_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  pFunction JumpToApplication;
+  uint32_t JumpAddress;
   /* USER CODE END 1 */
   
 
@@ -108,17 +109,46 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
+	MX_SPI1_Init();
+	MX_USART1_UART_Init();
+	MX_DMA_Init();
+	
+	HAL_Delay(2000);
+	
+	//uartprintf("%s : %d\r\n", __func__, __LINE__);
+#if 0
+  if (!EEPROMIsValid()) {
+	    uartprintf("EEPROM is invalid\r\n");
+		  return -1;
+	}
+
+	if (IAP_GotoBackup()) {
+		uartprintf("Jump to backup\r\n");
+		uint32_t first = *(__IO uint32_t *) APP_DEFAULT_ADD;
+		uartprintf("First word %x\r\n", first);
+	  if (((*(__IO uint32_t *) APP_DEFAULT_ADD) & 0x2FFE0000) ==
+        0x20000000)
+    {
+			uartprintf("Jump execute\r\n");
+      /* Jump to user application */
+      JumpAddress = *(__IO uint32_t *) (APP_DEFAULT_ADD + 4);
+      JumpToApplication = (pFunction) JumpAddress;
+
+      /* Initialize user application's Stack Pointer */
+      //__set_MSP(*(__IO uint32_t *) APP_DEFAULT_ADD);
+      //JumpToApplication();
+    }
+	}
+#endif
+	
   MX_ADC1_Init();
   MX_FSMC_Init();
   MX_RTC_Init();
-  MX_SPI1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
   MX_TIM5_Init();
   MX_TIM8_Init();
-  MX_USART1_UART_Init();
   MX_SDIO_SD_Init();
 	MX_FATFS_Init();
   /* USER CODE BEGIN 2 */

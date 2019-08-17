@@ -1,6 +1,6 @@
 Dependencies for Project 'Stm32_IAP_Dfu_Uart', Target 'Stm32_IAP_Dfu_Uart': (DO NOT MODIFY !)
 F (startup_stm32f103xe.s)(0x5D569A84)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-IC:\workspace\CLearning\STM32\Stm32_IAP_Dfu_Uart\MDK-ARM\RTE\_Stm32_IAP_Dfu_Uart-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include--pd "__UVISION_VERSION SETA 522" --pd "_RTE_ SETA 1" --pd "STM32F10X_HD SETA 1"--list startup_stm32f103xe.lst --xref -o stm32_iap_dfu_uart\startup_stm32f103xe.o --depend stm32_iap_dfu_uart\startup_stm32f103xe.d)
-F (../Core/Src/main.c)(0x5D569BFE)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_IAP_Dfu_Uart\MDK-ARM\RTE\_Stm32_IAP_Dfu_Uart-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_iap_dfu_uart\main.o --omf_browse stm32_iap_dfu_uart\main.crf --depend stm32_iap_dfu_uart\main.d)
+F (../Core/Src/main.c)(0x5D58016D)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_IAP_Dfu_Uart\MDK-ARM\RTE\_Stm32_IAP_Dfu_Uart-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_iap_dfu_uart\main.o --omf_browse stm32_iap_dfu_uart\main.crf --depend stm32_iap_dfu_uart\main.d)
 I (../Core/Inc/main.h)(0x5D569A81)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
 I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D569A80)
@@ -29,10 +29,10 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
-I (../Core/Inc/usart.h)(0x5D569A7F)
+I (../Core/Inc/usart.h)(0x5D57C7C1)
 I (../USB_DEVICE/App/usb_device.h)(0x5D569A7F)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D569A7F)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D580358)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
@@ -71,8 +71,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
-F (../Core/Src/usart.c)(0x5D569A7F)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_IAP_Dfu_Uart\MDK-ARM\RTE\_Stm32_IAP_Dfu_Uart-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_iap_dfu_uart\usart.o --omf_browse stm32_iap_dfu_uart\usart.crf --depend stm32_iap_dfu_uart\usart.d)
-I (../Core/Inc/usart.h)(0x5D569A7F)
+F (../Core/Src/usart.c)(0x5D57C7C1)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_IAP_Dfu_Uart\MDK-ARM\RTE\_Stm32_IAP_Dfu_Uart-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_iap_dfu_uart\usart.o --omf_browse stm32_iap_dfu_uart\usart.crf --depend stm32_iap_dfu_uart\usart.d)
+I (../Core/Inc/usart.h)(0x5D57C7C1)
 I (../Core/Inc/main.h)(0x5D569A81)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5D4D7625)
 I (../Core/Inc/stm32f1xx_hal_conf.h)(0x5D569A80)
@@ -190,7 +190,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D569A7F)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D580358)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
@@ -203,7 +203,7 @@ I (../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Inc/usbd_dfu.h)(0x5D4D76
 I (../USB_DEVICE/App/usbd_dfu_if.h)(0x5D569A80)
 F (../USB_DEVICE/App/usbd_desc.c)(0x5D569A80)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_IAP_Dfu_Uart\MDK-ARM\RTE\_Stm32_IAP_Dfu_Uart-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_iap_dfu_uart\usbd_desc.o --omf_browse stm32_iap_dfu_uart\usbd_desc.crf --depend stm32_iap_dfu_uart\usbd_desc.d)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D569A7F)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D580358)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
@@ -239,12 +239,12 @@ I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h)(0x5D4D7626)
 I (../USB_DEVICE/App/usbd_desc.h)(0x5D569A80)
-F (../USB_DEVICE/App/usbd_dfu_if.c)(0x5D569A80)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_IAP_Dfu_Uart\MDK-ARM\RTE\_Stm32_IAP_Dfu_Uart-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_iap_dfu_uart\usbd_dfu_if.o --omf_browse stm32_iap_dfu_uart\usbd_dfu_if.crf --depend stm32_iap_dfu_uart\usbd_dfu_if.d)
+F (../USB_DEVICE/App/usbd_dfu_if.c)(0x5D57C7C1)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_IAP_Dfu_Uart\MDK-ARM\RTE\_Stm32_IAP_Dfu_Uart-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_iap_dfu_uart\usbd_dfu_if.o --omf_browse stm32_iap_dfu_uart\usbd_dfu_if.crf --depend stm32_iap_dfu_uart\usbd_dfu_if.d)
 I (../USB_DEVICE/App/usbd_dfu_if.h)(0x5D569A80)
 I (../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Inc/usbd_dfu.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D569A7F)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D580358)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
@@ -278,7 +278,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h)(0x5D4D7626)
-I (../Core/Inc/usart.h)(0x5D569A7F)
+I (../Core/Inc/usart.h)(0x5D57C7C1)
 F (../USB_DEVICE/Target/usbd_conf.c)(0x5D569A7F)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_IAP_Dfu_Uart\MDK-ARM\RTE\_Stm32_IAP_Dfu_Uart-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_iap_dfu_uart\usbd_conf.o --omf_browse stm32_iap_dfu_uart\usbd_conf.crf --depend stm32_iap_dfu_uart\usbd_conf.d)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5D4D7620)
 I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h)(0x5D4D7620)
@@ -308,7 +308,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D569A7F)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D580358)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
@@ -823,7 +823,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x5D4D7625)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x5D4D7625)
 F (../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c)(0x5D4D7626)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_IAP_Dfu_Uart\MDK-ARM\RTE\_Stm32_IAP_Dfu_Uart-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_iap_dfu_uart\usbd_core.o --omf_browse stm32_iap_dfu_uart\usbd_core.crf --depend stm32_iap_dfu_uart\usbd_core.d)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D569A7F)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D580358)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
@@ -861,7 +861,7 @@ I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h)(0x5D4D7626
 F (../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c)(0x5D4D7626)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_IAP_Dfu_Uart\MDK-ARM\RTE\_Stm32_IAP_Dfu_Uart-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_iap_dfu_uart\usbd_ctlreq.o --omf_browse stm32_iap_dfu_uart\usbd_ctlreq.crf --depend stm32_iap_dfu_uart\usbd_ctlreq.d)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D569A7F)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D580358)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
@@ -898,7 +898,7 @@ I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h)(0x5D4D7626)
 F (../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c)(0x5D4D7626)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-IC:\workspace\CLearning\STM32\Stm32_IAP_Dfu_Uart\MDK-ARM\RTE\_Stm32_IAP_Dfu_Uart-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DUSE_HAL_DRIVER -DSTM32F103xE-o stm32_iap_dfu_uart\usbd_ioreq.o --omf_browse stm32_iap_dfu_uart\usbd_ioreq.crf --depend stm32_iap_dfu_uart\usbd_ioreq.d)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D569A7F)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D580358)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
@@ -936,7 +936,7 @@ F (../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Src/usbd_dfu.c)(0x5D4D76
 I (../Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Inc/usbd_dfu.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h)(0x5D4D7626)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h)(0x5D4D7626)
-I (../USB_DEVICE/Target/usbd_conf.h)(0x5D569A7F)
+I (../USB_DEVICE/Target/usbd_conf.h)(0x5D580358)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)

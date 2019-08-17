@@ -101,7 +101,7 @@ int main(void)
 	    uartprintf("EEPROM is invalid\r\n");
 		  return -1;
 	}
-	
+
 	if (IAP_GotoBackup()) {
 		uartprintf("Jump to backup\r\n");
 		uint32_t first = *(__IO uint32_t *) APP_DEFAULT_ADD;
@@ -119,6 +119,7 @@ int main(void)
       JumpToApplication();
     }
 	}
+
   uartprintf("Running main task\r\n");
   /* USER CODE END 2 */
   MX_USB_DEVICE_Init();
