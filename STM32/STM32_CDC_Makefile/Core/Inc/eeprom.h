@@ -14,9 +14,10 @@ typedef struct
 
 typedef struct
 {
-	uint8_t id;
-	uint8_t active;
-	appInfo_t info[2];
+  uint8_t id;
+  uint8_t active;
+  uint8_t current;
+  appInfo_t info[2];
 } eepInfo_t;
 
 uint8_t EEPROMIsValid();

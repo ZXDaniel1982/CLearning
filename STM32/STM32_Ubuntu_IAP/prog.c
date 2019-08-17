@@ -161,12 +161,12 @@ static bool IAP_RevPack(int fd)
 
 int main(int argc, char **argv)
 {
-    char filename[255] = "backup.bin";
+    char filename[255] = "/home/dzhang/workspace/CLearning/STM32/STM32_CDC_Makefile/build/STM32_CDC_Makefile.bin";
     uint32_t baseAddr = 0x804B000;
     if (strcmp("main", argv[1]) == 0) {
-        strncpy(filename, "main.bin", 255);
+        //strncpy(filename, "main.bin", 255);
     } else if (strcmp("backup", argv[1]) == 0) {
-        strncpy(filename, "backup.bin", 255);
+        //strncpy(filename, "backup.bin", 255);
     } else {
         printf("error command\n");
         return -1;

@@ -95,12 +95,9 @@ int main(void)
   MX_USB_DEVICE_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+  HAL_Delay(2000);
   if (EEPROMIsValid() == 0) {
     uartprintf("EEPROM Id check is failed\r\n");
-    return -1;
-  }
-  if (EEPROMGetInfo(&eepInfo) == 0) {
-    uartprintf("EEPROM get info is failed\r\n");
     return -1;
   }
 

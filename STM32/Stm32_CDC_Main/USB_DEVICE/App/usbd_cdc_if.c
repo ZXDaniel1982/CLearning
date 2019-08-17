@@ -350,6 +350,7 @@ static uint8_t CDC_LenIsValid(uint8_t* Buf, uint32_t *Len)
   if ((Buf == NULL) || (Len == NULL)) return 0;
 
   uint16_t length = (uint16_t)Buf[2] * 256 + Buf[3];
+
   if (length != (*Len)) {
     return 0;
   }

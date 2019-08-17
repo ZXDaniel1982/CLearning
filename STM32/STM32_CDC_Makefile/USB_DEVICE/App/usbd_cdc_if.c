@@ -375,6 +375,9 @@ static void CDC_Reboot(uint8_t* Buf, uint32_t *Len)
 
   HAL_NVIC_SystemReset();
   CDC_SendReply(CDC_ERROR, CDC_SUCCESS_REBOOT);
+
+  HAL_Delay(500);
+  HAL_NVIC_SystemReset();
 }
 
 static void CDC_Erase(uint8_t* Buf, uint32_t *Len)
@@ -456,7 +459,7 @@ static void CDC_SetInfo(uint8_t* Buf, uint32_t *Len)
 
   memset(SST25_buffer, 0, 4096);
   memcpy(SST25_buffer, &Buf[5], sizeof(eepInfo_t));
-  SST25_W_BLOCK(1, SST25_buffer,4096);
+  SST25_W_BLOCK(4096, SST25_buffer,4096);
   CDC_SendReply(CDC_SUCCESS, CDC_SUCCESS_SET_INFO);
 }
 
@@ -471,7 +474,12 @@ static void CDC_SendReplyData()
   uint16_t len = 6 + sizeof(eepInfo_t);
   UserTxBufferFS[4] = (uint8_t)((len >> 8) & 0x00ff);
   UserTxBufferFS[5] = (uint8_t)(len & 0x00ff);
-  memcpy(&UserTxBufferFS[6], &eepInfo, sizeof(eepInfo_t));
+  
+  SST25_R_BLOCK(4096, SST25_buffer,4096);
+  
+  eepInfo_t *info = (eepInfo_t *) SST25_buffer;
+  info->current = APP_HANDLE;
+  memcpy(&UserTxBufferFS[6], SST25_buffer, sizeof(eepInfo_t));
   CDC_Transmit_FS(UserTxBufferFS, len);
 }
 

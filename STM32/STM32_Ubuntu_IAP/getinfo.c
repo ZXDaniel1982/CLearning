@@ -158,6 +158,6 @@ int main(int argc, char **argv)
     memset(&eepInfo, 0, sizeof(eepInfo_t));
     memcpy(&eepInfo, &rxBuf[6], sizeof(eepInfo_t));
 
-    printf("id %d, active %d\n", eepInfo.id, eepInfo.active);
+    printf("id %x, active %d, current %d\n", eepInfo.id, eepInfo.active, eepInfo.current);
     close(fd);
 }

@@ -63,7 +63,7 @@ void Error_Handler(void);
 #define Led_Pin GPIO_PIN_5
 #define Led_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
-
+#define APP_HANDLE 1
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

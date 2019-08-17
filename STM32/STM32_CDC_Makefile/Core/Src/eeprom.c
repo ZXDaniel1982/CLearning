@@ -196,19 +196,9 @@ void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff,
 /*----------------------------------------------------------------------------*/
 /* Public functions                                                           */
 /*----------------------------------------------------------------------------*/
-#define SST25VF016B_ID 0xBF41
+#define SST25VF016B_ID 0x0023
 uint8_t EEPROMIsValid()
 {
     if (SST25VF016B_ID == SPI_Flash_ReadID()) return 1;
-    else return 0;
-}
-
-uint8_t EEPROMGetInfo(eepInfo_t *info)
-{
-    if (info == NULL) return 0;
-
-    SST25_R_BLOCK(1, (unsigned char *)info, sizeof(eepInfo_t));
-
-    if (info->id == 0xab) return 1;
     else return 0;
 }
