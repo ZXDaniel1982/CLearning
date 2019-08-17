@@ -80,8 +80,8 @@ static void IAP_InitTxPackage(uint8_t *buf)
 
 static void IAP_GeneratePack(uint8_t *buf, uint16_t *len)
 {
-    buf[2] = 0x0;
-    buf[3] = 0x5;
+    buf[2] = 0;
+    buf[3] = 5;
     buf[4] = CDC_CMD_GET_INFO;
 
     *len = 5;

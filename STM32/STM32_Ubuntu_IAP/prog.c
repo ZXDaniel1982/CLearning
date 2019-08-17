@@ -83,8 +83,6 @@ static void IAP_InitTxPackage(uint8_t *buf)
 
 static void IAP_GenErasePack(uint8_t *buf, uint16_t *len, uint32_t addr)
 {
-    *len = 5 + sizeof(eepInfo_t);
-
     buf[2] = 0;
     buf[3] = 9;
     buf[4] = CDC_CMD_ERASE;
@@ -93,16 +91,16 @@ static void IAP_GenErasePack(uint8_t *buf, uint16_t *len, uint32_t addr)
     buf[6] = (uint8_t)((addr >> 16) & 0x000000ff);
     buf[7] = (uint8_t)((addr >> 8) & 0x000000ff);
     buf[8] = (uint8_t)(addr & 0x000000ff);
+
+    *len = 9;
 }
 
 static void IAP_GenStorePack(uint8_t *buf, uint16_t *len, uint32_t addr, uint16_t offset)
 {
-    *len = 5 + sizeof(eepInfo_t);
+    *len = 9 + offset;
 
-    uint16_t length = 9 + offset;
-
-    buf[2] = (uint8_t)((length >> 8) & 0x00ff);
-    buf[3] = (uint8_t)(length & 0x00ff);
+    buf[2] = (uint8_t)((*len >> 8) & 0x00ff);
+    buf[3] = (uint8_t)(*len & 0x00ff);
     buf[4] = CDC_CMD_STORE;
 
     buf[5] = (uint8_t)((addr >> 24) & 0x000000ff);
@@ -145,18 +143,20 @@ static bool IAP_RevPack(int fd)
     uint16_t num = read (fd, rxBuf, sizeof rxBuf);
     if (num <= 0) {
         printf("Invalid bytes%d\n", num);
-        return -1;
+        return false;
     }
 
     if (!IAP_InfoHeaderIsValid(rxBuf)) {
         printf("Invalid header\n");
-        return -1;
+        return false;
     }
 
     if (!IAP_InfoLenIsValid(rxBuf, num)) {
         printf("Invalid length\n");
-        return -1;
+        return false;
     }
+
+    return true;
 }
 
 int main(int argc, char **argv)
@@ -221,11 +221,11 @@ int main(int argc, char **argv)
             printf("Store addr %x\n", addr);
             memset(txBuf, 0, 1000);
             IAP_InitTxPackage(txBuf);
-            IAP_GenStorePack(txBuf, &len, addr, 512);
+            IAP_GenStorePack(txBuf, &len, addr, 32);
 
             memset(rdBuf, 0, 1000);
-            fread(rdBuf,sizeof(uint8_t),512,file);
-            memcpy(&txBuf[9], rxBuf, 512);
+            fread(rdBuf,sizeof(uint8_t),32,file);
+            memcpy(&txBuf[9], rxBuf, 32);
             write (fd, txBuf, len);
 
             if (!IAP_RevPack(fd)) {
@@ -234,11 +234,11 @@ int main(int argc, char **argv)
                 return -1;
             }
 
-            addr += 512;
+            addr += 32;
         }
     }
 
-    uint32_t mod = (size % 2048) / 512;
+    uint32_t mod = (size % 2048) / 32;
 
     if (mod > 0) {
         // erase
@@ -259,11 +259,11 @@ int main(int argc, char **argv)
             printf("Store addr %x\n", addr);
             memset(txBuf, 0, 1000);
             IAP_InitTxPackage(txBuf);
-            IAP_GenStorePack(txBuf, &len, addr, 512);
+            IAP_GenStorePack(txBuf, &len, addr, 32);
 
             memset(rdBuf, 0, 1000);
-            fread(rdBuf,sizeof(uint8_t),512,file);
-            memcpy(&txBuf[9], rxBuf, 512);
+            fread(rdBuf,sizeof(uint8_t),32,file);
+            memcpy(&txBuf[9], rxBuf, 32);
             write (fd, txBuf, len);
 
             if (!IAP_RevPack(fd)) {
@@ -272,11 +272,11 @@ int main(int argc, char **argv)
                 return -1;
             }
 
-            addr += 512;
+            addr += 32;
         }
     }
 
-    mod = (size % 2048) % 512;
+    mod = (size % 2048) % 32;
 
     if (mod > 0) {
         // erase
@@ -299,8 +299,8 @@ int main(int argc, char **argv)
         IAP_GenStorePack(txBuf, &len, addr, mod);
 
         memset(rdBuf, 0, 1000);
-        fread(rdBuf,sizeof(uint8_t),512,file);
-        memcpy(&txBuf[9], rxBuf, 512);
+        fread(rdBuf,sizeof(uint8_t),mod,file);
+        memcpy(&txBuf[9], rxBuf, mod);
         write (fd, txBuf, len);
 
         if (!IAP_RevPack(fd)) {

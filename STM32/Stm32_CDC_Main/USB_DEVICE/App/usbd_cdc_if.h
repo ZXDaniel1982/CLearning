@@ -50,7 +50,7 @@
   */
 /* USER CODE BEGIN EXPORTED_DEFINES */
 #define CDC_LEN_ERASE ( 9 )
-#define CDC_LEN_STORE ( 9 + 512 )
+#define CDC_LEN_STORE ( 9 + 32 )
 #define CDC_LEN_GET_INFO ( 5 )
 #define CDC_LEN_REBOOT ( 5 )
 
