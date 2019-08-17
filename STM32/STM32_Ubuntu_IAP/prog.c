@@ -225,7 +225,7 @@ int main(int argc, char **argv)
 
             memset(rdBuf, 0, 1000);
             fread(rdBuf,sizeof(uint8_t),32,file);
-            memcpy(&txBuf[9], rxBuf, 32);
+            memcpy(&txBuf[9], rdBuf, 32);
             write (fd, txBuf, len);
 
             if (!IAP_RevPack(fd)) {
@@ -263,7 +263,7 @@ int main(int argc, char **argv)
 
             memset(rdBuf, 0, 1000);
             fread(rdBuf,sizeof(uint8_t),32,file);
-            memcpy(&txBuf[9], rxBuf, 32);
+            memcpy(&txBuf[9], rdBuf, 32);
             write (fd, txBuf, len);
 
             if (!IAP_RevPack(fd)) {
@@ -300,7 +300,7 @@ int main(int argc, char **argv)
 
         memset(rdBuf, 0, 1000);
         fread(rdBuf,sizeof(uint8_t),mod,file);
-        memcpy(&txBuf[9], rxBuf, mod);
+        memcpy(&txBuf[9], rdBuf, mod);
         write (fd, txBuf, len);
 
         if (!IAP_RevPack(fd)) {
