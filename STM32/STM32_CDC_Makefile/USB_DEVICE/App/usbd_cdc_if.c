@@ -411,11 +411,6 @@ static void CDC_Store(uint8_t* Buf, uint32_t *Len)
     return;
   }
 
-  if ((*Len) != CDC_LEN_STORE) {
-    CDC_SendReply(CDC_ERROR, CDC_STORE_FAIL);
-    return;
-  }
-
   uint8_t *src = (uint8_t *)CDC_CONV_TO_32(&Buf[5]);
   uint32_t len = (*Len) - 9;
 
@@ -525,6 +520,7 @@ static void CDC_StoreProcess(uint8_t *dest, uint8_t *src, uint32_t Len)
 {
   /* USER CODE BEGIN 3 */
   uint32_t i = 0;
+  __disable_irq();
 
   uartprintf("write len %ld dest %x\r\n", Len, dest);
 
@@ -541,6 +537,7 @@ static void CDC_StoreProcess(uint8_t *dest, uint8_t *src, uint32_t Len)
       {
         /* Flash content doesn't match SRAM content */
         CDC_SendReply(CDC_ERROR, CDC_STORE_FAIL);
+        __enable_irq();
         return;
       }
     }
@@ -548,10 +545,12 @@ static void CDC_StoreProcess(uint8_t *dest, uint8_t *src, uint32_t Len)
     {
       /* Error occurred while writing data in Flash memory */
       CDC_SendReply(CDC_ERROR, CDC_STORE_BUSY);
+      __enable_irq();
       return;
     }
   }
   CDC_SendReply(CDC_SUCCESS, CDC_SUCCESS_STORE);
+  __enable_irq();
   /* USER CODE END 3 */
 }
 
