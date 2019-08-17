@@ -115,7 +115,7 @@ uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
 /* USER CODE BEGIN EXPORTED_VARIABLES */
-
+static uint8_t cnt = 0;
 /* USER CODE END EXPORTED_VARIABLES */
 
 /**
@@ -144,7 +144,7 @@ static void CDC_SetInfo(uint8_t* Buf, uint32_t *Len);
 static void CDC_SendReplyData(void);
 static void CDC_SendReply(uint8_t replyType, uint8_t replyDetail);
 static void CDC_EraseProcess(uint32_t Add);
-static void CDC_StoreProcess(uint8_t *src, uint8_t *dest, uint32_t Len);
+static void CDC_StoreProcess(uint8_t *dest, uint8_t *src, uint32_t Len);
 static inline uint32_t CDC_CONV_TO_32(uint8_t *buf);
 /* USER CODE END PRIVATE_FUNCTIONS_DECLARATION */
 
@@ -517,31 +517,26 @@ static void CDC_EraseProcess(uint32_t Add)
   /* USER CODE END 2 */
 }
 
-static void CDC_StoreProcess(uint8_t *dest, uint8_t *buf, uint32_t Len)
+static void CDC_StoreProcess(uint8_t *dest, uint8_t *src, uint32_t Len)
 {
   /* USER CODE BEGIN 3 */
   uint32_t i = 0;
-	uint32_t data = 0;
   __disable_irq();
 	
-	data = ((uint32_t) buf[i]) << 24;
-  data += ((uint32_t) buf[i+1]) << 16;
-	data += ((uint32_t) buf[i+2]) << 8;
-	data += (uint32_t) buf[i+3];
-  uartprintf("write len %ld dest %x data %x\r\n", Len, dest, data);
+  uartprintf("write len %ld dest %x\r\n", Len, dest);
 
   for (i = 0; i < Len; i += 4)
   {
+		if (cnt <= 6) {
+			uartprintf("add %x data %x\r\n", (uint32_t) (dest + i), *(uint32_t *) (src + i));
+		  cnt++;
+		}
     /* Device voltage range supposed to be [2.7V to 3.6V], the operation will
      * be done by byte */
-		data = ((uint32_t) buf[i]) << 24;
-		data += ((uint32_t) buf[i+1]) << 16;
-		data += ((uint32_t) buf[i+2]) << 8;
-		data += (uint32_t) buf[i+3];
-    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, (uint32_t) (dest + i), data) == HAL_OK)
+    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, (uint32_t) (dest + i), *(uint32_t *) (src + i)) == HAL_OK)
     {
       /* Check the written value */
-      if (data != *(uint32_t *) (dest + i))
+      if (*(uint32_t *) (src + i) != *(uint32_t *) (dest + i))
       {
         /* Flash content doesn't match SRAM content */
         CDC_SendReply(CDC_ERROR, CDC_STORE_FAIL);
