@@ -72,10 +72,8 @@ void Error_Handler(void);
 #define LCD_Rst_GPIO_Port GPIOE
 /* USER CODE BEGIN Private defines */
 #define NUM_ROWS(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
-#define APP_DEFAULT_ADD 0x804B000
 
 extern volatile uint32_t spctick;
-typedef  void (*pFunction)(void);
 
 /* USER CODE END Private defines */
 
