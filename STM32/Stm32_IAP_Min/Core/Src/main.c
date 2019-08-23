@@ -20,6 +20,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -45,7 +47,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint8_t GoToApp = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -89,18 +91,10 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  if (((*(__IO uint32_t *) APP_DEFAULT_ADD) & 0x2FFE0000) ==
-        0x20000000)
-	{
-		/* Jump to user application */
-		JumpAddress = *(__IO uint32_t *) (APP_DEFAULT_ADD + 4);
-		JumpToApplication = (pFunction) JumpAddress;
 
-		/* Initialize user application's Stack Pointer */
-		__set_MSP(*(__IO uint32_t *) APP_DEFAULT_ADD);
-		JumpToApplication();
-	}
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,7 +102,21 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    if (GoToApp) {
+			if (((*(__IO uint32_t *) APP_DEFAULT_ADD) & 0x2FFE0000) ==
+					0x20000000)
+			{
+				/* Jump to user application */
+				JumpAddress = *(__IO uint32_t *) (APP_DEFAULT_ADD + 4);
+				JumpToApplication = (pFunction) JumpAddress;
 
+				/* Initialize user application's Stack Pointer */
+				__set_MSP(*(__IO uint32_t *) APP_DEFAULT_ADD);
+				JumpToApplication();
+			}
+		}
+		
+		HAL_Delay(1000);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -152,7 +160,34 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  /* Prevent unused argument(s) compilation warning */
+  if(huart == &huart1) {
+    IAP_ProcessPack();
+  }
+  /* NOTE: This function Should not be modified, when the callback is needed,
+           the HAL_UART_RxCpltCallback could be implemented in the user file
+   */
+}
 
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+  /* Prevent unused argument(s) compilation warning */
+
+  /* NOTE: This function Should not be modified, when the callback is needed,
+           the HAL_UART_TxCpltCallback could be implemented in the user file
+   */ 
+}
+
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+{
+  /* Prevent unused argument(s) compilation warning */
+
+  /* NOTE: This function Should not be modified, when the callback is needed,
+           the HAL_UART_ErrorCallback could be implemented in the user file
+   */ 
+}
 /* USER CODE END 4 */
 
 /**
