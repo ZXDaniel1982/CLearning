@@ -164,6 +164,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
   /* Prevent unused argument(s) compilation warning */
   if(huart == &huart1) {
+		
     IAP_ProcessPack();
   }
   /* NOTE: This function Should not be modified, when the callback is needed,

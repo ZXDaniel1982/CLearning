@@ -28,9 +28,6 @@
 
 /* USER CODE BEGIN Includes */
 #define MAX_UART_BUF_LEN 255
-#define APP_DEFAULT_ADD  0x08005000
-	 
-typedef  void (*pFunction)(void);
 /* USER CODE END Includes */
 
 extern UART_HandleTypeDef huart1;

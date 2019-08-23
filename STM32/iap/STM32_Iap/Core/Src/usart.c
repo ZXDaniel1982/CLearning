@@ -25,9 +25,6 @@
 uint8_t UsartTxBuf[MAX_UART_BUF_LEN] = {0};
 uint8_t UsartRxBuf[MAX_UART_BUF_LEN] = {0};
 
-pFunction JumpToApplication;
-uint32_t JumpAddress;
-
 static uint8_t IAP_HeaderIsValid(uint8_t* Buf);
 static void IAP_Init(uint8_t *Buf);
 static void IAP_DeInit(uint8_t *Buf);
@@ -62,7 +59,7 @@ void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
-  HAL_UART_Receive_DMA(&huart1,UsartRxBuf,20);;
+  HAL_UART_Receive_DMA(&huart1,UsartRxBuf,20);
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
@@ -280,17 +277,8 @@ static void IAP_Jump(uint8_t* Buf)
 
   IAP_SendReply(IAP_SUCCESS, IAP_SUCCESS_JUMP);
 
-	if (((*(__IO uint32_t *) APP_DEFAULT_ADD) & 0x2FFE0000) ==
-        0x20000000)
-	{
-		/* Jump to user application */
-		JumpAddress = *(__IO uint32_t *) (APP_DEFAULT_ADD + 4);
-		JumpToApplication = (pFunction) JumpAddress;
-
-		/* Initialize user application's Stack Pointer */
-		__set_MSP(*(__IO uint32_t *) APP_DEFAULT_ADD);
-		JumpToApplication();
-	}
+  HAL_Delay(1000);
+	GoToApp = 1;
 }
 
 static void IAP_SendReply(uint8_t replyType, uint8_t replyDetail)

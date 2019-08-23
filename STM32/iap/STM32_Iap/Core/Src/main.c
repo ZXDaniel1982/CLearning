@@ -47,7 +47,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint8_t GoToApp = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -68,7 +68,8 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  pFunction JumpToApplication;
+  uint32_t JumpAddress;
   /* USER CODE END 1 */
   
 
@@ -101,8 +102,23 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+		
     /* USER CODE BEGIN 3 */
+		if (GoToApp) {
+			if (((*(__IO uint32_t *) APP_DEFAULT_ADD) & 0x2FFE0000) ==
+					0x20000000)
+			{
+				/* Jump to user application */
+				JumpAddress = *(__IO uint32_t *) (APP_DEFAULT_ADD + 4);
+				JumpToApplication = (pFunction) JumpAddress;
+
+				/* Initialize user application's Stack Pointer */
+				__set_MSP(*(__IO uint32_t *) APP_DEFAULT_ADD);
+				JumpToApplication();
+			}
+		}
+		
+		HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }

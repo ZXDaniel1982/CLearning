@@ -32,7 +32,8 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#define APP_DEFAULT_ADD 0x8005000
+typedef  void (*pFunction)(void);
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -58,8 +59,10 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define Led_Pin GPIO_PIN_5
+#define Led_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
-
+extern uint8_t GoToApp;
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
