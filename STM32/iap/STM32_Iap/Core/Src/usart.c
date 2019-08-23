@@ -26,6 +26,7 @@ uint8_t UsartTxBuf[MAX_UART_BUF_LEN] = {0};
 uint8_t UsartRxBuf[MAX_UART_BUF_LEN] = {0};
 
 static uint8_t IAP_HeaderIsValid(uint8_t* Buf);
+static void IAP_Connect(uint8_t *Buf);
 static void IAP_Init(uint8_t *Buf);
 static void IAP_DeInit(uint8_t *Buf);
 static void IAP_Erase(uint8_t *Buf);
@@ -168,6 +169,7 @@ void IAP_ProcessPack()
     return;
   }
 
+	IAP_Connect(&UsartRxBuf[2]);
 	IAP_Init(&UsartRxBuf[2]);
 	IAP_DeInit(&UsartRxBuf[2]);
   IAP_Erase(&UsartRxBuf[2]);
@@ -185,6 +187,20 @@ static uint8_t IAP_HeaderIsValid(uint8_t* Buf)
   }
 
   return 1;
+}
+
+static void IAP_Connect(uint8_t *Buf)
+{
+  if (Buf == NULL) {
+    IAP_SendReply(IAP_ERROR, IAP_CONNECT_FAIL);
+    return;
+  }
+	
+	if (Buf[0] != IAP_CMD_CONNECT) {
+	  return;
+	}
+	
+	IAP_SendReply(IAP_SUCCESS, IAP_CONNECT_SUCCESS);
 }
 
 static void IAP_Init(uint8_t *Buf)
