@@ -257,7 +257,7 @@ static void IAP_Reboot(uint8_t* Buf)
     return;
   }
 
-  if (Buf[4] != IAP_CMD_REBOOT) {
+  if (Buf[0] != IAP_CMD_REBOOT) {
     return;
   }
 
@@ -274,7 +274,7 @@ static void IAP_Jump(uint8_t* Buf)
     return;
   }
 
-  if (Buf[4] != IAP_CMD_JUMP) {
+  if (Buf[0] != IAP_CMD_JUMP) {
     return;
   }
 
