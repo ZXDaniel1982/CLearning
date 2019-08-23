@@ -21,8 +21,24 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
+#include <string.h>
 uint8_t UsartTxBuf[MAX_UART_BUF_LEN] = {0};
 uint8_t UsartRxBuf[MAX_UART_BUF_LEN] = {0};
+
+pFunction JumpToApplication;
+uint32_t JumpAddress;
+
+static uint8_t IAP_HeaderIsValid(uint8_t* Buf);
+static void IAP_Init(uint8_t *Buf);
+static void IAP_DeInit(uint8_t *Buf);
+static void IAP_Erase(uint8_t *Buf);
+static void IAP_Store(uint8_t *Buf);
+static void IAP_Reboot(uint8_t* Buf);
+static void IAP_Jump(uint8_t* Buf);
+static void IAP_SendReply(uint8_t replyType, uint8_t replyDetail);
+static void IAP_EraseProcess(uint32_t Add);
+static void IAP_StoreProcess(uint8_t *dest, uint8_t *src);
+static inline uint32_t IAP_CONV_TO_32(uint8_t *buf);
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -46,7 +62,7 @@ void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
-  HAL_UART_Receive_DMA(&huart1,UsartRxBuf,20);
+  HAL_UART_Receive_DMA(&huart1,UsartRxBuf,20);;
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
@@ -84,7 +100,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     hdma_usart1_rx.Init.MemInc = DMA_MINC_ENABLE;
     hdma_usart1_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
     hdma_usart1_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-    hdma_usart1_rx.Init.Mode = DMA_NORMAL;
+    hdma_usart1_rx.Init.Mode = DMA_CIRCULAR;
     hdma_usart1_rx.Init.Priority = DMA_PRIORITY_LOW;
     if (HAL_DMA_Init(&hdma_usart1_rx) != HAL_OK)
     {
@@ -148,7 +164,201 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 } 
 
 /* USER CODE BEGIN 1 */
+void IAP_ProcessPack()
+{
+  if (IAP_HeaderIsValid(UsartRxBuf) == 0) {
+    IAP_SendReply(IAP_ERROR, IAP_ERROR_HEAD_INVALID);
+    return;
+  }
 
+	IAP_Init(&UsartRxBuf[2]);
+	IAP_DeInit(&UsartRxBuf[2]);
+  IAP_Erase(&UsartRxBuf[2]);
+  IAP_Store(&UsartRxBuf[2]);
+  IAP_Reboot(&UsartRxBuf[2]);
+	IAP_Jump(&UsartRxBuf[2]);
+}
+
+static uint8_t IAP_HeaderIsValid(uint8_t* Buf)
+{
+  if (Buf == NULL) return 0;
+
+  if ((Buf[0] != 0x22) || (Buf[1] != 0x33)) {
+    return 0;
+  }
+
+  return 1;
+}
+
+static void IAP_Init(uint8_t *Buf)
+{
+  if (Buf == NULL) {
+    IAP_SendReply(IAP_ERROR, IAP_INIT_FAIL);
+    return;
+  }
+	
+	if (Buf[0] != IAP_CMD_INIT) {
+	  return;
+	}
+	
+	HAL_FLASH_Unlock();
+	IAP_SendReply(IAP_SUCCESS, IAP_INIT_SUCCESS);
+}
+
+static void IAP_DeInit(uint8_t *Buf)
+{
+  if (Buf == NULL) {
+    IAP_SendReply(IAP_ERROR, IAP_DEINIT_FAIL);
+    return;
+  }
+	
+	if (Buf[0] != IAP_CMD_DEINIT) {
+	  return;
+	}
+	
+	HAL_FLASH_Lock();
+	IAP_SendReply(IAP_SUCCESS, IAP_DEINIT_SUCCESS);
+}
+
+static void IAP_Erase(uint8_t *Buf)
+{
+  if (Buf == NULL) {
+    IAP_SendReply(IAP_ERROR, IAP_ERASE_FAIL);
+    return;
+  }
+	
+	if (Buf[0] != IAP_CMD_ERASE) {
+	  return;
+	}
+	
+	uint32_t addr = IAP_CONV_TO_32(&Buf[1]);
+  IAP_EraseProcess(addr);
+}
+
+static void IAP_Store(uint8_t *Buf)
+{
+  if (Buf == NULL) {
+    IAP_SendReply(IAP_ERROR, IAP_STORE_FAIL);
+    return;
+  }
+	
+	if (Buf[0] != IAP_CMD_STORE) {
+	  return;
+	}
+	
+	uint8_t *src = (uint8_t *)IAP_CONV_TO_32(&Buf[1]);
+  IAP_StoreProcess(src, &Buf[5]);
+}
+
+static void IAP_Reboot(uint8_t* Buf)
+{
+  if (Buf == NULL) {
+    IAP_SendReply(IAP_ERROR, IAP_REBOOT_FAIL);
+    return;
+  }
+
+  if (Buf[4] != IAP_CMD_REBOOT) {
+    return;
+  }
+
+  IAP_SendReply(IAP_SUCCESS, IAP_SUCCESS_REBOOT);
+
+	HAL_Delay(500);
+	HAL_NVIC_SystemReset();
+}
+
+static void IAP_Jump(uint8_t* Buf)
+{
+  if (Buf == NULL) {
+    IAP_SendReply(IAP_ERROR, IAP_JUMP_FAIL);
+    return;
+  }
+
+  if (Buf[4] != IAP_CMD_JUMP) {
+    return;
+  }
+
+  IAP_SendReply(IAP_SUCCESS, IAP_SUCCESS_JUMP);
+
+	if (((*(__IO uint32_t *) APP_DEFAULT_ADD) & 0x2FFE0000) ==
+        0x20000000)
+	{
+		/* Jump to user application */
+		JumpAddress = *(__IO uint32_t *) (APP_DEFAULT_ADD + 4);
+		JumpToApplication = (pFunction) JumpAddress;
+
+		/* Initialize user application's Stack Pointer */
+		__set_MSP(*(__IO uint32_t *) APP_DEFAULT_ADD);
+		JumpToApplication();
+	}
+}
+
+static void IAP_SendReply(uint8_t replyType, uint8_t replyDetail)
+{
+  memset(UsartTxBuf, 0, MAX_UART_BUF_LEN);
+  UsartTxBuf[0] = 0x33;
+  UsartTxBuf[1] = 0x44;
+  UsartTxBuf[2] = replyType;
+  UsartTxBuf[3] = replyDetail;
+
+  HAL_UART_Transmit_DMA(&huart1,UsartTxBuf,20);
+}
+
+static void IAP_EraseProcess(uint32_t Add)
+{
+  /* USER CODE BEGIN 2 */
+  uint32_t PageError = 0;
+
+  /* Variable contains Flash operation status */
+  HAL_StatusTypeDef status;
+  FLASH_EraseInitTypeDef eraseinitstruct;
+
+  /* Get the number of sector to erase from 1st sector */
+  eraseinitstruct.TypeErase = FLASH_TYPEERASE_PAGES;
+  eraseinitstruct.PageAddress = Add;
+  eraseinitstruct.NbPages = 1;
+  status = HAL_FLASHEx_Erase(&eraseinitstruct, &PageError);
+
+  if (status != HAL_OK) {
+    IAP_SendReply(IAP_ERROR, IAP_ERASE_FAIL);
+  } else {
+    IAP_SendReply(IAP_SUCCESS, IAP_SUCCESS_ERASE);
+  }
+  /* USER CODE END 2 */
+}
+
+static void IAP_StoreProcess(uint8_t *dest, uint8_t *src)
+{
+  /* USER CODE BEGIN 3 */
+
+	/* Device voltage range supposed to be [2.7V to 3.6V], the operation will
+	 * be done by byte */
+	if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, (uint32_t) (dest), *(uint32_t *) (src)) == HAL_OK) {
+		/* Check the written value */
+		if (*(uint32_t *) (src) != *(uint32_t *) (dest)) {
+			/* Flash content doesn't match SRAM content */
+			IAP_SendReply(IAP_ERROR, IAP_STORE_FAIL);
+			return;
+		}
+	} else {
+		/* Error occurred while writing data in Flash memory */
+		IAP_SendReply(IAP_ERROR, IAP_STORE_BUSY);
+		return;
+	}
+
+  IAP_SendReply(IAP_SUCCESS, IAP_SUCCESS_STORE);
+  /* USER CODE END 3 */
+}
+
+static inline uint32_t IAP_CONV_TO_32(uint8_t *buf)
+{
+  uint32_t ret = 0;
+  ret = (*buf) << 24;
+  ret += *(buf+1) << 16;
+  ret += *(buf+2) << 8;
+  ret += *(buf+3);
+  return ret;
+}
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
