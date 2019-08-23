@@ -277,7 +277,6 @@ static void IAP_Jump(uint8_t* Buf)
 
   IAP_SendReply(IAP_SUCCESS, IAP_SUCCESS_JUMP);
 
-  HAL_Delay(1000);
 	GoToApp = 1;
 }
 
