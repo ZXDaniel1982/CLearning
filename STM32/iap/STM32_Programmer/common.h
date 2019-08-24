@@ -5,6 +5,8 @@
  extern "C" {
 #endif
 
+#define IAP_RETRY_MAX 10
+
 typedef enum
 {
   IAP_ERROR = 0,

@@ -12,6 +12,7 @@
 
 static void GetHeader(uint8_t *buf, uint8_t cmd);
 static bool GetReply(uint8_t *buf);
+static bool SendData(uint8_t *rbuf, uint8_t *tbuf, int fd);
 
 const char *portname = "/dev/ttyUSB0";
 
@@ -51,25 +52,13 @@ int main(int argc, char **argv)
 
     printf("file %s size is %d\n", filename, size);
 
-/*    for (int i = 0; i < 5; ++i)
-    {
-        memset(txBuf, 0xd, 20);
-        write (fd, txBuf, 20);
-        read (fd, rxBuf, 20);
-        usleep(50000);
-    }*/
-
     // init flash
     GetHeader(txBuf, IAP_CMD_INIT);
-    for (int i = 0; i < 5; ++i) {
-        write (fd, txBuf, 20);
-        read (fd, rxBuf, 20);
-        usleep(50000);
-        if (GetReply(rxBuf)) {
-            break;
-        } else {
-            printf("Send fail, try again (%d)\n", i);
-        }
+    if (!SendData(rxBuf, txBuf, fd)) {
+        printf("Send data failed\n");
+        close(fd);
+        fclose(file);
+        return -1;
     }
 
     // prog
@@ -87,15 +76,11 @@ int main(int argc, char **argv)
         txBuf[5] = (uint8_t)((addr >> 8) & 0x000000ff);
         txBuf[6] = (uint8_t)(addr & 0x000000ff);
 
-        for (int i = 0; i < 5; ++i) {
-            write (fd, txBuf, 20);
-            read (fd, rxBuf, 20);
-            usleep(50000);
-            if (GetReply(rxBuf)) {
-                break;
-            } else {
-                printf("Send fail, try again (%d)\n", i);
-            }
+        if (!SendData(rxBuf, txBuf, fd)) {
+            printf("Send data failed\n");
+            close(fd);
+            fclose(file);
+            return -1;
         }
 
         for (uint32_t j=0; j<512; j++) {
@@ -113,15 +98,11 @@ int main(int argc, char **argv)
             fread(rdBuf,sizeof(uint8_t),4,file);
             memcpy(&txBuf[7], rdBuf, 4);
 
-            for (int i = 0; i < 5; ++i) {
-                write (fd, txBuf, 20);
-                read (fd, rxBuf, 20);
-                usleep(50000);
-                if (GetReply(rxBuf)) {
-                    break;
-                } else {
-                    printf("Send fail, try again (%d)\n", i);
-                }
+            if (!SendData(rxBuf, txBuf, fd)) {
+                printf("Send data failed\n");
+                close(fd);
+                fclose(file);
+                return -1;
             }
 
             addr += 4;
@@ -139,15 +120,11 @@ int main(int argc, char **argv)
     txBuf[5] = (uint8_t)((addr >> 8) & 0x000000ff);
     txBuf[6] = (uint8_t)(addr & 0x000000ff);
 
-    for (int i = 0; i < 5; ++i) {
-        write (fd, txBuf, 20);
-        read (fd, rxBuf, 20);
-        usleep(50000);
-        if (GetReply(rxBuf)) {
-            break;
-        } else {
-            printf("Send fail, try again (%d)\n", i);
-        }
+    if (!SendData(rxBuf, txBuf, fd)) {
+        printf("Send data failed\n");
+        close(fd);
+        fclose(file);
+        return -1;
     }
 
     for (uint32_t j=0; j<(mod/4); j++) {
@@ -165,15 +142,11 @@ int main(int argc, char **argv)
         fread(rdBuf,sizeof(uint8_t),4,file);
         memcpy(&txBuf[7], rdBuf, 4);
 
-        for (int i = 0; i < 5; ++i) {
-            write (fd, txBuf, 20);
-            read (fd, rxBuf, 20);
-            usleep(50000);
-            if (GetReply(rxBuf)) {
-                break;
-            } else {
-                printf("Send fail, try again (%d)\n", i);
-            }
+        if (!SendData(rxBuf, txBuf, fd)) {
+            printf("Send data failed\n");
+            close(fd);
+            fclose(file);
+            return -1;
         }
 
         addr += 4;
@@ -188,15 +161,11 @@ int main(int argc, char **argv)
     GetHeader(txBuf, IAP_CMD_JUMP);
 
     printf("Jump to app\n");
-    for (int i = 0; i < 5; ++i) {
-        write (fd, txBuf, 20);
-        read (fd, rxBuf, 20);
-        usleep(50000);
-        if (GetReply(rxBuf)) {
-            break;
-        } else {
-            printf("Send fail, try again (%d)\n", i);
-        }
+    if (!SendData(rxBuf, txBuf, fd)) {
+        printf("Send data failed\n");
+        close(fd);
+        fclose(file);
+        return -1;
     }
 
     close(fd);
@@ -218,4 +187,18 @@ static bool GetReply(uint8_t *buf)
         return false;
 
     return true;
+}
+
+static bool SendData(uint8_t *rbuf, uint8_t *tbuf, int fd)
+{
+    for (int i = 0; i < IAP_RETRY_MAX; ++i) {
+        write (fd, tbuf, 20);
+        read (fd, rbuf, 20);
+        if (GetReply(rbuf)) {
+            return true;
+        } else {
+            printf("Send fail, try again (%d)\n", i);
+        }
+    }
+    return false;
 }
