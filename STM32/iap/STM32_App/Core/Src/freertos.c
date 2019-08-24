@@ -56,7 +56,6 @@ osThreadId defaultTaskHandle;
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
-
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /**
@@ -105,10 +104,6 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void const * argument)
 {
-    
-                 
-  /* init code for FATFS */
-
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
   for(;;)
