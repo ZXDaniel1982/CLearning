@@ -106,7 +106,8 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void const * argument)
 {
     
-    
+                 
+  /* init code for FATFS */
 
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
