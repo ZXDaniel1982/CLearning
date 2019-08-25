@@ -25,6 +25,7 @@
 #include "fatfs.h"
 #include "sdio.h"
 #include "spi.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 #include "fsmc.h"
@@ -101,7 +102,12 @@ int main(void)
   MX_SDIO_SD_Init();
   MX_FATFS_Init();
   MX_SPI1_Init();
+  MX_TIM2_Init();
   MX_USART1_UART_Init();
+  MX_TIM3_Init();
+  MX_TIM4_Init();
+  MX_TIM5_Init();
+  MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(Led_GPIO_Port, Led_Pin, GPIO_PIN_SET);
   /* USER CODE END 2 */
@@ -212,7 +218,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
+  else if (htim->Instance == TIM2) {
 
+  }
+  else if (htim->Instance == TIM3) {
+
+  }
+  else if (htim->Instance == TIM4) {
+
+  }
+  else if (htim->Instance == TIM5) {
+
+  }
   /* USER CODE END Callback 1 */
 }
 
