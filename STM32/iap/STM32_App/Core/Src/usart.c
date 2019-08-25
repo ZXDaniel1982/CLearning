@@ -46,7 +46,7 @@ void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
-  HAL_UART_Receive_DMA(&huart1,UsartRxBuf,20);
+  HAL_UART_Receive_DMA(&huart1,UsartRxBuf,UART_BUF_LEN);
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
