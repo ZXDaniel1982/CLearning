@@ -44,6 +44,7 @@ Core/Src/usart.c \
 Core/Src/fsmc.c \
 Core/Src/spi.c \
 Core/Src/tim.c \
+Core/Src/lcd.c \
 Core/Src/freertos.c \
 Core/Src/system_stm32f1xx.c \
 Core/Src/stm32f1xx_it.c \

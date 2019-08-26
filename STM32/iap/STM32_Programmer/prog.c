@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 {
     chmod(portname, 777);
 
-    char filename[255] = "/home/dzhang/workspace/CLearning/STM32/iap/STM32_App/build/STM32_App.bin";
+    char filename[255] = "/home/dzhang/workspace/CLearning/STM32/STM32_FreeRTOS/build/STM32_FreeRTOS.bin";
     int fd = open (portname, O_RDWR | O_NOCTTY);
     if (fd < 0) {
         printf("%s:%d error opening %s %d\n", __func__, __LINE__, portname, fd);
