@@ -36,6 +36,7 @@ extern "C" {
 #include "stm32f1xx_ll_utils.h"
 #include "stm32f1xx_ll_pwr.h"
 #include "stm32f1xx_ll_dma.h"
+#include "stm32f1xx_ll_spi.h"
 #include "stm32f1xx_ll_usart.h"
 #include "stm32f1xx.h"
 #include "stm32f1xx_ll_gpio.h"
@@ -72,6 +73,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define SST_CS_Pin LL_GPIO_PIN_4
+#define SST_CS_GPIO_Port GPIOA
 #define Led_Pin LL_GPIO_PIN_5
 #define Led_GPIO_Port GPIOB
 #ifndef NVIC_PRIORITYGROUP_0
