@@ -307,71 +307,244 @@
                   |L3.324|
                           DCD      SystemCoreClock
 
+                          AREA ||i.USART_Init||, CODE, READONLY, ALIGN=2
+
+                  USART_Init PROC
+;;;100    
+;;;101    static void USART_Init()
+000000  b508              PUSH     {r3,lr}
+;;;102    {
+;;;103        __IO uint32_t tmpreg;
+;;;104        SET_BIT(RCC->APB2ENR, RCC_APB2ENR_USART1EN);
+000002  4841              LDR      r0,|L4.264|
+000004  6980              LDR      r0,[r0,#0x18]
+000006  f4404080          ORR      r0,r0,#0x4000
+00000a  493f              LDR      r1,|L4.264|
+00000c  6188              STR      r0,[r1,#0x18]
+;;;105        /* Delay after an RCC peripheral clock enabling */
+;;;106        tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_USART1EN);
+00000e  4608              MOV      r0,r1
+000010  6980              LDR      r0,[r0,#0x18]
+000012  f4004080          AND      r0,r0,#0x4000
+000016  9000              STR      r0,[sp,#0]
+;;;107        (void)tmpreg;
+000018  bf00              NOP      
+;;;108    
+;;;109        tmpreg;
+00001a  bf00              NOP      
+;;;110        SET_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPAEN);
+00001c  4608              MOV      r0,r1
+00001e  6980              LDR      r0,[r0,#0x18]
+000020  f0400004          ORR      r0,r0,#4
+000024  6188              STR      r0,[r1,#0x18]
+;;;111        /* Delay after an RCC peripheral clock enabling */
+;;;112        tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPAEN);
+000026  4608              MOV      r0,r1
+000028  6980              LDR      r0,[r0,#0x18]
+00002a  f0000004          AND      r0,r0,#4
+00002e  9000              STR      r0,[sp,#0]
+;;;113        (void)tmpreg;
+000030  bf00              NOP      
+;;;114    
+;;;115        // 端口配置低寄存器  CNF 00：通用推挽输出模式  MODE  01：输出模式，最大速度10MHz
+;;;116        MODIFY_REG(GPIOA->CRH, (GPIO_CRH_CNF9 | GPIO_CRH_MODE9), (GPIO_CRH_CNF9_1 | GPIO_CRH_MODE9_0));
+000032  4836              LDR      r0,|L4.268|
+000034  6800              LDR      r0,[r0,#0]
+000036  f02000f0          BIC      r0,r0,#0xf0
+00003a  f0400090          ORR      r0,r0,#0x90
+00003e  4933              LDR      r1,|L4.268|
+000040  6008              STR      r0,[r1,#0]
+;;;117    
+;;;118        // 端口输出数据寄存器  
+;;;119        MODIFY_REG(GPIOA->ODR, GPIO_BSRR_BS9, 0);
+000042  4832              LDR      r0,|L4.268|
+000044  3008              ADDS     r0,r0,#8
+000046  6800              LDR      r0,[r0,#0]
+000048  f4207000          BIC      r0,r0,#0x200
+00004c  492f              LDR      r1,|L4.268|
+00004e  3108              ADDS     r1,r1,#8
+000050  6008              STR      r0,[r1,#0]
+;;;120    
+;;;121        //  11：输出模式，最大速度50MHz
+;;;122        MODIFY_REG(GPIOA->CRH, GPIO_CRH_MODE9, GPIO_CRH_MODE9);
+000052  482e              LDR      r0,|L4.268|
+000054  6800              LDR      r0,[r0,#0]
+000056  f0400030          ORR      r0,r0,#0x30
+00005a  492c              LDR      r1,|L4.268|
+00005c  6008              STR      r0,[r1,#0]
+;;;123    
+;;;124        // 00：通用推挽输出模式
+;;;125        MODIFY_REG(GPIOA->CRH, GPIO_CRH_CNF9_0, 0);
+00005e  4608              MOV      r0,r1
+000060  6800              LDR      r0,[r0,#0]
+000062  f0200040          BIC      r0,r0,#0x40
+000066  6008              STR      r0,[r1,#0]
+;;;126    
+;;;127        // 端口配置低寄存器  CNF 00：通用推挽输出模式  MODE  01：输出模式，最大速度10MHz
+;;;128        MODIFY_REG(GPIOA->CRH, (GPIO_CRH_CNF10 | GPIO_CRH_MODE10), GPIO_CRH_CNF10_0);
+000068  4608              MOV      r0,r1
+00006a  6800              LDR      r0,[r0,#0]
+00006c  f4206070          BIC      r0,r0,#0xf00
+000070  f4406080          ORR      r0,r0,#0x400
+000074  6008              STR      r0,[r1,#0]
+;;;129    
+;;;130        // 端口输出数据寄存器  
+;;;131        MODIFY_REG(GPIOA->ODR, GPIO_BSRR_BS10, 0);
+000076  4825              LDR      r0,|L4.268|
+000078  3008              ADDS     r0,r0,#8
+00007a  6800              LDR      r0,[r0,#0]
+00007c  f4206080          BIC      r0,r0,#0x400
+000080  4922              LDR      r1,|L4.268|
+000082  3108              ADDS     r1,r1,#8
+000084  6008              STR      r0,[r1,#0]
+;;;132    
+;;;133        //  11：输出模式，最大速度50MHz
+;;;134        MODIFY_REG(GPIOA->CRH, GPIO_CRH_MODE10, 0);
+000086  4821              LDR      r0,|L4.268|
+000088  6800              LDR      r0,[r0,#0]
+00008a  f4207040          BIC      r0,r0,#0x300
+00008e  491f              LDR      r1,|L4.268|
+000090  6008              STR      r0,[r1,#0]
+;;;135    
+;;;136        // 00：通用推挽输出模式
+;;;137        MODIFY_REG(GPIOA->CRH, GPIO_CRH_CNF10_0, 0);
+000092  4608              MOV      r0,r1
+000094  6800              LDR      r0,[r0,#0]
+000096  f4206080          BIC      r0,r0,#0x400
+00009a  6008              STR      r0,[r1,#0]
+;;;138    
+;;;139        if (READ_BIT(USART1->CR1, USART_CR1_UE) != (USART_CR1_UE)) {
+00009c  481c              LDR      r0,|L4.272|
+00009e  6800              LDR      r0,[r0,#0]
+0000a0  f4005000          AND      r0,r0,#0x2000
+0000a4  f5b05f00          CMP      r0,#0x2000
+0000a8  d019              BEQ      |L4.222|
+;;;140            MODIFY_REG(USART1->CR1,
+0000aa  4819              LDR      r0,|L4.272|
+0000ac  6800              LDR      r0,[r0,#0]
+0000ae  f241610c          MOV      r1,#0x160c
+0000b2  4388              BICS     r0,r0,r1
+0000b4  f040000c          ORR      r0,r0,#0xc
+0000b8  4915              LDR      r1,|L4.272|
+0000ba  6008              STR      r0,[r1,#0]
+;;;141                   (USART_CR1_M | USART_CR1_PCE | USART_CR1_PS | USART_CR1_TE | USART_CR1_RE),
+;;;142                   (USART_CR1_TE |USART_CR1_RE));
+;;;143    
+;;;144            MODIFY_REG(USART1->CR2, USART_CR2_STOP, 0);
+0000bc  1d08              ADDS     r0,r1,#4
+0000be  6800              LDR      r0,[r0,#0]
+0000c0  f4205040          BIC      r0,r0,#0x3000
+0000c4  1d09              ADDS     r1,r1,#4
+0000c6  6008              STR      r0,[r1,#0]
+;;;145    
+;;;146            MODIFY_REG(USART1->CR3, USART_CR3_RTSE | USART_CR3_CTSE, 0);
+0000c8  1d08              ADDS     r0,r1,#4
+0000ca  6800              LDR      r0,[r0,#0]
+0000cc  f4207040          BIC      r0,r0,#0x300
+0000d0  1d09              ADDS     r1,r1,#4
+0000d2  6008              STR      r0,[r1,#0]
+;;;147    
+;;;148            USART1->BRR = 0x271;
+0000d4  f2402071          MOV      r0,#0x271
+0000d8  490d              LDR      r1,|L4.272|
+0000da  1f09              SUBS     r1,r1,#4
+0000dc  6008              STR      r0,[r1,#0]
+                  |L4.222|
+;;;149        }
+;;;150    		
+;;;151    		CLEAR_BIT(USART1->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN));
+0000de  480c              LDR      r0,|L4.272|
+0000e0  1d00              ADDS     r0,r0,#4
+0000e2  6800              LDR      r0,[r0,#0]
+0000e4  f4204090          BIC      r0,r0,#0x4800
+0000e8  4909              LDR      r1,|L4.272|
+0000ea  1d09              ADDS     r1,r1,#4
+0000ec  6008              STR      r0,[r1,#0]
+;;;152        CLEAR_BIT(USART1->CR3, (USART_CR3_SCEN | USART_CR3_IREN | USART_CR3_HDSEL));
+0000ee  1d08              ADDS     r0,r1,#4
+0000f0  6800              LDR      r0,[r0,#0]
+0000f2  f020002a          BIC      r0,r0,#0x2a
+0000f6  1d09              ADDS     r1,r1,#4
+0000f8  6008              STR      r0,[r1,#0]
+;;;153    		
+;;;154    		SET_BIT(USART1->CR1, USART_CR1_UE);
+0000fa  4805              LDR      r0,|L4.272|
+0000fc  6800              LDR      r0,[r0,#0]
+0000fe  f4405000          ORR      r0,r0,#0x2000
+000102  4903              LDR      r1,|L4.272|
+000104  6008              STR      r0,[r1,#0]
+;;;155    }
+000106  bd08              POP      {r3,pc}
+;;;156    
+                          ENDP
+
+                  |L4.264|
+                          DCD      0x40021000
+                  |L4.268|
+                          DCD      0x40010804
+                  |L4.272|
+                          DCD      0x4001380c
+
                           AREA ||i.main||, CODE, READONLY, ALIGN=2
 
                   main PROC
-;;;100    
-;;;101    int main()
+;;;156    
+;;;157    int main()
 000000  2400              MOVS     r4,#0
-;;;102    {
-;;;103    	  uint32_t cnt = 0;
-;;;104    	
-;;;105    	  RCC_Init();
+;;;158    {
+;;;159    	  uint32_t cnt = 0;
+;;;160    	
+;;;161    	  RCC_Init();
 000002  f7fffffe          BL       RCC_Init
-;;;106        GPIO_Init();
+;;;162        GPIO_Init();
 000006  f7fffffe          BL       GPIO_Init
-;;;107    	
-;;;108    	  
-;;;109    	  //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
-;;;110    	
-;;;111        while(1) {
-00000a  e01c              B        |L4.70|
-                  |L4.12|
-;;;112    		    for (cnt=0;cnt<7200000;cnt++);
-00000c  2400              MOVS     r4,#0
-00000e  e000              B        |L4.18|
-                  |L4.16|
-000010  1c64              ADDS     r4,r4,#1
-                  |L4.18|
-000012  480d              LDR      r0,|L4.72|
-000014  4284              CMP      r4,r0
-000016  d3fb              BCC      |L4.16|
-;;;113    			  MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
-000018  480c              LDR      r0,|L4.76|
-00001a  6800              LDR      r0,[r0,#0]
-00001c  f0400020          ORR      r0,r0,#0x20
-000020  490a              LDR      r1,|L4.76|
-000022  6008              STR      r0,[r1,#0]
-;;;114    			  Led_GPIO_Port->ODR |= GPIO_ODR_ODR5;
-000024  4608              MOV      r0,r1
-000026  6800              LDR      r0,[r0,#0]
-000028  f0400020          ORR      r0,r0,#0x20
-00002c  6008              STR      r0,[r1,#0]
-;;;115    			  for (cnt=0;cnt<7200000;cnt++);
-00002e  2400              MOVS     r4,#0
-000030  e000              B        |L4.52|
-                  |L4.50|
-000032  1c64              ADDS     r4,r4,#1
-                  |L4.52|
-000034  4804              LDR      r0,|L4.72|
-000036  4284              CMP      r4,r0
-000038  d3fb              BCC      |L4.50|
-;;;116    			  Led_GPIO_Port->ODR &= ~GPIO_ODR_ODR5;
-00003a  4804              LDR      r0,|L4.76|
-00003c  6800              LDR      r0,[r0,#0]
-00003e  f0200020          BIC      r0,r0,#0x20
-000042  4902              LDR      r1,|L4.76|
-000044  6008              STR      r0,[r1,#0]
-                  |L4.70|
-000046  e7e1              B        |L4.12|
-;;;117    		}
-;;;118    }
+;;;163    	  USART_Init();
+00000a  f7fffffe          BL       USART_Init
+;;;164    	
+;;;165    	  
+;;;166    	  //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
+;;;167    	
+;;;168        while(1) {
+00000e  e010              B        |L5.50|
+                  |L5.16|
+;;;169    		    for (cnt=0;cnt<7200000;cnt++) {}
+000010  2400              MOVS     r4,#0
+000012  e000              B        |L5.22|
+                  |L5.20|
+000014  1c64              ADDS     r4,r4,#1
+                  |L5.22|
+000016  4807              LDR      r0,|L5.52|
+000018  4284              CMP      r4,r0
+00001a  d3fb              BCC      |L5.20|
+;;;170    			  //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
+;;;171    			  while ((USART1->SR &USART_SR_TXE) == 0) {}
+00001c  bf00              NOP      
+                  |L5.30|
+00001e  4806              LDR      r0,|L5.56|
+000020  6800              LDR      r0,[r0,#0]
+000022  f0000080          AND      r0,r0,#0x80
+000026  2800              CMP      r0,#0
+000028  d0f9              BEQ      |L5.30|
+;;;172            USART1->DR= 'a'; 
+00002a  2061              MOVS     r0,#0x61
+00002c  4902              LDR      r1,|L5.56|
+00002e  1d09              ADDS     r1,r1,#4
+000030  6008              STR      r0,[r1,#0]
+                  |L5.50|
+000032  e7ed              B        |L5.16|
+;;;173    					
+;;;174    //				for (cnt=0;cnt<7200000;cnt++) {}
+;;;175    //			  MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, 0);
+;;;176    //			  while ((USART1->SR &USART_SR_TXE) == 0) {}
+;;;177    //        USART1->DR= 'a'; 
+;;;178    		}
+;;;179    }
                           ENDP
 
-                  |L4.72|
+                  |L5.52|
                           DCD      0x006ddd00
-                  |L4.76|
-                          DCD      0x40010c0c
+                  |L5.56|
+                          DCD      0x40013800
 
 ;*** Start embedded assembler ***
 

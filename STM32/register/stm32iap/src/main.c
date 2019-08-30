@@ -98,21 +98,82 @@ static void GPIO_Init()
     MODIFY_REG(Led_GPIO_Port->CRL, GPIO_CRL_CNF5_0, 0);
 }
 
+static void USART_Init()
+{
+    __IO uint32_t tmpreg;
+    SET_BIT(RCC->APB2ENR, RCC_APB2ENR_USART1EN);
+    /* Delay after an RCC peripheral clock enabling */
+    tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_USART1EN);
+    (void)tmpreg;
+
+    tmpreg;
+    SET_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPAEN);
+    /* Delay after an RCC peripheral clock enabling */
+    tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPAEN);
+    (void)tmpreg;
+
+    // 端口配置低寄存器  CNF 00：通用推挽输出模式  MODE  01：输出模式，最大速度10MHz
+    MODIFY_REG(GPIOA->CRH, (GPIO_CRH_CNF9 | GPIO_CRH_MODE9), (GPIO_CRH_CNF9_1 | GPIO_CRH_MODE9_0));
+
+    // 端口输出数据寄存器  
+    MODIFY_REG(GPIOA->ODR, GPIO_BSRR_BS9, 0);
+
+    //  11：输出模式，最大速度50MHz
+    MODIFY_REG(GPIOA->CRH, GPIO_CRH_MODE9, GPIO_CRH_MODE9);
+
+    // 00：通用推挽输出模式
+    MODIFY_REG(GPIOA->CRH, GPIO_CRH_CNF9_0, 0);
+
+    // 端口配置低寄存器  CNF 00：通用推挽输出模式  MODE  01：输出模式，最大速度10MHz
+    MODIFY_REG(GPIOA->CRH, (GPIO_CRH_CNF10 | GPIO_CRH_MODE10), GPIO_CRH_CNF10_0);
+
+    // 端口输出数据寄存器  
+    MODIFY_REG(GPIOA->ODR, GPIO_BSRR_BS10, 0);
+
+    //  11：输出模式，最大速度50MHz
+    MODIFY_REG(GPIOA->CRH, GPIO_CRH_MODE10, 0);
+
+    // 00：通用推挽输出模式
+    MODIFY_REG(GPIOA->CRH, GPIO_CRH_CNF10_0, 0);
+
+    if (READ_BIT(USART1->CR1, USART_CR1_UE) != (USART_CR1_UE)) {
+        MODIFY_REG(USART1->CR1,
+               (USART_CR1_M | USART_CR1_PCE | USART_CR1_PS | USART_CR1_TE | USART_CR1_RE),
+               (USART_CR1_TE |USART_CR1_RE));
+
+        MODIFY_REG(USART1->CR2, USART_CR2_STOP, 0);
+
+        MODIFY_REG(USART1->CR3, USART_CR3_RTSE | USART_CR3_CTSE, 0);
+
+        USART1->BRR = 0x271;
+    }
+		
+		CLEAR_BIT(USART1->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN));
+    CLEAR_BIT(USART1->CR3, (USART_CR3_SCEN | USART_CR3_IREN | USART_CR3_HDSEL));
+		
+		SET_BIT(USART1->CR1, USART_CR1_UE);
+}
+
 int main()
 {
 	  uint32_t cnt = 0;
 	
 	  RCC_Init();
     GPIO_Init();
+	  USART_Init();
 	
 	  
 	  //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
 	
     while(1) {
-		    for (cnt=0;cnt<7200000;cnt++);
-			  MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
-			  Led_GPIO_Port->ODR |= GPIO_ODR_ODR5;
-			  for (cnt=0;cnt<7200000;cnt++);
-			  Led_GPIO_Port->ODR &= ~GPIO_ODR_ODR5;
+		    for (cnt=0;cnt<7200000;cnt++) {}
+			  //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
+			  while ((USART1->SR &USART_SR_TXE) == 0) {}
+        USART1->DR= 'a'; 
+					
+//				for (cnt=0;cnt<7200000;cnt++) {}
+//			  MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, 0);
+//			  while ((USART1->SR &USART_SR_TXE) == 0) {}
+//        USART1->DR= 'a'; 
 		}
 }
