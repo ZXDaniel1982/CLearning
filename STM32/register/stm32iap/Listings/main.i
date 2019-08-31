@@ -1,5 +1,5 @@
-#line 1 "src\\main.c"
-#line 1 ".\\inc\\stm32f1xx.h"
+#line 1 "Core\\Src\\main.c"
+#line 1 ".\\Core\\Inc\\stm32f1xx.h"
 
 
 
@@ -77,7 +77,7 @@
 
  
 
-#line 96 ".\\inc\\stm32f1xx.h"
+#line 96 ".\\Core\\Inc\\stm32f1xx.h"
 
 
 
@@ -95,7 +95,7 @@
 
 
  
-#line 121 ".\\inc\\stm32f1xx.h"
+#line 121 ".\\Core\\Inc\\stm32f1xx.h"
 
 
 
@@ -105,7 +105,7 @@
 
  
 
-#line 1 ".\\inc\\stm32f103xe.h"
+#line 1 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -272,7 +272,7 @@ typedef enum
 
  
 
-#line 1 ".\\inc\\core_cm3.h"
+#line 1 ".\\Core\\Inc\\core_cm3.h"
  
 
 
@@ -572,7 +572,7 @@ typedef unsigned     long long uintmax_t;
 
 
  
-#line 45 ".\\inc\\core_cm3.h"
+#line 45 ".\\Core\\Inc\\core_cm3.h"
 
 
 
@@ -615,7 +615,7 @@ typedef unsigned     long long uintmax_t;
 
 
 
-#line 120 ".\\inc\\core_cm3.h"
+#line 120 ".\\Core\\Inc\\core_cm3.h"
 
 
 
@@ -627,36 +627,10 @@ typedef unsigned     long long uintmax_t;
 
 
 
-#line 162 ".\\inc\\core_cm3.h"
+#line 162 ".\\Core\\Inc\\core_cm3.h"
 
-#line 1 ".\\inc\\core_cmInstr.h"
+#line 1 ".\\Core\\Inc\\core_cmInstr.h"
  
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -674,6 +648,32 @@ typedef unsigned     long long uintmax_t;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
  
 
 
@@ -681,7 +681,7 @@ typedef unsigned     long long uintmax_t;
  
 
  
-#line 1 ".\\inc\\cmsis_armcc.h"
+#line 1 ".\\Core\\Inc\\cmsis_armcc.h"
  
 
 
@@ -946,7 +946,7 @@ static __inline void __set_FAULTMASK(uint32_t faultMask)
 
 
 
-#line 297 ".\\inc\\cmsis_armcc.h"
+#line 297 ".\\Core\\Inc\\cmsis_armcc.h"
 
 
 
@@ -1086,7 +1086,7 @@ __attribute__((section(".revsh_text"))) static __inline __asm int32_t __REVSH(in
 
 
  
-#line 455 ".\\inc\\cmsis_armcc.h"
+#line 455 ".\\Core\\Inc\\cmsis_armcc.h"
 
 
 
@@ -1291,19 +1291,19 @@ __attribute__((section(".rrx_text"))) static __inline __asm uint32_t __RRX(uint3
 
  
 
-#line 731 ".\\inc\\cmsis_armcc.h"
+#line 731 ".\\Core\\Inc\\cmsis_armcc.h"
  
 
 
-#line 54 ".\\inc\\core_cmInstr.h"
+#line 54 ".\\Core\\Inc\\core_cmInstr.h"
 
  
-#line 84 ".\\inc\\core_cmInstr.h"
+#line 84 ".\\Core\\Inc\\core_cmInstr.h"
 
    
 
-#line 164 ".\\inc\\core_cm3.h"
-#line 1 ".\\inc\\core_cmFunc.h"
+#line 164 ".\\Core\\Inc\\core_cm3.h"
+#line 1 ".\\Core\\Inc\\core_cmFunc.h"
  
 
 
@@ -1355,14 +1355,14 @@ __attribute__((section(".rrx_text"))) static __inline __asm uint32_t __RRX(uint3
  
 
  
-#line 54 ".\\inc\\core_cmFunc.h"
+#line 54 ".\\Core\\Inc\\core_cmFunc.h"
 
  
-#line 84 ".\\inc\\core_cmFunc.h"
+#line 84 ".\\Core\\Inc\\core_cmFunc.h"
 
  
 
-#line 165 ".\\inc\\core_cm3.h"
+#line 165 ".\\Core\\Inc\\core_cm3.h"
 
 
 
@@ -1373,16 +1373,6 @@ __attribute__((section(".rrx_text"))) static __inline __asm uint32_t __RRX(uint3
 
 
 
-
-
-
-
-
-
- 
-#line 203 ".\\inc\\core_cm3.h"
-
- 
 
 
 
@@ -1390,7 +1380,17 @@ __attribute__((section(".rrx_text"))) static __inline __asm uint32_t __RRX(uint3
 
 
  
-#line 219 ".\\inc\\core_cm3.h"
+#line 203 ".\\Core\\Inc\\core_cm3.h"
+
+ 
+
+
+
+
+
+
+ 
+#line 219 ".\\Core\\Inc\\core_cm3.h"
 
  
 
@@ -1666,7 +1666,7 @@ typedef struct
 
 
 
-#line 500 ".\\inc\\core_cm3.h"
+#line 500 ".\\Core\\Inc\\core_cm3.h"
 
  
 
@@ -2297,7 +2297,7 @@ typedef struct
    
 
 
-#line 1223 ".\\inc\\core_cm3.h"
+#line 1223 ".\\Core\\Inc\\core_cm3.h"
 
 
 
@@ -2439,9 +2439,9 @@ typedef struct
  
 
  
-#line 1372 ".\\inc\\core_cm3.h"
+#line 1372 ".\\Core\\Inc\\core_cm3.h"
 
-#line 1381 ".\\inc\\core_cm3.h"
+#line 1381 ".\\Core\\Inc\\core_cm3.h"
 
 
 
@@ -2824,8 +2824,8 @@ static __inline int32_t ITM_CheckChar (void)
 
 
 
-#line 168 ".\\inc\\stm32f103xe.h"
-#line 1 ".\\inc\\system_stm32f1xx.h"
+#line 168 ".\\Core\\Inc\\stm32f103xe.h"
+#line 1 ".\\Core\\Inc\\system_stm32f1xx.h"
 
 
 
@@ -2942,8 +2942,8 @@ extern void SystemCoreClockUpdate(void);
 
    
  
-#line 169 ".\\inc\\stm32f103xe.h"
-#line 170 ".\\inc\\stm32f103xe.h"
+#line 169 ".\\Core\\Inc\\stm32f103xe.h"
+#line 170 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -3533,11 +3533,11 @@ typedef struct
 
 
 
-#line 796 ".\\inc\\stm32f103xe.h"
+#line 796 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
-#line 815 ".\\inc\\stm32f103xe.h"
+#line 815 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -3575,7 +3575,7 @@ typedef struct
 
    
 
-#line 916 ".\\inc\\stm32f103xe.h"
+#line 916 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -3622,15 +3622,15 @@ typedef struct
  
 
  
-#line 977 ".\\inc\\stm32f103xe.h"
+#line 977 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 984 ".\\inc\\stm32f103xe.h"
+#line 984 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 994 ".\\inc\\stm32f103xe.h"
+#line 994 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 1004 ".\\inc\\stm32f103xe.h"
+#line 1004 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -3638,7 +3638,7 @@ typedef struct
 
 
  
-#line 1023 ".\\inc\\stm32f103xe.h"
+#line 1023 ".\\Core\\Inc\\stm32f103xe.h"
 
  
  
@@ -3859,13 +3859,13 @@ typedef struct
 
 
  
-#line 1255 ".\\inc\\stm32f103xe.h"
+#line 1255 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 1263 ".\\inc\\stm32f103xe.h"
+#line 1263 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 1280 ".\\inc\\stm32f103xe.h"
+#line 1280 ".\\Core\\Inc\\stm32f103xe.h"
 
  
  
@@ -3874,7 +3874,7 @@ typedef struct
  
 
  
-#line 1318 ".\\inc\\stm32f103xe.h"
+#line 1318 ".\\Core\\Inc\\stm32f103xe.h"
 
 
  
@@ -3901,12 +3901,12 @@ typedef struct
 
 
  
-#line 1351 ".\\inc\\stm32f103xe.h"
+#line 1351 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 1361 ".\\inc\\stm32f103xe.h"
+#line 1361 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 1369 ".\\inc\\stm32f103xe.h"
+#line 1369 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -3915,7 +3915,7 @@ typedef struct
 
 
  
-#line 1383 ".\\inc\\stm32f103xe.h"
+#line 1383 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -3944,15 +3944,15 @@ typedef struct
 
 
  
-#line 1418 ".\\inc\\stm32f103xe.h"
+#line 1418 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
 
-#line 1468 ".\\inc\\stm32f103xe.h"
+#line 1468 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 1476 ".\\inc\\stm32f103xe.h"
+#line 1476 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -3961,98 +3961,46 @@ typedef struct
 
 
   
-#line 1493 ".\\inc\\stm32f103xe.h"
+#line 1493 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 1546 ".\\inc\\stm32f103xe.h"
-
-
- 
-#line 1567 ".\\inc\\stm32f103xe.h"
-
-
-
-
-
-#line 1581 ".\\inc\\stm32f103xe.h"
-
-
-
-
-
-
-#line 1599 ".\\inc\\stm32f103xe.h"
-
+#line 1546 ".\\Core\\Inc\\stm32f103xe.h"
 
 
  
-#line 1618 ".\\inc\\stm32f103xe.h"
+#line 1567 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
 
 
-#line 1629 ".\\inc\\stm32f103xe.h"
-
-#line 1642 ".\\inc\\stm32f103xe.h"
+#line 1581 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
 
 
-#line 1665 ".\\inc\\stm32f103xe.h"
 
-
-
-
-
+#line 1599 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
-#line 1686 ".\\inc\\stm32f103xe.h"
+#line 1618 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
 
 
-#line 1697 ".\\inc\\stm32f103xe.h"
+#line 1629 ".\\Core\\Inc\\stm32f103xe.h"
 
-
- 
-#line 1718 ".\\inc\\stm32f103xe.h"
-
-
-
-
-
-#line 1732 ".\\inc\\stm32f103xe.h"
+#line 1642 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
 
 
-
-#line 1750 ".\\inc\\stm32f103xe.h"
-
-
-
- 
-#line 1769 ".\\inc\\stm32f103xe.h"
-
-
-
-
-
-#line 1780 ".\\inc\\stm32f103xe.h"
-
-#line 1793 ".\\inc\\stm32f103xe.h"
-
-
-
-
-
-#line 1816 ".\\inc\\stm32f103xe.h"
+#line 1665 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4062,7 +4010,59 @@ typedef struct
 
 
  
-#line 1834 ".\\inc\\stm32f103xe.h"
+#line 1686 ".\\Core\\Inc\\stm32f103xe.h"
+
+
+
+
+
+#line 1697 ".\\Core\\Inc\\stm32f103xe.h"
+
+
+ 
+#line 1718 ".\\Core\\Inc\\stm32f103xe.h"
+
+
+
+
+
+#line 1732 ".\\Core\\Inc\\stm32f103xe.h"
+
+
+
+
+
+
+#line 1750 ".\\Core\\Inc\\stm32f103xe.h"
+
+
+
+ 
+#line 1769 ".\\Core\\Inc\\stm32f103xe.h"
+
+
+
+
+
+#line 1780 ".\\Core\\Inc\\stm32f103xe.h"
+
+#line 1793 ".\\Core\\Inc\\stm32f103xe.h"
+
+
+
+
+
+#line 1816 ".\\Core\\Inc\\stm32f103xe.h"
+
+
+
+
+
+
+
+
+ 
+#line 1834 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4076,10 +4076,10 @@ typedef struct
 
 
 
-#line 1853 ".\\inc\\stm32f103xe.h"
+#line 1853 ".\\Core\\Inc\\stm32f103xe.h"
 
    
-#line 1882 ".\\inc\\stm32f103xe.h"
+#line 1882 ".\\Core\\Inc\\stm32f103xe.h"
 
 
  
@@ -4300,50 +4300,41 @@ typedef struct
 
 
  
-#line 2150 ".\\inc\\stm32f103xe.h"
+#line 2150 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2200 ".\\inc\\stm32f103xe.h"
+#line 2200 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2250 ".\\inc\\stm32f103xe.h"
+#line 2250 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 2299 ".\\inc\\stm32f103xe.h"
-
- 
-#line 2349 ".\\inc\\stm32f103xe.h"
+#line 2299 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2402 ".\\inc\\stm32f103xe.h"
+#line 2349 ".\\Core\\Inc\\stm32f103xe.h"
+
+ 
+#line 2402 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
  
-#line 2413 ".\\inc\\stm32f103xe.h"
+#line 2413 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2461 ".\\inc\\stm32f103xe.h"
+#line 2461 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 2468 ".\\inc\\stm32f103xe.h"
-
- 
-#line 2483 ".\\inc\\stm32f103xe.h"
-
-
-
-
+#line 2468 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2501 ".\\inc\\stm32f103xe.h"
-
-
+#line 2483 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
 
 
  
-#line 2516 ".\\inc\\stm32f103xe.h"
+#line 2501 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4352,7 +4343,7 @@ typedef struct
 
 
  
-#line 2531 ".\\inc\\stm32f103xe.h"
+#line 2516 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4361,7 +4352,7 @@ typedef struct
 
 
  
-#line 2549 ".\\inc\\stm32f103xe.h"
+#line 2531 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4370,7 +4361,16 @@ typedef struct
 
 
  
-#line 2564 ".\\inc\\stm32f103xe.h"
+#line 2549 ".\\Core\\Inc\\stm32f103xe.h"
+
+
+
+
+
+
+
+ 
+#line 2564 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4383,78 +4383,78 @@ typedef struct
 
 
  
-#line 2583 ".\\inc\\stm32f103xe.h"
+#line 2583 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 2602 ".\\inc\\stm32f103xe.h"
-
- 
-#line 2610 ".\\inc\\stm32f103xe.h"
-
-#line 2621 ".\\inc\\stm32f103xe.h"
-
+#line 2602 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2636 ".\\inc\\stm32f103xe.h"
+#line 2610 ".\\Core\\Inc\\stm32f103xe.h"
+
+#line 2621 ".\\Core\\Inc\\stm32f103xe.h"
+
 
  
-#line 2657 ".\\inc\\stm32f103xe.h"
+#line 2636 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2678 ".\\inc\\stm32f103xe.h"
+#line 2657 ".\\Core\\Inc\\stm32f103xe.h"
+
+ 
+#line 2678 ".\\Core\\Inc\\stm32f103xe.h"
 
    
-#line 2699 ".\\inc\\stm32f103xe.h"
+#line 2699 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2720 ".\\inc\\stm32f103xe.h"
+#line 2720 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2734 ".\\inc\\stm32f103xe.h"
+#line 2734 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2755 ".\\inc\\stm32f103xe.h"
+#line 2755 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2776 ".\\inc\\stm32f103xe.h"
-
-   
-#line 2797 ".\\inc\\stm32f103xe.h"
-
- 
-#line 2818 ".\\inc\\stm32f103xe.h"
-
- 
-#line 2832 ".\\inc\\stm32f103xe.h"
-
- 
-#line 2853 ".\\inc\\stm32f103xe.h"
-
- 
-#line 2874 ".\\inc\\stm32f103xe.h"
+#line 2776 ".\\Core\\Inc\\stm32f103xe.h"
 
    
-#line 2895 ".\\inc\\stm32f103xe.h"
+#line 2797 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2916 ".\\inc\\stm32f103xe.h"
+#line 2818 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2930 ".\\inc\\stm32f103xe.h"
+#line 2832 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2951 ".\\inc\\stm32f103xe.h"
+#line 2853 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 2972 ".\\inc\\stm32f103xe.h"
+#line 2874 ".\\Core\\Inc\\stm32f103xe.h"
 
    
-#line 2993 ".\\inc\\stm32f103xe.h"
+#line 2895 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3014 ".\\inc\\stm32f103xe.h"
+#line 2916 ".\\Core\\Inc\\stm32f103xe.h"
 
  
+#line 2930 ".\\Core\\Inc\\stm32f103xe.h"
 
+ 
+#line 2951 ".\\Core\\Inc\\stm32f103xe.h"
+
+ 
+#line 2972 ".\\Core\\Inc\\stm32f103xe.h"
+
+   
+#line 2993 ".\\Core\\Inc\\stm32f103xe.h"
+
+ 
+#line 3014 ".\\Core\\Inc\\stm32f103xe.h"
+
+ 
+
 
 
 
@@ -4467,40 +4467,40 @@ typedef struct
  
 
  
-#line 3086 ".\\inc\\stm32f103xe.h"
+#line 3086 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3108 ".\\inc\\stm32f103xe.h"
+#line 3108 ".\\Core\\Inc\\stm32f103xe.h"
  
  
-#line 3167 ".\\inc\\stm32f103xe.h"
+#line 3167 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3188 ".\\inc\\stm32f103xe.h"
+#line 3188 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3247 ".\\inc\\stm32f103xe.h"
+#line 3247 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3268 ".\\inc\\stm32f103xe.h"
+#line 3268 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3327 ".\\inc\\stm32f103xe.h"
+#line 3327 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3348 ".\\inc\\stm32f103xe.h"
+#line 3348 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3407 ".\\inc\\stm32f103xe.h"
+#line 3407 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3428 ".\\inc\\stm32f103xe.h"
+#line 3428 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3487 ".\\inc\\stm32f103xe.h"
+#line 3487 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3508 ".\\inc\\stm32f103xe.h"
+#line 3508 ".\\Core\\Inc\\stm32f103xe.h"
 
  
  
@@ -4509,13 +4509,13 @@ typedef struct
  
 
  
-#line 3600 ".\\inc\\stm32f103xe.h"
+#line 3600 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3686 ".\\inc\\stm32f103xe.h"
+#line 3686 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3712 ".\\inc\\stm32f103xe.h"
+#line 3712 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4566,77 +4566,77 @@ typedef struct
 
 
  
-#line 3777 ".\\inc\\stm32f103xe.h"
+#line 3777 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
 
 
  
-#line 3791 ".\\inc\\stm32f103xe.h"
+#line 3791 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3816 ".\\inc\\stm32f103xe.h"
+#line 3816 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3823 ".\\inc\\stm32f103xe.h"
+#line 3823 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3831 ".\\inc\\stm32f103xe.h"
+#line 3831 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3838 ".\\inc\\stm32f103xe.h"
+#line 3838 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
 
 
  
-#line 3862 ".\\inc\\stm32f103xe.h"
+#line 3862 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3869 ".\\inc\\stm32f103xe.h"
+#line 3869 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
 
 
-#line 3880 ".\\inc\\stm32f103xe.h"
+#line 3880 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3893 ".\\inc\\stm32f103xe.h"
+#line 3893 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3901 ".\\inc\\stm32f103xe.h"
+#line 3901 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3908 ".\\inc\\stm32f103xe.h"
+#line 3908 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3915 ".\\inc\\stm32f103xe.h"
+#line 3915 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3922 ".\\inc\\stm32f103xe.h"
+#line 3922 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3929 ".\\inc\\stm32f103xe.h"
+#line 3929 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3936 ".\\inc\\stm32f103xe.h"
+#line 3936 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3943 ".\\inc\\stm32f103xe.h"
+#line 3943 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3950 ".\\inc\\stm32f103xe.h"
+#line 3950 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 3958 ".\\inc\\stm32f103xe.h"
+#line 3958 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3965 ".\\inc\\stm32f103xe.h"
+#line 3965 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3972 ".\\inc\\stm32f103xe.h"
+#line 3972 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3979 ".\\inc\\stm32f103xe.h"
+#line 3979 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3986 ".\\inc\\stm32f103xe.h"
+#line 3986 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 3993 ".\\inc\\stm32f103xe.h"
+#line 3993 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4000 ".\\inc\\stm32f103xe.h"
+#line 4000 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4007 ".\\inc\\stm32f103xe.h"
+#line 4007 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4014 ".\\inc\\stm32f103xe.h"
+#line 4014 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4021 ".\\inc\\stm32f103xe.h"
+#line 4021 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -4669,50 +4669,50 @@ typedef struct
 
 
  
-#line 4061 ".\\inc\\stm32f103xe.h"
+#line 4061 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4070 ".\\inc\\stm32f103xe.h"
+#line 4070 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4079 ".\\inc\\stm32f103xe.h"
+#line 4079 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4088 ".\\inc\\stm32f103xe.h"
+#line 4088 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4096 ".\\inc\\stm32f103xe.h"
+#line 4096 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 4106 ".\\inc\\stm32f103xe.h"
+#line 4106 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4115 ".\\inc\\stm32f103xe.h"
+#line 4115 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4124 ".\\inc\\stm32f103xe.h"
+#line 4124 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4133 ".\\inc\\stm32f103xe.h"
+#line 4133 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4142 ".\\inc\\stm32f103xe.h"
+#line 4142 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4151 ".\\inc\\stm32f103xe.h"
+#line 4151 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 4161 ".\\inc\\stm32f103xe.h"
+#line 4161 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4170 ".\\inc\\stm32f103xe.h"
+#line 4170 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4179 ".\\inc\\stm32f103xe.h"
+#line 4179 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4188 ".\\inc\\stm32f103xe.h"
+#line 4188 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4197 ".\\inc\\stm32f103xe.h"
+#line 4197 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4206 ".\\inc\\stm32f103xe.h"
+#line 4206 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 4216 ".\\inc\\stm32f103xe.h"
+#line 4216 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4225 ".\\inc\\stm32f103xe.h"
+#line 4225 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4234 ".\\inc\\stm32f103xe.h"
+#line 4234 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4243 ".\\inc\\stm32f103xe.h"
+#line 4243 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4741,7 +4741,7 @@ typedef struct
 
 
  
-#line 4277 ".\\inc\\stm32f103xe.h"
+#line 4277 ".\\Core\\Inc\\stm32f103xe.h"
  
  
  
@@ -4749,9 +4749,9 @@ typedef struct
  
 
  
-#line 4293 ".\\inc\\stm32f103xe.h"
+#line 4293 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4300 ".\\inc\\stm32f103xe.h"
+#line 4300 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4759,11 +4759,11 @@ typedef struct
 
 
 
-#line 4314 ".\\inc\\stm32f103xe.h"
+#line 4314 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4327 ".\\inc\\stm32f103xe.h"
+#line 4327 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4334 ".\\inc\\stm32f103xe.h"
+#line 4334 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4771,7 +4771,7 @@ typedef struct
 
 
 
-#line 4348 ".\\inc\\stm32f103xe.h"
+#line 4348 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4779,7 +4779,7 @@ typedef struct
 
 
  
-#line 4361 ".\\inc\\stm32f103xe.h"
+#line 4361 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -4812,13 +4812,13 @@ typedef struct
 
 
  
-#line 4399 ".\\inc\\stm32f103xe.h"
+#line 4399 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 4407 ".\\inc\\stm32f103xe.h"
+#line 4407 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 4415 ".\\inc\\stm32f103xe.h"
+#line 4415 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -4838,7 +4838,7 @@ typedef struct
  
  
  
-#line 4449 ".\\inc\\stm32f103xe.h"
+#line 4449 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4857,22 +4857,22 @@ typedef struct
 
 
  
-#line 4476 ".\\inc\\stm32f103xe.h"
+#line 4476 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4483 ".\\inc\\stm32f103xe.h"
+#line 4483 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4508 ".\\inc\\stm32f103xe.h"
+#line 4508 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 4516 ".\\inc\\stm32f103xe.h"
+#line 4516 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4523 ".\\inc\\stm32f103xe.h"
+#line 4523 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
 
 
-#line 4535 ".\\inc\\stm32f103xe.h"
+#line 4535 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4880,16 +4880,16 @@ typedef struct
 
 
 
-#line 4548 ".\\inc\\stm32f103xe.h"
+#line 4548 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 4595 ".\\inc\\stm32f103xe.h"
+#line 4595 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 4633 ".\\inc\\stm32f103xe.h"
+#line 4633 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 4659 ".\\inc\\stm32f103xe.h"
+#line 4659 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -4898,9 +4898,9 @@ typedef struct
 
 
 
-#line 4673 ".\\inc\\stm32f103xe.h"
+#line 4673 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4680 ".\\inc\\stm32f103xe.h"
+#line 4680 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4912,9 +4912,9 @@ typedef struct
 
 
 
-#line 4697 ".\\inc\\stm32f103xe.h"
+#line 4697 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4704 ".\\inc\\stm32f103xe.h"
+#line 4704 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4928,7 +4928,7 @@ typedef struct
 
 
 
-#line 4724 ".\\inc\\stm32f103xe.h"
+#line 4724 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4936,7 +4936,7 @@ typedef struct
 
 
 
-#line 4738 ".\\inc\\stm32f103xe.h"
+#line 4738 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -4945,9 +4945,9 @@ typedef struct
 
 
 
-#line 4752 ".\\inc\\stm32f103xe.h"
+#line 4752 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4759 ".\\inc\\stm32f103xe.h"
+#line 4759 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4959,9 +4959,9 @@ typedef struct
 
 
 
-#line 4776 ".\\inc\\stm32f103xe.h"
+#line 4776 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4783 ".\\inc\\stm32f103xe.h"
+#line 4783 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4975,7 +4975,7 @@ typedef struct
 
 
 
-#line 4803 ".\\inc\\stm32f103xe.h"
+#line 4803 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -4983,10 +4983,10 @@ typedef struct
 
 
 
-#line 4817 ".\\inc\\stm32f103xe.h"
+#line 4817 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 4861 ".\\inc\\stm32f103xe.h"
+#line 4861 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5029,7 +5029,7 @@ typedef struct
 
 
  
-#line 4914 ".\\inc\\stm32f103xe.h"
+#line 4914 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5037,12 +5037,12 @@ typedef struct
 
 
 
-#line 4939 ".\\inc\\stm32f103xe.h"
+#line 4939 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 4949 ".\\inc\\stm32f103xe.h"
+#line 4949 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 4958 ".\\inc\\stm32f103xe.h"
+#line 4958 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5056,10 +5056,10 @@ typedef struct
  
 
  
-#line 4980 ".\\inc\\stm32f103xe.h"
+#line 4980 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 5000 ".\\inc\\stm32f103xe.h"
+#line 5000 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5113,7 +5113,7 @@ typedef struct
 
 
  
-#line 5059 ".\\inc\\stm32f103xe.h"
+#line 5059 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5121,7 +5121,7 @@ typedef struct
 
 
  
-#line 5072 ".\\inc\\stm32f103xe.h"
+#line 5072 ".\\Core\\Inc\\stm32f103xe.h"
 
  
  
@@ -5130,20 +5130,20 @@ typedef struct
  
 
  
-#line 5090 ".\\inc\\stm32f103xe.h"
+#line 5090 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 5099 ".\\inc\\stm32f103xe.h"
+#line 5099 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
 
 
  
-#line 5115 ".\\inc\\stm32f103xe.h"
+#line 5115 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 5124 ".\\inc\\stm32f103xe.h"
+#line 5124 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5171,7 +5171,7 @@ typedef struct
  
 
  
-#line 5157 ".\\inc\\stm32f103xe.h"
+#line 5157 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5185,20 +5185,20 @@ typedef struct
 
 
 
-#line 5200 ".\\inc\\stm32f103xe.h"
+#line 5200 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 5209 ".\\inc\\stm32f103xe.h"
+#line 5209 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5217 ".\\inc\\stm32f103xe.h"
+#line 5217 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5229 ".\\inc\\stm32f103xe.h"
+#line 5229 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5237 ".\\inc\\stm32f103xe.h"
+#line 5237 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5245 ".\\inc\\stm32f103xe.h"
+#line 5245 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5253 ".\\inc\\stm32f103xe.h"
+#line 5253 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5207,13 +5207,13 @@ typedef struct
 
 
  
-#line 5268 ".\\inc\\stm32f103xe.h"
+#line 5268 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5276 ".\\inc\\stm32f103xe.h"
+#line 5276 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5288 ".\\inc\\stm32f103xe.h"
+#line 5288 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5296 ".\\inc\\stm32f103xe.h"
+#line 5296 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5222,7 +5222,7 @@ typedef struct
 
 
  
-#line 5313 ".\\inc\\stm32f103xe.h"
+#line 5313 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5234,41 +5234,41 @@ typedef struct
 
 
 
-#line 5331 ".\\inc\\stm32f103xe.h"
+#line 5331 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5339 ".\\inc\\stm32f103xe.h"
+#line 5339 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5346 ".\\inc\\stm32f103xe.h"
+#line 5346 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 5369 ".\\inc\\stm32f103xe.h"
+#line 5369 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 5382 ".\\inc\\stm32f103xe.h"
+#line 5382 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5394 ".\\inc\\stm32f103xe.h"
+#line 5394 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5406 ".\\inc\\stm32f103xe.h"
+#line 5406 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5418 ".\\inc\\stm32f103xe.h"
+#line 5418 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 5431 ".\\inc\\stm32f103xe.h"
+#line 5431 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5443 ".\\inc\\stm32f103xe.h"
+#line 5443 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5455 ".\\inc\\stm32f103xe.h"
+#line 5455 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5467 ".\\inc\\stm32f103xe.h"
+#line 5467 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 5480 ".\\inc\\stm32f103xe.h"
+#line 5480 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5492 ".\\inc\\stm32f103xe.h"
+#line 5492 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5504 ".\\inc\\stm32f103xe.h"
+#line 5504 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5516 ".\\inc\\stm32f103xe.h"
+#line 5516 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5294,7 +5294,7 @@ typedef struct
 
 
  
-#line 5553 ".\\inc\\stm32f103xe.h"
+#line 5553 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5302,7 +5302,7 @@ typedef struct
 
 
 
-#line 5566 ".\\inc\\stm32f103xe.h"
+#line 5566 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5320,7 +5320,7 @@ typedef struct
 
 
 
-#line 5604 ".\\inc\\stm32f103xe.h"
+#line 5604 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5363,11 +5363,11 @@ typedef struct
 
 
  
-#line 5658 ".\\inc\\stm32f103xe.h"
+#line 5658 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5666 ".\\inc\\stm32f103xe.h"
+#line 5666 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 5679 ".\\inc\\stm32f103xe.h"
+#line 5679 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5375,13 +5375,13 @@ typedef struct
 
 
  
-#line 5758 ".\\inc\\stm32f103xe.h"
+#line 5758 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 5799 ".\\inc\\stm32f103xe.h"
+#line 5799 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 5873 ".\\inc\\stm32f103xe.h"
+#line 5873 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5400,21 +5400,21 @@ typedef struct
  
 
  
-#line 5899 ".\\inc\\stm32f103xe.h"
+#line 5899 ".\\Core\\Inc\\stm32f103xe.h"
 
   
-#line 5931 ".\\inc\\stm32f103xe.h"
+#line 5931 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
                                                                             
-#line 5943 ".\\inc\\stm32f103xe.h"
+#line 5943 ".\\Core\\Inc\\stm32f103xe.h"
 
 
                                                                                 
-#line 5953 ".\\inc\\stm32f103xe.h"
+#line 5953 ".\\Core\\Inc\\stm32f103xe.h"
                                                                                 
-#line 5961 ".\\inc\\stm32f103xe.h"
+#line 5961 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5427,7 +5427,7 @@ typedef struct
 
 
 
-#line 5982 ".\\inc\\stm32f103xe.h"
+#line 5982 ".\\Core\\Inc\\stm32f103xe.h"
                                                                            
 
 
@@ -5445,7 +5445,7 @@ typedef struct
 
 
 
-#line 6005 ".\\inc\\stm32f103xe.h"
+#line 6005 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5458,7 +5458,7 @@ typedef struct
 
 
 
-#line 6026 ".\\inc\\stm32f103xe.h"
+#line 6026 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5476,7 +5476,7 @@ typedef struct
 
 
 
-#line 6049 ".\\inc\\stm32f103xe.h"
+#line 6049 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5489,7 +5489,7 @@ typedef struct
 
 
 
-#line 6070 ".\\inc\\stm32f103xe.h"
+#line 6070 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5507,38 +5507,7 @@ typedef struct
 
 
 
-#line 6093 ".\\inc\\stm32f103xe.h"
-
- 
-
-
-
-
-
-
-
-
-
-
-#line 6114 ".\\inc\\stm32f103xe.h"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#line 6137 ".\\inc\\stm32f103xe.h"
+#line 6093 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5551,7 +5520,7 @@ typedef struct
 
 
 
-#line 6158 ".\\inc\\stm32f103xe.h"
+#line 6114 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5569,38 +5538,7 @@ typedef struct
 
 
 
-#line 6181 ".\\inc\\stm32f103xe.h"
-
- 
-
-
-
-
-
-
-
-
-
-
-#line 6202 ".\\inc\\stm32f103xe.h"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#line 6225 ".\\inc\\stm32f103xe.h"
+#line 6137 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5613,7 +5551,7 @@ typedef struct
 
 
 
-#line 6246 ".\\inc\\stm32f103xe.h"
+#line 6158 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5631,7 +5569,38 @@ typedef struct
 
 
 
-#line 6269 ".\\inc\\stm32f103xe.h"
+#line 6181 ".\\Core\\Inc\\stm32f103xe.h"
+
+ 
+
+
+
+
+
+
+
+
+
+
+#line 6202 ".\\Core\\Inc\\stm32f103xe.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 6225 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -5644,7 +5613,7 @@ typedef struct
 
 
 
-#line 6290 ".\\inc\\stm32f103xe.h"
+#line 6246 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5662,20 +5631,51 @@ typedef struct
 
 
 
-#line 6313 ".\\inc\\stm32f103xe.h"
+#line 6269 ".\\Core\\Inc\\stm32f103xe.h"
+
+ 
+
+
+
+
+
+
+
+
+
+
+#line 6290 ".\\Core\\Inc\\stm32f103xe.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 6313 ".\\Core\\Inc\\stm32f103xe.h"
 
  
  
-#line 6355 ".\\inc\\stm32f103xe.h"
+#line 6355 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 6387 ".\\inc\\stm32f103xe.h"
+#line 6387 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 6404 ".\\inc\\stm32f103xe.h"
+#line 6404 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 6430 ".\\inc\\stm32f103xe.h"
+#line 6430 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5868,7 +5868,7 @@ typedef struct
 
 
 
-#line 6630 ".\\inc\\stm32f103xe.h"
+#line 6630 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5879,7 +5879,7 @@ typedef struct
 
 
 
-#line 6648 ".\\inc\\stm32f103xe.h"
+#line 6648 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5890,7 +5890,7 @@ typedef struct
 
 
 
-#line 6666 ".\\inc\\stm32f103xe.h"
+#line 6666 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5901,7 +5901,7 @@ typedef struct
 
 
 
-#line 6684 ".\\inc\\stm32f103xe.h"
+#line 6684 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5912,7 +5912,7 @@ typedef struct
 
 
 
-#line 6702 ".\\inc\\stm32f103xe.h"
+#line 6702 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5923,7 +5923,7 @@ typedef struct
 
 
 
-#line 6720 ".\\inc\\stm32f103xe.h"
+#line 6720 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5934,7 +5934,7 @@ typedef struct
 
 
 
-#line 6738 ".\\inc\\stm32f103xe.h"
+#line 6738 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5945,7 +5945,7 @@ typedef struct
 
 
 
-#line 6756 ".\\inc\\stm32f103xe.h"
+#line 6756 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -5956,112 +5956,112 @@ typedef struct
  
 
 
-#line 6772 ".\\inc\\stm32f103xe.h"
+#line 6772 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6784 ".\\inc\\stm32f103xe.h"
+#line 6784 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6796 ".\\inc\\stm32f103xe.h"
+#line 6796 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6808 ".\\inc\\stm32f103xe.h"
+#line 6808 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6820 ".\\inc\\stm32f103xe.h"
+#line 6820 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6832 ".\\inc\\stm32f103xe.h"
+#line 6832 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6844 ".\\inc\\stm32f103xe.h"
+#line 6844 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6856 ".\\inc\\stm32f103xe.h"
+#line 6856 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6868 ".\\inc\\stm32f103xe.h"
+#line 6868 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6880 ".\\inc\\stm32f103xe.h"
+#line 6880 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6892 ".\\inc\\stm32f103xe.h"
+#line 6892 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6904 ".\\inc\\stm32f103xe.h"
+#line 6904 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6916 ".\\inc\\stm32f103xe.h"
+#line 6916 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6928 ".\\inc\\stm32f103xe.h"
+#line 6928 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6940 ".\\inc\\stm32f103xe.h"
+#line 6940 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
  
 
 
-#line 6952 ".\\inc\\stm32f103xe.h"
+#line 6952 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -6073,197 +6073,197 @@ typedef struct
 
  
  
-#line 6993 ".\\inc\\stm32f103xe.h"
+#line 6993 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7022 ".\\inc\\stm32f103xe.h"
+#line 7022 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7072 ".\\inc\\stm32f103xe.h"
+#line 7072 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 7085 ".\\inc\\stm32f103xe.h"
+#line 7085 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 7098 ".\\inc\\stm32f103xe.h"
-
- 
-#line 7112 ".\\inc\\stm32f103xe.h"
+#line 7098 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7126 ".\\inc\\stm32f103xe.h"
+#line 7112 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7170 ".\\inc\\stm32f103xe.h"
+#line 7126 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7181 ".\\inc\\stm32f103xe.h"
-
-#line 7188 ".\\inc\\stm32f103xe.h"
-
-#line 7195 ".\\inc\\stm32f103xe.h"
+#line 7170 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7224 ".\\inc\\stm32f103xe.h"
+#line 7181 ".\\Core\\Inc\\stm32f103xe.h"
+
+#line 7188 ".\\Core\\Inc\\stm32f103xe.h"
+
+#line 7195 ".\\Core\\Inc\\stm32f103xe.h"
+
+ 
+#line 7224 ".\\Core\\Inc\\stm32f103xe.h"
 
  
  
-#line 7242 ".\\inc\\stm32f103xe.h"
+#line 7242 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7253 ".\\inc\\stm32f103xe.h"
+#line 7253 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7267 ".\\inc\\stm32f103xe.h"
+#line 7267 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7281 ".\\inc\\stm32f103xe.h"
+#line 7281 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7298 ".\\inc\\stm32f103xe.h"
+#line 7298 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7309 ".\\inc\\stm32f103xe.h"
+#line 7309 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7323 ".\\inc\\stm32f103xe.h"
+#line 7323 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7337 ".\\inc\\stm32f103xe.h"
+#line 7337 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7354 ".\\inc\\stm32f103xe.h"
+#line 7354 ".\\Core\\Inc\\stm32f103xe.h"
 
    
-#line 7365 ".\\inc\\stm32f103xe.h"
+#line 7365 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7379 ".\\inc\\stm32f103xe.h"
+#line 7379 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7393 ".\\inc\\stm32f103xe.h"
+#line 7393 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7407 ".\\inc\\stm32f103xe.h"
+#line 7407 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7418 ".\\inc\\stm32f103xe.h"
+#line 7418 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7432 ".\\inc\\stm32f103xe.h"
+#line 7432 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7446 ".\\inc\\stm32f103xe.h"
+#line 7446 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7460 ".\\inc\\stm32f103xe.h"
+#line 7460 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7471 ".\\inc\\stm32f103xe.h"
+#line 7471 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7485 ".\\inc\\stm32f103xe.h"
+#line 7485 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7499 ".\\inc\\stm32f103xe.h"
+#line 7499 ".\\Core\\Inc\\stm32f103xe.h"
 
  
  
-#line 7508 ".\\inc\\stm32f103xe.h"
+#line 7508 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7555 ".\\inc\\stm32f103xe.h"
+#line 7555 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7602 ".\\inc\\stm32f103xe.h"
+#line 7602 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7649 ".\\inc\\stm32f103xe.h"
+#line 7649 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7696 ".\\inc\\stm32f103xe.h"
+#line 7696 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7794 ".\\inc\\stm32f103xe.h"
+#line 7794 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7892 ".\\inc\\stm32f103xe.h"
+#line 7892 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 7990 ".\\inc\\stm32f103xe.h"
+#line 7990 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 8088 ".\\inc\\stm32f103xe.h"
+#line 8088 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 8186 ".\\inc\\stm32f103xe.h"
+#line 8186 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 8284 ".\\inc\\stm32f103xe.h"
+#line 8284 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 8382 ".\\inc\\stm32f103xe.h"
+#line 8382 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 8480 ".\\inc\\stm32f103xe.h"
+#line 8480 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 8578 ".\\inc\\stm32f103xe.h"
+#line 8578 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 8676 ".\\inc\\stm32f103xe.h"
+#line 8676 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 8774 ".\\inc\\stm32f103xe.h"
+#line 8774 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 8872 ".\\inc\\stm32f103xe.h"
+#line 8872 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 8970 ".\\inc\\stm32f103xe.h"
+#line 8970 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 9068 ".\\inc\\stm32f103xe.h"
+#line 9068 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 9166 ".\\inc\\stm32f103xe.h"
+#line 9166 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 9264 ".\\inc\\stm32f103xe.h"
+#line 9264 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 9362 ".\\inc\\stm32f103xe.h"
+#line 9362 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 9460 ".\\inc\\stm32f103xe.h"
+#line 9460 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 9558 ".\\inc\\stm32f103xe.h"
+#line 9558 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 9656 ".\\inc\\stm32f103xe.h"
+#line 9656 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 9754 ".\\inc\\stm32f103xe.h"
+#line 9754 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 9852 ".\\inc\\stm32f103xe.h"
+#line 9852 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 9950 ".\\inc\\stm32f103xe.h"
+#line 9950 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 10048 ".\\inc\\stm32f103xe.h"
+#line 10048 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 10146 ".\\inc\\stm32f103xe.h"
+#line 10146 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 10244 ".\\inc\\stm32f103xe.h"
+#line 10244 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 10342 ".\\inc\\stm32f103xe.h"
+#line 10342 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 10440 ".\\inc\\stm32f103xe.h"
+#line 10440 ".\\Core\\Inc\\stm32f103xe.h"
 
  
  
@@ -6275,17 +6275,17 @@ typedef struct
  
 
  
-#line 10460 ".\\inc\\stm32f103xe.h"
+#line 10460 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 10467 ".\\inc\\stm32f103xe.h"
+#line 10467 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 10498 ".\\inc\\stm32f103xe.h"
+#line 10498 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 10518 ".\\inc\\stm32f103xe.h"
+#line 10518 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 10544 ".\\inc\\stm32f103xe.h"
+#line 10544 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -6338,10 +6338,10 @@ typedef struct
 
 
 
-#line 10602 ".\\inc\\stm32f103xe.h"
+#line 10602 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 10613 ".\\inc\\stm32f103xe.h"
+#line 10613 ".\\Core\\Inc\\stm32f103xe.h"
 
  
  
@@ -6350,25 +6350,25 @@ typedef struct
  
 
  
-#line 10663 ".\\inc\\stm32f103xe.h"
+#line 10663 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 10674 ".\\inc\\stm32f103xe.h"
+#line 10674 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 10690 ".\\inc\\stm32f103xe.h"
+#line 10690 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
 
 
-#line 10725 ".\\inc\\stm32f103xe.h"
+#line 10725 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
 
 
  
-#line 10737 ".\\inc\\stm32f103xe.h"
+#line 10737 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -6376,13 +6376,13 @@ typedef struct
 
 
  
-#line 10786 ".\\inc\\stm32f103xe.h"
+#line 10786 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 10812 ".\\inc\\stm32f103xe.h"
+#line 10812 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 10823 ".\\inc\\stm32f103xe.h"
+#line 10823 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -6396,7 +6396,7 @@ typedef struct
  
 
  
-#line 10866 ".\\inc\\stm32f103xe.h"
+#line 10866 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -6404,13 +6404,13 @@ typedef struct
 
 
  
-#line 10879 ".\\inc\\stm32f103xe.h"
+#line 10879 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 10923 ".\\inc\\stm32f103xe.h"
+#line 10923 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 10946 ".\\inc\\stm32f103xe.h"
+#line 10946 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -6423,10 +6423,10 @@ typedef struct
 
 
  
-#line 10991 ".\\inc\\stm32f103xe.h"
+#line 10991 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 11004 ".\\inc\\stm32f103xe.h"
+#line 11004 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -6443,10 +6443,10 @@ typedef struct
 
 
 
-#line 11039 ".\\inc\\stm32f103xe.h"
+#line 11039 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 11053 ".\\inc\\stm32f103xe.h"
+#line 11053 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -6454,7 +6454,7 @@ typedef struct
 
 
 
-#line 11099 ".\\inc\\stm32f103xe.h"
+#line 11099 ".\\Core\\Inc\\stm32f103xe.h"
 
  
  
@@ -6462,16 +6462,16 @@ typedef struct
  
  
  
-#line 11112 ".\\inc\\stm32f103xe.h"
+#line 11112 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11122 ".\\inc\\stm32f103xe.h"
+#line 11122 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
 
 
 
-#line 11137 ".\\inc\\stm32f103xe.h"
+#line 11137 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -6482,10 +6482,10 @@ typedef struct
 
 
  
-#line 11159 ".\\inc\\stm32f103xe.h"
+#line 11159 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 11191 ".\\inc\\stm32f103xe.h"
+#line 11191 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -6493,9 +6493,9 @@ typedef struct
 
 
  
-#line 11204 ".\\inc\\stm32f103xe.h"
+#line 11204 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11223 ".\\inc\\stm32f103xe.h"
+#line 11223 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -6505,28 +6505,28 @@ typedef struct
  
 
  
-#line 11238 ".\\inc\\stm32f103xe.h"
+#line 11238 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 11246 ".\\inc\\stm32f103xe.h"
+#line 11246 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 11254 ".\\inc\\stm32f103xe.h"
+#line 11254 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 11262 ".\\inc\\stm32f103xe.h"
+#line 11262 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 11270 ".\\inc\\stm32f103xe.h"
+#line 11270 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 11278 ".\\inc\\stm32f103xe.h"
+#line 11278 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 11286 ".\\inc\\stm32f103xe.h"
+#line 11286 ".\\Core\\Inc\\stm32f103xe.h"
 
  
-#line 11294 ".\\inc\\stm32f103xe.h"
+#line 11294 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -6564,10 +6564,10 @@ typedef struct
 
 
  
-#line 11343 ".\\inc\\stm32f103xe.h"
+#line 11343 ".\\Core\\Inc\\stm32f103xe.h"
   
  
-#line 11352 ".\\inc\\stm32f103xe.h"
+#line 11352 ".\\Core\\Inc\\stm32f103xe.h"
 
  
 
@@ -6599,69 +6599,69 @@ typedef struct
 
  
  
-#line 11392 ".\\inc\\stm32f103xe.h"
+#line 11392 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
 
 
-#line 11404 ".\\inc\\stm32f103xe.h"
+#line 11404 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11412 ".\\inc\\stm32f103xe.h"
+#line 11412 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11420 ".\\inc\\stm32f103xe.h"
+#line 11420 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11428 ".\\inc\\stm32f103xe.h"
+#line 11428 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11436 ".\\inc\\stm32f103xe.h"
+#line 11436 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11444 ".\\inc\\stm32f103xe.h"
+#line 11444 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11452 ".\\inc\\stm32f103xe.h"
+#line 11452 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11460 ".\\inc\\stm32f103xe.h"
+#line 11460 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11468 ".\\inc\\stm32f103xe.h"
+#line 11468 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11476 ".\\inc\\stm32f103xe.h"
+#line 11476 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11484 ".\\inc\\stm32f103xe.h"
+#line 11484 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11494 ".\\inc\\stm32f103xe.h"
+#line 11494 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11502 ".\\inc\\stm32f103xe.h"
-
-
-
-#line 11512 ".\\inc\\stm32f103xe.h"
+#line 11502 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
-
-
-#line 11553 ".\\inc\\stm32f103xe.h"
-
-#line 11564 ".\\inc\\stm32f103xe.h"
-
-#line 11572 ".\\inc\\stm32f103xe.h"
+#line 11512 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
 
 
-#line 11584 ".\\inc\\stm32f103xe.h"
+#line 11553 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11594 ".\\inc\\stm32f103xe.h"
+#line 11564 ".\\Core\\Inc\\stm32f103xe.h"
+
+#line 11572 ".\\Core\\Inc\\stm32f103xe.h"
+
+
+
+
+
+#line 11584 ".\\Core\\Inc\\stm32f103xe.h"
+
+#line 11594 ".\\Core\\Inc\\stm32f103xe.h"
     
-#line 11602 ".\\inc\\stm32f103xe.h"
+#line 11602 ".\\Core\\Inc\\stm32f103xe.h"
     
 
 
 
 
-#line 11613 ".\\inc\\stm32f103xe.h"
+#line 11613 ".\\Core\\Inc\\stm32f103xe.h"
 
-#line 11620 ".\\inc\\stm32f103xe.h"
+#line 11620 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -6752,11 +6752,11 @@ typedef struct
  
 
  
-#line 11734 ".\\inc\\stm32f103xe.h"
+#line 11734 ".\\Core\\Inc\\stm32f103xe.h"
 
 
  
-#line 11761 ".\\inc\\stm32f103xe.h"
+#line 11761 ".\\Core\\Inc\\stm32f103xe.h"
 
 
 
@@ -6776,8 +6776,8 @@ typedef struct
   
   
    
-#line 152 ".\\inc\\stm32f1xx.h"
-#line 161 ".\\inc\\stm32f1xx.h"
+#line 152 ".\\Core\\Inc\\stm32f1xx.h"
+#line 161 ".\\Core\\Inc\\stm32f1xx.h"
 
 
 
@@ -6856,9 +6856,9 @@ typedef enum
 
 
  
-#line 2 "src\\main.c"
-#line 3 "src\\main.c"
-#line 1 ".\\inc\\common.h"
+#line 2 "Core\\Src\\main.c"
+#line 3 "Core\\Src\\main.c"
+#line 1 ".\\Core\\Inc\\common.h"
  
 
 
@@ -6872,7 +6872,7 @@ typedef enum
 
 
 	
-#line 24 ".\\inc\\common.h"
+#line 24 ".\\Core\\Inc\\common.h"
 
 
 
@@ -6881,7 +6881,7 @@ typedef enum
 
 
  
-#line 4 "src\\main.c"
+#line 4 "Core\\Src\\main.c"
 
 static void Error_Handler(void)
 {
@@ -6966,28 +6966,24 @@ static void GPIO_Init()
     
     ((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->BRR) = ((0x1U << (5U))));
 
-    
-    (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->CRL)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->CRL))) & (~(((0x3U << (22U)) | (0x3U << (20U)))))) | ((0x1U << (20U))))));
+	  
+    (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->CRL)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->CRL))) & (~(((0x3U << (22U)) | (0x3U << (20U)))))) | ((0x2U << (20U))))));
 
     
     (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->ODR)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->ODR))) & (~((0x1U << (5U))))) | (0))));
-
-    
-    (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->CRL)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->CRL))) & (~((0x3U << (20U))))) | ((0x2U << (20U))))));
-
-    
-    (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->CRL)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->CRL))) & (~((0x1U << (22U))))) | (0))));
 }
 
 static void USART_Init()
 {
     volatile uint32_t tmpreg;
+	
+	  
     ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB2ENR) |= ((0x1U << (14U))));
      
     tmpreg = ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB2ENR) & ((0x1U << (14U))));
     (void)tmpreg;
 
-    tmpreg;
+	  
     ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB2ENR) |= ((0x1U << (2U))));
      
     tmpreg = ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB2ENR) & ((0x1U << (2U))));
@@ -7000,22 +6996,10 @@ static void USART_Init()
     (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->ODR)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->ODR))) & (~((0x1U << (9U))))) | (0))));
 
     
-    (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->CRH)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->CRH))) & (~((0x3U << (4U))))) | ((0x3U << (4U))))));
-
-    
-    (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->CRH)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->CRH))) & (~((0x1U << (6U))))) | (0))));
-
-    
     (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->CRH)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->CRH))) & (~(((0x3U << (10U)) | (0x3U << (8U)))))) | ((0x1U << (10U))))));
 
     
     (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->ODR)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->ODR))) & (~((0x1U << (10U))))) | (0))));
-
-    
-    (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->CRH)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->CRH))) & (~((0x3U << (8U))))) | (0))));
-
-    
-    (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->CRH)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->CRH))) & (~((0x1U << (10U))))) | ((0x1U << (10U))))));
 
     if (((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR1) & ((0x1U << (13U)))) != ((0x1U << (13U)))) {
         (((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR1)) = ((((((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR1))) & (~(((0x1U << (12U)) | (0x1U << (10U)) | (0x1U << (9U)) | (0x1U << (3U)) | (0x1U << (2U)))))) | (((0x1U << (3U)) |(0x1U << (2U)))))));
@@ -7032,36 +7016,24 @@ static void USART_Init()
 		((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR2) &= ~(((0x1U << (14U)) | (0x1U << (11U)))));
     ((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR3) &= ~(((0x1U << (5U)) | (0x1U << (1U)) | (0x1U << (3U)))));
 		
-		
 		((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR1 |= (0x1U << (13U));
 }
 
 
-
-
-
-
 int main()
 {
-	  uint32_t cnt = 0;
 	  char buf = 0;
 	
 	  RCC_Init();
     GPIO_Init();
 	  USART_Init();
 	
-	  
-	  
-	
     while(1) {
-#line 182 "src\\main.c"
 				if((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->SR & (0x1U << (5U))) != 0) {
 					  (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->ODR)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->ODR))) & (~((0x1U << (5U))))) | ((0x1U << (5U))))));
 				    buf = ((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->DR;
-					  for (cnt=0;cnt<7200000;cnt++) {}
 					  while ((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->SR &(0x1U << (7U))) == 0) {}
             ((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->DR= buf; 
 				}
-
 		}
 }

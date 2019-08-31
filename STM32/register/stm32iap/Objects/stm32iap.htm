@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\stm32iap.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\stm32iap.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Sat Aug 31 21:49:02 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Sun Sep 01 01:14:32 2019
 <BR><P>
 <H3>Maximum Stack Usage =          8 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -543,7 +543,7 @@ Global Symbols
 <P><STRONG><a name="[49]"></a>SystemInit</STRONG> (Thumb, 70 bytes, Stack size 0 bytes, system_stm32f1xx.o(i.SystemInit))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(.text)
 </UL>
-<P><STRONG><a name="[55]"></a>main</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, main.o(i.main))
+<P><STRONG><a name="[55]"></a>main</STRONG> (Thumb, 68 bytes, Stack size 0 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = main &rArr; USART_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Init
@@ -560,7 +560,7 @@ Local Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_Init
 </UL>
 
-<P><STRONG><a name="[60]"></a>GPIO_Init</STRONG> (Thumb, 100 bytes, Stack size 8 bytes, main.o(i.GPIO_Init))
+<P><STRONG><a name="[60]"></a>GPIO_Init</STRONG> (Thumb, 70 bytes, Stack size 8 bytes, main.o(i.GPIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = GPIO_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -574,7 +574,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[61]"></a>USART_Init</STRONG> (Thumb, 264 bytes, Stack size 8 bytes, main.o(i.USART_Init))
+<P><STRONG><a name="[61]"></a>USART_Init</STRONG> (Thumb, 220 bytes, Stack size 8 bytes, main.o(i.USART_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = USART_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main

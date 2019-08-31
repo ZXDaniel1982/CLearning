@@ -21,7 +21,9 @@ extern "C" {
                                                                  1 bit  for subpriority */
 #define NVIC_PRIORITYGROUP_4         ((uint32_t)0x00000003) /*!< 4 bits for pre-emption priority,
                                                                  0 bit  for subpriority */
-
+void GPIO_Init(void);
+void USART_Init(void);
+	
 #ifdef __cplusplus
 }
 #endif
