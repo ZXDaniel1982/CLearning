@@ -335,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F103xE</Define>
               <Undefine></Undefine>
-              <IncludePath>.\inc</IncludePath>
+              <IncludePath>.\Core\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -387,17 +387,27 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\main.c</FilePath>
+              <FilePath>.\Core\Src\main.c</FilePath>
             </File>
             <File>
               <FileName>system_stm32f1xx.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\system_stm32f1xx.c</FilePath>
+              <FilePath>.\Core\Src\system_stm32f1xx.c</FilePath>
             </File>
             <File>
-              <FileName>common.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\common.h</FilePath>
+              <FileName>gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\flash.c</FilePath>
             </File>
           </Files>
         </Group>

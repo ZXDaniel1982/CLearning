@@ -74,7 +74,7 @@ static void RCC_Init(void)
 
 int main()
 {
-	  char buf = 0;
+	  uint8_t buf = 0;
 	
 	  RCC_Init();
     GPIO_Init();
@@ -82,10 +82,8 @@ int main()
 	
     while(1) {
 				if((USART1->SR & USART_CR1_RXNEIE) != 0) {
-					  MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
 				    buf = USART1->DR;
-					  while ((USART1->SR &USART_SR_TXE) == 0) {}
-            USART1->DR= buf; 
+					  USART_RxProcess(buf);
 				}
 		}
 }

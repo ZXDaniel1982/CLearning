@@ -1,4 +1,4 @@
-#line 1 "Core\\Src\\main.c"
+#line 1 "gpio.c"
 #line 1 ".\\Core\\Inc\\stm32f1xx.h"
 
 
@@ -6856,8 +6856,8 @@ typedef enum
 
 
  
-#line 2 "Core\\Src\\main.c"
-#line 3 "Core\\Src\\main.c"
+#line 2 "gpio.c"
+#line 3 "gpio.c"
 #line 1 ".\\Core\\Inc\\common.h"
  
 
@@ -6962,90 +6962,29 @@ void USART_RxProcess(uint8_t val);
 
 
  
-#line 4 "Core\\Src\\main.c"
+#line 4 "gpio.c"
 
-static void Error_Handler(void)
-{
-
-}
-
-static void RCC_Init(void)
+static void Led_Port_Init()
 {
     volatile uint32_t tmpreg;
+
     
-    ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB2ENR) |= ((0x1U << (0U))));
+    ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB2ENR) |= ((0x1U << (3U))));
      
-    tmpreg = ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB2ENR) & ((0x1U << (0U))));
+    tmpreg = ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB2ENR) & ((0x1U << (3U))));
     (void)tmpreg;
 
     
-    
-    
-    ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB1ENR) |= ((0x1U << (28U))));
-     
-    tmpreg = ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB1ENR) & ((0x1U << (28U))));
-    (void)tmpreg;
+    ((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->BRR) = ((0x1U << (5U))));
 
-    NVIC_SetPriorityGrouping(((uint32_t)0x00000003));
+	  
+    (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->CRL)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->CRL))) & (~(((0x3U << (22U)) | (0x3U << (20U)))))) | ((0x2U << (20U))))));
 
     
-    ((((AFIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000000U))->MAPR) &= ~((0x7U << (24U))));  
-    ((((AFIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000000U))->MAPR) |= ((0x1U << (26U)))); 
+    (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->ODR)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->ODR))) & (~((0x1U << (5U))))) | (0))));
+}
 
-    
-    (((((FLASH_TypeDef *)((0x40000000U + 0x00020000U) + 0x00002000U))->ACR)) = ((((((((FLASH_TypeDef *)((0x40000000U + 0x00020000U) + 0x00002000U))->ACR))) & (~((0x7U << (0U))))) | ((0x2U << (0U))))));
-    if((uint32_t)(((((FLASH_TypeDef *)((0x40000000U + 0x00020000U) + 0x00002000U))->ACR) & ((0x7U << (0U))))) != (0x2U << (0U))) {
-        Error_Handler();  
-    }
-
-    
-    
-    ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CR) |= ((0x1U << (16U))));
-    while(((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CR) & ((0x1U << (17U)))) != (0x1U << (17U)));
-
-    
-    
-    
-    (((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR)) = ((((((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR))) & (~((0x1U << (16U)) | (0x1U << (17U)) | (0xFU << (18U))))) | (((0x1U << (16U)) & ((0x1U << (16U)) | (0x1U << (17U)))) | (0x7U << (18U))))));
-
-
-    
-    ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CR) |= ((0x1U << (24U))));
-    while(((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CR) & ((0x1U << (25U)))) != (0x1U << (25U)));
-
-    
-    (((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR)) = ((((((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR))) & (~((0xFU << (4U))))) | (0x00000000U))));
-    
-    (((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR)) = ((((((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR))) & (~((0x7U << (8U))))) | (0x00000400U))));
-    
-    (((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR)) = ((((((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR))) & (~((0x7U << (11U))))) | (0x00000000U))));
-    
-    (((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR)) = ((((((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR))) & (~((0x3U << (0U))))) | (0x00000002U))));
-    while((uint32_t)(((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR) & ((0x3U << (2U))))) != 0x00000008U);
-
-
-    ((SysTick_Type *) ((0xE000E000UL) + 0x0010UL) )->LOAD  = (uint32_t)((72000000 / 1000U) - 1UL);  
-    ((SysTick_Type *) ((0xE000E000UL) + 0x0010UL) )->VAL   = 0UL;   
-    ((SysTick_Type *) ((0xE000E000UL) + 0x0010UL) )->CTRL  = (1UL << 2U) |      
-                    (1UL );  
-
-
-    ((((SysTick_Type *) ((0xE000E000UL) + 0x0010UL) )->CTRL) |= ((1UL << 2U)));
-    SystemCoreClock = 72000000;
-} 
-
-int main()
+void GPIO_Init()
 {
-	  uint8_t buf = 0;
-	
-	  RCC_Init();
-    GPIO_Init();
-	  USART_Init();
-	
-    while(1) {
-				if((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->SR & (0x1U << (5U))) != 0) {
-				    buf = ((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->DR;
-					  USART_RxProcess(buf);
-				}
-		}
+    Led_Port_Init();
 }

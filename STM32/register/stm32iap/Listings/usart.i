@@ -1,4 +1,1406 @@
-#line 1 "Core\\Src\\main.c"
+#line 1 "usart.c"
+#line 1 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\stdio.h"
+ 
+ 
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+ 
+
+
+
+
+  
+ 
+
+
+
+
+
+
+
+
+#line 47 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\stdio.h"
+
+
+  
+
+
+
+    typedef unsigned int size_t;    
+
+
+
+
+
+
+
+
+
+ 
+ 
+
+ 
+
+
+
+    typedef struct __va_list __va_list;
+
+
+
+
+
+
+   
+
+
+
+
+ 
+
+
+
+
+typedef struct __fpos_t_struct {
+    unsigned __int64 __pos;
+    
+
+
+
+ 
+    struct {
+        unsigned int __state1, __state2;
+    } __mbstate;
+} fpos_t;
+   
+
+
+ 
+
+
+   
+
+ 
+
+typedef struct __FILE FILE;
+   
+
+
+
+
+
+
+ 
+
+#line 136 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\stdio.h"
+
+
+extern FILE __stdin, __stdout, __stderr;
+extern FILE *__aeabi_stdin, *__aeabi_stdout, *__aeabi_stderr;
+
+#line 166 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\stdio.h"
+    
+
+    
+
+    
+
+
+
+
+
+     
+
+
+
+   
+
+
+ 
+
+
+   
+
+
+ 
+
+   
+
+
+
+ 
+
+   
+
+
+ 
+
+
+
+
+   
+
+
+ 
+
+
+
+
+
+    
+
+
+ 
+
+
+
+
+
+
+extern __declspec(__nothrow) int remove(const char *  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int rename(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) FILE *tmpfile(void);
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) char *tmpnam(char *  );
+   
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) int fclose(FILE *  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int fflush(FILE *  );
+   
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) FILE *fopen(const char * __restrict  ,
+                           const char * __restrict  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) FILE *freopen(const char * __restrict  ,
+                    const char * __restrict  ,
+                    FILE * __restrict  ) __attribute__((__nonnull__(2,3)));
+   
+
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) void setbuf(FILE * __restrict  ,
+                    char * __restrict  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) int setvbuf(FILE * __restrict  ,
+                   char * __restrict  ,
+                   int  , size_t  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+#pragma __printf_args
+extern __declspec(__nothrow) int fprintf(FILE * __restrict  ,
+                    const char * __restrict  , ...) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+#pragma __printf_args
+extern __declspec(__nothrow) int _fprintf(FILE * __restrict  ,
+                     const char * __restrict  , ...) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+ 
+#pragma __printf_args
+extern __declspec(__nothrow) int printf(const char * __restrict  , ...) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+ 
+#pragma __printf_args
+extern __declspec(__nothrow) int _printf(const char * __restrict  , ...) __attribute__((__nonnull__(1)));
+   
+
+
+
+ 
+#pragma __printf_args
+extern __declspec(__nothrow) int sprintf(char * __restrict  , const char * __restrict  , ...) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+ 
+#pragma __printf_args
+extern __declspec(__nothrow) int _sprintf(char * __restrict  , const char * __restrict  , ...) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+ 
+
+#pragma __printf_args
+extern __declspec(__nothrow) int __ARM_snprintf(char * __restrict  , size_t  ,
+                     const char * __restrict  , ...) __attribute__((__nonnull__(3)));
+
+
+#pragma __printf_args
+extern __declspec(__nothrow) int snprintf(char * __restrict  , size_t  ,
+                     const char * __restrict  , ...) __attribute__((__nonnull__(3)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+#pragma __printf_args
+extern __declspec(__nothrow) int _snprintf(char * __restrict  , size_t  ,
+                      const char * __restrict  , ...) __attribute__((__nonnull__(3)));
+   
+
+
+
+ 
+#pragma __scanf_args
+extern __declspec(__nothrow) int fscanf(FILE * __restrict  ,
+                    const char * __restrict  , ...) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+#pragma __scanf_args
+extern __declspec(__nothrow) int _fscanf(FILE * __restrict  ,
+                     const char * __restrict  , ...) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+ 
+#pragma __scanf_args
+extern __declspec(__nothrow) int scanf(const char * __restrict  , ...) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+
+
+ 
+#pragma __scanf_args
+extern __declspec(__nothrow) int _scanf(const char * __restrict  , ...) __attribute__((__nonnull__(1)));
+   
+
+
+
+ 
+#pragma __scanf_args
+extern __declspec(__nothrow) int sscanf(const char * __restrict  ,
+                    const char * __restrict  , ...) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+
+ 
+#pragma __scanf_args
+extern __declspec(__nothrow) int _sscanf(const char * __restrict  ,
+                     const char * __restrict  , ...) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+ 
+
+ 
+extern __declspec(__nothrow) int vfscanf(FILE * __restrict  , const char * __restrict  , __va_list) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) int vscanf(const char * __restrict  , __va_list) __attribute__((__nonnull__(1)));
+extern __declspec(__nothrow) int vsscanf(const char * __restrict  , const char * __restrict  , __va_list) __attribute__((__nonnull__(1,2)));
+
+extern __declspec(__nothrow) int _vfscanf(FILE * __restrict  , const char * __restrict  , __va_list) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) int _vscanf(const char * __restrict  , __va_list) __attribute__((__nonnull__(1)));
+extern __declspec(__nothrow) int _vsscanf(const char * __restrict  , const char * __restrict  , __va_list) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) int __ARM_vsscanf(const char * __restrict  , const char * __restrict  , __va_list) __attribute__((__nonnull__(1,2)));
+
+extern __declspec(__nothrow) int vprintf(const char * __restrict  , __va_list  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int _vprintf(const char * __restrict  , __va_list  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+ 
+extern __declspec(__nothrow) int vfprintf(FILE * __restrict  ,
+                    const char * __restrict  , __va_list  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int vsprintf(char * __restrict  ,
+                     const char * __restrict  , __va_list  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int __ARM_vsnprintf(char * __restrict  , size_t  ,
+                     const char * __restrict  , __va_list  ) __attribute__((__nonnull__(3)));
+
+extern __declspec(__nothrow) int vsnprintf(char * __restrict  , size_t  ,
+                     const char * __restrict  , __va_list  ) __attribute__((__nonnull__(3)));
+   
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) int _vsprintf(char * __restrict  ,
+                      const char * __restrict  , __va_list  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+ 
+extern __declspec(__nothrow) int _vfprintf(FILE * __restrict  ,
+                     const char * __restrict  , __va_list  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+ 
+extern __declspec(__nothrow) int _vsnprintf(char * __restrict  , size_t  ,
+                      const char * __restrict  , __va_list  ) __attribute__((__nonnull__(3)));
+   
+
+
+
+ 
+
+#pragma __printf_args
+extern __declspec(__nothrow) int asprintf(char **  , const char * __restrict  , ...) __attribute__((__nonnull__(2)));
+extern __declspec(__nothrow) int vasprintf(char **  , const char * __restrict  , __va_list  ) __attribute__((__nonnull__(2)));
+
+#pragma __printf_args
+extern __declspec(__nothrow) int __ARM_asprintf(char **  , const char * __restrict  , ...) __attribute__((__nonnull__(2)));
+extern __declspec(__nothrow) int __ARM_vasprintf(char **  , const char * __restrict  , __va_list  ) __attribute__((__nonnull__(2)));
+   
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) int fgetc(FILE *  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) char *fgets(char * __restrict  , int  ,
+                    FILE * __restrict  ) __attribute__((__nonnull__(1,3)));
+   
+
+
+
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int fputc(int  , FILE *  ) __attribute__((__nonnull__(2)));
+   
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int fputs(const char * __restrict  , FILE * __restrict  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) int getc(FILE *  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+
+
+
+ 
+
+
+
+
+    extern __declspec(__nothrow) int (getchar)(void);
+
+   
+
+
+
+
+
+ 
+extern __declspec(__nothrow) char *gets(char *  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int putc(int  , FILE *  ) __attribute__((__nonnull__(2)));
+   
+
+
+
+
+
+ 
+
+
+
+
+    extern __declspec(__nothrow) int (putchar)(int  );
+
+   
+
+
+
+ 
+extern __declspec(__nothrow) int puts(const char *  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int ungetc(int  , FILE *  ) __attribute__((__nonnull__(2)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t fread(void * __restrict  ,
+                    size_t  , size_t  , FILE * __restrict  ) __attribute__((__nonnull__(1,4)));
+   
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t __fread_bytes_avail(void * __restrict  ,
+                    size_t  , FILE * __restrict  ) __attribute__((__nonnull__(1,3)));
+   
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t fwrite(const void * __restrict  ,
+                    size_t  , size_t  , FILE * __restrict  ) __attribute__((__nonnull__(1,4)));
+   
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) int fgetpos(FILE * __restrict  , fpos_t * __restrict  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int fseek(FILE *  , long int  , int  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int fsetpos(FILE * __restrict  , const fpos_t * __restrict  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) long int ftell(FILE *  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) void rewind(FILE *  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) void clearerr(FILE *  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+
+ 
+
+extern __declspec(__nothrow) int feof(FILE *  ) __attribute__((__nonnull__(1)));
+   
+
+
+ 
+extern __declspec(__nothrow) int ferror(FILE *  ) __attribute__((__nonnull__(1)));
+   
+
+
+ 
+extern __declspec(__nothrow) void perror(const char *  );
+   
+
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) int _fisatty(FILE *   ) __attribute__((__nonnull__(1)));
+    
+ 
+
+extern __declspec(__nothrow) void __use_no_semihosting_swi(void);
+extern __declspec(__nothrow) void __use_no_semihosting(void);
+    
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+#line 1021 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\stdio.h"
+
+
+
+ 
+
+#line 2 "usart.c"
+#line 1 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\stddef.h"
+ 
+
+
+
+
+
+
+ 
+
+ 
+ 
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+#line 34 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\stddef.h"
+
+
+
+
+  typedef signed int ptrdiff_t;
+
+
+
+  
+
+
+
+    typedef unsigned int size_t;    
+#line 57 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\stddef.h"
+
+
+
+   
+
+
+
+      typedef unsigned short wchar_t;  
+#line 82 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\stddef.h"
+
+
+
+    
+
+
+
+
+   
+
+
+
+
+  typedef long double max_align_t;
+
+
+
+
+
+
+
+
+
+#line 114 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\stddef.h"
+
+
+
+ 
+
+#line 3 "usart.c"
+#line 1 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+ 
+ 
+ 
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+#line 38 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+
+
+  
+
+
+
+    typedef unsigned int size_t;    
+#line 54 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+
+
+
+
+extern __declspec(__nothrow) void *memcpy(void * __restrict  ,
+                    const void * __restrict  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) void *memmove(void *  ,
+                    const void *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) char *strcpy(char * __restrict  , const char * __restrict  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) char *strncpy(char * __restrict  , const char * __restrict  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) char *strcat(char * __restrict  , const char * __restrict  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) char *strncat(char * __restrict  , const char * __restrict  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) int memcmp(const void *  , const void *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int strcmp(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) int strncmp(const char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int strcasecmp(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int strncasecmp(const char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int strcoll(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strxfrm(char * __restrict  , const char * __restrict  , size_t  ) __attribute__((__nonnull__(2)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+#line 193 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) void *memchr(const void *  , int  , size_t  ) __attribute__((__nonnull__(1)));
+
+   
+
+
+
+
+
+ 
+
+#line 209 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) char *strchr(const char *  , int  ) __attribute__((__nonnull__(1)));
+
+   
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strcspn(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+
+#line 232 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) char *strpbrk(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+
+   
+
+
+
+
+ 
+
+#line 247 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) char *strrchr(const char *  , int  ) __attribute__((__nonnull__(1)));
+
+   
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strspn(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+ 
+
+#line 270 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) char *strstr(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+
+   
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) char *strtok(char * __restrict  , const char * __restrict  ) __attribute__((__nonnull__(2)));
+extern __declspec(__nothrow) char *_strtok_r(char *  , const char *  , char **  ) __attribute__((__nonnull__(2,3)));
+
+extern __declspec(__nothrow) char *strtok_r(char *  , const char *  , char **  ) __attribute__((__nonnull__(2,3)));
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) void *memset(void *  , int  , size_t  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+ 
+extern __declspec(__nothrow) char *strerror(int  );
+   
+
+
+
+
+
+ 
+extern __declspec(__nothrow) size_t strlen(const char *  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strlcpy(char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strlcat(char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) void _membitcpybl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpybb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpyhl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpyhb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpywl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpywb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovebl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovebb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovehl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovehb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovewl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovewb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+#line 502 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+
+
+
+ 
+
+#line 4 "usart.c"
+
 #line 1 ".\\Core\\Inc\\stm32f1xx.h"
 
 
@@ -6856,8 +8258,8 @@ typedef enum
 
 
  
-#line 2 "Core\\Src\\main.c"
-#line 3 "Core\\Src\\main.c"
+#line 6 "usart.c"
+#line 7 "usart.c"
 #line 1 ".\\Core\\Inc\\common.h"
  
 
@@ -6962,90 +8364,345 @@ void USART_RxProcess(uint8_t val);
 
 
  
-#line 4 "Core\\Src\\main.c"
+#line 8 "usart.c"
 
-static void Error_Handler(void)
+
+
+
+uint8_t txBuf[20] = {0};
+uint8_t rxBuf[255] = {0};
+uint8_t rxCnt = 0;
+
+pFunction JumpToApplication;
+uint32_t JumpAddress;
+
+static uint32_t IAP_CONV_TO_32(uint8_t *buf)
 {
-
+    uint32_t ret = 0;
+    ret = (*buf) << 24;
+    ret += *(buf+1) << 16;
+    ret += *(buf+2) << 8;
+    ret += *(buf+3);
+    return ret;
 }
 
-static void RCC_Init(void)
+static void IAP_SendReply(uint8_t replyType, uint8_t replyDetail)
 {
-    volatile uint32_t tmpreg;
-    
-    ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB2ENR) |= ((0x1U << (0U))));
-     
-    tmpreg = ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB2ENR) & ((0x1U << (0U))));
-    (void)tmpreg;
+    memset(txBuf, 0, 20);
+    txBuf[0] = 0x33;
+    txBuf[1] = 0x44;
+    txBuf[2] = replyType;
+    txBuf[3] = replyDetail;
 
-    
-    
-    
-    ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB1ENR) |= ((0x1U << (28U))));
-     
-    tmpreg = ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB1ENR) & ((0x1U << (28U))));
-    (void)tmpreg;
+    USART_SendData(txBuf,20);
+}
 
-    NVIC_SetPriorityGrouping(((uint32_t)0x00000003));
+static void IAP_EraseProcess(uint32_t Add)
+{
+	  if (!FLASH_WaitForFinish()) {
+		    IAP_SendReply(IAP_ERROR, IAP_ERASE_FAIL);
+			  return;
+		}
+				
+		((((FLASH_TypeDef *)((0x40000000U + 0x00020000U) + 0x00002000U))->CR) |= ((0x1U << (1U))));
+		((((FLASH_TypeDef *)((0x40000000U + 0x00020000U) + 0x00002000U))->AR) = (Add));
+		((((FLASH_TypeDef *)((0x40000000U + 0x00020000U) + 0x00002000U))->CR) |= ((0x1U << (6U))));
+		
+		while (((FLASH_TypeDef *)((0x40000000U + 0x00020000U) + 0x00002000U))->SR & (0x1U << (0U))) {}
+			
+		if (!FLASH_WaitForFinish()) {
+		    IAP_SendReply(IAP_ERROR, IAP_ERASE_FAIL);
+			  return;
+		}
+		
+		((((FLASH_TypeDef *)((0x40000000U + 0x00020000U) + 0x00002000U))->CR) &= ~((0x1U << (1U))));
+    IAP_SendReply(IAP_SUCCESS, IAP_SUCCESS_ERASE);
+}
 
-    
-    ((((AFIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000000U))->MAPR) &= ~((0x7U << (24U))));  
-    ((((AFIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000000U))->MAPR) |= ((0x1U << (26U)))); 
+static void IAP_StoreProcess(uint8_t *dest, uint8_t *src)
+{
+	  uint32_t Add = (uint32_t) (dest);
+	  uint64_t Data = *(uint32_t *) (src);
+    uint8_t i;
+	
+	  if (!FLASH_WaitForFinish()) {
+		    IAP_SendReply(IAP_ERROR, IAP_ERASE_FAIL);
+			  return;
+		}
+		
+		for (i=0;i<2;i++) {
+		    ((((FLASH_TypeDef *)((0x40000000U + 0x00020000U) + 0x00002000U))->CR) |= ((0x1U << (0U))));
+			  *(volatile uint16_t*) (Add + 2u * i) = (uint16_t) (Data >> (16u * i));
+		}
+		
+		if (!FLASH_WaitForFinish()) {
+		    IAP_SendReply(IAP_ERROR, IAP_ERASE_FAIL);
+			  return;
+		}
+		
+		((((FLASH_TypeDef *)((0x40000000U + 0x00020000U) + 0x00002000U))->CR) &= ~((0x1U << (0U))));
+		
+		if (*(uint32_t *) (src) != *(uint32_t *) (dest)) {
+		    IAP_SendReply(IAP_ERROR, IAP_STORE_FAIL);
+				return;
+		}
+		
+		IAP_SendReply(IAP_SUCCESS, IAP_SUCCESS_STORE);
+}
 
-    
-    (((((FLASH_TypeDef *)((0x40000000U + 0x00020000U) + 0x00002000U))->ACR)) = ((((((((FLASH_TypeDef *)((0x40000000U + 0x00020000U) + 0x00002000U))->ACR))) & (~((0x7U << (0U))))) | ((0x2U << (0U))))));
-    if((uint32_t)(((((FLASH_TypeDef *)((0x40000000U + 0x00020000U) + 0x00002000U))->ACR) & ((0x7U << (0U))))) != (0x2U << (0U))) {
-        Error_Handler();  
+static uint8_t IAP_HeaderIsValid(uint8_t* Buf)
+{
+    if (Buf == 0) return 0;
+
+    if ((Buf[0] != 0x22) || (Buf[1] != 0x33)) {
+        return 0;
     }
 
-    
-    
-    ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CR) |= ((0x1U << (16U))));
-    while(((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CR) & ((0x1U << (17U)))) != (0x1U << (17U)));
+    return 1;
+}
 
-    
-    
-    
-    (((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR)) = ((((((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR))) & (~((0x1U << (16U)) | (0x1U << (17U)) | (0xFU << (18U))))) | (((0x1U << (16U)) & ((0x1U << (16U)) | (0x1U << (17U)))) | (0x7U << (18U))))));
-
-
-    
-    ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CR) |= ((0x1U << (24U))));
-    while(((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CR) & ((0x1U << (25U)))) != (0x1U << (25U)));
-
-    
-    (((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR)) = ((((((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR))) & (~((0xFU << (4U))))) | (0x00000000U))));
-    
-    (((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR)) = ((((((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR))) & (~((0x7U << (8U))))) | (0x00000400U))));
-    
-    (((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR)) = ((((((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR))) & (~((0x7U << (11U))))) | (0x00000000U))));
-    
-    (((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR)) = ((((((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR))) & (~((0x3U << (0U))))) | (0x00000002U))));
-    while((uint32_t)(((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->CFGR) & ((0x3U << (2U))))) != 0x00000008U);
-
-
-    ((SysTick_Type *) ((0xE000E000UL) + 0x0010UL) )->LOAD  = (uint32_t)((72000000 / 1000U) - 1UL);  
-    ((SysTick_Type *) ((0xE000E000UL) + 0x0010UL) )->VAL   = 0UL;   
-    ((SysTick_Type *) ((0xE000E000UL) + 0x0010UL) )->CTRL  = (1UL << 2U) |      
-                    (1UL );  
-
-
-    ((((SysTick_Type *) ((0xE000E000UL) + 0x0010UL) )->CTRL) |= ((1UL << 2U)));
-    SystemCoreClock = 72000000;
-} 
-
-int main()
+static uint8_t IAP_ChecksumIsValid(uint8_t* Buf)
 {
-	  uint8_t buf = 0;
+	  uint8_t i;
+	  uint16_t RxChksum = 0;
+	  uint16_t Checksum = 0;
 	
-	  RCC_Init();
-    GPIO_Init();
-	  USART_Init();
+    if (Buf == 0) return 0;
 	
-    while(1) {
-				if((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->SR & (0x1U << (5U))) != 0) {
-				    buf = ((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->DR;
-					  USART_RxProcess(buf);
+	  Checksum = Buf[16] * 256 + Buf[17];
+	  for (i=0;i<(20-4);i++) {
+		    RxChksum += Buf[i];
+		}
+		
+		if (Checksum == RxChksum) return 1;
+		else return 0;
+}
+
+static void IAP_Connect(uint8_t *Buf)
+{
+    if (Buf == 0) {
+        IAP_SendReply(IAP_ERROR, IAP_CONNECT_FAIL);
+        return;
+    }
+	
+	  if (Buf[0] != IAP_CMD_CONNECT) {
+	      return;
+	  }
+	
+	  IAP_SendReply(IAP_SUCCESS, IAP_CONNECT_SUCCESS);
+}
+
+static void IAP_Init(uint8_t *Buf)
+{
+    if (Buf == 0) {
+        IAP_SendReply(IAP_ERROR, IAP_INIT_FAIL);
+        return;
+    }
+	
+	  if (Buf[0] != IAP_CMD_INIT) {
+	      return;
+	  }
+	
+	  FLASH_Unlock();
+	  IAP_SendReply(IAP_SUCCESS, IAP_INIT_SUCCESS);
+}
+
+static void IAP_DeInit(uint8_t *Buf)
+{
+    if (Buf == 0) {
+        IAP_SendReply(IAP_ERROR, IAP_DEINIT_FAIL);
+        return;
+    }
+	
+	  if (Buf[0] != IAP_CMD_DEINIT) {
+	      return;
+	  }
+	
+	  FLASH_Lock();
+	  IAP_SendReply(IAP_SUCCESS, IAP_DEINIT_SUCCESS);
+}
+
+static void IAP_Erase(uint8_t *Buf)
+{
+	  uint32_t addr;
+	
+    if (Buf == 0) {
+        IAP_SendReply(IAP_ERROR, IAP_ERASE_FAIL);
+        return;
+    }
+	
+	  if (Buf[0] != IAP_CMD_ERASE) {
+	      return;
+	  }
+	
+	  addr = IAP_CONV_TO_32(&Buf[1]);
+    IAP_EraseProcess(addr);
+}
+
+static void IAP_Store(uint8_t *Buf)
+{
+	  uint8_t *src = 0;
+	
+    if (Buf == 0) {
+        IAP_SendReply(IAP_ERROR, IAP_STORE_FAIL);
+        return;
+    }
+	
+	  if (Buf[0] != IAP_CMD_STORE) {
+	      return;
+	  }
+	
+	  src = (uint8_t *)IAP_CONV_TO_32(&Buf[1]);
+    IAP_StoreProcess(src, &Buf[5]);
+}
+
+static void IAP_Reboot(uint8_t* Buf)
+{
+    if (Buf == 0) {
+        IAP_SendReply(IAP_ERROR, IAP_REBOOT_FAIL);
+        return;
+    }
+
+    if (Buf[0] != IAP_CMD_REBOOT) {
+        return;
+    }
+
+    IAP_SendReply(IAP_SUCCESS, IAP_SUCCESS_REBOOT);
+
+	  NVIC_SystemReset();
+}
+
+static void USART_Jump()
+{
+    if (((*(volatile uint32_t *) 0x8005000) & 0x2FFE0000) ==
+					0x20000000) {
+				 
+				JumpAddress = *(volatile uint32_t *) (0x8005000 + 4);
+				JumpToApplication = (pFunction) JumpAddress;
+
+				 
+				__set_MSP(*(volatile uint32_t *) 0x8005000);
+				JumpToApplication();
+		}
+}
+
+static void IAP_Jump(uint8_t* Buf)
+{
+    if (Buf == 0) {
+        IAP_SendReply(IAP_ERROR, IAP_JUMP_FAIL);
+        return;
+    }
+
+    if (Buf[0] != IAP_CMD_JUMP) {
+        return;
+    }
+
+    IAP_SendReply(IAP_SUCCESS, IAP_SUCCESS_JUMP);
+		
+	  USART_Jump();
+}
+
+static void USART_DataProcess(uint8_t *Buf)
+{
+    if (IAP_HeaderIsValid(Buf) == 0) {
+        IAP_SendReply(IAP_ERROR, IAP_ERROR_HEAD_INVALID);
+        return;
+    }
+		
+		if (IAP_ChecksumIsValid(Buf) == 0) {
+        IAP_SendReply(IAP_ERROR, IAP_ERROR_CHKSUM_INVALID);
+        return;
+    }
+
+	  IAP_Connect(&Buf[2]);
+	  IAP_Init(&Buf[2]);
+	  IAP_DeInit(&Buf[2]);
+    IAP_Erase(&Buf[2]);
+    IAP_Store(&Buf[2]);
+    IAP_Reboot(&Buf[2]);
+	  IAP_Jump(&Buf[2]);
+}
+
+void USART_Init()
+{
+    volatile uint32_t tmpreg;
+	
+	  
+    ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB2ENR) |= ((0x1U << (14U))));
+     
+    tmpreg = ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB2ENR) & ((0x1U << (14U))));
+    (void)tmpreg;
+
+	  
+    ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB2ENR) |= ((0x1U << (2U))));
+     
+    tmpreg = ((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB2ENR) & ((0x1U << (2U))));
+    (void)tmpreg;
+
+    
+    (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->CRH)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->CRH))) & (~(((0x3U << (6U)) | (0x3U << (4U)))))) | (((0x2U << (6U)) | (0x3U << (4U)))))));
+
+    
+    (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->ODR)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->ODR))) & (~((0x1U << (9U))))) | (0))));
+
+    
+    (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->CRH)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->CRH))) & (~(((0x3U << (10U)) | (0x3U << (8U)))))) | ((0x1U << (10U))))));
+
+    
+    (((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->ODR)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000800U))->ODR))) & (~((0x1U << (10U))))) | (0))));
+
+    if (((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR1) & ((0x1U << (13U)))) != ((0x1U << (13U)))) {
+        (((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR1)) = ((((((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR1))) & (~(((0x1U << (12U)) | (0x1U << (10U)) | (0x1U << (9U)) | (0x1U << (3U)) | (0x1U << (2U)))))) | (((0x1U << (3U)) |(0x1U << (2U)))))));
+
+
+
+        (((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR2)) = ((((((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR2))) & (~((0x3U << (12U))))) | (0))));
+
+        (((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR3)) = ((((((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR3))) & (~((0x1U << (8U)) | (0x1U << (9U))))) | (0))));
+
+        ((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->BRR = 0x271;
+    }
+		
+		((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR2) &= ~(((0x1U << (14U)) | (0x1U << (11U)))));
+    ((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR3) &= ~(((0x1U << (5U)) | (0x1U << (1U)) | (0x1U << (3U)))));
+		
+		((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->CR1 |= (0x1U << (13U));
+}
+
+void USART_RxProcess(uint8_t val)
+{
+	  if (rxCnt >= 255) {
+		    memset(rxBuf, 0, 255);
+			  rxCnt = 0;
+		}
+	
+	  rxBuf[rxCnt] = val;
+    rxCnt++;
+		
+		if (rxCnt >= 2) {
+				if ((rxBuf[rxCnt-2] == 0x44) && (rxBuf[rxCnt-1] == 0x55)) {
+						if (rxCnt >= 20) {
+								USART_DataProcess(&rxBuf[rxCnt-20]);
+						} else {
+								IAP_SendReply(IAP_ERROR, IAP_INCOMPLETE_FRAME);
+						}
+						memset(rxBuf, 0, 255);
+						rxCnt = 0;
 				}
+	  }
+		
+		if (rxCnt >= 255) {
+		    memset(rxBuf, 0, 255);
+			  rxCnt = 0;
+		}
+}
+
+void USART_SendData(uint8_t *data, uint16_t len)
+{
+    uint16_t i;
+	
+	  for (i=0;i<len;i++) {
+		    while ((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->SR &(0x1U << (7U))) == 0) {}
+        ((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->DR= data[i]; 
 		}
 }

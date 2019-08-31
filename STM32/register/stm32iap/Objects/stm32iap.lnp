@@ -2,6 +2,9 @@
 ".\objects\startup_stm32f103xe.o"
 ".\objects\main.o"
 ".\objects\system_stm32f1xx.o"
+".\objects\gpio.o"
+".\objects\usart.o"
+".\objects\flash.o"
 --strict --scatter ".\Objects\stm32iap.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
