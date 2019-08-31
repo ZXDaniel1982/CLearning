@@ -347,11 +347,11 @@
 000030  bf00              NOP      
 ;;;114    
 ;;;115        // 端口配置低寄存器  CNF 00：通用推挽输出模式  MODE  01：输出模式，最大速度10MHz
-;;;116        MODIFY_REG(GPIOA->CRH, (GPIO_CRH_CNF9 | GPIO_CRH_MODE9), (GPIO_CRH_CNF9_1 | GPIO_CRH_MODE9_0));
+;;;116        MODIFY_REG(GPIOA->CRH, (GPIO_CRH_CNF9 | GPIO_CRH_MODE9), (GPIO_CRH_CNF9_1 | GPIO_CRH_MODE9));
 000032  4836              LDR      r0,|L4.268|
 000034  6800              LDR      r0,[r0,#0]
 000036  f02000f0          BIC      r0,r0,#0xf0
-00003a  f0400090          ORR      r0,r0,#0x90
+00003a  f04000b0          ORR      r0,r0,#0xb0
 00003e  4933              LDR      r1,|L4.268|
 000040  6008              STR      r0,[r1,#0]
 ;;;117    
@@ -407,10 +407,10 @@
 000090  6008              STR      r0,[r1,#0]
 ;;;135    
 ;;;136        // 00：通用推挽输出模式
-;;;137        MODIFY_REG(GPIOA->CRH, GPIO_CRH_CNF10_0, 0);
+;;;137        MODIFY_REG(GPIOA->CRH, GPIO_CRH_CNF10_0, GPIO_CRH_CNF10_0);
 000092  4608              MOV      r0,r1
 000094  6800              LDR      r0,[r0,#0]
-000096  f4206080          BIC      r0,r0,#0x400
+000096  f4406080          ORR      r0,r0,#0x400
 00009a  6008              STR      r0,[r1,#0]
 ;;;138    
 ;;;139        if (READ_BIT(USART1->CR1, USART_CR1_UE) != (USART_CR1_UE)) {
@@ -467,15 +467,16 @@
 0000f6  1d09              ADDS     r1,r1,#4
 0000f8  6008              STR      r0,[r1,#0]
 ;;;153    		
-;;;154    		SET_BIT(USART1->CR1, USART_CR1_UE);
+;;;154    		//SET_BIT(USART1->CR1, USART_CR1_UE | USART_CR1_TE | USART_CR1_RE);
+;;;155    		USART1->CR1 |= USART_CR1_UE;
 0000fa  4805              LDR      r0,|L4.272|
 0000fc  6800              LDR      r0,[r0,#0]
 0000fe  f4405000          ORR      r0,r0,#0x2000
 000102  4903              LDR      r1,|L4.272|
 000104  6008              STR      r0,[r1,#0]
-;;;155    }
+;;;156    }
 000106  bd08              POP      {r3,pc}
-;;;156    
+;;;157    
                           ENDP
 
                   |L4.264|
@@ -488,63 +489,85 @@
                           AREA ||i.main||, CODE, READONLY, ALIGN=2
 
                   main PROC
-;;;156    
-;;;157    int main()
+;;;162    //#define TEST_TX
+;;;163    int main()
 000000  2400              MOVS     r4,#0
-;;;158    {
-;;;159    	  uint32_t cnt = 0;
-;;;160    	
-;;;161    	  RCC_Init();
-000002  f7fffffe          BL       RCC_Init
-;;;162        GPIO_Init();
-000006  f7fffffe          BL       GPIO_Init
-;;;163    	  USART_Init();
-00000a  f7fffffe          BL       USART_Init
-;;;164    	
-;;;165    	  
-;;;166    	  //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
+;;;164    {
+;;;165    	  uint32_t cnt = 0;
+;;;166    	  char buf = 0;
+000002  2500              MOVS     r5,#0
 ;;;167    	
-;;;168        while(1) {
-00000e  e010              B        |L5.50|
-                  |L5.16|
-;;;169    		    for (cnt=0;cnt<7200000;cnt++) {}
-000010  2400              MOVS     r4,#0
-000012  e000              B        |L5.22|
-                  |L5.20|
-000014  1c64              ADDS     r4,r4,#1
-                  |L5.22|
-000016  4807              LDR      r0,|L5.52|
-000018  4284              CMP      r4,r0
-00001a  d3fb              BCC      |L5.20|
-;;;170    			  //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
-;;;171    			  while ((USART1->SR &USART_SR_TXE) == 0) {}
-00001c  bf00              NOP      
-                  |L5.30|
-00001e  4806              LDR      r0,|L5.56|
-000020  6800              LDR      r0,[r0,#0]
-000022  f0000080          AND      r0,r0,#0x80
-000026  2800              CMP      r0,#0
-000028  d0f9              BEQ      |L5.30|
-;;;172            USART1->DR= 'a'; 
-00002a  2061              MOVS     r0,#0x61
-00002c  4902              LDR      r1,|L5.56|
-00002e  1d09              ADDS     r1,r1,#4
-000030  6008              STR      r0,[r1,#0]
-                  |L5.50|
-000032  e7ed              B        |L5.16|
-;;;173    					
-;;;174    //				for (cnt=0;cnt<7200000;cnt++) {}
-;;;175    //			  MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, 0);
-;;;176    //			  while ((USART1->SR &USART_SR_TXE) == 0) {}
-;;;177    //        USART1->DR= 'a'; 
-;;;178    		}
-;;;179    }
+;;;168    	  RCC_Init();
+000004  f7fffffe          BL       RCC_Init
+;;;169        GPIO_Init();
+000008  f7fffffe          BL       GPIO_Init
+;;;170    	  USART_Init();
+00000c  f7fffffe          BL       USART_Init
+;;;171    	
+;;;172    	  
+;;;173    	  //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
+;;;174    	
+;;;175        while(1) {
+000010  e01e              B        |L5.80|
+                  |L5.18|
+;;;176    #ifdef TEST_TX
+;;;177    		    for (cnt=0;cnt<7200000;cnt++) {}
+;;;178    			  while ((USART1->SR &USART_SR_TXE) == 0) {}
+;;;179    				buf = USART1->DR;
+;;;180            USART1->DR= buf; 
+;;;181    #else
+;;;182    				if((USART1->SR & USART_CR1_RXNEIE) != 0) {
+000012  4810              LDR      r0,|L5.84|
+000014  6800              LDR      r0,[r0,#0]
+000016  f0000020          AND      r0,r0,#0x20
+00001a  b1c8              CBZ      r0,|L5.80|
+;;;183    					  MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
+00001c  480e              LDR      r0,|L5.88|
+00001e  6800              LDR      r0,[r0,#0]
+000020  f0400020          ORR      r0,r0,#0x20
+000024  490c              LDR      r1,|L5.88|
+000026  6008              STR      r0,[r1,#0]
+;;;184    				    buf = USART1->DR;
+000028  480a              LDR      r0,|L5.84|
+00002a  1d00              ADDS     r0,r0,#4
+00002c  6800              LDR      r0,[r0,#0]
+00002e  b2c5              UXTB     r5,r0
+;;;185    					  for (cnt=0;cnt<7200000;cnt++) {}
+000030  2400              MOVS     r4,#0
+000032  e000              B        |L5.54|
+                  |L5.52|
+000034  1c64              ADDS     r4,r4,#1
+                  |L5.54|
+000036  4809              LDR      r0,|L5.92|
+000038  4284              CMP      r4,r0
+00003a  d3fb              BCC      |L5.52|
+;;;186    					  while ((USART1->SR &USART_SR_TXE) == 0) {}
+00003c  bf00              NOP      
+                  |L5.62|
+00003e  4805              LDR      r0,|L5.84|
+000040  6800              LDR      r0,[r0,#0]
+000042  f0000080          AND      r0,r0,#0x80
+000046  2800              CMP      r0,#0
+000048  d0f9              BEQ      |L5.62|
+;;;187                USART1->DR= buf; 
+00004a  4802              LDR      r0,|L5.84|
+00004c  1d00              ADDS     r0,r0,#4
+00004e  6005              STR      r5,[r0,#0]
+                  |L5.80|
+000050  e7df              B        |L5.18|
+;;;188    				}
+;;;189    #endif
+;;;190    		}
+;;;191    }
                           ENDP
 
-                  |L5.52|
-                          DCD      0x006ddd00
-                  |L5.56|
+000052  0000              DCW      0x0000
+                  |L5.84|
                           DCD      0x40013800
+                  |L5.88|
+                          DCD      0x40010c0c
+                  |L5.92|
+                          DCD      0x006ddd00
 
 ;*** Start embedded assembler ***
 

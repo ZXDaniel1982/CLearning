@@ -113,7 +113,7 @@ static void USART_Init()
     (void)tmpreg;
 
     // 端口配置低寄存器  CNF 00：通用推挽输出模式  MODE  01：输出模式，最大速度10MHz
-    MODIFY_REG(GPIOA->CRH, (GPIO_CRH_CNF9 | GPIO_CRH_MODE9), (GPIO_CRH_CNF9_1 | GPIO_CRH_MODE9_0));
+    MODIFY_REG(GPIOA->CRH, (GPIO_CRH_CNF9 | GPIO_CRH_MODE9), (GPIO_CRH_CNF9_1 | GPIO_CRH_MODE9));
 
     // 端口输出数据寄存器  
     MODIFY_REG(GPIOA->ODR, GPIO_BSRR_BS9, 0);
@@ -134,7 +134,7 @@ static void USART_Init()
     MODIFY_REG(GPIOA->CRH, GPIO_CRH_MODE10, 0);
 
     // 00：通用推挽输出模式
-    MODIFY_REG(GPIOA->CRH, GPIO_CRH_CNF10_0, 0);
+    MODIFY_REG(GPIOA->CRH, GPIO_CRH_CNF10_0, GPIO_CRH_CNF10_0);
 
     if (READ_BIT(USART1->CR1, USART_CR1_UE) != (USART_CR1_UE)) {
         MODIFY_REG(USART1->CR1,
@@ -151,12 +151,19 @@ static void USART_Init()
 		CLEAR_BIT(USART1->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN));
     CLEAR_BIT(USART1->CR3, (USART_CR3_SCEN | USART_CR3_IREN | USART_CR3_HDSEL));
 		
-		SET_BIT(USART1->CR1, USART_CR1_UE);
+		//SET_BIT(USART1->CR1, USART_CR1_UE | USART_CR1_TE | USART_CR1_RE);
+		USART1->CR1 |= USART_CR1_UE;
 }
 
+#ifdef TEST_TX
+#undef TEST_TX
+#endif
+
+//#define TEST_TX
 int main()
 {
 	  uint32_t cnt = 0;
+	  char buf = 0;
 	
 	  RCC_Init();
     GPIO_Init();
@@ -166,14 +173,19 @@ int main()
 	  //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
 	
     while(1) {
+#ifdef TEST_TX
 		    for (cnt=0;cnt<7200000;cnt++) {}
-			  //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
 			  while ((USART1->SR &USART_SR_TXE) == 0) {}
-        USART1->DR= 'a'; 
-					
-//				for (cnt=0;cnt<7200000;cnt++) {}
-//			  MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, 0);
-//			  while ((USART1->SR &USART_SR_TXE) == 0) {}
-//        USART1->DR= 'a'; 
+				buf = USART1->DR;
+        USART1->DR= buf; 
+#else
+				if((USART1->SR & USART_CR1_RXNEIE) != 0) {
+					  MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, GPIO_ODR_ODR5);
+				    buf = USART1->DR;
+					  for (cnt=0;cnt<7200000;cnt++) {}
+					  while ((USART1->SR &USART_SR_TXE) == 0) {}
+            USART1->DR= buf; 
+				}
+#endif
 		}
 }
