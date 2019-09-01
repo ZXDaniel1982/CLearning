@@ -37,6 +37,7 @@ BUILD_DIR = build
 # C sources
 C_SOURCES =  \
 Core/Src/main.c \
+Core/Src/gpio.c \
 Core/Src/system_stm32f1xx.c
 
 # ASM sources
@@ -47,7 +48,9 @@ startup_stm32f103xe.s
 #######################################
 # binaries
 #######################################
-PREFIX = arm-none-eabi-
+# PREFIX = arm-none-eabi-
+GCC_PATH = /usr/bin
+PREFIX = arm-atollic-eabi-
 # The gcc compiler bin path can be either defined in make command via GCC_PATH variable (> make GCC_PATH=xxx)
 # either it can be added to the PATH environment variable.
 ifdef GCC_PATH
