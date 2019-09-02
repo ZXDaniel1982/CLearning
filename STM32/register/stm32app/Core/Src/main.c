@@ -49,6 +49,12 @@ static void RCC_Init(void)
     SET_BIT(RCC->BDCR, RCC_BDCR_LSEON);
     while(READ_BIT(RCC->BDCR, RCC_BDCR_LSERDY) != RCC_BDCR_LSERDY);
 
+
+    SET_BIT(RCC->APB1ENR, RCC_APB1ENR_BKPEN);
+    /* Delay after an RCC peripheral clock enabling */
+    tmpreg = READ_BIT(RCC->APB1ENR, RCC_APB1ENR_BKPEN);
+    UNUSED(tmpreg);
+    
     MODIFY_REG(RCC->BDCR, RCC_BDCR_RTCSEL, RCC_BDCR_RTCSEL_0);
     SET_BIT(RCC->BDCR, RCC_BDCR_RTCEN);
 
@@ -89,6 +95,7 @@ int main()
 {
     RCC_Init();
     GPIO_Init();
+    RTC_Init();
     TIMER_Init();
     USART_Init();
     SPI_Init();

@@ -39,6 +39,7 @@ C_SOURCES =  \
 Core/Src/main.c \
 Core/Src/gpio.c \
 Core/Src/timer.c \
+Core/Src/rtc.c \
 Core/Src/spi.c \
 Core/Src/usart.c \
 Core/Src/eeprom.c \

@@ -96,7 +96,6 @@ void USART_SendData(uint8_t *data, uint16_t len);
 void FLASH_Lock(void);
 void FLASH_Unlock(void);
 bool FLASH_WaitForFinish(void);
-void USART_RxProcess(uint8_t val);
 
 // SPI
 void SPI_Init(void);
@@ -112,12 +111,16 @@ void FSMC_Init(void);
 // LCD
 void tftprintf(const char* fmt, ...);
 
+// RTC
+void RTC_Init(void);
+
 // Interrupt
 void TIM1_UP_IRQHandler(void);
 void TIM2_IRQHandler(void);
 void TIM3_IRQHandler(void);
 void TIM4_IRQHandler(void);
 void TIM5_IRQHandler(void);
+void USART1_IRQHandler(void);
 	
 #ifdef __cplusplus
 }
