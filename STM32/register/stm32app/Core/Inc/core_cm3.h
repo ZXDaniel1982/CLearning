@@ -78,86 +78,19 @@
 
 #define __CORTEX_M                (0x03U)                                      /*!< Cortex-M Core */
 
-
-#if   defined ( __CC_ARM )
-  #define __ASM            __asm                                      /*!< asm keyword for ARM Compiler */
-  #define __INLINE         __inline                                   /*!< inline keyword for ARM Compiler */
-  #define __STATIC_INLINE  static __inline
-
-#elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
-  #define __ASM            __asm                                      /*!< asm keyword for ARM Compiler */
-  #define __INLINE         __inline                                   /*!< inline keyword for ARM Compiler */
-  #define __STATIC_INLINE  static __inline
-
-#elif defined ( __GNUC__ )
-  #define __ASM            __asm                                      /*!< asm keyword for GNU Compiler */
-  #define __INLINE         inline                                     /*!< inline keyword for GNU Compiler */
-  #define __STATIC_INLINE  static inline
-
-#elif defined ( __ICCARM__ )
-  #define __ASM            __asm                                      /*!< asm keyword for IAR Compiler */
-  #define __INLINE         inline                                     /*!< inline keyword for IAR Compiler. Only available in High optimization mode! */
-  #define __STATIC_INLINE  static inline
-
-#elif defined ( __TMS470__ )
-  #define __ASM            __asm                                      /*!< asm keyword for TI CCS Compiler */
-  #define __STATIC_INLINE  static inline
-
-#elif defined ( __TASKING__ )
-  #define __ASM            __asm                                      /*!< asm keyword for TASKING Compiler */
-  #define __INLINE         inline                                     /*!< inline keyword for TASKING Compiler */
-  #define __STATIC_INLINE  static inline
-
-#elif defined ( __CSMC__ )
-  #define __packed
-  #define __ASM            _asm                                      /*!< asm keyword for COSMIC Compiler */
-  #define __INLINE         inline                                    /*!< inline keyword for COSMIC Compiler. Use -pc99 on compile line */
-  #define __STATIC_INLINE  static inline
-
-#else
-  #error Unknown compiler
-#endif
+#define __ASM            __asm                                      /*!< asm keyword for GNU Compiler */
+#define __INLINE         inline                                     /*!< inline keyword for GNU Compiler */
+#define __STATIC_INLINE  static inline
 
 /** __FPU_USED indicates whether an FPU is used or not.
     This core does not support an FPU at all
 */
 #define __FPU_USED       0U
 
-#if defined ( __CC_ARM )
-  #if defined __TARGET_FPU_VFP
-    #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
-  #endif
-
-#elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
-  #if defined __ARM_PCS_VFP
-    #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
-  #endif
-
-#elif defined ( __GNUC__ )
+#if defined ( __GNUC__ )
   #if defined (__VFP_FP__) && !defined(__SOFTFP__)
     #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
   #endif
-
-#elif defined ( __ICCARM__ )
-  #if defined __ARMVFP__
-    #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
-  #endif
-
-#elif defined ( __TMS470__ )
-  #if defined __TI_VFP_SUPPORT__
-    #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
-  #endif
-
-#elif defined ( __TASKING__ )
-  #if defined __FPU_VFP__
-    #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
-  #endif
-
-#elif defined ( __CSMC__ )
-  #if ( __CSMC__ & 0x400U)
-    #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
-  #endif
-
 #endif
 
 #include "core_cmInstr.h"                /* Core Instruction Access */
