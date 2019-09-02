@@ -85,6 +85,9 @@ typedef enum
 // GPIO
 void GPIO_Init(void);
 
+// TIMER
+void TIMER_Init(void);
+
 // USART1
 void USART_Init(void);
 void USART_SendData(uint8_t *data, uint16_t len);
@@ -108,6 +111,13 @@ void FSMC_Init(void);
 
 // LCD
 void tftprintf(const char* fmt, ...);
+
+// Interrupt
+void TIM1_UP_IRQHandler(void);
+void TIM2_IRQHandler(void);
+void TIM3_IRQHandler(void);
+void TIM4_IRQHandler(void);
+void TIM5_IRQHandler(void);
 	
 #ifdef __cplusplus
 }

@@ -38,7 +38,9 @@ BUILD_DIR = build
 C_SOURCES =  \
 Core/Src/main.c \
 Core/Src/gpio.c \
+Core/Src/timer.c \
 Core/Src/spi.c \
+Core/Src/usart.c \
 Core/Src/eeprom.c \
 Core/Src/fsmc.c \
 Core/Src/lcd.c \

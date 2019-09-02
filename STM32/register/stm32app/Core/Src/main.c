@@ -30,6 +30,7 @@ static void RCC_Init(void)
     CLEAR_BIT(AFIO->MAPR,AFIO_MAPR_SWJ_CFG);  // 000£ºÍêÈ«SWJ(JTAG-DP + SW-DP)£º¸´Î»×´Ì¬£»
     SET_BIT(AFIO->MAPR, AFIO_MAPR_SWJ_CFG_DISABLE); // 100£º¹Ø±ÕJTAG-DP£¬¹Ø±ÕSW-DP£»
 
+    FLASH->ACR |= FLASH_ACR_PRFTBE;
     // 010£ºÁ½¸öµÈ´ý×´Ì¬£¬µ± 48MHz < SYSCLK ¡Ü 72MHz
     MODIFY_REG(FLASH->ACR, FLASH_ACR_LATENCY, FLASH_ACR_LATENCY_1);
     if((uint32_t)(READ_BIT(FLASH->ACR, FLASH_ACR_LATENCY)) != FLASH_ACR_LATENCY_1) {
@@ -40,6 +41,16 @@ static void RCC_Init(void)
     // 1£º HSEÕñµ´Æ÷¿ªÆô
     SET_BIT(RCC->CR, RCC_CR_HSEON);
     while(READ_BIT(RCC->CR, RCC_CR_HSERDY) != RCC_CR_HSERDY);
+
+    SET_BIT(PWR->CR, PWR_CR_DBP);
+    SET_BIT(RCC->BDCR, RCC_BDCR_BDRST);
+    CLEAR_BIT(RCC->BDCR, RCC_BDCR_BDRST);
+
+    SET_BIT(RCC->BDCR, RCC_BDCR_LSEON);
+    while(READ_BIT(RCC->BDCR, RCC_BDCR_LSERDY) != RCC_BDCR_LSERDY);
+
+    MODIFY_REG(RCC->BDCR, RCC_BDCR_RTCSEL, RCC_BDCR_RTCSEL_0);
+    SET_BIT(RCC->BDCR, RCC_BDCR_RTCEN);
 
     // PLLÊäÈëÊ±ÖÓÔ´  1£º PREDIV1Êä³ö×÷ÎªPLLÊäÈëÊ±ÖÓ
     // PREDIV1·ÖÆµÒò×ÓµÄµÍÎ»  ÖÃ0
@@ -70,12 +81,16 @@ static void RCC_Init(void)
 
     SET_BIT(SysTick->CTRL, SysTick_CTRL_CLKSOURCE_Msk);
     SystemCoreClock = 72000000;
+
+    MODIFY_REG(RCC->CFGR, RCC_CFGR_ADCPRE, RCC_CFGR_ADCPRE_DIV6);
 } 
 
 int main()
 {
     RCC_Init();
     GPIO_Init();
+    TIMER_Init();
+    USART_Init();
     SPI_Init();
     FSMC_Init();
 
