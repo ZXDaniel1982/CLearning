@@ -40,6 +40,8 @@ Core/Src/main.c \
 Core/Src/gpio.c \
 Core/Src/spi.c \
 Core/Src/eeprom.c \
+Core/Src/fsmc.c \
+Core/Src/lcd.c \
 Core/Src/system_stm32f1xx.c
 
 # ASM sources

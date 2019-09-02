@@ -10,11 +10,19 @@ extern "C" {
 #include <stdbool.h>
 
 #define UNUSED(x) (void)x
+#define NUM_ROWS(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 
 #define SST_CS_Pin GPIO_BSRR_BS4
 #define SST_CS_GPIO_Port GPIOA
+#define Key_Pin GPIO_BSRR_BS15
+#define Key_GPIO_Port GPIOB
+#define Key_EXTI_IRQn EXTI15_10_IRQn
+#define LCD_Light_Pin GPIO_BSRR_BS13
+#define LCD_Light_GPIO_Port GPIOD
 #define Led_Pin GPIO_BSRR_BS5
 #define Led_GPIO_Port GPIOB
+#define LCD_Rst_Pin GPIO_BSRR_BS1
+#define LCD_Rst_GPIO_Port GPIOE
 	
 #define NVIC_PRIORITYGROUP_0         ((uint32_t)0x00000007) /*!< 0 bit  for pre-emption priority,
                                                                  4 bits for subpriority */
@@ -94,6 +102,12 @@ uint8_t SPI_TransmitReceive(uint8_t *txData, uint8_t *rxData, uint16_t size);
 
 // EEPROM
 void ShowEEPROMInfo(void);
+
+// FSMC
+void FSMC_Init(void);
+
+// LCD
+void tftprintf(const char* fmt, ...);
 	
 #ifdef __cplusplus
 }

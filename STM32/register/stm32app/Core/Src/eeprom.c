@@ -206,4 +206,5 @@ void ShowEEPROMInfo()
     if (0x0023 == id) {
     	MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
     }
+    tftprintf("EEPROM ID %d", id);
 }

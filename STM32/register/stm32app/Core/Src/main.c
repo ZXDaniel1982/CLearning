@@ -74,11 +74,11 @@ static void RCC_Init(void)
 
 int main()
 {
-    uint32_t i = 0;
-    
     RCC_Init();
     GPIO_Init();
     SPI_Init();
+    FSMC_Init();
+
     ShowEEPROMInfo();
     
     while(1) {
