@@ -38,6 +38,8 @@ BUILD_DIR = build
 C_SOURCES =  \
 Core/Src/main.c \
 Core/Src/gpio.c \
+Core/Src/spi.c \
+Core/Src/eeprom.c \
 Core/Src/system_stm32f1xx.c
 
 # ASM sources

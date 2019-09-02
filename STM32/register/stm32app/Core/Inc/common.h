@@ -9,7 +9,9 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
-#define SST_CS_Pin LL_GPIO_PIN_4
+#define UNUSED(x) (void)x
+
+#define SST_CS_Pin GPIO_BSRR_BS4
 #define SST_CS_GPIO_Port GPIOA
 #define Led_Pin GPIO_BSRR_BS5
 #define Led_GPIO_Port GPIOB
@@ -84,6 +86,14 @@ void FLASH_Lock(void);
 void FLASH_Unlock(void);
 bool FLASH_WaitForFinish(void);
 void USART_RxProcess(uint8_t val);
+
+// SPI
+void SPI_Init(void);
+uint8_t SPI_Transmit(uint8_t *data, uint16_t size);
+uint8_t SPI_TransmitReceive(uint8_t *txData, uint8_t *rxData, uint16_t size);
+
+// EEPROM
+void ShowEEPROMInfo(void);
 	
 #ifdef __cplusplus
 }

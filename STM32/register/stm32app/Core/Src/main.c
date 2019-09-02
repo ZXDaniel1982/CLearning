@@ -14,7 +14,7 @@ static void RCC_Init(void)
     SET_BIT(RCC->APB2ENR, RCC_APB2ENR_AFIOEN);
     /* Delay after an RCC peripheral clock enabling */
     tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_AFIOEN);
-    (void)tmpreg;
+    UNUSED(tmpreg);
 
     // µçÔ´½Ó¿ÚÊ±ÖÓÊ¹ÄÜ
     // If you don't set the RCC_APB1ENR .PWREN bit,
@@ -22,7 +22,7 @@ static void RCC_Init(void)
     SET_BIT(RCC->APB1ENR, RCC_APB1ENR_PWREN);
     /* Delay after an RCC peripheral clock enabling */
     tmpreg = READ_BIT(RCC->APB1ENR, RCC_APB1ENR_PWREN);
-    (void)tmpreg;
+    UNUSED(tmpreg);
 
     NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 
@@ -78,11 +78,10 @@ int main()
     
     RCC_Init();
     GPIO_Init();
+    SPI_Init();
+    ShowEEPROMInfo();
     
     while(1) {
-        for (i = 0; i < 7200000; ++i) {}
-        MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, 0);
-        for (i = 0; i < 7200000; ++i) {}
-        MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
+
     }
 }
