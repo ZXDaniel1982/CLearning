@@ -109,6 +109,7 @@ void ShowEEPROMInfo(void);
 void FSMC_Init(void);
 
 // LCD
+void LCD_Init(void);
 void tftprintf(const char* fmt, ...);
 
 // RTC

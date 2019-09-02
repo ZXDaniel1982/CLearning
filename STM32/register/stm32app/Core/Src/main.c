@@ -93,17 +93,30 @@ static void RCC_Init(void)
 
 int main()
 {
+    uint32_t i;
+
     RCC_Init();
     GPIO_Init();
-    RTC_Init();
-    TIMER_Init();
-    USART_Init();
-    SPI_Init();
+    //RTC_Init();
+    //TIMER_Init();
+    //USART_Init();
+    //SPI_Init();
     FSMC_Init();
+    LCD_Init();
 
-    ShowEEPROMInfo();
+    for (i=0;i<7200000;++i) {}
+
+    //ShowEEPROMInfo();
+    tftprintf("Hello world");
+
+    //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
     
     while(1) {
-
+        for (i=0;i<7200000;++i) {}
+        MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
+        tftprintf("Hello world");
+        for (i=0;i<7200000;++i) {}
+        MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, 0);
+        tftprintf("Hello world");
     }
 }
