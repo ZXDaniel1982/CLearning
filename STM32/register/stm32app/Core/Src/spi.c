@@ -42,15 +42,14 @@ void SPI_Init()
     /*----------------------- SPIx CR1 & CR2 Configuration ---------------------*/
     /* Configure : SPI Mode, Communication Mode, Data size, Clock polarity and phase, NSS management,
         Communication speed, First bit and CRC calculation state */
-    WRITE_REG(SPI1->CR1, (SPI_CR1_MSTR | SPI_CR1_SSI | SPI_CR1_CPOL |
-                SPI_CR1_CPHA | SPI_CR1_SSM | SPI_CR1_BR_1));
+    MODIFY_REG(SPI1->CR1, (SPI_CR1_CPHA | SPI_CR1_CPOL | SPI_CR1_MSTR | SPI_CR1_BR | SPI_CR1_LSBFIRST |
+                SPI_CR1_SSI | SPI_CR1_SSM | SPI_CR1_RXONLY | SPI_CR1_DFF | SPI_CR1_CRCNEXT |
+                SPI_CR1_CRCEN | SPI_CR1_BIDIOE | SPI_CR1_BIDIMODE),
+                (SPI_CR1_MSTR | SPI_CR1_SSI | SPI_CR1_CPOL | SPI_CR1_CPHA | SPI_CR1_SSM | SPI_CR1_BR_1 |
+                SPI_CR1_BR_0));
 
     /* Configure : NSS management */
-    WRITE_REG(SPI1->CR2, ((SPI_CR1_SSM >> 16U) & SPI_CR2_SSOE));
-
-    /*---------------------------- SPIx CRCPOLY Configuration ------------------*/
-    /* Configure : CRC Polynomial */
-    WRITE_REG(SPI1->CRCPR, 7);
+    MODIFY_REG(SPI1->CR2, SPI_CR2_SSOE, (SPI_CR1_SSM >> 16U));
 
     CLEAR_BIT(SPI1->I2SCFGR, SPI_I2SCFGR_I2SMOD);
 
