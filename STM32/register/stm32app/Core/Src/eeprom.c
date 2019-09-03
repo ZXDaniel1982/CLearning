@@ -203,8 +203,8 @@ void ShowEEPROMInfo()
     for (i=0;i<7200000;++i) {}
 
     uint16_t id = SPI_Flash_ReadID();
-    if (0x0023 == id) {
+    if (0x0022 == id) {
     	MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
     }
-    tftprintf("EEPROM ID %d", id);
+    tftprintf("EEPROM ID %x", id);
 }

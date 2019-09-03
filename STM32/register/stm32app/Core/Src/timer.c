@@ -48,15 +48,26 @@ void TIMER_Init()
 
 void TIM1_UP_IRQHandler(void)
 {
+    //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
     if ((TIM1->SR & TIM_SR_UIF) && (TIM1->DIER & TIM_DIER_UIE)) {
         TIM1->DIER = ~TIM_DIER_UIE;
+        //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
     }
 }
 
 void TIM2_IRQHandler(void)
 {
+    static uint8_t flag = 0;
+    //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
     if ((TIM2->SR & TIM_SR_UIF) && (TIM2->DIER & TIM_DIER_UIE)) {
         TIM2->DIER = ~TIM_DIER_UIE;
+        if (flag) {
+            flag = 0;
+            MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
+        } else {
+            flag = 1;
+            MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, 0);
+        }
     }
 }
 
