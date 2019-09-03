@@ -4,14 +4,24 @@
 
 void RTC_Init()
 {
+    __IO uint32_t tmpreg;
+
+    SET_BIT(PWR->CR, PWR_CR_DBP);
+    SET_BIT(RCC->APB1ENR, RCC_APB1ENR_BKPEN);
+    /* Delay after an RCC peripheral clock enabling */
+    tmpreg = READ_BIT(RCC->APB1ENR, RCC_APB1ENR_BKPEN);
+    (void)tmpreg;
+
+    SET_BIT(RCC->BDCR, RCC_BDCR_RTCEN);
+
     CLEAR_BIT(RTC->CRL, RTC_CRL_RSF);
     while (READ_BIT(RTC->CRL, RTC_CRL_RSF)) {}
 
-	MODIFY_REG(RTC->PRLH, RTC_PRLH_PRL, (0xFFFFFFFFU >> 16));
-	MODIFY_REG(RTC->PRLL, RTC_PRLL_PRL, (0xFFFFFFFFU & RTC_PRLL_PRL));
+    MODIFY_REG(RTC->PRLH, RTC_PRLH_PRL, (0xFFFFFFFFU >> 16));
+    MODIFY_REG(RTC->PRLL, RTC_PRLL_PRL, (0xFFFFFFFFU & RTC_PRLL_PRL));
 
-	while (!READ_BIT(RTC->CRL, RTC_CRL_RTOFF)) {}
-	SET_BIT(RTC->CRL, RTC_CRL_CNF);
+    while (!READ_BIT(RTC->CRL, RTC_CRL_RTOFF)) {}
+    SET_BIT(RTC->CRL, RTC_CRL_CNF);
 
     uint32_t time = ((uint32_t)16 * 3600U) + ((uint32_t)50 * 60U);
     /* Set RTC COUNTER MSB word */

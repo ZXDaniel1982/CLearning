@@ -22,7 +22,6 @@ static void RCC_Init(void)
     tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_TIM1EN);
     UNUSED(tmpreg);
 
-    uint32_t pFLatency = (uint32_t)(FLASH->ACR & FLASH_ACR_LATENCY);
     uint32_t uwTimclock = (SystemCoreClock >> APBPrescTable[(RCC->CFGR & RCC_CFGR_PPRE2) >> RCC_CFGR_PPRE2_Pos]);
     uint32_t uwPrescalerValue = (uint32_t) ((uwTimclock / 1000000) - 1);
 
@@ -38,9 +37,6 @@ static void RCC_Init(void)
     TIM1->EGR = TIM_EGR_UG;
 
     TIM1->DIER |= TIM_DIER_UIE;
-
-    uint32_t tmpsmcr;
-    tmpsmcr = TIM1->SMCR & TIM_SMCR_SMS;
     TIM1->CR1 |= TIM_CR1_CEN;
 
     // ¸¨Öú¹¦ÄÜIOÊ±ÖÓÊ¹ÄÜ
