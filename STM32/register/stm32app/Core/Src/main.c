@@ -54,21 +54,29 @@ int main()
     RCC_Init();
     GPIO_Init();
     //RTC_Init();
-    TIMER_Init();
-    USART_Init();
-    SPI_Init();
+    //TIMER_Init();
+    //USART_Init();
+    //SPI_Init();
     FSMC_Init();
     LCD_Init();
 
     for (i=0;i<7200000;++i) {}
+    TIMER_Init();
 
-    ShowEEPROMInfo();
+    //ShowEEPROMInfo();
     tftprintf("Hello world");
+    tftprintf("APB1ENR %08x", RCC->APB1ENR);
+    tftprintf("CR1 %08x", TIM2->CR1);
+    tftprintf("CR2 %08x", TIM2->CR1);
+    tftprintf("DIER %08x", TIM2->DIER);
+    tftprintf("EGR %08x", TIM2->EGR);
 
-    //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
+    MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
     
     while(1) {
-        ShowEEPROMInfo();
+        //for (i=0;i<7200000;++i) {}
+        //tftprintf("SR %08x", TIM2->SR);
+        //ShowEEPROMInfo();
         //for (i=0;i<7200000;++i) {}
         //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
         //tftprintf("Hello world %x", SCB->VTOR);
