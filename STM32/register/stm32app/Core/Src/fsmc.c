@@ -34,24 +34,6 @@ static const GPIO_PINS_t GPIO_PINS[] = {
 
 void FSMC_Init()
 {
-    // HAL_SRAM_MspInit(hsram);
-    //__IO uint32_t tmpreg;
-
-    //SET_BIT(RCC->AHBENR, RCC_AHBENR_FSMCEN);
-    /* Delay after an RCC peripheral clock enabling */
-    //tmpreg = READ_BIT(RCC->AHBENR, RCC_AHBENR_FSMCEN);
-    //UNUSED(tmpreg);
-
-    //SET_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPDEN);
-    /* Delay after an RCC peripheral clock enabling */
-    //tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPDEN);
-    //UNUSED(tmpreg);
-
-    //SET_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPEEN);
-    /* Delay after an RCC peripheral clock enabling */
-    //tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPEEN);
-    //UNUSED(tmpreg);
-
     MODIFY_REG(GPIOD->CRH, (GPIO_CRH_CNF13 | GPIO_CRH_MODE13), GPIO_CRH_MODE13);
     MODIFY_REG(GPIOE->CRL, (GPIO_CRL_CNF1 | GPIO_CRL_MODE1), GPIO_CRL_MODE1_1);
     MODIFY_REG(GPIOE->CRL, (GPIO_CRL_CNF7 | GPIO_CRL_MODE7), (GPIO_CRL_CNF7_1 | GPIO_CRL_MODE7));

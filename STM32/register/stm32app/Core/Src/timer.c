@@ -37,14 +37,14 @@ static void TIMERx_Init(TIM_TypeDef *TIMx, uint32_t Periphs, IRQn_Type IRQn)
 
 void TIMER_Init()
 {
-    //TIMERx_Init(TIM1, RCC_APB2ENR_TIM1EN, TIM1_UP_IRQn);
+    TIMERx_Init(TIM1, RCC_APB2ENR_TIM1EN, TIM1_UP_IRQn);
     TIMERx_Init(TIM2, RCC_APB1ENR_TIM2EN, TIM2_IRQn);
-    //TIMERx_Init(TIM3, RCC_APB1ENR_TIM3EN, TIM3_IRQn);
-    //TIMERx_Init(TIM4, RCC_APB1ENR_TIM4EN, TIM4_IRQn);
-    //TIMERx_Init(TIM5, RCC_APB1ENR_TIM5EN, TIM5_IRQn);
-    //TIMERx_Init(TIM6, RCC_APB1ENR_TIM6EN, TIM6_IRQn);
-    ////TIMERx_Init(TIM7, RCC_APB1ENR_TIM7EN, TIM7_IRQn);
-    //TIMERx_Init(TIM8, RCC_APB2ENR_TIM8EN, TIM8_UP_IRQn);
+    TIMERx_Init(TIM3, RCC_APB1ENR_TIM3EN, TIM3_IRQn);
+    TIMERx_Init(TIM4, RCC_APB1ENR_TIM4EN, TIM4_IRQn);
+    TIMERx_Init(TIM5, RCC_APB1ENR_TIM5EN, TIM5_IRQn);
+    TIMERx_Init(TIM6, RCC_APB1ENR_TIM6EN, TIM6_IRQn);
+    TIMERx_Init(TIM7, RCC_APB1ENR_TIM7EN, TIM7_IRQn);
+    TIMERx_Init(TIM8, RCC_APB2ENR_TIM8EN, TIM8_UP_IRQn);
 }
 
 void TIM1_UP_IRQHandler(void)
@@ -54,16 +54,7 @@ void TIM1_UP_IRQHandler(void)
 
 void TIM2_IRQHandler(void)
 {
-    static uint8_t flag = 0;
-    if (flag) {
-        flag = 0;
-        MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
-    } else {
-        MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, 0);
-        flag = 1;
-    }
     CLEAR_BIT(TIM2->SR, TIM_SR_UIF);
-
 }
 
 void TIM3_IRQHandler(void)

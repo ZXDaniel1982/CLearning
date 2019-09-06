@@ -15,8 +15,6 @@ uint8_t rxCnt = 0;
 
 void USART_Init()
 {
-    NVIC_EnableIRQ(USART1_IRQn);
-
     if (READ_BIT(USART1->CR1, USART_CR1_UE) != (USART_CR1_UE)) {
         MODIFY_REG(USART1->CR1,
                (USART_CR1_M | USART_CR1_PCE | USART_CR1_PS | USART_CR1_TE | USART_CR1_RE),
@@ -34,6 +32,8 @@ void USART_Init()
         
     SET_BIT(USART1->CR1, USART_CR1_UE);
     SET_BIT(USART1->CR1, (USART_CR1_RXNEIE | USART_CR1_PEIE));
+
+    NVIC_EnableIRQ(USART1_IRQn);
 }
 
 static uint32_t IAP_CONV_TO_32(uint8_t *buf)
@@ -317,8 +317,6 @@ void USART1_IRQHandler(void)
     uint8_t buf;
     if((USART1->SR & USART_CR1_RXNEIE) != 0) {
         buf = USART1->DR;
-        UNUSED(USART_RxProcess);
-        while ((USART1->SR &USART_SR_TXE) == 0) {}
-        USART1->DR= buf;
+        USART_RxProcess(buf);
     }
 }
