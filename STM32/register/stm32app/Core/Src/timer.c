@@ -10,24 +10,28 @@ static void TIMERx_Init(TIM_TypeDef *TIMx, uint32_t Periphs, IRQn_Type IRQn)
         SET_BIT(RCC->APB1ENR, Periphs);
     }
 
-    NVIC_EnableIRQ(IRQn);
+    /*清空计数器的值*/
+    WRITE_REG(TIMx->CNT, 0);
+    WRITE_REG(TIMx->ARR, 2000-(TIM_CCMR1_IC1F_0 << 16U));
+    WRITE_REG(TIMx->PSC, 36000-(TIM_CCMR1_IC1F_0 << 16U));
 
-    uint32_t i;
-    for (i=0;i<7200000;++i) {}
+    WRITE_REG(TIMx->CR1, 0); //将控制寄存器1清空
 
+    SET_BIT(TIMx->CR1, TIM_CR1_URS); //设置事件更新请求源
 
-    WRITE_REG(TIMx->ARR, 2000-1);
-    WRITE_REG(TIMx->PSC, 36000-1);
+    /*设置无缓冲功能*/
+    CLEAR_BIT(TIMx->CR1, TIM_CR1_ARPE);
 
-    //tftprintf("EGR %08x", TIM2->EGR);
-    //SET_BIT(TIMx->EGR, TIM_EGR_UG);
-    //tftprintf("EGR %08x", TIM2->EGR);
-
+    /*设置循环模式*/
     CLEAR_BIT(TIMx->CR1, TIM_CR1_OPM);
-    SET_BIT(TIMx->CR1, TIM_CR1_URS);
 
+    /*允许更新中断使能*/
     SET_BIT(TIMx->DIER, TIM_DIER_UIE);
 
+    /*使能基本定时器中断*/
+    NVIC_EnableIRQ(IRQn);
+
+    /*开启计数器使能*/
     SET_BIT(TIMx->CR1, TIM_CR1_CEN);
 }
 
