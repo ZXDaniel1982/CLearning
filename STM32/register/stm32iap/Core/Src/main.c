@@ -72,56 +72,6 @@ static void RCC_Init(void)
     SystemCoreClock = 72000000;
 } 
 
-static void TIMER_Init(TIM_TypeDef *TIMx, uint32_t Periphs, IRQn_Type IRQn)
-{
-	/*
-		SET_BIT(RCC->APB1ENR, RCC_APB1ENR_TIM2EN);
-		NVIC_SetPriority(TIM2_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
-    NVIC_EnableIRQ(TIM2_IRQn);
-
-    WRITE_REG(TIM2->ARR, 2000-(TIM_CCMR1_IC1F_0 << 16U));
-    WRITE_REG(TIM2->PSC, 36000-(TIM_CCMR1_IC1F_0 << 16U));
-
-    //tftprintf("EGR %08x", TIM2->EGR);
-    //SET_BIT(TIMx->EGR, TIM_EGR_UG);
-    //tftprintf("EGR %08x", TIM2->EGR);
-
-    CLEAR_BIT(TIM2->CR1, TIM_CR1_OPM);
-    SET_BIT(TIM2->CR1, TIM_CR1_URS);
-	  CLEAR_BIT(TIM2->SMCR, TIM_SMCR_MSM);
-
-    SET_BIT(TIM2->DIER, TIM_DIER_UIE);
-
-    SET_BIT(TIM2->CR1, TIM_CR1_CEN);*/
-	//开启基本定时器6（TIM6）的时钟
-		SET_BIT(RCC->APB1ENR, Periphs);
- 
-    /*清空计数器的值*/
-    WRITE_REG(TIMx->CNT, 0);
-    WRITE_REG(TIMx->ARR, 2000-(TIM_CCMR1_IC1F_0 << 16U));
-    WRITE_REG(TIMx->PSC, 36000-(TIM_CCMR1_IC1F_0 << 16U));
-
-    WRITE_REG(TIMx->CR1, 0); //将控制寄存器1清空
-
-    SET_BIT(TIMx->CR1, TIM_CR1_URS); //设置事件更新请求源
-
-    /*设置无缓冲功能*/
-    CLEAR_BIT(TIMx->CR1, TIM_CR1_ARPE);
-
-    /*设置循环模式*/
-    CLEAR_BIT(TIMx->CR1, TIM_CR1_OPM);
-
-    /*允许更新中断使能*/
-    SET_BIT(TIMx->DIER, TIM_DIER_UIE);
-
-    /*使能基本定时器中断*/
-    NVIC_EnableIRQ(IRQn);
-
-    /*开启计数器使能*/
-    SET_BIT(TIMx->CR1, TIM_CR1_CEN);
-
-}
-
 int main()
 {
 	  uint8_t buf = 0;
@@ -129,7 +79,6 @@ int main()
 	  RCC_Init();
     GPIO_Init();
 	  USART_Init();
-	  TIMER_Init(TIM2, RCC_APB1ENR_TIM2EN, TIM2_IRQn);
 	
     while(1) {
 				if((USART1->SR & USART_CR1_RXNEIE) != 0) {
@@ -137,23 +86,4 @@ int main()
 					  USART_RxProcess(buf);
 				}
 		}
-}
-
-void TIM2_IRQHandler(void)
-{
-    static uint8_t flag = 0;
-		if(TIM2->SR & (1<<0))      //溢出中断
-    {
-        TIM2->SR &= ~(1<<0);  //清除中断标志位
-        //执行相应操作
-        if (flag) {
-						flag = 0;
-						MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
-				} else {
-						MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, 0);
-						flag = 1;
-				}
-    }
-
-
 }

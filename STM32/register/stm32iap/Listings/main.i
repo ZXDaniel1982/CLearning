@@ -7034,56 +7034,6 @@ static void RCC_Init(void)
     SystemCoreClock = 72000000;
 } 
 
-static void TIMER_Init(TIM_TypeDef *TIMx, uint32_t Periphs, IRQn_Type IRQn)
-{
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-	
-		((((RCC_TypeDef *)((0x40000000U + 0x00020000U) + 0x00001000U))->APB1ENR) |= (Periphs));
- 
-     
-    ((TIMx->CNT) = (0));
-    ((TIMx->ARR) = (2000-((0x1U << (4U)) << 16U)));
-    ((TIMx->PSC) = (36000-((0x1U << (4U)) << 16U)));
-
-    ((TIMx->CR1) = (0)); 
-
-    ((TIMx->CR1) |= ((0x1U << (2U)))); 
-
-     
-    ((TIMx->CR1) &= ~((0x1U << (7U))));
-
-     
-    ((TIMx->CR1) &= ~((0x1U << (3U))));
-
-     
-    ((TIMx->DIER) |= ((0x1U << (0U))));
-
-     
-    NVIC_EnableIRQ(IRQn);
-
-     
-    ((TIMx->CR1) |= ((0x1U << (0U))));
-
-}
-
 int main()
 {
 	  uint8_t buf = 0;
@@ -7091,7 +7041,6 @@ int main()
 	  RCC_Init();
     GPIO_Init();
 	  USART_Init();
-	  TIMER_Init(((TIM_TypeDef *)(0x40000000U + 0x00000000U)), (0x1U << (0U)), TIM2_IRQn);
 	
     while(1) {
 				if((((USART_TypeDef *)((0x40000000U + 0x00010000U) + 0x00003800U))->SR & (0x1U << (5U))) != 0) {
@@ -7099,23 +7048,4 @@ int main()
 					  USART_RxProcess(buf);
 				}
 		}
-}
-
-void TIM2_IRQHandler(void)
-{
-    static uint8_t flag = 0;
-		if(((TIM_TypeDef *)(0x40000000U + 0x00000000U))->SR & (1<<0))      
-    {
-        ((TIM_TypeDef *)(0x40000000U + 0x00000000U))->SR &= ~(1<<0);  
-        
-        if (flag) {
-						flag = 0;
-						(((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->ODR)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->ODR))) & (~((0x1U << (5U))))) | ((0x1U << (5U))))));
-				} else {
-						(((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->ODR)) = ((((((((GPIO_TypeDef *)((0x40000000U + 0x00010000U) + 0x00000C00U))->ODR))) & (~((0x1U << (5U))))) | (0))));
-						flag = 1;
-				}
-    }
-
-
 }
