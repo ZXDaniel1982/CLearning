@@ -2,48 +2,86 @@
 #include "stm32f103xe.h"
 #include "common.h"
 
-static void Led_Port_Init()
+typedef struct
 {
-    __IO uint32_t tmpreg;
+    GPIO_TypeDef *port;
+    uint32_t pin;
+    uint32_t clear;
+    uint32_t set;
+} GPIO_PINS_t;
+static const GPIO_PINS_t GPIO_PINS_L[] = {
+    {Led_GPIO_Port, Led_Pin, (GPIO_CRL_CNF5 | GPIO_CRL_MODE5), GPIO_CRL_MODE5_1},
+    {SST_CS_GPIO_Port, SST_CS_Pin, (GPIO_CRL_CNF4 | GPIO_CRL_MODE4), GPIO_CRL_MODE4},
 
-    // IO¶Ë¿ÚBÊ±ÖÓÊ¹ÄÜ
-    SET_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPBEN);
-    /* Delay after an RCC peripheral clock enabling */
-    tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPBEN);
-    UNUSED(tmpreg);
+    // spi1
+    {GPIOA, GPIO_BSRR_BS5, (GPIO_CRL_CNF5 | GPIO_CRL_MODE5), (GPIO_CRL_CNF5_1 | GPIO_CRL_MODE5)},
+    {GPIOA, GPIO_BSRR_BS6, (GPIO_CRL_CNF6 | GPIO_CRL_MODE6), GPIO_CRL_CNF6_0},
+    {GPIOA, GPIO_BSRR_BS7, (GPIO_CRL_CNF7 | GPIO_CRL_MODE7), (GPIO_CRL_CNF7_1 | GPIO_CRL_MODE7)},
 
-    // ¶Ë¿ÚÎ»Çå³ý¼Ä´æÆ÷  Çå³ý¶Ë¿ÚxµÄÎ»y  1£ºÇå³ý¶ÔÓ¦µÄODRyÎ»Îª0
-    WRITE_REG(Led_GPIO_Port->BRR, Led_Pin);
+    // fsmc
+    {GPIOD, GPIO_BSRR_BS0, (GPIO_CRL_CNF0 | GPIO_CRL_MODE0), (GPIO_CRL_CNF0_1 | GPIO_CRL_MODE0)},
+    {GPIOD, GPIO_BSRR_BS1, (GPIO_CRL_CNF1 | GPIO_CRL_MODE1), (GPIO_CRL_CNF1_1 | GPIO_CRL_MODE1)},
+    {GPIOD, GPIO_BSRR_BS4, (GPIO_CRL_CNF4 | GPIO_CRL_MODE4), (GPIO_CRL_CNF4_1 | GPIO_CRL_MODE4)},
+    {GPIOD, GPIO_BSRR_BS5, (GPIO_CRL_CNF5 | GPIO_CRL_MODE5), (GPIO_CRL_CNF5_1 | GPIO_CRL_MODE5)},
+    {GPIOD, GPIO_BSRR_BS7, (GPIO_CRL_CNF7 | GPIO_CRL_MODE7), (GPIO_CRL_CNF7_1 | GPIO_CRL_MODE7)},
+    {GPIOE, GPIO_BSRR_BS1, (GPIO_CRL_CNF1 | GPIO_CRL_MODE1), GPIO_CRL_MODE1_1},
+    {GPIOE, GPIO_BSRR_BS7, (GPIO_CRL_CNF7 | GPIO_CRL_MODE7), (GPIO_CRL_CNF7_1 | GPIO_CRL_MODE7)},
+};
+static const GPIO_PINS_t GPIO_PINS_H[] = {
+    // usart1
+    {GPIOA, GPIO_BSRR_BS9, (GPIO_CRH_CNF9 | GPIO_CRH_MODE9), (GPIO_CRH_CNF9_1 | GPIO_CRH_MODE9)},
+    {GPIOA, GPIO_BSRR_BS10, (GPIO_CRH_CNF10 | GPIO_CRH_MODE10), GPIO_CRH_CNF10_0},
 
-	  // ¶Ë¿ÚÅäÖÃµÍ¼Ä´æÆ÷  CNF 00£ºÍ¨ÓÃÍÆÍìÊä³öÄ£Ê½  MODE  10 : Êä³öÄ£Ê½£¬×î´óËÙ¶È2MHz
-    MODIFY_REG(Led_GPIO_Port->CRL, (GPIO_CRL_CNF5 | GPIO_CRL_MODE5), GPIO_CRL_MODE5_1);
+    // fsmc
+    {GPIOD, GPIO_BSRR_BS8, (GPIO_CRH_CNF8 | GPIO_CRH_MODE8), (GPIO_CRH_CNF8_1 | GPIO_CRH_MODE8)},
+    {GPIOD, GPIO_BSRR_BS9, (GPIO_CRH_CNF9 | GPIO_CRH_MODE9), (GPIO_CRH_CNF9_1 | GPIO_CRH_MODE9)},
+    {GPIOD, GPIO_BSRR_BS10, (GPIO_CRH_CNF10 | GPIO_CRH_MODE10), (GPIO_CRH_CNF10_1 | GPIO_CRH_MODE10)},
+    {GPIOD, GPIO_BSRR_BS11, (GPIO_CRH_CNF11 | GPIO_CRH_MODE11), (GPIO_CRH_CNF11_1 | GPIO_CRH_MODE11)},
+    {GPIOD, GPIO_BSRR_BS13, (GPIO_CRH_CNF13 | GPIO_CRH_MODE13), (GPIO_CRH_CNF13_1 | GPIO_CRH_MODE13)},
+    {GPIOD, GPIO_BSRR_BS14, (GPIO_CRH_CNF14 | GPIO_CRH_MODE14), (GPIO_CRH_CNF14_1 | GPIO_CRH_MODE14)},
+    {GPIOD, GPIO_BSRR_BS15, (GPIO_CRH_CNF15 | GPIO_CRH_MODE15), (GPIO_CRH_CNF15_1 | GPIO_CRH_MODE15)},
+    {GPIOE, GPIO_BSRR_BS8, (GPIO_CRH_CNF8 | GPIO_CRH_MODE8), (GPIO_CRH_CNF8_1 | GPIO_CRH_MODE8)},
+    {GPIOE, GPIO_BSRR_BS9, (GPIO_CRH_CNF9 | GPIO_CRH_MODE9), (GPIO_CRH_CNF9_1 | GPIO_CRH_MODE9)},
+    {GPIOE, GPIO_BSRR_BS10, (GPIO_CRH_CNF10 | GPIO_CRH_MODE10), (GPIO_CRH_CNF10_1 | GPIO_CRH_MODE10)},
+    {GPIOE, GPIO_BSRR_BS11, (GPIO_CRH_CNF11 | GPIO_CRH_MODE11), (GPIO_CRH_CNF11_1 | GPIO_CRH_MODE11)},
+    {GPIOE, GPIO_BSRR_BS12, (GPIO_CRH_CNF12 | GPIO_CRH_MODE12), (GPIO_CRH_CNF12_1 | GPIO_CRH_MODE12)},
+    {GPIOE, GPIO_BSRR_BS13, (GPIO_CRH_CNF13 | GPIO_CRH_MODE13), (GPIO_CRH_CNF13_1 | GPIO_CRH_MODE13)},
+    {GPIOE, GPIO_BSRR_BS14, (GPIO_CRH_CNF14 | GPIO_CRH_MODE14), (GPIO_CRH_CNF14_1 | GPIO_CRH_MODE14)},
+    {GPIOE, GPIO_BSRR_BS15, (GPIO_CRH_CNF15 | GPIO_CRH_MODE15), (GPIO_CRH_CNF15_1 | GPIO_CRH_MODE15)},
+};
 
-    // ¶Ë¿ÚÊä³öÊý¾Ý¼Ä´æÆ÷  
-    MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, 0);
-}
-
-static void SST_CS_Port_Init()
+static void GPIOxL_Init(GPIO_TypeDef *GPIOx, uint32_t pin, uint32_t clear, uint32_t set)
 {
-    __IO uint32_t tmpreg;
-
-    // IO¶Ë¿ÚBÊ±ÖÓÊ¹ÄÜ
-    SET_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPAEN);
-    /* Delay after an RCC peripheral clock enabling */
-    tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPAEN);
-    UNUSED(tmpreg);
-
     // ¶Ë¿ÚÎ»Çå³ý¼Ä´æÆ÷  Çå³ý¶Ë¿ÚxµÄÎ»y  1£ºÇå³ý¶ÔÓ¦µÄODRyÎ»Îª0
-    WRITE_REG(SST_CS_GPIO_Port->BRR, SST_CS_Pin);
+    WRITE_REG(GPIOx->BRR, pin);
 
       // ¶Ë¿ÚÅäÖÃµÍ¼Ä´æÆ÷  CNF 00£ºÍ¨ÓÃÍÆÍìÊä³öÄ£Ê½  MODE  10 : Êä³öÄ£Ê½£¬×î´óËÙ¶È2MHz
-    MODIFY_REG(SST_CS_GPIO_Port->CRL, (GPIO_CRL_CNF4 | GPIO_CRL_MODE4), GPIO_CRL_MODE4);
+    MODIFY_REG(GPIOx->CRL, clear, set);
 
     // ¶Ë¿ÚÊä³öÊý¾Ý¼Ä´æÆ÷  
-    MODIFY_REG(SST_CS_GPIO_Port->ODR, SST_CS_Pin, 0);
+    MODIFY_REG(GPIOx->ODR, pin, 0);
+}
+
+static void GPIOxH_Init(GPIO_TypeDef *GPIOx, uint32_t pin, uint32_t clear, uint32_t set)
+{
+    // ¶Ë¿ÚÎ»Çå³ý¼Ä´æÆ÷  Çå³ý¶Ë¿ÚxµÄÎ»y  1£ºÇå³ý¶ÔÓ¦µÄODRyÎ»Îª0
+    WRITE_REG(GPIOx->BRR, pin);
+
+      // ¶Ë¿ÚÅäÖÃµÍ¼Ä´æÆ÷  CNF 00£ºÍ¨ÓÃÍÆÍìÊä³öÄ£Ê½  MODE  10 : Êä³öÄ£Ê½£¬×î´óËÙ¶È2MHz
+    MODIFY_REG(GPIOx->CRH, clear, set);
+
+    // ¶Ë¿ÚÊä³öÊý¾Ý¼Ä´æÆ÷  
+    MODIFY_REG(GPIOx->ODR, pin, 0);
 }
 
 void GPIO_Init()
 {
-    Led_Port_Init();
-    SST_CS_Port_Init();
+    uint8_t i;
+
+    for (i=0;i<NUM_ROWS(GPIO_PINS_L);++i) {
+        GPIOxL_Init(GPIO_PINS_L[i].port, GPIO_PINS_L[i].pin, GPIO_PINS_L[i].clear, GPIO_PINS_L[i].set);
+    }
+    for (i=0;i<NUM_ROWS(GPIO_PINS_H);++i) {
+        GPIOxH_Init(GPIO_PINS_H[i].port, GPIO_PINS_H[i].pin, GPIO_PINS_H[i].clear, GPIO_PINS_H[i].set);
+    }
 }

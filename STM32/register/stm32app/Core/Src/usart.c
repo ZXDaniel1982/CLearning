@@ -15,33 +15,6 @@ uint8_t rxCnt = 0;
 
 void USART_Init()
 {
-    __IO uint32_t tmpreg;
-    
-      // 1： USART1时钟开启。
-    SET_BIT(RCC->APB2ENR, RCC_APB2ENR_USART1EN);
-    /* Delay after an RCC peripheral clock enabling */
-    tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_USART1EN);
-    (void)tmpreg;
-
-      // 1： IO端口A时钟开启
-    SET_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPAEN);
-    /* Delay after an RCC peripheral clock enabling */
-    tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPAEN);
-    (void)tmpreg;
-
-    // 端口配置寄存器  CNF 10：复用功能推挽输出模式  MODE  11：输出模式，最大速度50MHz
-    MODIFY_REG(GPIOA->CRH, (GPIO_CRH_CNF9 | GPIO_CRH_MODE9), (GPIO_CRH_CNF9_1 | GPIO_CRH_MODE9));
-
-    // 端口输出数据寄存器  
-    MODIFY_REG(GPIOA->ODR, GPIO_BSRR_BS9, 0);
-
-    // 端口配置寄存器  CNF 01：浮空输入模式(复位后的状态)  MODE  00：输入模式(复位后的状态)
-    MODIFY_REG(GPIOA->CRH, (GPIO_CRH_CNF10 | GPIO_CRH_MODE10), GPIO_CRH_CNF10_0);
-
-    // 端口输出数据寄存器  
-    MODIFY_REG(GPIOA->ODR, GPIO_BSRR_BS10, 0);
-
-    NVIC_SetPriority(USART1_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
     NVIC_EnableIRQ(USART1_IRQn);
 
     if (READ_BIT(USART1->CR1, USART_CR1_UE) != (USART_CR1_UE)) {
@@ -59,7 +32,8 @@ void USART_Init()
     CLEAR_BIT(USART1->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN));
     CLEAR_BIT(USART1->CR3, (USART_CR3_SCEN | USART_CR3_IREN | USART_CR3_HDSEL));
         
-    USART1->CR1 |= USART_CR1_UE;
+    SET_BIT(USART1->CR1, USART_CR1_UE);
+    SET_BIT(USART1->CR1, (USART_CR1_RXNEIE | USART_CR1_PEIE));
 }
 
 static uint32_t IAP_CONV_TO_32(uint8_t *buf)
@@ -343,6 +317,8 @@ void USART1_IRQHandler(void)
     uint8_t buf;
     if((USART1->SR & USART_CR1_RXNEIE) != 0) {
         buf = USART1->DR;
-        USART_RxProcess(buf);
+        UNUSED(USART_RxProcess);
+        while ((USART1->SR &USART_SR_TXE) == 0) {}
+        USART1->DR= buf;
     }
 }

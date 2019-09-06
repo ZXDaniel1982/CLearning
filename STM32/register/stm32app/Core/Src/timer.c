@@ -4,90 +4,72 @@
 
 static void TIMERx_Init(TIM_TypeDef *TIMx, uint32_t Periphs, IRQn_Type IRQn)
 {
-    __IO uint32_t tmpreg;
+    if ((TIMx == TIM1) || (TIMx == TIM8)) {
+        SET_BIT(RCC->APB2ENR, Periphs);
+    } else {
+        SET_BIT(RCC->APB1ENR, Periphs);
+    }
 
-    SET_BIT(RCC->APB2ENR, Periphs);
-    /* Delay after an RCC peripheral clock enabling */
-    tmpreg = READ_BIT(RCC->APB2ENR, Periphs);
-    UNUSED(tmpreg);
-
-    NVIC_SetPriority(IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
     NVIC_EnableIRQ(IRQn);
-
-    uint32_t tmpcr1;
-    tmpcr1 = READ_REG(TIMx->CR1);
-    MODIFY_REG(tmpcr1, (TIM_CR1_DIR | TIM_CR1_CMS), 0);
-    MODIFY_REG(tmpcr1, TIM_CR1_CKD, 0);
-    WRITE_REG(TIMx->CR1, tmpcr1);
 
     WRITE_REG(TIMx->ARR, 2000-(TIM_CCMR1_IC1F_0 << 16U));
     WRITE_REG(TIMx->PSC, 36000-(TIM_CCMR1_IC1F_0 << 16U));
 
-    if (TIMx == TIM8) {
-        WRITE_REG(TIMx->RCR, 0);
-    }
-
     SET_BIT(TIMx->EGR, TIM_EGR_UG);
+    SET_BIT(TIMx->CR1, TIM_CR1_URS);
 
-    CLEAR_BIT(TIMx->CR1, TIM_CR1_ARPE);
-    MODIFY_REG(TIMx->SMCR, TIM_SMCR_SMS | TIM_SMCR_ECE, 0);
-    MODIFY_REG(TIMx->CR2, TIM_CR2_MMS, 0);
-    CLEAR_BIT(TIMx->SMCR, TIM_SMCR_MSM);
-
-    TIMx->DIER |= TIM_DIER_UIE;
-    TIMx->CR1 |= TIM_CR1_CEN;
+    SET_BIT(TIMx->DIER, TIM_DIER_UIE);
+    SET_BIT(TIMx->CR1, TIM_CR1_CEN);
 }
 
 void TIMER_Init()
 {
+    TIMERx_Init(TIM1, RCC_APB2ENR_TIM1EN, TIM1_UP_IRQn);
     TIMERx_Init(TIM2, RCC_APB1ENR_TIM2EN, TIM2_IRQn);
     TIMERx_Init(TIM3, RCC_APB1ENR_TIM3EN, TIM3_IRQn);
     TIMERx_Init(TIM4, RCC_APB1ENR_TIM4EN, TIM4_IRQn);
     TIMERx_Init(TIM5, RCC_APB1ENR_TIM5EN, TIM5_IRQn);
+    TIMERx_Init(TIM6, RCC_APB1ENR_TIM6EN, TIM6_IRQn);
+    TIMERx_Init(TIM7, RCC_APB1ENR_TIM7EN, TIM7_IRQn);
+    TIMERx_Init(TIM8, RCC_APB2ENR_TIM8EN, TIM8_UP_IRQn);
 }
 
 void TIM1_UP_IRQHandler(void)
 {
-    //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
-    if ((TIM1->SR & TIM_SR_UIF) && (TIM1->DIER & TIM_DIER_UIE)) {
-        TIM1->DIER = ~TIM_DIER_UIE;
-        //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
-    }
+    CLEAR_BIT(TIM1->SR, TIM_SR_UIF);
 }
 
 void TIM2_IRQHandler(void)
 {
-    static uint8_t flag = 0;
-    //MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
-    if ((TIM2->SR & TIM_SR_UIF) && (TIM2->DIER & TIM_DIER_UIE)) {
-        TIM2->DIER = ~TIM_DIER_UIE;
-        if (flag) {
-            flag = 0;
-            MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
-        } else {
-            flag = 1;
-            MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, 0);
-        }
-    }
+    CLEAR_BIT(TIM2->SR, TIM_SR_UIF);
 }
 
 void TIM3_IRQHandler(void)
 {
-    if ((TIM3->SR & TIM_SR_UIF) && (TIM3->DIER & TIM_DIER_UIE)) {
-        TIM3->DIER = ~TIM_DIER_UIE;
-    }
+    CLEAR_BIT(TIM3->SR, TIM_SR_UIF);
 }
 
 void TIM4_IRQHandler(void)
 {
-    if ((TIM4->SR & TIM_SR_UIF) && (TIM4->DIER & TIM_DIER_UIE)) {
-        TIM4->DIER = ~TIM_DIER_UIE;
-    }
+    CLEAR_BIT(TIM4->SR, TIM_SR_UIF);
 }
 
 void TIM5_IRQHandler(void)
 {
-    if ((TIM5->SR & TIM_SR_UIF) && (TIM5->DIER & TIM_DIER_UIE)) {
-        TIM5->DIER = ~TIM_DIER_UIE;
-    }
+    CLEAR_BIT(TIM5->SR, TIM_SR_UIF);
+}
+
+void TIM6_IRQHandler(void)
+{
+    CLEAR_BIT(TIM6->SR, TIM_SR_UIF);
+}
+
+void TIM7_IRQHandler(void)
+{
+    CLEAR_BIT(TIM7->SR, TIM_SR_UIF);
+}
+
+void TIM8_UP_IRQHandler(void)
+{
+    CLEAR_BIT(TIM8->SR, TIM_SR_UIF);
 }
