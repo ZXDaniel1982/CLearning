@@ -45,7 +45,17 @@ Core/Src/usart.c \
 Core/Src/eeprom.c \
 Core/Src/fsmc.c \
 Core/Src/lcd.c \
-Core/Src/system_stm32f1xx.c
+Core/Src/adc.c \
+Core/Src/system_stm32f1xx.c \
+FreeRTOS/croutine.c \
+FreeRTOS/event_groups.c \
+FreeRTOS/list.c \
+FreeRTOS/queue.c \
+FreeRTOS/stream_buffer.c \
+FreeRTOS/tasks.c \
+FreeRTOS/timers.c \
+FreeRTOS/portable/MemMang/heap_4.c \
+FreeRTOS/portable/GCC/ARM_CM3/port.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -102,7 +112,9 @@ AS_INCLUDES =
 
 # C includes
 C_INCLUDES =  \
--ICore/Inc
+-ICore/Inc \
+-IFreeRTOS/include \
+-IFreeRTOS/portable/GCC/ARM_CM3 
 
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections

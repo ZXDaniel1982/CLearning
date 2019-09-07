@@ -1,6 +1,7 @@
 #include "stm32f1xx.h"
 #include "stm32f103xe.h"
 #include "common.h"
+#include "FreeRTOS.h"
 
 static void RCC_Init(void)
 {
@@ -45,6 +46,10 @@ static void RCC_Init(void)
     SET_BIT(RCC->APB2ENR, RCC_APB2ENR_USART1EN);
     SET_BIT(RCC->APB2ENR, RCC_APB2ENR_SPI1EN);
     SET_BIT(RCC->AHBENR, RCC_AHBENR_FSMCEN);
+    SET_BIT(RCC->APB1ENR, RCC_APB1ENR_BKPEN);
+
+    //MODIFY_REG(RCC->CFGR, RCC_CFGR_ADCPRE, RCC_CFGR_ADCPRE_DIV8);
+    //SET_BIT(RCC->APB2ENR, RCC_APB2ENR_ADC1EN);
 } 
 
 int main()
@@ -59,10 +64,14 @@ int main()
     FSMC_Init();
     LCD_Init();
     USART_Init();
+    //ADC_Init();
 
     for (i=0;i<7200000;++i) {}
     tftprintf("Hello world");
+
+    vTaskStartScheduler();
     
     while(1) {
+
     }
 }

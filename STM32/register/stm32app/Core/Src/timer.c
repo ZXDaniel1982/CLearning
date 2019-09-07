@@ -2,6 +2,8 @@
 #include "stm32f103xe.h"
 #include "common.h"
 
+uint32_t ulHighFrequencyTimerTicks = 0;
+
 static void TIMERx_Init(TIM_TypeDef *TIMx, uint32_t Periphs, IRQn_Type IRQn)
 {
     if ((TIMx == TIM1) || (TIMx == TIM8)) {
@@ -55,6 +57,7 @@ void TIM1_UP_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
     CLEAR_BIT(TIM2->SR, TIM_SR_UIF);
+    ulHighFrequencyTimerTicks++;
 }
 
 void TIM3_IRQHandler(void)

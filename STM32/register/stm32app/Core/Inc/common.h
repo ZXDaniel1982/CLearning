@@ -115,6 +115,9 @@ void tftprintf(const char* fmt, ...);
 // RTC
 void RTC_Init(void);
 
+// ADC
+void ADC_Init(void);
+
 // Interrupt
 void TIM1_UP_IRQHandler(void);
 void TIM2_IRQHandler(void);

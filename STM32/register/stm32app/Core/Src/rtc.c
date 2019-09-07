@@ -4,14 +4,6 @@
 
 void RTC_Init()
 {
-    __IO uint32_t tmpreg;
-
-    SET_BIT(PWR->CR, PWR_CR_DBP);
-    SET_BIT(RCC->APB1ENR, RCC_APB1ENR_BKPEN);
-    /* Delay after an RCC peripheral clock enabling */
-    tmpreg = READ_BIT(RCC->APB1ENR, RCC_APB1ENR_BKPEN);
-    (void)tmpreg;
-
     SET_BIT(RCC->BDCR, RCC_BDCR_RTCEN);
 
     CLEAR_BIT(RTC->CRL, RTC_CRL_RSF);

@@ -1,6 +1,7 @@
 #include "stm32f1xx.h"
 #include "stm32f103xe.h"
 #include "common.h"
+#include "FreeRTOS.h"
 
 typedef struct
 {
@@ -23,6 +24,8 @@ static const GPIO_PINS_t GPIO_PINS_H[] = {
     {GPIOA, GPIO_BSRR_BS9, (GPIO_CRH_CNF9 | GPIO_CRH_MODE9), (GPIO_CRH_CNF9_1 | GPIO_CRH_MODE9)},
     {GPIOA, GPIO_BSRR_BS10, (GPIO_CRH_CNF10 | GPIO_CRH_MODE10), GPIO_CRH_CNF10_0},
 };
+
+static void LedBlinkTsk(void *arg);
 
 static void GPIOxL_Init(GPIO_TypeDef *GPIOx, uint32_t pin, uint32_t clear, uint32_t set)
 {
@@ -57,5 +60,22 @@ void GPIO_Init()
     }
     for (i=0;i<NUM_ROWS(GPIO_PINS_H);++i) {
         GPIOxH_Init(GPIO_PINS_H[i].port, GPIO_PINS_H[i].pin, GPIO_PINS_H[i].clear, GPIO_PINS_H[i].set);
+    }
+
+    xTaskCreate(LedBlinkTsk, "Led Blink", 128, NULL, 0, NULL);
+}
+
+static void LedBlinkTsk(void *arg)
+{
+    static uint8_t flag = 0;
+    while (1) {
+        vTaskDelay(1000);
+        if (flag) {
+            flag = 0;
+            SET_BIT(Led_GPIO_Port->ODR, Led_Pin);
+        } else {
+            flag = 1;
+            CLEAR_BIT(Led_GPIO_Port->ODR, Led_Pin);
+        }
     }
 }
