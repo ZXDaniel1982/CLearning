@@ -55,7 +55,11 @@ FreeRTOS/stream_buffer.c \
 FreeRTOS/tasks.c \
 FreeRTOS/timers.c \
 FreeRTOS/portable/MemMang/heap_4.c \
-FreeRTOS/portable/GCC/ARM_CM3/port.c
+FreeRTOS/portable/GCC/ARM_CM3/port.c \
+FatFs/diskio.c \
+FatFs/ff.c \
+FatFs/ffsystem.c \
+FatFs/ffunicode.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -114,7 +118,8 @@ AS_INCLUDES =
 C_INCLUDES =  \
 -ICore/Inc \
 -IFreeRTOS/include \
--IFreeRTOS/portable/GCC/ARM_CM3 
+-IFreeRTOS/portable/GCC/ARM_CM3 \
+-IFatFs
 
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections

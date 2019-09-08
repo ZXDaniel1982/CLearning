@@ -2,6 +2,7 @@
 #include "stm32f103xe.h"
 #include "common.h"
 #include "FreeRTOS.h"
+#include "task.h"
 
 static void RCC_Init(void)
 {
@@ -66,6 +67,8 @@ int main()
     USART_Init();
     //ADC_Init();
 
+    EEPROM_Init();
+
     for (i=0;i<7200000;++i) {}
     tftprintf("Hello world");
 
@@ -74,4 +77,9 @@ int main()
     while(1) {
 
     }
+}
+
+void Error_Handle()
+{
+    while (1);
 }

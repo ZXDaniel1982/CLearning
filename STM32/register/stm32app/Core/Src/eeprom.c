@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stddef.h>
+#include <string.h>
 
 #include "stm32f1xx.h"
 #include "stm32f103xe.h"
@@ -26,8 +27,9 @@ static uint8_t rdsr(void);
 static uint16_t SPI_Flash_ReadID(void);
 static void EEPRom_SendByte(uint8_t byte);
 static void EEProm_SectorErrase(unsigned long a1);
-static void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff,
-              uint16_t BlockSize);
+
+uint8_t SST25_buffer[4096];
+uint8_t SST25_vbuffer[4096];
 /*----------------------------------------------------------------------------*/
 /* Private functions                                                           */
 /*----------------------------------------------------------------------------*/
@@ -133,7 +135,7 @@ static void wdis(void)
     wip();
 }
 
-static void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff,
+void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff,
               uint16_t BlockSize)
 {
     uint16_t i = 0, a2;
@@ -172,7 +174,7 @@ static void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff,
     wip();
 }
 
-static void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff,
+void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff,
               unsigned int BlockSize)
 {
     uint16_t i = 0;
@@ -194,17 +196,19 @@ static void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff,
 /*----------------------------------------------------------------------------*/
 /* Public functions                                                           */
 /*----------------------------------------------------------------------------*/
-void ShowEEPROMInfo()
+#define EEPROM_ID 0xbf41
+void EEPROM_Init()
 {
-    UNUSED(SST25_W_BLOCK);
-    UNUSED(SST25_R_BLOCK);
+    uint8_t i;
 
-    uint32_t i;
-    for (i=0;i<7200000;++i) {}
+    memset(SST25_buffer, 0xff, 4096);
+    memset(SST25_vbuffer, 0xff, 4096);
 
-    uint16_t id = SPI_Flash_ReadID();
-    if (0x0022 == id) {
-    	MODIFY_REG(Led_GPIO_Port->ODR, Led_Pin, Led_Pin);
+    for (i=0;i<5;++i) {
+        if (EEPROM_ID == SPI_Flash_ReadID()) {
+            tftprintf("EEPROM initaion success");
+            return;
+        }
     }
-    tftprintf("EEPROM ID %x", id);
+    tftprintf("EEPROM initaion failed");
 }
