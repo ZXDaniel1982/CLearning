@@ -178,7 +178,13 @@ $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	$(BIN) $< $@	
 	
 $(BUILD_DIR):
-	mkdir $@		
+	mkdir $@	
+
+#######################################
+# Install
+#######################################	
+install:
+	/usr/bin/stm32mgr install app build/stm32app.bin
 
 #######################################
 # clean up

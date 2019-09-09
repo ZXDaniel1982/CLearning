@@ -70,7 +70,7 @@ int main()
     EEPROM_Init();
 
     for (i=0;i<7200000;++i) {}
-    tftprintf("Hello world");
+    tftprintf("Hello world 15");
 
     vTaskStartScheduler();
     

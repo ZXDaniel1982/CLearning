@@ -261,7 +261,6 @@ static void USART_RxProcess(uint8_t val)
     if (rxCnt >= 2) {
         if ((rxBuf[rxCnt-2] == 0x44) && (rxBuf[rxCnt-1] == 0x55)) {
             if (rxCnt >= USART_PROTOCOL_LEN) {
-                tftprintf("rx data");
                 USART_DataProcess(&rxBuf[rxCnt-USART_PROTOCOL_LEN]);
             } else {
                 IAP_SendReply(IAP_ERROR, IAP_ERROR_FRAME_INVALID);

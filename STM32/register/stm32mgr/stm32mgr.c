@@ -31,6 +31,7 @@ int main(int argc, char **argv)
         printf("Usage : stm32mgr install [iap | app] <file>\n");
         printf("      : stm32mgr connect\n");
         printf("      : stm32mgr reboot\n");
+        printf("      : stm32mgr info\n");
         return -1;
     }
 
@@ -64,6 +65,12 @@ int main(int argc, char **argv)
             return -1;
         }
         printf("Reboot success\n");
+    } else if (strcmp(argv[1], "info") == 0) {
+        // get info
+        printf("Get info\n");
+        if (!SingleComm(IAP_CMD_GETINFO, fd)) {
+            return -1;
+        }
     } else if (strcmp(argv[1], "install") == 0) {
         if (argv[3] == NULL) {
             printf("Please input valid file name\n");
@@ -213,6 +220,7 @@ static void GetChecksum(uint8_t *buf)
 
     buf[16] = (uint8_t)((chksum >> 8) & 0x00ff);
     buf[17] = (uint8_t)(chksum & 0x00ff);
+    chksum = 0;
 }
 
 static bool GetReply(uint8_t *buf)
@@ -247,8 +255,16 @@ static bool SingleComm(uint16_t cmd, int fd)
     GetChecksum(txBuf);
 
     for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 20; ++j) {
+            printf("%d ", txBuf[j]);
+        }
+        printf("\n");
         write (fd, txBuf, 20);
         read (fd, rxBuf, 20);
+        for (int j = 0; j < 20; ++j) {
+            printf("%d ", rxBuf[j]);
+        }
+        printf("\n");
         if (GetReply(rxBuf)) {
             printf("Send success\n");
             memset(txBuf, 0xff, 20);
