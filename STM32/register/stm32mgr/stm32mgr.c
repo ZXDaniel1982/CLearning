@@ -27,7 +27,7 @@ static void IAP_CONV_FROM_32(uint8_t *buf, uint32_t val);
 
 int main(int argc, char **argv)
 {
-    if (argc < 3) {
+    if (argc < 2) {
         printf("Usage : stm32mgr install [iap | app] <file>\n");
         printf("      : stm32mgr connect\n");
         printf("      : stm32mgr reboot\n");
