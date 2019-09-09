@@ -13,7 +13,7 @@
 ######################################
 # target
 ######################################
-TARGET = stm32iap_end
+TARGET = stm32iap_eep
 
 
 ######################################
@@ -41,7 +41,7 @@ Core/Src/gpio.c \
 Core/Src/spi.c \
 Core/Src/eeprom.c \
 Core/Src/flash.c \
-Core/Src/system_stm32f1xx.c
+Core/Src/system_stm32f1xx.c 
 
 # ASM sources
 ASM_SOURCES =  \
@@ -98,7 +98,7 @@ AS_INCLUDES =
 
 # C includes
 C_INCLUDES =  \
--ICore/Inc
+-ICore/Inc 
 
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections

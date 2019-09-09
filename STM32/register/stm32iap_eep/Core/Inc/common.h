@@ -9,20 +9,20 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
+#define VERSION    ((uint32_t) 1)
+#define BT_HEADER  0x2233
+#define BT_TAIL    0x4455
+#define BT_UPDATE  1
+#define BT_IDLE    0
+
+
 #define UNUSED(x) (void)x
 #define NUM_ROWS(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 
 #define SST_CS_Pin GPIO_BSRR_BS4
 #define SST_CS_GPIO_Port GPIOA
-#define Key_Pin GPIO_BSRR_BS15
-#define Key_GPIO_Port GPIOB
-#define Key_EXTI_IRQn EXTI15_10_IRQn
-#define LCD_Light_Pin GPIO_BSRR_BS13
-#define LCD_Light_GPIO_Port GPIOD
 #define Led_Pin GPIO_BSRR_BS5
 #define Led_GPIO_Port GPIOB
-#define LCD_Rst_Pin GPIO_BSRR_BS1
-#define LCD_Rst_GPIO_Port GPIOE
     
 #define NVIC_PRIORITYGROUP_0         ((uint32_t)0x00000007) /*!< 0 bit  for pre-emption priority,
                                                                  4 bits for subpriority */
@@ -37,7 +37,8 @@ extern "C" {
     
 #define FLASH_PAGE_SIZE          0x800U
 
-#define APP_DEFAULT_ADD 0x8005000
+#define APP_DEFAULT_ADD 0x08005000
+#define APP_EEPROM_ADD  0x00001000
 typedef  void (*pFunction)(void);
     
 typedef enum
@@ -46,76 +47,85 @@ typedef enum
     IAP_SUCCESS,
 
     IAP_ERROR_HEAD_INVALID,
+    IAP_ERROR_FRAME_INVALID,
+    IAP_ERROR_CHKSUM_INVALID,
     
-    IAP_CONNECT_FAIL,
+    // common
     IAP_CMD_CONNECT,
     IAP_CONNECT_SUCCESS,
+    IAP_CONNECT_FAIL,
     
-    IAP_INIT_FAIL,
+    // flash programming
     IAP_CMD_INIT,
     IAP_INIT_SUCCESS,
+    IAP_INIT_FAIL,
     
-    IAP_DEINIT_FAIL,
     IAP_CMD_DEINIT,
     IAP_DEINIT_SUCCESS,
+    IAP_DEINIT_FAIL,
 
-    IAP_ERASE_FAIL,
     IAP_CMD_ERASE,
-    IAP_SUCCESS_ERASE,
+    IAP_ERASE_SUCCESS,
+    IAP_ERASE_FAIL,
 
+    IAP_CMD_STORE,
+    IAP_STORE_SUCCESS,
     IAP_STORE_FAIL,
     IAP_STORE_BUSY,
-    IAP_SUCCESS_STORE,
-    IAP_CMD_STORE,
 
-    IAP_REBOOT_FAIL,
-    IAP_SUCCESS_REBOOT,
-    IAP_CMD_REBOOT,
-    
-    IAP_JUMP_FAIL,
-    IAP_SUCCESS_JUMP,
     IAP_CMD_JUMP,
+    IAP_JUMP_SUCCESS,
+    IAP_JUMP_FAIL,
 
-    IAP_SETJUMP_FAIL,
-    IAP_SETJUMP_SUCCESS,
-    IAP_CMD_SETJUMP,
+    // eeprom programming
+    IAP_CMD_VERSION,
+    IAP_VERSION_SUCCESS,
+    IAP_VERSION_FAIL,
 
-    IAP_BUFFER_FAIL,
-    IAP_BUFFER_SUCCESS,
+    IAP_CMD_GETINFO,
+    IAP_GETINFO_SUCCESS,
+    IAP_GETINFO_FAIL,
+
+    IAP_CMD_SETINFO,
+    IAP_SETINFO_SUCCESS,
+    IAP_SETINFO_FAIL,
+
     IAP_CMD_BUFFER,
+    IAP_BUFFER_SUCCESS,
+    IAP_BUFFER_FAIL,
 
-    IAP_SAVE_FAIL,
-    IAP_SAVE_SUCCESS,
+    IAP_CMD_CLEAR,
+    IAP_CLEAR_SUCCESS,
+    IAP_CLEAR_FAIL,
+
     IAP_CMD_SAVE,
-    
-    IAP_INCOMPLETE_FRAME,
-    IAP_ERROR_CHKSUM_INVALID,
+    IAP_SAVE_SUCCESS,
+    IAP_SAVE_FAIL,
 
-  IAP_MAX_COMMAND = 100,
+    IAP_CMD_REBOOT,
+    IAP_REBOOT_SUCCESS,
+    IAP_REBOOT_FAIL,
+    
+    IAP_MAX_COMMAND = 100,
 } IAP_COMMANDS;
 
 typedef struct
 {
     uint16_t header;
-    uint16_t cmd;
+    uint16_t update;
     uint32_t size;
     uint16_t tail;
-} IAP_Info_t;
+} IapInfo_t;
 
 // GPIO
 void GPIO_Init(void);
-
-// TIMER
-void TIMER_Init(void);
-
-// USART1
-void USART_Init(void);
-void USART_SendData(uint8_t *data, uint16_t len);
 
 // FLASH
 void FLASH_Lock(void);
 void FLASH_Unlock(void);
 bool FLASH_WaitForFinish(void);
+void FLASH_Erase(uint32_t Add);
+void FLASH_Program(uint8_t *dest, uint8_t *src, uint32_t len);
 
 // SPI
 void SPI_Init(void);
@@ -124,29 +134,14 @@ uint8_t SPI_TransmitReceive(uint8_t *txData, uint8_t *rxData, uint16_t size);
 
 // EEPROM
 void EEPROM_Init(void);
-void ShowEEPROMInfo(void);
-void EEPROM_Buffer(uint32_t index, uint8_t *data, uint16_t Len);
-uint8_t EEPROM_Save(uint32_t index);
-void EEPROM_SetJump(uint32_t filesize);
+void EEProm_SectorErrase(uint32_t addr);
+void EEPROM_Write(uint32_t addr, uint8_t * buf, uint16_t len);
+void EEPROM_Read(uint32_t addr, uint8_t *buf, uint16_t len);
+void ApplicationUpdate(void);
 
-// FSMC
-void FSMC_Init(void);
+// error
+void Error_Handle(void);
 
-// LCD
-void LCD_Init(void);
-void tftprintf(const char* fmt, ...);
-
-// RTC
-void RTC_Init(void);
-
-// Interrupt
-void TIM1_UP_IRQHandler(void);
-void TIM2_IRQHandler(void);
-void TIM3_IRQHandler(void);
-void TIM4_IRQHandler(void);
-void TIM5_IRQHandler(void);
-void USART1_IRQHandler(void);
-    
 #ifdef __cplusplus
 }
 #endif

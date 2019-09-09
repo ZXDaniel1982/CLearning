@@ -13,8 +13,13 @@ static void IAP_Version(uint8_t* Buf);
 static void IAP_GetInfo(uint8_t* Buf);
 static void IAP_SetInfo(uint8_t* Buf);
 static void IAP_Buffer(uint8_t* Buf);
+static void IAP_Clear(uint8_t* Buf);
 static void IAP_Save(uint8_t* Buf);
 static void IAP_Reboot(uint8_t* Buf);
+static void IAP_Init(uint8_t* Buf);
+static void IAP_DeInit(uint8_t* Buf);
+static void IAP_Erase(uint8_t* Buf);
+static void IAP_Store(uint8_t* Buf);
 
 typedef void (*IAP_Func)(uint8_t *Buf);
 typedef struct
@@ -30,8 +35,13 @@ static const IAP_Command_t IAP_Command[] = {
     {IAP_CMD_GETINFO, IAP_GETINFO_SUCCESS, IAP_GETINFO_FAIL, IAP_GetInfo},
     {IAP_CMD_SETINFO, IAP_SETINFO_SUCCESS, IAP_SETINFO_FAIL, IAP_SetInfo},
     {IAP_CMD_BUFFER,  IAP_BUFFER_SUCCESS,  IAP_BUFFER_FAIL,  IAP_Buffer},
+    {IAP_CMD_CLEAR,   IAP_CLEAR_SUCCESS,   IAP_CLEAR_FAIL,   IAP_Clear},
     {IAP_CMD_SAVE,    IAP_SAVE_SUCCESS,    IAP_SAVE_FAIL,    IAP_Save},
     {IAP_CMD_REBOOT,  IAP_REBOOT_SUCCESS,  IAP_REBOOT_FAIL,  IAP_Reboot},
+    {IAP_CMD_INIT,    IAP_INIT_SUCCESS,    IAP_INIT_FAIL,    IAP_Init},
+    {IAP_CMD_DEINIT,  IAP_DEINIT_SUCCESS,  IAP_DEINIT_FAIL,  IAP_DeInit},
+    {IAP_CMD_ERASE,   IAP_ERASE_SUCCESS,   IAP_ERASE_FAIL,   IAP_Erase},
+    {IAP_CMD_STORE,   IAP_STORE_SUCCESS,   IAP_STORE_FAIL,   IAP_Store},
 };
 
 uint8_t txBuf[USART_PROTOCOL_LEN] = {0};
@@ -110,7 +120,7 @@ static void IAP_NorCommand(uint8_t *Buf, const IAP_Command_t *IapCmd)
     }
 
     if (IapCmd->func != NULL) {
-        IapCmd->func(&Buf[3]);
+        IapCmd->func(&Buf[1]);
     } else {
         IAP_SendReply(IAP_SUCCESS, IapCmd->suc);
     }
@@ -124,20 +134,21 @@ static void IAP_Version(uint8_t* Buf)
 
 static void IAP_GetInfo(uint8_t* Buf)
 {
-    memset(SST25_buffer, 0xff, 4096);
-    SST25_R_BLOCK(0, SST25_buffer, 4096);
+    memset(SST25_buffer, 0xff, EEPROM_BUF_SIZE);
+    EEPROM_Read(0, SST25_buffer, EEPROM_BUF_SIZE);
     memcpy(&txBuf[4], SST25_buffer, sizeof(IapInfo_t));
     IAP_SendReply(IAP_SUCCESS, IAP_GETINFO_SUCCESS);
 }
 
 static void IAP_SetInfo(uint8_t* Buf)
 {
-    memset(SST25_buffer, 0xff, 4096);
-    memset(SST25_vbuffer, 0xff, 4096);
+    memset(SST25_buffer, 0xff, EEPROM_BUF_SIZE);
+    memset(SST25_vbuffer, 0xff, EEPROM_BUF_SIZE);
 
     memcpy(SST25_buffer, Buf, sizeof(IapInfo_t));
-    SST25_W_BLOCK(0, SST25_buffer, 4096);
-    SST25_R_BLOCK(0, SST25_vbuffer, 4096);
+    EEProm_SectorErrase(0);
+    EEPROM_Write(0, SST25_buffer, EEPROM_BUF_SIZE);
+    EEPROM_Read(0, SST25_vbuffer, EEPROM_BUF_SIZE);
 
     if (memcmp(SST25_buffer, SST25_vbuffer, sizeof(IapInfo_t)) == 0) {
         IAP_SendReply(IAP_SUCCESS, IAP_SETINFO_SUCCESS);
@@ -148,25 +159,33 @@ static void IAP_SetInfo(uint8_t* Buf)
 
 static void IAP_Buffer(uint8_t* Buf)
 {
-    uint16_t index = Buf[0] *256 + Buf[1];
+    uint16_t index = Buf[0];
 
     if (index == 0) {
-        memset(SST25_buffer, 0xff, 4096);
-        memset(SST25_vbuffer, 0xff, 4096);
+        memset(SST25_buffer, 0xff, EEPROM_BUF_SIZE);
+        memset(SST25_vbuffer, 0xff, EEPROM_BUF_SIZE);
     }
 
-    memcpy(&SST25_buffer[index], &Buf[2], 4);
+    memcpy(&SST25_buffer[index], &Buf[1], 8);
     IAP_SendReply(IAP_SUCCESS, IAP_BUFFER_SUCCESS);
+}
+
+static void IAP_Clear(uint8_t* Buf)
+{
+    uint32_t addr = IAP_CONV_TO_32(Buf);
+
+    EEProm_SectorErrase(addr);
+    IAP_SendReply(IAP_SUCCESS, IAP_CLEAR_SUCCESS);
 }
 
 static void IAP_Save(uint8_t* Buf)
 {
-    uint32_t page = IAP_CONV_TO_32(Buf);
+    uint32_t addr = IAP_CONV_TO_32(Buf);
 
-    SST25_W_BLOCK(page, SST25_buffer, 4096);
-    SST25_R_BLOCK(page, SST25_vbuffer, 4096);
+    EEPROM_Write(addr, SST25_buffer, EEPROM_BUF_SIZE);
+    EEPROM_Read(addr, SST25_vbuffer, EEPROM_BUF_SIZE);
 
-    if (memcmp(SST25_buffer, SST25_vbuffer, sizeof(IapInfo_t)) == 0) {
+    if (memcmp(SST25_buffer, SST25_vbuffer, EEPROM_BUF_SIZE) == 0) {
         IAP_SendReply(IAP_SUCCESS, IAP_SAVE_SUCCESS);
     } else {
         IAP_SendReply(IAP_ERROR, IAP_SAVE_FAIL);
@@ -177,6 +196,35 @@ static void IAP_Reboot(uint8_t* Buf)
 {
     IAP_SendReply(IAP_SUCCESS, IAP_REBOOT_SUCCESS);
     NVIC_SystemReset();
+}
+
+static void IAP_Init(uint8_t* Buf)
+{
+    FLASH_Unlock();
+    IAP_SendReply(IAP_SUCCESS, IAP_INIT_SUCCESS);
+}
+
+static void IAP_DeInit(uint8_t* Buf)
+{
+    FLASH_Unlock();
+    IAP_SendReply(IAP_SUCCESS, IAP_DEINIT_SUCCESS);
+}
+
+static void IAP_Erase(uint8_t* Buf)
+{
+    uint32_t addr = IAP_CONV_TO_32(Buf);
+    FLASH_Erase(addr);
+    IAP_SendReply(IAP_SUCCESS, IAP_ERASE_SUCCESS);
+}
+
+static void IAP_Store(uint8_t* Buf)
+{
+    uint32_t addr = IAP_CONV_TO_32(Buf);
+    if (FLASH_Program((uint8_t *) addr, &Buf[4], 8)) {
+        IAP_SendReply(IAP_SUCCESS, IAP_STORE_SUCCESS);
+    } else {
+        IAP_SendReply(IAP_SUCCESS, IAP_STORE_FAIL);
+    }
 }
 
 static void USART_DataProcess(uint8_t *Buf)

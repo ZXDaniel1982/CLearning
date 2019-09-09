@@ -37,7 +37,9 @@ extern "C" {
 #define NVIC_PRIORITYGROUP_4         ((uint32_t)0x00000003) /*!< 4 bits for pre-emption priority,
                                                                  0 bit  for subpriority */
     
-#define FLASH_PAGE_SIZE          0x800U
+#define FLASH_PAGE_SIZE          ( 0x800U )
+#define EEPROM_SECTOR_SIZE       ( 4096 )
+#define EEPROM_BUF_SIZE          ( 128 )
 
 #define APP_DEFAULT_ADD 0x8005000
 typedef  void (*pFunction)(void);
@@ -95,6 +97,10 @@ typedef enum
     IAP_BUFFER_SUCCESS,
     IAP_BUFFER_FAIL,
 
+    IAP_CMD_CLEAR,
+    IAP_CLEAR_SUCCESS,
+    IAP_CLEAR_FAIL,
+
     IAP_CMD_SAVE,
     IAP_SAVE_SUCCESS,
     IAP_SAVE_FAIL,
@@ -128,6 +134,8 @@ void USART_SendData(uint8_t *data, uint16_t len);
 void FLASH_Lock(void);
 void FLASH_Unlock(void);
 bool FLASH_WaitForFinish(void);
+void FLASH_Erase(uint32_t Add);
+bool FLASH_Program(uint8_t *dest, uint8_t *src, uint32_t len);
 
 // SPI
 void SPI_Init(void);
@@ -136,8 +144,9 @@ uint8_t SPI_TransmitReceive(uint8_t *txData, uint8_t *rxData, uint16_t size);
 
 // EEPROM
 void EEPROM_Init(void);
-void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff, uint16_t BlockSize);
-void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff, unsigned int BlockSize);
+void EEProm_SectorErrase(uint32_t addr);
+void EEPROM_Write(uint32_t addr, uint8_t * buf, uint16_t len);
+void EEPROM_Read(uint32_t addr, uint8_t *buf, uint16_t len);
 
 // FSMC
 void FSMC_Init(void);
@@ -166,8 +175,8 @@ void USART1_IRQHandler(void);
 // error
 void Error_Handle(void);
 
-extern uint8_t SST25_buffer[4096];
-extern uint8_t SST25_vbuffer[4096];
+extern uint8_t SST25_buffer[EEPROM_BUF_SIZE];
+extern uint8_t SST25_vbuffer[EEPROM_BUF_SIZE];
     
 #ifdef __cplusplus
 }

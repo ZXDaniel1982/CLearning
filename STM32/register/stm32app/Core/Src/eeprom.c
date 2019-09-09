@@ -26,10 +26,9 @@ static void wdis(void);
 static uint8_t rdsr(void);
 static uint16_t SPI_Flash_ReadID(void);
 static void EEPRom_SendByte(uint8_t byte);
-static void EEProm_SectorErrase(unsigned long a1);
 
-uint8_t SST25_buffer[4096];
-uint8_t SST25_vbuffer[4096];
+uint8_t SST25_buffer[EEPROM_BUF_SIZE];
+uint8_t SST25_vbuffer[EEPROM_BUF_SIZE];
 /*----------------------------------------------------------------------------*/
 /* Private functions                                                           */
 /*----------------------------------------------------------------------------*/
@@ -111,21 +110,6 @@ static void wen(void)
     NotSelect_Flash();
 }
 
-static void EEProm_SectorErrase(unsigned long a1)
-{
-    wsr();
-    wen();
-
-    Select_Flash();
-    EEPRom_SendByte(0x20);
-    EEPRom_SendByte((uint8_t) ((a1 & 0xffffff) >> 16)); //addh
-    EEPRom_SendByte((uint8_t) ((a1 & 0xffff) >> 8));    //addl 
-    EEPRom_SendByte((uint8_t) (a1 & 0xff)); //wtt
-    NotSelect_Flash();
-
-    wip();
-}
-
 static void wdis(void)
 {
     Select_Flash();
@@ -135,12 +119,25 @@ static void wdis(void)
     wip();
 }
 
-void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff,
-              uint16_t BlockSize)
+void EEProm_SectorErrase(uint32_t addr)
+{
+    wsr();
+    wen();
+
+    Select_Flash();
+    EEPRom_SendByte(0x20);
+    EEPRom_SendByte((uint8_t) ((addr & 0xffffff) >> 16)); //addh
+    EEPRom_SendByte((uint8_t) ((addr & 0xffff) >> 8));    //addl 
+    EEPRom_SendByte((uint8_t) (addr & 0xff)); //wtt
+    NotSelect_Flash();
+
+    wip();
+}
+
+void EEPROM_Write(uint32_t addr, uint8_t * buf, uint16_t len)
 {
     uint16_t i = 0, a2;
 
-    EEProm_SectorErrase(addr);  //删除页       
     wsr();
     wen();
     Select_Flash();
@@ -148,20 +145,20 @@ void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff,
     EEPRom_SendByte((uint8_t) ((addr & 0xffffff) >> 16));
     EEPRom_SendByte((uint8_t) ((addr & 0xffff) >> 8));
     EEPRom_SendByte((uint8_t) (addr & 0xff));
-    EEPRom_SendByte(readbuff[0]);
-    EEPRom_SendByte(readbuff[1]);
+    EEPRom_SendByte(buf[0]);
+    EEPRom_SendByte(buf[1]);
     NotSelect_Flash();
 
     i = 2;
-    while (i < BlockSize) {
+    while (i < len) {
         a2 = 120;
         while (a2 > 0) a2--;
 
         Select_Flash();
         EEPRom_SendByte(0xad);
-        EEPRom_SendByte(readbuff[i]);
+        EEPRom_SendByte(buf[i]);
         i++;
-        EEPRom_SendByte(readbuff[i]);
+        EEPRom_SendByte(buf[i]);
         i++;
         NotSelect_Flash();
     }
@@ -174,8 +171,7 @@ void SST25_W_BLOCK(uint32_t addr, uint8_t * readbuff,
     wip();
 }
 
-void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff,
-              unsigned int BlockSize)
+void EEPROM_Read(uint32_t addr, uint8_t *buf, uint16_t len)
 {
     uint16_t i = 0;
 
@@ -186,8 +182,8 @@ void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff,
     EEPRom_SendByte((uint8_t) (addr & 0xff));
     EEPRom_SendByte(0);
 
-    while (i < BlockSize) {
-        SPI_TransmitReceive(&(readbuff[i]), &(readbuff[i]), 1);
+    while (i < len) {
+        SPI_TransmitReceive(&(buf[i]), &(buf[i]), 1);
         i++;
     }
     NotSelect_Flash();
@@ -200,10 +196,6 @@ void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff,
 void EEPROM_Init()
 {
     uint8_t i;
-
-    memset(SST25_buffer, 0xff, 4096);
-    memset(SST25_vbuffer, 0xff, 4096);
-
     for (i=0;i<5;++i) {
         if (EEPROM_ID == SPI_Flash_ReadID()) {
             tftprintf("EEPROM initaion success");

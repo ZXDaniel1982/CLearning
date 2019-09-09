@@ -45,6 +45,7 @@ Core/Src/usart.c \
 Core/Src/eeprom.c \
 Core/Src/fsmc.c \
 Core/Src/lcd.c \
+Core/Src/flash.c \
 Core/Src/adc.c \
 Core/Src/system_stm32f1xx.c \
 FreeRTOS/croutine.c \
