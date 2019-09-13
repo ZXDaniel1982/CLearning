@@ -4,13 +4,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-typedef struct
-{
-    GPIO_TypeDef *port;
-    uint32_t pin;
-    uint32_t clear;
-    uint32_t set;
-} GPIO_PINS_t;
 static const GPIO_PINS_t GPIO_PINS_L[] = {
     {Led_GPIO_Port, Led_Pin, (GPIO_CRL_CNF5 | GPIO_CRL_MODE5), GPIO_CRL_MODE5_1},
     {SST_CS_GPIO_Port, SST_CS_Pin, (GPIO_CRL_CNF4 | GPIO_CRL_MODE4), GPIO_CRL_MODE4},
@@ -28,7 +21,7 @@ static const GPIO_PINS_t GPIO_PINS_H[] = {
 
 static void LedBlinkTsk(void *arg);
 
-static void GPIOxL_Init(GPIO_TypeDef *GPIOx, uint32_t pin, uint32_t clear, uint32_t set)
+void GPIOxL_Init(GPIO_TypeDef *GPIOx, uint32_t pin, uint32_t clear, uint32_t set)
 {
     // ¶Ë¿ÚÎ»Çå³ý¼Ä´æÆ÷  Çå³ý¶Ë¿ÚxµÄÎ»y  1£ºÇå³ý¶ÔÓ¦µÄODRyÎ»Îª0
     WRITE_REG(GPIOx->BRR, pin);
@@ -40,7 +33,7 @@ static void GPIOxL_Init(GPIO_TypeDef *GPIOx, uint32_t pin, uint32_t clear, uint3
     MODIFY_REG(GPIOx->ODR, pin, 0);
 }
 
-static void GPIOxH_Init(GPIO_TypeDef *GPIOx, uint32_t pin, uint32_t clear, uint32_t set)
+void GPIOxH_Init(GPIO_TypeDef *GPIOx, uint32_t pin, uint32_t clear, uint32_t set)
 {
     // ¶Ë¿ÚÎ»Çå³ý¼Ä´æÆ÷  Çå³ý¶Ë¿ÚxµÄÎ»y  1£ºÇå³ý¶ÔÓ¦µÄODRyÎ»Îª0
     WRITE_REG(GPIOx->BRR, pin);

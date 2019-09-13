@@ -65,7 +65,7 @@ int main()
     FSMC_Init();
     LCD_Init();
     USART_Init();
-    //ADC_Init();
+    SD_Init();
 
     EEPROM_Init();
 

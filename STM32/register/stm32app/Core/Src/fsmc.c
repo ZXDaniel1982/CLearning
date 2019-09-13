@@ -6,8 +6,8 @@ typedef struct
 {
     GPIO_TypeDef *port;
     uint32_t pin;
-} GPIO_PINS_t;
-static const GPIO_PINS_t GPIO_PINS[] = {
+} GPIO_PINS_SIMPLE_t;
+static const GPIO_PINS_SIMPLE_t GPIO_PINS[] = {
     {GPIOD, GPIO_BSRR_BS13},
     {GPIOE, GPIO_BSRR_BS1},
     {GPIOE, GPIO_BSRR_BS7},

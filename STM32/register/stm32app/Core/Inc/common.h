@@ -9,6 +9,8 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "stm32f103xe.h"
+
 #define VERSION    ((uint32_t) 1)
 
 #define UNUSED(x) (void)x
@@ -114,6 +116,14 @@ typedef enum
 
 typedef struct
 {
+    GPIO_TypeDef *port;
+    uint32_t pin;
+    uint32_t clear;
+    uint32_t set;
+} GPIO_PINS_t;
+
+typedef struct
+{
     uint16_t header;
     uint16_t update;
     uint32_t size;
@@ -122,6 +132,8 @@ typedef struct
 
 // GPIO
 void GPIO_Init(void);
+void GPIOxL_Init(GPIO_TypeDef *GPIOx, uint32_t pin, uint32_t clear, uint32_t set);
+void GPIOxH_Init(GPIO_TypeDef *GPIOx, uint32_t pin, uint32_t clear, uint32_t set);
 
 // TIMER
 void TIMER_Init(void);
@@ -160,6 +172,10 @@ void RTC_Init(void);
 
 // ADC
 void ADC_Init(void);
+
+// SD
+void SDIO_Init(void);
+void SD_Init(void);
 
 // Interrupt
 void TIM1_UP_IRQHandler(void);
