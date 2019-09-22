@@ -174,7 +174,7 @@ void RTC_Init(void);
 void ADC_Init(void);
 
 // SD
-void SDIO_Init(void);
+void SDIOEx_Init(void);
 void SD_Init(void);
 
 // Interrupt

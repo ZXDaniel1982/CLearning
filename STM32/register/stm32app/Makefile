@@ -47,6 +47,7 @@ Core/Src/fsmc.c \
 Core/Src/lcd.c \
 Core/Src/flash.c \
 Core/Src/adc.c \
+Core/Src/stm32_sdio.c \
 Core/Src/sdio.c \
 Core/Src/sd.c \
 Core/Src/system_stm32f1xx.c \

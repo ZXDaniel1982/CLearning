@@ -11,6 +11,9 @@
 #include "diskio.h"     /* Declarations of disk functions */
 
 #include "common.h"         /* Obtains integer types */
+#include "sdio.h"         /* Obtains integer types */
+
+#define SECTOR_SIZE 512U
 
 /* Definitions of physical drive number for each drive */
 #define DEV_MMC     0   /* Example: Map MMC/SD card to physical drive 1 */
@@ -77,13 +80,24 @@ DRESULT disk_read (
 )
 {
     DRESULT res;
-    int result;
 
     switch (pdrv) {
     case DEV_MMC :
         // translate the arguments here
+        if (count == 1) {
+            if (SD_ReadBlock((uint32_t *)(&buff[0]), sector << 9, SECTOR_SIZE) == SD_OK) {
+                res = RES_OK;
+            } else {
+                res = RES_ERROR;
+            }
+        } else {
+            if (SD_ReadMultiBlocks((uint8_t *)(&buff[0]), sector << 9, SECTOR_SIZE, count) == SD_OK) {
+                res = RES_OK;
+            } else {
+                res = RES_ERROR;
+            }
+        }
 
-        UNUSED(result);
         // result = MMC_disk_read(buff, sector, count);
 
         // translate the reslut code here
@@ -110,13 +124,24 @@ DRESULT disk_write (
 )
 {
     DRESULT res;
-    int result;
 
     switch (pdrv) {
     case DEV_MMC :
         // translate the arguments here
+        if (count == 1) {
+            if (SD_WriteBlock((uint32_t *)(&buff[0]), sector << 9, SECTOR_SIZE) == SD_OK) {
+                res = RES_OK;
+            } else {
+                res = RES_ERROR;
+            }
+        } else {
+            if (SD_WriteMultiBlocks((uint8_t *)(&buff[0]), sector << 9, SECTOR_SIZE, count)) {
+                res = RES_OK;
+            } else {
+                res = RES_ERROR;
+            }
+        }
 
-        UNUSED(result);
         // result = MMC_disk_write(buff, sector, count);
 
         // translate the reslut code here
@@ -185,3 +210,7 @@ DRESULT disk_ioctl (
     return RES_PARERR;
 }
 
+DWORD get_fattime (void)
+{
+  return 0;
+}
