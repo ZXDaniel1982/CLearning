@@ -1,351 +1,300 @@
-/**
- * @addtogroup AviatIntefaceStats
- * @{
- * @file    ais_main.c
- * @author  Shreyas.Joshi@aviatnet.com
- * @date    05/10/2017
- * @brief   Main ISS thread for the Aviat Interface Status (ais_main) on the CTR
- *
- */
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <unistd.h>
-#include <syslog.h>
-#include <errno.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <poll.h>
-#include <termios.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<stdint.h>
+#include<string.h>
+#include<sys/stat.h>
+#include<sys/socket.h>
+#include<sys/types.h>
+#include<sys/un.h>
+#include<errno.h>
+#include<stddef.h>
+#include<unistd.h>
 
-#include <sys/stat.h>
+#define FLASH_PAGE_SIZE          ( 0x800U )   // 2048B
+#define EEPROM_PAGE_SIZE         ( 0x1000U )  // 4096B
+#define SDCARD_PAGE_SIZE         ( 0x200U )   // 512B
+#define DATA_BUF_SIZE            ( SDCARD_PAGE_SIZE )
 
-#include<sys/types.h>  
-#include <stddef.h>  
+#define SDCARD_ARGS_ADDR         ( 0 )
+#define SDCARD_IMAGE_ADDR        ( SDCARD_PAGE_SIZE )
 
-#define WEBSOCK_DIR  ("/tmp/iss")
-#define WEBSOCK_PATH_NAME ("/tmp/iss/issWebsock")
+#define USART_MAX_LEN            ( 255 )
+#define USART_PROTOCOL_LEN       ( 20 )
 
-#define AVIAT_WEBSOCK_FD 0
-#define AVIAT_TIMER_FD    1
-#define AVIAT_NODE_CLIENT_FD 2
+#define NUM_ROWS(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 
-#define USER_CTRL_BUFF_SIZE (256)
+const char *filename="/tmp/uds-tmp";
 
-char *startstr = "Start";
-
-bool gAviatIntStatsDebugEnabled = true;
-
-struct sockaddr_un client_addr;
-int client_sockfd;
-socklen_t client_len;
-
-int ais_createServerSocket(void)
+typedef enum
 {
+    IAP_ERROR = 0,                 // 0
+    IAP_SUCCESS,                   // 1
 
-    struct sockaddr_un saddr;
-    socklen_t server_len;
-    char buf[128];
+    IAP_ERROR_HEAD_INVALID,        // 2
+    IAP_ERROR_FRAME_INVALID,       // 3
+    IAP_ERROR_CHKSUM_INVALID,      // 4
+    
+    // common
+    IAP_CMD_CONNECT,               // 5
+    IAP_CONNECT_SUCCESS,           // 6
+    IAP_CONNECT_FAIL,              // 7
+    
+    // SD card programming
+    IAP_CMD_SETARGS,               // 8
+    IAP_SETARGS_SUCCESS,           // 9
+    IAP_SETARGS_FAIL,              // 10
 
-    int sock = socket(AF_UNIX, SOCK_STREAM, 0);
-    if (sock < 0)
-    {
-        printf("failed to create UN socket, errno=%d\n", errno);
-        return -1;
-    }
+    IAP_CMD_BUFFER,                // 11
+    IAP_BUFFER_SUCCESS,            // 12
+    IAP_BUFFER_FAIL,               // 13
 
-    //memset(&saddr, 0, sizeof(saddr));
-    saddr.sun_family = AF_UNIX;
-    // strncpy(saddr.sun_path, WEBSOCK_PATH_NAME, sizeof(saddr.sun_path));
-    strcpy(saddr.sun_path, WEBSOCK_PATH_NAME);
-    saddr.sun_path[0]=0;
-    server_len = strlen(WEBSOCK_PATH_NAME)  + offsetof(struct sockaddr_un, sun_path); 
+    IAP_CMD_CLEAR,                 // 14
+    IAP_CLEAR_SUCCESS,             // 15
+    IAP_CLEAR_FAIL,                // 16
 
-    //int opt = 1;
-    //setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&opt,sizeof(opt));
+    IAP_CMD_SAVE,                  // 17
+    IAP_SAVE_SUCCESS,              // 18
+    IAP_SAVE_FAIL,                 // 19
 
-    if (bind(sock, (struct sockaddr *)&saddr, server_len) < 0) {
-        strerror_r(errno, buf, sizeof(buf));
-        printf("failed to bind address %s errno=%d: %s\n",
-                WEBSOCK_PATH_NAME, errno, buf);
-        close(sock);
-        return -1;
-    }
+    IAP_CMD_REBOOT,                // 20
+    IAP_REBOOT_SUCCESS,            // 21
+    IAP_REBOOT_FAIL,               // 22
+    
+    IAP_MAX_COMMAND = 100,
+} IAP_COMMANDS;
 
-    if (listen(sock, 5) != 0) {
-        strerror_r(errno, buf, sizeof(buf));
-        printf("listen failed for %s errno=%d: %s\n",
-                WEBSOCK_PATH_NAME, errno, buf);
-        close(sock);
-        perror("listen failed: ");
-        return -1;
-    }
+typedef struct
+{
+    uint16_t header;
+    uint16_t version;
+    uint32_t size;
+    uint16_t tail; 
+} Imageargs_t;
 
-    printf("Created WebIntStat Server ISS\n");
-    return sock;
+static void IAP_SetArgs(uint8_t* Buf, int fd);
+static void IAP_Buffer(uint8_t* Buf, int fd);
+static void IAP_Clear(uint8_t* Buf, int fd);
+static void IAP_Save(uint8_t* Buf, int fd);
+static void IAP_Reboot(uint8_t* Buf, int fd);
+
+typedef void (*IAP_Func)(uint8_t *Buf, int fd);
+typedef struct
+{
+    uint16_t cmd;
+    uint16_t suc;
+    uint16_t err;
+    IAP_Func func;
+} IAP_Command_t;
+static const IAP_Command_t IAP_Command[] = {
+    {IAP_CMD_CONNECT, IAP_CONNECT_SUCCESS, IAP_CONNECT_FAIL, NULL},
+    {IAP_CMD_SETARGS, IAP_SETARGS_SUCCESS, IAP_SETARGS_FAIL, IAP_SetArgs},
+    {IAP_CMD_BUFFER,  IAP_BUFFER_SUCCESS,  IAP_BUFFER_FAIL,  IAP_Buffer},
+    {IAP_CMD_CLEAR,   IAP_CLEAR_SUCCESS,   IAP_CLEAR_FAIL,   IAP_Clear},
+    {IAP_CMD_SAVE,    IAP_SAVE_SUCCESS,    IAP_SAVE_FAIL,    IAP_Save},
+    {IAP_CMD_REBOOT,  IAP_REBOOT_SUCCESS,  IAP_REBOOT_FAIL,  IAP_Reboot},
+};
+
+uint8_t data[DATA_BUF_SIZE] = {0};
+uint8_t txBuf[USART_PROTOCOL_LEN] = {0};
+uint8_t rxBuf[USART_MAX_LEN] = {0};
+uint8_t rxCnt = 0;
+
+#define MAX_CONNECT_NUM 2
+const char *SocketDomain="/tmp/uds-tmp";
+
+const char *SdFileName = "/tmp/SdImage";
+FILE *file = NULL;
+
+//======================================================================//
+// Private functions
+//======================================================================//
+static uint32_t IAP_CONV_TO_32(uint8_t *buf)
+{
+    uint32_t ret = 0;
+    ret = (*buf) << 24;
+    ret += *(buf+1) << 16;
+    ret += *(buf+2) << 8;
+    ret += *(buf+3);
+    return ret;
 }
 
-/*
-static int acceptClient(int sock, struct pollfd *fds)
+static void IAP_SendReply(uint8_t replyType, uint8_t replyDetail, int fd)
 {
-    int sd = accept(sock, (struct sockaddr*)&client_addr, &client_len);
+    txBuf[0] = 0x33;
+    txBuf[1] = 0x44;
+    txBuf[2] = replyType;
+    txBuf[3] = replyDetail;
 
-    printf("step 10\n");
-
-    if (sd < 0) {
-        printf("Failed to accept client connection\n");
-    } else {
-        // add a new client
-        fds->fd = sd;
-        fds->events = POLLIN;
-        fds->revents = 0;
-    }
-    return sd;
+    //USART_SendData(txBuf,USART_PROTOCOL_LEN);
+    send(fd,txBuf,USART_PROTOCOL_LEN,0);
 }
-*/
 
-void handleStatSockets(struct pollfd *fds, nfds_t *numfds, int events, bool *enableStat)
+static uint8_t IAP_HeaderIsValid(uint8_t* Buf)
 {
-    char usrCtrlData[USER_CTRL_BUFF_SIZE];
-    char revStr[256];
-    int res = 0;
-    int nread;
-    int sent;
+    if (Buf == NULL) return 0;
 
-    //memset(usrCtrlData,0,USER_CTRL_BUFF_SIZE);
-
-    printf("step 3\n");
-
-    // Client Connection
-    //if (fds[AVIAT_WEBSOCK_FD].revents & POLLIN)
-    //{
-        printf("step 4\n");
-        // got a connect request
-        if (client_sockfd = accept(fds[AVIAT_WEBSOCK_FD].fd, (struct sockaddr*)&client_addr, &client_len) >= 0)
-        {
-            /*if(client_sockfd == -1){  
-                client_sockfd = accept(fds[AVIAT_WEBSOCK_FD].fd,(struct sockaddr*)&client_addr, &client_len);  
-            } */
-            printf("step 4.1\n");
-            printf("client.%d connected\n", (int)*numfds);
-
-            if (client_sockfd == -1) {
-                printf("Fail to accept\n");
-            }
-
-            nread = read(client_sockfd, revStr, 5);
-            //int nread = read(client_sockfd, usrCtrlData, 5);
-            if(nread == 0){//client disconnected  
-                printf("client %d disconnected\n",client_sockfd);  
-                client_sockfd = -1;  
-            }  
-            else{  
-                printf("read from client %d: %s\n",client_sockfd,revStr);  
-            }  
-
-            sent = write(client_sockfd, "vbbn", 5);
-            if (sent < 0) {
-                printf("failed to send credentials to ISS CLI, errno=%d\n",errno); 
-            }
-
-            /*if (sent != (sizeof(startstr))) {
-                printf("failed to send credentials to ISS CLI, %d sent\n", sent);
-            }*/
-            printf("\n");
-
-            *numfds += 1;
-        }
-        else
-        {
-            printf("step 4.2\n");
-            printf("Failed client connection\n");
-        }
-        events--;
-    //}
-    if (fds[AVIAT_TIMER_FD].revents & POLLIN) {
-
+    if ((Buf[0] != 0x22) || (Buf[1] != 0x33)) {
+        return 0;
     }
 
-    printf("step 5 %d\n", (int)*numfds);
-
-    // A connection exists read from the socket connection
- /*   if(*numfds > AVIAT_TIMER_FD)
-    {
-        printf("step 6\n");
-        if (fds[AVIAT_NODE_CLIENT_FD].revents)
-        {
-            printf("step 7\n");
-            if (fds[AVIAT_NODE_CLIENT_FD].revents & POLLERR)
-            {
-                // client disconnect - this should never happen
-                printf("Node got disconnected!!!");
-                printf("step 8\n");
-                events--;
-            }
-            else if (fds[AVIAT_NODE_CLIENT_FD].revents & POLLIN)
-            {
-                printf("step 9\n");
-                // data from client
-                res = read(fds[AVIAT_NODE_CLIENT_FD].fd,usrCtrlData,USER_CTRL_BUFF_SIZE);
-                if( res < 0)
-                {
-                    printf("Error in Reading Usr Ctrl word!!!\n");
-                }
-                else
-                {
-                    if(!strcmp(usrCtrlData,"Start"))
-                    {
-                        printf("Got Ctrl Word Start\n");
-                        *enableStat = true;
-                    }
-                    else if (!strcmp(usrCtrlData,"Stop"))
-                    {
-                        printf("Got Ctrl Word Stop\n");
-                        *enableStat = false;
-                    }
-                }
-
-                events--;
-            }
-            fds[AVIAT_NODE_CLIENT_FD].revents = 0;
-        }
-    }*/
+    return 1;
 }
 
-void handle(struct pollfd *fds, int events)
+static uint8_t IAP_ChecksumIsValid(uint8_t* Buf)
 {
-    int nread;  
-
-    char revStr[256];
-
-    printf("AVIAT_WEBSOCK_FD %d AVIAT_TIMER_FD %d events %d\n", fds[AVIAT_WEBSOCK_FD].revents, fds[AVIAT_TIMER_FD].revents, events);
-    //if (fds[AVIAT_WEBSOCK_FD].revents & POLLIN) {
-    printf("event\n");  
-    if(client_sockfd == -1){  
-        client_sockfd = accept(fds[AVIAT_WEBSOCK_FD].fd,(struct sockaddr*)&client_addr, &client_len);  
-    } 
-    //handleStatSockets(fds, &numfds, events,&interaceStat);
-
-    nread = read(client_sockfd, revStr, 5);
-
-    if(nread == 0){//client disconnected  
-        printf("client %d disconnected\n",client_sockfd);  
-        client_sockfd = -1;  
-    }  
-    else{  
-        printf("read from client %d: %s\n",client_sockfd,revStr);  
-        //ch ++;  
-        write(client_sockfd, "vbbn", 5);  
-    } 
+    uint8_t i;
+    uint16_t RxChksum = 0;
+    uint16_t Checksum = 0;
+    
+    if (Buf == NULL) return 0;
+    
+    Checksum = Buf[16] * 256 + Buf[17];
+    for (i=0;i<(USART_PROTOCOL_LEN-4);i++) {
+        RxChksum += Buf[i];
+    }
+        
+    if (Checksum == RxChksum) return 1;
+    else return 0;
 }
 
-void main (int argc, char **argv)
+static void IAP_NorCommand(uint8_t *Buf, const IAP_Command_t *IapCmd, int fd)
 {
-    struct pollfd fds[2];
-    memset(fds, 0, sizeof(fds));
-    nfds_t numfds;
-    int webSock = -1;
-    bool interaceStat = false;
-
-    char ch;  
-    int nread;  
-
-    char revStr[256];
-
-    webSock = ais_createServerSocket();
-
-    if( webSock == -1)
-    {
-        printf("Failed to Create AIS Socket\n");
+    if (Buf == NULL) {
+        IAP_SendReply(IAP_ERROR, IapCmd->err, fd);
         return;
-
+    }
+    
+    if (Buf[0] != IapCmd->cmd) {
+        return;
     }
 
-    client_sockfd = -1;  
-    client_len = sizeof(client_addr);  
+    if (IapCmd->func != NULL) {
+        IapCmd->func(&Buf[1], fd);
+    } else {
+        IAP_SendReply(IAP_SUCCESS, IapCmd->suc, fd);
+    }
+}
 
-    // make the CLI socket usable by everyone
-    //chmod(WEBSOCK_PATH_NAME, 0777);
+static void IAP_SetArgs(uint8_t* Buf, int fd)
+{
+    memset(data, 0xff, DATA_BUF_SIZE);
+    memcpy(data, Buf, sizeof(Imageargs_t));
 
-    numfds = AVIAT_NODE_CLIENT_FD; //  WEBSOCK_FD, TIMER_FD
+    fseek(file, SDCARD_ARGS_ADDR, SEEK_SET);
+    fwrite(data, SDCARD_PAGE_SIZE, 1, file);
+    //SD_WriteBlock((uint32_t *)data, SDCARD_ARGS_ADDR, SDCARD_PAGE_SIZE);
+    IAP_SendReply(IAP_SUCCESS, IAP_SETARGS_SUCCESS, fd);
+}
 
-    fds[AVIAT_WEBSOCK_FD].fd = webSock;
-    fds[AVIAT_WEBSOCK_FD].events = POLLIN;
-    fds[AVIAT_WEBSOCK_FD].revents = 0;
+static void IAP_Buffer(uint8_t* Buf, int fd)
+{
+    uint16_t index = Buf[0];
 
-    fds[AVIAT_TIMER_FD].fd = STDIN_FILENO;
-    fds[AVIAT_TIMER_FD].events = POLLIN;
-    fds[AVIAT_TIMER_FD].revents = 0;
+    if (index == 0) {
+        memset(data, 0xff, DATA_BUF_SIZE);
+    }
 
-    while (1) {
-        // printf("server waiting...\n");
+    memcpy(&data[index*8], &Buf[1], 8);
+    IAP_SendReply(IAP_SUCCESS, IAP_BUFFER_SUCCESS, fd);
+}
 
-        int events = poll(fds, 3, 1000);
-        if (events > 0) {
-            handle(fds, events);
-            /*printf("AVIAT_WEBSOCK_FD %d AVIAT_TIMER_FD %d events %d\n", fds[AVIAT_WEBSOCK_FD].revents, fds[AVIAT_TIMER_FD].revents, events);
-            //if (fds[AVIAT_WEBSOCK_FD].revents & POLLIN) {
-                printf("event\n");  
-                if(client_sockfd == -1){  
-                    client_sockfd = accept(fds[AVIAT_WEBSOCK_FD].fd,(struct sockaddr*)&client_addr, &client_len);  
-                } 
-                //handleStatSockets(fds, &numfds, events,&interaceStat);
+static void IAP_Clear(uint8_t* Buf, int fd)
+{
+    IAP_SendReply(IAP_SUCCESS, IAP_CLEAR_SUCCESS, fd);
+}
 
-                nread = read(client_sockfd, revStr, 5);
+static void IAP_Save(uint8_t* Buf, int fd)
+{
+    uint32_t addr = IAP_CONV_TO_32(Buf);
 
-                if(nread == 0){//client disconnected  
-                    printf("client %d disconnected\n",client_sockfd);  
-                    client_sockfd = -1;  
-                }  
-                else{  
-                    printf("read from client %d: %s\n",client_sockfd,revStr);  
-                    //ch ++;  
-                    write(client_sockfd, "vbbn", 5);  
-                } */
-                //fds[AVIAT_WEBSOCK_FD].events = POLLIN | POLLERR;
-                //fds[AVIAT_WEBSOCK_FD].revents = 0;
-            //}
+    fseek(file, addr, SEEK_SET);
+    fwrite(data, SDCARD_PAGE_SIZE, 1, file);
+    //SD_WriteBlock((uint32_t *)data, addr, SDCARD_PAGE_SIZE);
+    IAP_SendReply(IAP_SUCCESS, IAP_SAVE_SUCCESS, fd);
+}
+
+static void IAP_Reboot(uint8_t* Buf, int fd)
+{
+    IAP_SendReply(IAP_SUCCESS, IAP_REBOOT_SUCCESS, fd);
+}
+
+static void USART_DataProcess(uint8_t *Buf, int fd)
+{
+    uint16_t i;
+
+    memset(txBuf, 0, USART_PROTOCOL_LEN);
+
+    if (IAP_HeaderIsValid(Buf) == 0) {
+        IAP_SendReply(IAP_ERROR, IAP_ERROR_HEAD_INVALID, fd);
+        return;
+    }
+        
+    if (IAP_ChecksumIsValid(Buf) == 0) {
+        IAP_SendReply(IAP_ERROR, IAP_ERROR_CHKSUM_INVALID, fd);
+        return;
+    }
+
+    for (i=0;i<NUM_ROWS(IAP_Command);++i) {
+        IAP_NorCommand(&Buf[2], &IAP_Command[i], fd);
+    }
+}
+
+//======================================================================//
+// Public functions
+//======================================================================//
+int main()
+{
+    int fd,new_fd,i;
+    struct sockaddr_un un;
+    
+    fd = socket(AF_UNIX,SOCK_STREAM,0);
+    if(fd < 0){
+        printf("Request socket failed!\n");
+        return -1;
+    }
+    
+    un.sun_family = AF_UNIX;
+    unlink(SocketDomain);
+    strcpy(un.sun_path,SocketDomain);
+    if(bind(fd,(struct sockaddr *)&un,sizeof(un)) <0 ){
+        printf("bind failed!\n");
+        return -1;
+    }
+    if(listen(fd,MAX_CONNECT_NUM) < 0){
+        printf("listen failed!\n");
+        return -1;
+    }
+    
+    new_fd = accept(fd,NULL,NULL);
+    if(new_fd < 0){
+        printf("accept failed\n");
+        return -1;
+    }
+    
+    file = fopen(SdFileName, "r+");
+    if (file == NULL) {
+        printf("Fail to open file (%s)\n", SdFileName);
+        return -1;
+    }
+    
+    while(1){
+        char buffer[USART_PROTOCOL_LEN];
+        memset(buffer, 0xff, USART_PROTOCOL_LEN);
+        printf("Waiting for data\n");
+        int ret = recv(new_fd,buffer,USART_PROTOCOL_LEN,0);
+        if(ret < 0){
+            printf("recv failed\n");
+            continue;
         }
-
-/*
-        if(client_sockfd == -1){  
-            client_sockfd = accept(fds[AVIAT_WEBSOCK_FD].fd,(struct sockaddr*)&client_addr, &client_len);  
-        } 
-
-        nread = read(client_sockfd, revStr, 5);
-
-        if(nread == 0){//client disconnected  
-            printf("client %d disconnected\n",client_sockfd);  
-            client_sockfd = -1;  
-        }  
-        else{  
-            printf("read from client %d: %s\n",client_sockfd,revStr);  
-            //ch ++;  
-            write(client_sockfd, "vbbn", 5);  
-        }  
-        usleep(100);//1000 miliseconds = 1 second  
-*/
-    }
-
-/*
-    while (1) {
-        int events = poll(fds, 2, 1000);
-        if (events > 0) {
-            printf("step 1\n");
-            handleStatSockets(fds, &numfds, events,&interaceStat);
-            printf("step 2\n");
-            if(interaceStat == true )
-            {
-                printf("AIS connected with the client\n");
-                //AviatIntStatsPostMan(fds);
-                // do the job
-            }
+        printf("Got data\n");
+        for (int i=0;i<USART_PROTOCOL_LEN;i++) {
+            printf("%02x ", buffer[i]);
         }
+        printf("\n");
+        USART_DataProcess(buffer, new_fd);
     }
-    */
+    fclose(file);
+    close(new_fd);
+    close(fd);
 }
 
