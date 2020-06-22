@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/dzhang/workspace/CLearning/spc++/src/engin.cc
+engin.hpp
+/home/dzhang/workspace/CLearning/spc++/src/engin.hpp
+
+/home/dzhang/workspace/CLearning/spc++/src/main.cc
+iostream
+-
+engin.hpp
+/home/dzhang/workspace/CLearning/spc++/src/engin.hpp
+
+/home/dzhang/workspace/CLearning/spc++/src/state.cc
+
+inc/engin.hpp
+memory
+-
+state.hpp
+inc/state.hpp
+
+inc/state.hpp
+
