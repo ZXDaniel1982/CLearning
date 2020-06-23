@@ -150,6 +150,33 @@ src/engin.cc.s:
 	$(MAKE) -f CMakeFiles/spc.dir/build.make CMakeFiles/spc.dir/src/engin.cc.s
 .PHONY : src/engin.cc.s
 
+src/helper.o: src/helper.cc.o
+
+.PHONY : src/helper.o
+
+# target to build an object file
+src/helper.cc.o:
+	$(MAKE) -f CMakeFiles/spc.dir/build.make CMakeFiles/spc.dir/src/helper.cc.o
+.PHONY : src/helper.cc.o
+
+src/helper.i: src/helper.cc.i
+
+.PHONY : src/helper.i
+
+# target to preprocess a source file
+src/helper.cc.i:
+	$(MAKE) -f CMakeFiles/spc.dir/build.make CMakeFiles/spc.dir/src/helper.cc.i
+.PHONY : src/helper.cc.i
+
+src/helper.s: src/helper.cc.s
+
+.PHONY : src/helper.s
+
+# target to generate assembly for a file
+src/helper.cc.s:
+	$(MAKE) -f CMakeFiles/spc.dir/build.make CMakeFiles/spc.dir/src/helper.cc.s
+.PHONY : src/helper.cc.s
+
 src/main.o: src/main.cc.o
 
 .PHONY : src/main.o
@@ -216,6 +243,9 @@ help:
 	@echo "... src/engin.o"
 	@echo "... src/engin.i"
 	@echo "... src/engin.s"
+	@echo "... src/helper.o"
+	@echo "... src/helper.i"
+	@echo "... src/helper.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

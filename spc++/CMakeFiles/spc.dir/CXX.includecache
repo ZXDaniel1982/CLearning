@@ -10,19 +10,39 @@
 engin.hpp
 /home/dzhang/workspace/CLearning/spc++/src/engin.hpp
 
+/home/dzhang/workspace/CLearning/spc++/src/helper.cc
+helper.hpp
+/home/dzhang/workspace/CLearning/spc++/src/helper.hpp
+
 /home/dzhang/workspace/CLearning/spc++/src/main.cc
-iostream
--
 engin.hpp
 /home/dzhang/workspace/CLearning/spc++/src/engin.hpp
 
 /home/dzhang/workspace/CLearning/spc++/src/state.cc
+state.hpp
+/home/dzhang/workspace/CLearning/spc++/src/state.hpp
+helper.hpp
+/home/dzhang/workspace/CLearning/spc++/src/helper.hpp
+
+inc/data.hpp
+unordered_map
+-
 
 inc/engin.hpp
-memory
--
+state.hpp
+inc/state.hpp
+
+inc/helper.hpp
 state.hpp
 inc/state.hpp
 
 inc/state.hpp
+memory
+-
+functional
+-
+iostream
+-
+data.hpp
+inc/data.hpp
 

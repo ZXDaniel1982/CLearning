@@ -8,6 +8,7 @@ set(spc_SOURCES
     ${CMAKE_SOURCE_DIR}/src/main.cc
     ${CMAKE_SOURCE_DIR}/src/engin.cc
     ${CMAKE_SOURCE_DIR}/src/state.cc
+    ${CMAKE_SOURCE_DIR}/src/helper.cc
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/inc/)

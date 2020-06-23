@@ -5,6 +5,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/dzhang/workspace/CLearning/spc++/src/engin.cc" "/home/dzhang/workspace/CLearning/spc++/CMakeFiles/spc.dir/src/engin.cc.o"
+  "/home/dzhang/workspace/CLearning/spc++/src/helper.cc" "/home/dzhang/workspace/CLearning/spc++/CMakeFiles/spc.dir/src/helper.cc.o"
   "/home/dzhang/workspace/CLearning/spc++/src/main.cc" "/home/dzhang/workspace/CLearning/spc++/CMakeFiles/spc.dir/src/main.cc.o"
   "/home/dzhang/workspace/CLearning/spc++/src/state.cc" "/home/dzhang/workspace/CLearning/spc++/CMakeFiles/spc.dir/src/state.cc.o"
   )

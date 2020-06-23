@@ -1,1 +1,1 @@
-/usr/bin/c++   -Wall -Wextra -Wno-unused-parameter -Werror --std=c++17 -O3 -g3  -rdynamic CMakeFiles/spc.dir/src/main.cc.o CMakeFiles/spc.dir/src/engin.cc.o CMakeFiles/spc.dir/src/state.cc.o  -o spc 
+/usr/bin/c++   -Wall -Wextra -Wno-unused-parameter -Werror --std=c++17 -O3 -g3  -rdynamic CMakeFiles/spc.dir/src/main.cc.o CMakeFiles/spc.dir/src/engin.cc.o CMakeFiles/spc.dir/src/state.cc.o CMakeFiles/spc.dir/src/helper.cc.o  -o spc 

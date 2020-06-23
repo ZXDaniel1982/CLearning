@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/spc.dir/src/main.cc.o"
   "CMakeFiles/spc.dir/src/engin.cc.o"
   "CMakeFiles/spc.dir/src/state.cc.o"
+  "CMakeFiles/spc.dir/src/helper.cc.o"
   "spc.pdb"
   "spc"
 )

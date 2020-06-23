@@ -3,11 +3,21 @@
 
 CMakeFiles/spc.dir/src/engin.cc.o
  /home/dzhang/workspace/CLearning/spc++/src/engin.cc
+ inc/data.hpp
  inc/engin.hpp
+ inc/state.hpp
+CMakeFiles/spc.dir/src/helper.cc.o
+ /home/dzhang/workspace/CLearning/spc++/src/helper.cc
+ inc/data.hpp
+ inc/helper.hpp
  inc/state.hpp
 CMakeFiles/spc.dir/src/main.cc.o
  /home/dzhang/workspace/CLearning/spc++/src/main.cc
+ inc/data.hpp
  inc/engin.hpp
  inc/state.hpp
 CMakeFiles/spc.dir/src/state.cc.o
  /home/dzhang/workspace/CLearning/spc++/src/state.cc
+ inc/data.hpp
+ inc/helper.hpp
+ inc/state.hpp
