@@ -14,6 +14,16 @@ const std::unordered_map<RdtStat, std::string>  kRdtStat = {
     {RdtStat::ManOn,  "Heater is ManOff"},
 };
 
+const std::unordered_map<int, Opt> kKeys = {
+    {7, Opt::Actual},
+    {9, Opt::Prog},
+    {5, Opt::Enter},
+    {8, Opt::Up},
+    {2, Opt::Down},
+    {4, Opt::Left},
+    {6, Opt::Right},
+};
+
 class IState
 {
 public:
@@ -34,14 +44,18 @@ public:
 private:
     DefInfo                     iDefInfo;
     std::unordered_map<DefInfo, std::function<void()>>     iInterFuncs;
-    std::unordered_map<Opt, std::function<std::shared_ptr<IState>(const Opt&)>>     iExtFuncs;
-private:
-    const std::string           iTitle = std::string("Actual");
 };
 
 class StateActual : public IState {
 public:
-    StateActual(std::shared_ptr<SpcData_t>, DefInfo);
+    StateActual(std::shared_ptr<SpcData_t>);
+public:
+    std::shared_ptr<IState> Update(std::shared_ptr<SpcData_t>, Opt) override;
+};
+
+class StateProg : public IState {
+public:
+    StateProg(std::shared_ptr<SpcData_t>);
 public:
     std::shared_ptr<IState> Update(std::shared_ptr<SpcData_t>, Opt) override;
 };

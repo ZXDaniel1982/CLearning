@@ -33,22 +33,6 @@ StateDefStatus::StateDefStatus(
         ShowTemper(aData->config.MaintainTemp, unit);
     });
 
-    // External action
-    iExtFuncs.try_emplace(Opt::Empty, [&](const Opt& aOpt)->std::shared_ptr<IState> {
-        if (aOpt == Opt::Empty) {
-            if (iInterFuncs.find(iDefInfo) != iInterFuncs.end()) {
-                auto func = iInterFuncs.at(iDefInfo);
-                if (func) func();
-            }
-        }
-        return {};
-    });
-    iExtFuncs.try_emplace(Opt::Actual, [&](const Opt& aOpt)->std::shared_ptr<IState> {
-        if (aOpt == Opt::Actual) {
-            return std::make_shared<StateActual>(aData, iDefInfo);
-        }
-        return {};
-    });
     Update(aData, Opt::Empty);
 }
 
@@ -57,23 +41,64 @@ StateDefStatus::Update(
     std::shared_ptr<SpcData_t>      aData,
     Opt                             aOpt)
 {
-    if (iExtFuncs.find(aOpt) != iExtFuncs.end()) {
-        auto func = iExtFuncs.at(aOpt);
-        return func(aOpt);
+    switch (aOpt) {
+    case Opt::Empty:
+        if (iInterFuncs.find(iDefInfo) != iInterFuncs.end()) {
+            auto func = iInterFuncs.at(iDefInfo);
+            if (func) func();
+        }
+        return {};
+    case Opt::Actual:
+        return std::make_shared<StateActual>(aData);
+    case Opt::Prog:
+        return std::make_shared<StateProg>(aData);
+    default:
+        return {};
     }
-    return {};
 }
 
 // Actual
-StateActual::StateActual(
-    std::shared_ptr<SpcData_t>      aData,
-    DefInfo                         aDefInfo)
-{}
+StateActual::StateActual(std::shared_ptr<SpcData_t> aData)
+{
+    Update(aData, Opt::Empty);
+}
 
 std::shared_ptr<IState>
 StateActual::Update(
     std::shared_ptr<SpcData_t>      aData,
     Opt                             aOpt)
 {
-    return {};
+    switch (aOpt) {
+    case Opt::Empty:
+        cout << "Actual" << endl;
+        cout << endl;
+        return {};
+    case Opt::Prog:
+        return std::make_shared<StateProg>(aData);
+    default:
+        return {};
+    }
+}
+
+// Programme
+StateProg::StateProg(std::shared_ptr<SpcData_t> aData)
+{
+    Update(aData, Opt::Empty);
+}
+
+std::shared_ptr<IState>
+StateProg::Update(
+    std::shared_ptr<SpcData_t>      aData,
+    Opt                             aOpt)
+{
+    switch (aOpt) {
+    case Opt::Empty:
+        cout << "Program" << endl;
+        cout << endl;
+        return {};
+    case Opt::Actual:
+        return std::make_shared<StateActual>(aData);
+    default:
+        return {};
+    }
 }

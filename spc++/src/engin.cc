@@ -1,8 +1,8 @@
 #include "engin.hpp"
 
 SpcEngin::SpcEngin()
-    :   iData           (std::make_shared<SpcData_t>())
-    ,   iCurrentState   (std::make_shared<StateInit>())
+    :   iData           (new SpcData_t())
+    ,   iCurrentState   (new StateInit())
 {
     Update(Opt::Empty);
 }
@@ -12,7 +12,7 @@ SpcEngin::Update(Opt aOpt)
 {
     auto state = iCurrentState->Update(iData, aOpt);
 
-    if (state) {
+    if (state != nullptr) {
         iCurrentState = std::move(state);
     }
 }
