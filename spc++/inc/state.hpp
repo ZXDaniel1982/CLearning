@@ -53,6 +53,20 @@ public:
     std::shared_ptr<IState> Update(std::shared_ptr<SpcData_t>, Opt) override;
 };
 
+class StateHeatStatus : public IState {
+public:
+    StateHeatStatus(std::shared_ptr<SpcData_t>);
+public:
+    std::shared_ptr<IState> Update(std::shared_ptr<SpcData_t>, Opt) override;
+};
+
+class StateActualStatistic : public IState {
+public:
+    StateActualStatistic(std::shared_ptr<SpcData_t>);
+public:
+    std::shared_ptr<IState> Update(std::shared_ptr<SpcData_t>, Opt) override;
+};
+
 class StateProg : public IState {
 public:
     StateProg(std::shared_ptr<SpcData_t>);

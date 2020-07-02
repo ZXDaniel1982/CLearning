@@ -24,9 +24,7 @@ StateDefStatus::StateDefStatus(
     });
     iInterFuncs.try_emplace(DefInfo::HeaterStatus, [&]() {
         auto rdtStat = static_cast<RdtStat>(aData->config.system.bytes.rdtStat);
-
-        cout << "Heater Status" << endl;
-        cout << kRdtStat.at(rdtStat) << endl;
+        ShowHeatStatus(rdtStat);
     });
     iInterFuncs.try_emplace(DefInfo::HeaterTemp, [&]() {
         auto unit = static_cast<bool>(aData->config.system.bytes.unit);
@@ -73,6 +71,61 @@ StateActual::Update(
         cout << "Actual" << endl;
         cout << endl;
         return {};
+    case Opt::Actual:
+        return std::make_shared<StateActualStatistic>(aData);
+    case Opt::Prog:
+        return std::make_shared<StateProg>(aData);
+    case Opt::Right:
+        return std::make_shared<StateHeatStatus>(aData);
+    default:
+        return {};
+    }
+}
+
+// StateHeatStatus
+StateHeatStatus::StateHeatStatus(std::shared_ptr<SpcData_t> aData)
+{
+    Update(aData, Opt::Empty);
+}
+
+std::shared_ptr<IState>
+StateHeatStatus::Update(
+    std::shared_ptr<SpcData_t>      aData,
+    Opt                             aOpt)
+{
+    RdtStat rdtStat;
+    switch (aOpt) {
+    case Opt::Empty:
+        rdtStat = static_cast<RdtStat>(aData->config.system.bytes.rdtStat);
+        ShowHeatStatus(rdtStat);
+        return {};
+    case Opt::Actual:
+        return std::make_shared<StateActualStatistic>(aData);
+    case Opt::Prog:
+        return std::make_shared<StateProg>(aData);
+    default:
+        return {};
+    }
+}
+
+// Actual statistic
+StateActualStatistic::StateActualStatistic(std::shared_ptr<SpcData_t> aData)
+{
+    Update(aData, Opt::Empty);
+}
+
+std::shared_ptr<IState>
+StateActualStatistic::Update(
+    std::shared_ptr<SpcData_t>      aData,
+    Opt                             aOpt)
+{
+    switch (aOpt) {
+    case Opt::Empty:
+        cout << "Statistics" << endl;
+        cout << endl;
+        return {};
+    case Opt::Actual:
+        return std::make_shared<StateActual>(aData);
     case Opt::Prog:
         return std::make_shared<StateProg>(aData);
     default:

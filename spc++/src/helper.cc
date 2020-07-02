@@ -14,3 +14,9 @@ void ShowTemper(SpcTemperature_t aTemp, bool Celsius)
             cout << aTemp.tempf << " F" << endl;
     }
 }
+
+void ShowHeatStatus(RdtStat aRdtStat)
+{
+    cout << "Heater Status" << endl;
+    cout << kRdtStat.at(aRdtStat) << endl;
+}

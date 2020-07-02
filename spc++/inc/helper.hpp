@@ -8,3 +8,4 @@ const std::unordered_map<DataStatus, std::string> kDataStat = {
 };
 
 void ShowTemper(SpcTemperature_t, bool);
+void ShowHeatStatus(RdtStat);
